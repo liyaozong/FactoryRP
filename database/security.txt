@@ -36,13 +36,25 @@ DpvKT4I+Jn0FyDC3LVZBEIhkKvYmzLw4hO8Boqxn9UPgrn4wGsbBc29zF+jhPeAY
 -----END RSA PRIVATE KEY-----
 
 
-公钥字符串
-ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDXPYi5ZOQ8XYCJjpL9w9OVzmbj4zrJZAFWr3l16Lqtql3nI19DmMCEdDDbdhdEHoQoDYjaXPxDppnh2QKgTu5XJkVM23719b6SuVVtyIf+dqBgVzyCH5SgtV4h7T59tTWtW0D5DZEzIBYimRkWouq5me6W06TLplaPjKXhpvHOcCQ8+73qHkEQ1A9IPbpPdDARWRca/zdKDsvgtV7erQ2qe0i/EPJpucr8v/6IdfboO1ud69flaRKZ+ivKd44zwDWhkM+JgnI6ypdjR2245lshSzh0gAEdkDkfsgP4BPBFqktMnYdb7JJWAFeGamkcdVG3Yaf549c5G/eX42xTfXsV developer@iZbp1fuxiq5o2s8cw9cedtZ
+
+Git:
+
+    也需要用密钥来访问，将如上密钥保存为id_rsa文件，配置如下：
+Host factoryrp
+HostName 47.96.28.88
+User developer
+identityfile ~/.ssh/id_rsa
+
+那么，可以用如下命令克隆代码：
+git clone factoryrp:code/FactoryRP.git
+
+可以用如下命令提交代码：
+git push origin HEAD:master
+
 
 
 MySQL:
 
 user: developer
 password: hIRxhU2Qm5j1XlpFXGz8aiS6dKFGFiYFMQJMh2x8d1w
-
 
