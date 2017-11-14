@@ -3,6 +3,7 @@ ECS
 161646
 
 IP: 47.96.28.88
+port:22
 user: developer
 password: hIRxhU2Qm5j1XlpFXGz8aiS6hU2Qm5j1XlpFXGz8aiS6dKFGFiYFdKFGFiYFMQJMh2x8d1whIRxhU2Qm5j1XlpFXGz8aiS6dKFGFiYFMQJMh2x8d1w
 

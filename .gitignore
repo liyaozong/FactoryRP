@@ -1,0 +1,20 @@
+## Eclipse
+.project
+.metadata
+.classpath
+.settings/
+.loadpath
+
+## Maven
+target/
+**/target/
+
+## Idea
+.idea/
+*.iml
+
+## Mac crap
+.DS_Store
+
+/logs/
+**/logs/
