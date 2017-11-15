@@ -1,3 +1,4 @@
+/*
 package cn.tech.yozo.factoryrp.config;
 
 import com.alibaba.fastjson.serializer.SerializerFeature;
@@ -10,9 +11,11 @@ import org.springframework.http.MediaType;
 import java.util.ArrayList;
 import java.util.List;
 
+*/
 /**
  * 使用JackSonMapper
- */
+ *//*
+
 @Configuration
 public class JackSonMapperConfig {
 
@@ -35,3 +38,4 @@ public class JackSonMapperConfig {
     }
 
 }
+*/
