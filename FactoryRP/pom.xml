@@ -7,6 +7,7 @@
     <artifactId>cn.tech.yozo.facroryrp</artifactId>
     <version>1.0-SNAPSHOT</version>
     <name>FacroryRP</name>
+    <packaging>jar</packaging>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.8</java.version>
@@ -49,17 +50,7 @@
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-devtools</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-aop</artifactId>
         </dependency>
 
         <dependency>
@@ -137,13 +128,6 @@
             <artifactId>json</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>org.apache.zookeeper</groupId>
-            <artifactId>zookeeper</artifactId>
-            <version>3.4.10</version>
-            <type>pom</type>
-        </dependency>
-
         <!--alibaba组件相关-->
         <dependency>
             <groupId>com.alibaba</groupId>
@@ -170,12 +154,6 @@
                     <groupId>org.springframework</groupId>
                 </exclusion>
             </exclusions>
-        </dependency>
-        <!--zk相关-->
-        <dependency>
-            <groupId>com.github.sgroschupf</groupId>
-            <artifactId>zkclient</artifactId>
-            <version>0.1</version>
         </dependency>
         <!--SpringBoot开发工具-->
         <dependency>
@@ -247,38 +225,16 @@
     </dependencies>
 
     <build>
+        <finalName>FactoryRP</finalName>
         <plugins>
-            <!--开启热部署-->
-            <!--<plugin>
+            <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    &lt;!&ndash;fork :  如果没有该项配置，肯呢个devtools不会起作用，即应用不会restart &ndash;&gt;
                     <fork>true</fork>
-                    &lt;!&ndash;<maxAttempts>500</maxAttempts>
-                    <mainClass>cn.source.WebApplication</mainClass>&ndash;&gt;
+                    <mainClass>cn.tech.yozo.factoryrp.WebApplication</mainClass>
                 </configuration>
-            </plugin>-->
-            <!--plugin>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <configuration>
-                    <appendAssemblyId>false</appendAssemblyId>
-                    <finalName>${project.artifactId}-${project.build.finalName}-${maven.build.timestamp}}</finalName>
-                    <descriptors>
-                        <descriptor>src/main/assembly/src.xml</descriptor>
-                    </descriptors>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>make-assembly</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>-->
-
+            </plugin>
         </plugins>
     </build>
 </project>
