@@ -3,6 +3,7 @@ package cn.tech.yozo.factoryrp.api;
 import cn.tech.yozo.factoryrp.entity.Role;
 import cn.tech.yozo.factoryrp.repository.RoleRepository;
 import cn.tech.yozo.factoryrp.repository.UserRepository;
+import cn.tech.yozo.factoryrp.vo.base.ApiResponse;
 import cn.tech.yozo.factoryrp.vo.req.TestVo;
 import com.alibaba.fastjson.JSON;
 import io.swagger.annotations.Api;
@@ -45,7 +46,7 @@ public class TestController  extends BaseController{
     @ApiOperation(value = "测试API接口",notes = "测试API",httpMethod = "POST")
     //@ApiImplicitParam(dataType = "TestVo大赛打啊打" ,name = "testVo", value = "测试API",required = true)
     @RequestMapping(value = "/testAPI",method = RequestMethod.POST)
-    public TestVo testAPI(@RequestBody TestVo testVo){
+    public ApiResponse<TestVo> testAPI(@RequestBody TestVo testVo){
 
         List<Role> all = roleRepository.findAll();
 
@@ -57,7 +58,7 @@ public class TestController  extends BaseController{
 
 
         logger.info("用户姓名123");
-        return testVo;
+        return apiResponse(testVo,testVo);
     }
 
    /* @ApiOperation(value = "测试API接口",notes = "测试API",httpMethod = "POST")

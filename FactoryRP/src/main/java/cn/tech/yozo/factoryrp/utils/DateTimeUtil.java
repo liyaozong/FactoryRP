@@ -78,12 +78,16 @@ public class DateTimeUtil {
 	}
 
 	/**
-	 * 将当前日期转换成yyyyMMddHHmmss的字符串. 如：20071012141350
+	 * 将当前日期转换成指定格式的字符串. 如：20071012141350
 	 * 
 	 * @return
 	 */
-	public static String currDateToStr() {
-		return dateToStr(new Date(), "yyyyMMddHHmmss");
+	public static String currentDateToStr(String pattern) {
+
+		if(CheckParam.isNull(pattern)){
+			pattern = "yyyy-MM-dd HH:mm:ss";
+		}
+		return dateToStr(new Date(), pattern);
 	}
 
 	/**

@@ -1,5 +1,6 @@
 package cn.tech.yozo.factoryrp.config.shiro;
 
+import cn.tech.yozo.factoryrp.config.shiro.filter.AuthenticationFilter;
 import cn.tech.yozo.factoryrp.config.shiro.filter.StatelessAuthcFilter;
 import cn.tech.yozo.factoryrp.config.shiro.filter.StatelessDefaultSubjectFactory;
 import net.sf.ehcache.CacheManager;
@@ -189,6 +190,15 @@ public class ShiroConfiguration {
         return new StatelessAuthcFilter();
     }
 
+
+    /**
+     * 认证过滤器
+     * @return
+     */
+    @Bean(name = "authenticationFilter")
+    public AuthenticationFilter AuthenticationFilter(){
+        return new AuthenticationFilter();
+    }
 
     /**
      * 注入ShiroFilterFactoryBean
