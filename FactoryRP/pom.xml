@@ -14,6 +14,7 @@
         <shiro.version>1.4.0</shiro.version>
         <junit.version>4.10</junit.version>
         <ehcache.version>2.10.4</ehcache.version>
+        <lombok.version>1.16.8</lombok.version>
     </properties>
 
     <!-- Inherit defaults from Spring Boot -->
@@ -238,6 +239,11 @@
             <version>${shiro.version}</version>
         </dependency>
         <!--Shiro end-->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+        </dependency>
     </dependencies>
 
     <build>
