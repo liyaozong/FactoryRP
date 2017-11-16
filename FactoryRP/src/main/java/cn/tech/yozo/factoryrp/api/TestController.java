@@ -1,11 +1,21 @@
 package cn.tech.yozo.factoryrp.api;
 
+import cn.tech.yozo.factoryrp.entity.Role;
+import cn.tech.yozo.factoryrp.repository.RoleRepository;
+import cn.tech.yozo.factoryrp.repository.UserRepository;
 import cn.tech.yozo.factoryrp.vo.req.TestVo;
+import com.alibaba.fastjson.JSON;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * 测试前端控制器
@@ -16,6 +26,13 @@ import org.springframework.web.bind.annotation.*;
 public class TestController  extends BaseController{
 
     private static Logger logger = LoggerFactory.getLogger(TestController.class);
+
+    @Resource
+    private RoleRepository roleRepository;
+
+
+    @Resource
+    private UserRepository userRepository;
 
     /**
      * 测试API
@@ -29,6 +46,16 @@ public class TestController  extends BaseController{
     //@ApiImplicitParam(dataType = "TestVo大赛打啊打" ,name = "testVo", value = "测试API",required = true)
     @RequestMapping(value = "/testAPI",method = RequestMethod.POST)
     public TestVo testAPI(@RequestBody TestVo testVo){
+
+        List<Role> all = roleRepository.findAll();
+
+        System.out.println(JSON.toJSONString(all));
+
+        List<Role> all2 = roleRepository.findAll();
+
+        System.out.println(JSON.toJSONString(all2));
+
+
         logger.info("用户姓名123");
         return testVo;
     }

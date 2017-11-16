@@ -1,0 +1,24 @@
+package cn.tech.yozo.factoryrp.repository;
+
+import cn.tech.yozo.factoryrp.entity.Role;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+
+/**
+ * @author created by Singer email:313402703@qq.com
+ * @time 2017/11/16
+ * @description
+ */
+@Repository
+public interface RoleRepository extends BaseRepository<Role,Long>{
+
+
+    /**
+     * 通过id的in查询
+     * @param ids
+     * @return
+     */
+    List<Role> findByIdIn(long [] ids);
+
+}

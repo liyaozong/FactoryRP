@@ -2,6 +2,7 @@ package cn.tech.yozo.factoryrp.entity;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import org.hibernate.annotations.GenericGenerator;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -20,8 +21,10 @@ public class BaseEntity implements Serializable{
 
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GenericGenerator(name = "increment", strategy = "increment")
+    @Column(name = "id")
+    private Long id;
 
     @JSONField(format="yyyy-MM-dd HH:mm:ss")
     @Column(name = "create_time")
@@ -30,14 +33,13 @@ public class BaseEntity implements Serializable{
 
     @JSONField (format="yyyy-MM-dd HH:mm:ss")
     @Column(name = "update_time")
-    private Date updateTime;
+    private Date updateTime = new Date();
 
-
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
