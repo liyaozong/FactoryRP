@@ -45,7 +45,7 @@ public class PermissionRole extends BaseEntity implements Serializable {
     /**
      * 备注描述
      */
-    @Column(name = "remark")
+    @Column(name = "remark",length = 50)
     private String remark;
 
 

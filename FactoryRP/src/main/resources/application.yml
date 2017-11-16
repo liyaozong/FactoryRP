@@ -46,6 +46,8 @@ spring:
         cache:
           use_second_level_cache: true # 打开二级缓存
           use_query_cache: true # 打开查询缓存
+          ehcache:
+            config: classpath:ehcache-jpa.xml
           region:
             factory_class: org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory # 指定缓存provider
         hbm2ddl:

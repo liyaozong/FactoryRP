@@ -24,4 +24,12 @@ public interface UserRepository extends BaseRepository<User,Long>{
     @Cacheable
     User findByUserNameAndCorporateIdentify(String userName,String corporateIdentify);
 
+
+    /**
+     *通过用户名进行查找
+     * @param userName
+     * @return
+     */
+    User findByUserName(String userName);
+
 }
