@@ -22,14 +22,14 @@ public class Permission extends BaseEntity implements Serializable {
     /**
      * 访问URL
      */
-    @Column(name = "permission_url")
+    @Column(name = "permission_url",length = 20)
     private String permissionUrl;
 
 
     /**
      * 访问的方法
      */
-    @Column(name = "method")
+    @Column(name = "method",length = 20)
     private String method;
 
     /**
@@ -39,13 +39,20 @@ public class Permission extends BaseEntity implements Serializable {
     private Long corporateIdentify;
 
     /**
-     * 备注
+     * 权限备注
      */
-    @Column(name = "remark")
+    @Column(name = "remark",length = 50)
     private String remark;
 
     /**
+     * 权限名称
+     */
+    @Column(name = "name",length = 20)
+    private String name;
+
+    /**
      * 权限类型
+     * 1菜单权限 2其他权限
      */
     @Column(name = "perssion_type")
     private Integer perssionType;
@@ -106,5 +113,13 @@ public class Permission extends BaseEntity implements Serializable {
 
     public void setRoleList(List<Role> roleList) {
         this.roleList = roleList;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

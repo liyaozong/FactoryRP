@@ -28,26 +28,25 @@ public class User extends BaseEntity implements Serializable{
     /**
      * 用户ID 工具类生成
      */
-
     @Column(name = "user_id")
     private Long userId = new UUIDSequenceWorker().nextId();
 
     /**
      * 登陆用户名
      */
-    @Column(name = "user_name")
+    @Column(name = "user_name",length = 20)
     private String userName;
 
     /**
      * 密码
      */
-    @Column(name = "password")
+    @Column(name = "password",length = 30)
     private String password;
 
     /**
      * 盐
      */
-    @Column(name = "sault")
+    @Column(name = "sault",length = 20)
     private String sault;
 
 

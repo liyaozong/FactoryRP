@@ -1,6 +1,7 @@
 package cn.tech.yozo.factoryrp.repository;
 
 import cn.tech.yozo.factoryrp.entity.Role;
+import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.List;
  * @description
  */
 @Repository
+@CacheConfig(cacheNames = "systemRoles")
 public interface RoleRepository extends BaseRepository<Role,Long>{
 
 

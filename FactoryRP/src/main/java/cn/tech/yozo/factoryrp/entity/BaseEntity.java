@@ -2,7 +2,6 @@ package cn.tech.yozo.factoryrp.entity;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -25,23 +24,16 @@ public class BaseEntity implements Serializable{
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     @GenericGenerator(name = "increment", strategy = "increment")
     @Column(name = "id")
-    @ApiModelProperty(value = "主键",notes ="主键" )
     private Long id;
 
     @JSONField(format="yyyy-MM-dd HH:mm:ss")
     @Column(name = "create_time")
-    @ApiModelProperty(value = "创建时间",notes ="创建时间" )
     private Date createTime = new Date();
 
 
     @JSONField (format="yyyy-MM-dd HH:mm:ss")
     @Column(name = "update_time")
-    @ApiModelProperty(value = "修改时间",notes ="修改时间" )
     private Date updateTime = new Date();
-
-    @ApiModelProperty(value = "企业唯一标识",notes ="企业唯一标识" )
-    @Column(name="corporate_identify")
-    private Long corporateIdentify;
 
     public Long getId() {
         return id;
@@ -69,13 +61,5 @@ public class BaseEntity implements Serializable{
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
-    }
-
-    public void setCorporateIdentify(Long corporateIdentify){
-        this.corporateIdentify = corporateIdentify;
-    }
-
-    public Long getCorporateIdentify(){
-        return this.corporateIdentify;
     }
 }
