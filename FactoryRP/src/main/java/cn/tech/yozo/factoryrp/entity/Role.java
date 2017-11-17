@@ -46,13 +46,6 @@ public class Role extends BaseEntity implements Serializable {
 
 
     /**
-     * 企业标识
-     */
-    @Column(name = "corporate_identify")
-    private Long corporateIdentify;
-
-
-    /**
      * 使用@ManyToMany映射双向关联关系。作为非映射主体一方，只需要简单的
      * 配置该注解的mappedBy="xxx"即可。xxx是对方实体（映射主体）中集合
      * 属性的名称。表示由对方主体的哪个属性来完成映射关系。
@@ -98,15 +91,6 @@ public class Role extends BaseEntity implements Serializable {
     public void setEnableStatus(Integer enableStatus) {
         this.enableStatus = enableStatus;
     }
-
-    public Long getCorporateIdentify() {
-        return corporateIdentify;
-    }
-
-    public void setCorporateIdentify(Long corporateIdentify) {
-        this.corporateIdentify = corporateIdentify;
-    }
-
 
     public List<User> getUserList() {
         return userList;

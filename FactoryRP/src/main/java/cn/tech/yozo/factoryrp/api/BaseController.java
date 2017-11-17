@@ -21,10 +21,25 @@ public class BaseController {
         ApiResponse apiResponse = new ApiResponse();
         apiResponse.setRequestSeqNo(apiRequest.getRequestSeqNo());
         apiResponse.setResponseTime(DateTimeUtil.currentDateToStr(""));
-        apiResponse.setRequestTime(apiRequest.getRequestTime());
+        //apiResponse.setRequestTime(apiRequest.getRequestTime());
         return apiResponse;
     }
 
+
+    /**
+     * GET请求的返回封装
+     * @param requestSeqNo
+     * @param object
+     * @return
+     */
+    public ApiResponse apiResponse(String requestSeqNo,Object object){
+        ApiResponse apiResponse = new ApiResponse();
+        apiResponse.setRequestSeqNo(requestSeqNo);
+        apiResponse.setResponseTime(DateTimeUtil.currentDateToStr(""));
+        //apiResponse.setRequestTime(apiRequest.getRequestTime());
+        apiResponse.setData(object);
+        return apiResponse;
+    }
 
     /**
      * 生成DATA里面带有指定类型的
@@ -36,7 +51,7 @@ public class BaseController {
         ApiResponse apiResponse = new ApiResponse();
         apiResponse.setRequestSeqNo(apiRequest.getRequestSeqNo());
         apiResponse.setResponseTime(DateTimeUtil.currentDateToStr(""));
-        apiResponse.setRequestTime(apiRequest.getRequestTime());
+        //apiResponse.setRequestTime(apiRequest.getRequestTime());
         apiResponse.setData(object);
         return apiResponse;
     }

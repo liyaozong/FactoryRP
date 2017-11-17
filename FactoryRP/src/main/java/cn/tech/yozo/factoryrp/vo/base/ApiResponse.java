@@ -37,8 +37,8 @@ public class ApiResponse<E> implements Serializable{
     /**
      *请求时间
      */
-    @ApiModelProperty(value = "请求时间",required = true,notes = "请求时间",example = "yyyy-MM-dd HH:mm:ss格式，如2017-11-17 00:15:12")
-    private String requestTime;
+    /*@ApiModelProperty(value = "请求时间",required = true,notes = "请求时间",example = "yyyy-MM-dd HH:mm:ss格式，如2017-11-17 00:15:12")
+    private String requestTime;*/
 
 
     /**
@@ -94,13 +94,13 @@ public class ApiResponse<E> implements Serializable{
         this.responseTime = responseTime;
     }
 
-    public String getRequestTime() {
+   /* public String getRequestTime() {
         return requestTime;
     }
 
     public void setRequestTime(String requestTime) {
         this.requestTime = requestTime;
-    }
+    }*/
 
     public E getData() {
         return data;
