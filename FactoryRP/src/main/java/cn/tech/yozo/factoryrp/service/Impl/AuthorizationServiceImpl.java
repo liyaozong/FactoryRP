@@ -1,9 +1,14 @@
 package cn.tech.yozo.factoryrp.service.Impl;
 
+import cn.tech.yozo.factoryrp.entity.Corporate;
 import cn.tech.yozo.factoryrp.entity.Role;
+import cn.tech.yozo.factoryrp.repository.CorporateRepository;
 import cn.tech.yozo.factoryrp.repository.RoleRepository;
 import cn.tech.yozo.factoryrp.service.AuthorizationService;
 import cn.tech.yozo.factoryrp.utils.CheckParam;
+import cn.tech.yozo.factoryrp.utils.UUIDSequenceWorker;
+import cn.tech.yozo.factoryrp.vo.req.CorporateReq;
+import cn.tech.yozo.factoryrp.vo.resp.CorporateResp;
 import cn.tech.yozo.factoryrp.vo.resp.RoleResp;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +27,9 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 
     @Resource
     private RoleRepository roleRepository;
+
+    @Resource
+    private CorporateRepository corporateRepository;
 
     /**
      * 根据企业标识码查询企业所有的角色
@@ -52,5 +60,33 @@ public class AuthorizationServiceImpl implements AuthorizationService {
             return null;
     }
 
+
+    /**
+     * 新增企业
+     * @param corporateReq
+     * @return
+     */
+    public CorporateResp addCorporate(CorporateReq corporateReq){
+
+        Corporate corporate = corporateRepository.findByCorporateName(corporateReq.getCorporateName());
+
+        if(CheckParam.isNull(corporate)){
+            corporate = new Corporate();
+            corporate.setCorporateName(corporateReq.getCorporateName());
+            corporate.setCorporateIdentify(UUIDSequenceWorker.uniqueSequenceId());
+            corporate.setEnableStatus(Integer.valueOf(corporateReq.getEnableStatus()));
+
+            corporateRepository.save(corporate);
+
+            CorporateResp corporateResp = new CorporateResp();
+            corporateResp.setCorporateName(corporate.getCorporateName());
+            corporateResp.setEnableStatus(String.valueOf(corporate.getEnableStatus()));
+            corporateResp.setCorporateIdentify(String.valueOf(corporate.getCorporateIdentify()));
+
+            return corporateResp;
+        }
+
+            return null;
+    }
 
 }

@@ -1,0 +1,1233 @@
+20171118 00:00:13.370  [restartedMain] INFO  org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.buildNativeEntityManagerFactory():379 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+20171118 00:00:13.788  [restartedMain] INFO  org.hibernate.engine.internal.StatisticalLoggingSessionEventListener.end():258 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+20171118 00:00:13.793  [restartedMain] INFO  org.hibernate.engine.internal.StatisticalLoggingSessionEventListener.end():258 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+20171118 00:00:13.794  [restartedMain] INFO  org.hibernate.engine.internal.StatisticalLoggingSessionEventListener.end():258 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+20171118 00:00:13.803  [restartedMain] INFO  org.hibernate.engine.internal.StatisticalLoggingSessionEventListener.end():258 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+20171118 00:00:13.832  [restartedMain] INFO  org.hibernate.engine.internal.StatisticalLoggingSessionEventListener.end():258 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+20171118 00:00:13.857  [restartedMain] INFO  org.hibernate.engine.internal.StatisticalLoggingSessionEventListener.end():258 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+20171118 00:00:13.880  [restartedMain] INFO  org.hibernate.engine.internal.StatisticalLoggingSessionEventListener.end():258 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+20171118 00:00:13.970  [restartedMain] INFO  org.hibernate.engine.internal.StatisticalLoggingSessionEventListener.end():258 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+20171118 00:00:13.971  [restartedMain] INFO  org.hibernate.engine.internal.StatisticalLoggingSessionEventListener.end():258 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+20171118 00:00:13.972  [restartedMain] INFO  org.hibernate.engine.internal.StatisticalLoggingSessionEventListener.end():258 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+20171118 00:00:13.974  [restartedMain] INFO  org.hibernate.engine.internal.StatisticalLoggingSessionEventListener.end():258 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+20171118 00:00:14.037  [restartedMain] INFO  org.hibernate.engine.internal.StatisticalLoggingSessionEventListener.end():258 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+20171118 00:00:14.039  [restartedMain] INFO  org.hibernate.engine.internal.StatisticalLoggingSessionEventListener.end():258 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+20171118 00:00:14.040  [restartedMain] INFO  org.hibernate.engine.internal.StatisticalLoggingSessionEventListener.end():258 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+20171118 00:00:14.042  [restartedMain] INFO  org.hibernate.engine.internal.StatisticalLoggingSessionEventListener.end():258 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+20171118 00:00:14.110  [restartedMain] INFO  org.hibernate.engine.internal.StatisticalLoggingSessionEventListener.end():258 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+20171118 00:00:14.111  [restartedMain] INFO  org.hibernate.engine.internal.StatisticalLoggingSessionEventListener.end():258 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+20171118 00:00:14.112  [restartedMain] INFO  org.hibernate.engine.internal.StatisticalLoggingSessionEventListener.end():258 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+20171118 00:00:14.115  [restartedMain] INFO  org.hibernate.engine.internal.StatisticalLoggingSessionEventListener.end():258 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+20171118 00:00:14.117  [restartedMain] INFO  org.hibernate.engine.internal.StatisticalLoggingSessionEventListener.end():258 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+20171118 00:00:15.852  [restartedMain] INFO  org.hibernate.engine.internal.StatisticalLoggingSessionEventListener.end():258 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+20171118 00:00:15.853  [restartedMain] INFO  org.hibernate.engine.internal.StatisticalLoggingSessionEventListener.end():258 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+20171118 00:00:15.854  [restartedMain] INFO  org.hibernate.engine.internal.StatisticalLoggingSessionEventListener.end():258 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+20171118 00:00:15.856  [restartedMain] INFO  org.hibernate.engine.internal.StatisticalLoggingSessionEventListener.end():258 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+20171118 00:00:15.865  [restartedMain] INFO  org.hibernate.engine.internal.StatisticalLoggingSessionEventListener.end():258 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+20171118 00:00:15.866  [restartedMain] INFO  org.hibernate.engine.internal.StatisticalLoggingSessionEventListener.end():258 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+20171118 00:00:15.867  [restartedMain] INFO  org.hibernate.engine.internal.StatisticalLoggingSessionEventListener.end():258 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+20171118 00:00:15.874  [restartedMain] INFO  org.hibernate.engine.internal.StatisticalLoggingSessionEventListener.end():258 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+20171118 00:00:15.875  [restartedMain] INFO  org.hibernate.engine.internal.StatisticalLoggingSessionEventListener.end():258 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+20171118 00:00:15.876  [restartedMain] INFO  org.hibernate.engine.internal.StatisticalLoggingSessionEventListener.end():258 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+20171118 00:00:15.884  [restartedMain] INFO  org.hibernate.engine.internal.StatisticalLoggingSessionEventListener.end():258 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+20171118 00:00:15.886  [restartedMain] INFO  org.hibernate.engine.internal.StatisticalLoggingSessionEventListener.end():258 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+20171118 00:00:15.888  [restartedMain] INFO  org.hibernate.engine.internal.StatisticalLoggingSessionEventListener.end():258 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+20171118 00:00:16.531  [restartedMain] INFO  org.springframework.boot.actuate.endpoint.mvc.EndpointHandlerMapping.register():543 - Mapped "{[/beans || /beans.json],methods=[GET],produces=[application/json]}" onto public java.lang.Object org.springframework.boot.actuate.endpoint.mvc.EndpointMvcAdapter.invoke()
+20171118 00:00:16.532  [restartedMain] INFO  org.springframework.boot.actuate.endpoint.mvc.EndpointHandlerMapping.register():543 - Mapped "{[/info || /info.json],methods=[GET],produces=[application/json]}" onto public java.lang.Object org.springframework.boot.actuate.endpoint.mvc.EndpointMvcAdapter.invoke()
+20171118 00:00:16.533  [restartedMain] INFO  org.springframework.boot.actuate.endpoint.mvc.EndpointHandlerMapping.register():543 - Mapped "{[/metrics/{name:.*}],methods=[GET],produces=[application/json]}" onto public java.lang.Object org.springframework.boot.actuate.endpoint.mvc.MetricsMvcEndpoint.value(java.lang.String)
+20171118 00:00:16.533  [restartedMain] INFO  org.springframework.boot.actuate.endpoint.mvc.EndpointHandlerMapping.register():543 - Mapped "{[/metrics || /metrics.json],methods=[GET],produces=[application/json]}" onto public java.lang.Object org.springframework.boot.actuate.endpoint.mvc.EndpointMvcAdapter.invoke()
+20171118 00:00:16.534  [restartedMain] INFO  org.springframework.boot.actuate.endpoint.mvc.EndpointHandlerMapping.register():543 - Mapped "{[/configprops || /configprops.json],methods=[GET],produces=[application/json]}" onto public java.lang.Object org.springframework.boot.actuate.endpoint.mvc.EndpointMvcAdapter.invoke()
+20171118 00:00:16.535  [restartedMain] INFO  org.springframework.boot.actuate.endpoint.mvc.EndpointHandlerMapping.register():543 - Mapped "{[/autoconfig || /autoconfig.json],methods=[GET],produces=[application/json]}" onto public java.lang.Object org.springframework.boot.actuate.endpoint.mvc.EndpointMvcAdapter.invoke()
+20171118 00:00:16.538  [restartedMain] INFO  org.springframework.boot.actuate.endpoint.mvc.EndpointHandlerMapping.register():543 - Mapped "{[/env/{name:.*}],methods=[GET],produces=[application/json]}" onto public java.lang.Object org.springframework.boot.actuate.endpoint.mvc.EnvironmentMvcEndpoint.value(java.lang.String)
+20171118 00:00:16.538  [restartedMain] INFO  org.springframework.boot.actuate.endpoint.mvc.EndpointHandlerMapping.register():543 - Mapped "{[/env || /env.json],methods=[GET],produces=[application/json]}" onto public java.lang.Object org.springframework.boot.actuate.endpoint.mvc.EndpointMvcAdapter.invoke()
+20171118 00:00:16.539  [restartedMain] INFO  org.springframework.boot.actuate.endpoint.mvc.EndpointHandlerMapping.register():543 - Mapped "{[/trace || /trace.json],methods=[GET],produces=[application/json]}" onto public java.lang.Object org.springframework.boot.actuate.endpoint.mvc.EndpointMvcAdapter.invoke()
+20171118 00:00:16.540  [restartedMain] INFO  org.springframework.boot.actuate.endpoint.mvc.EndpointHandlerMapping.register():543 - Mapped "{[/mappings || /mappings.json],methods=[GET],produces=[application/json]}" onto public java.lang.Object org.springframework.boot.actuate.endpoint.mvc.EndpointMvcAdapter.invoke()
+20171118 00:00:16.541  [restartedMain] INFO  org.springframework.boot.actuate.endpoint.mvc.EndpointHandlerMapping.register():543 - Mapped "{[/dump || /dump.json],methods=[GET],produces=[application/json]}" onto public java.lang.Object org.springframework.boot.actuate.endpoint.mvc.EndpointMvcAdapter.invoke()
+20171118 00:00:16.852  [restartedMain] INFO  springfox.documentation.spring.web.PropertySourcedRequestMappingHandlerMapping.initHandlerMethods():69 - Mapped URL path [/v2/api-docs] onto method [public org.springframework.http.ResponseEntity<springfox.documentation.spring.web.json.Json> springfox.documentation.swagger2.web.Swagger2Controller.getDocumentation(java.lang.String,javax.servlet.http.HttpServletRequest)]
+20171118 00:00:17.134  [restartedMain] INFO  org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.initControllerAdviceCache():534 - Looking for @ControllerAdvice: org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@298d5bd3: startup date [Fri Nov 17 23:59:39 CST 2017]; root of context hierarchy
+20171118 00:00:17.147  [restartedMain] INFO  org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.initControllerAdviceCache():566 - Detected ResponseBodyAdvice bean in org.springframework.boot.actuate.autoconfigure.EndpointWebMvcHypermediaManagementContextConfiguration$ActuatorEndpointLinksAdvice
+20171118 00:00:17.335  [restartedMain] INFO  org.springframework.web.servlet.handler.SimpleUrlHandlerMapping.registerHandler():362 - Mapped URL path [/webjars/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+20171118 00:00:17.335  [restartedMain] INFO  org.springframework.web.servlet.handler.SimpleUrlHandlerMapping.registerHandler():362 - Mapped URL path [/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+20171118 00:00:17.368  [restartedMain] INFO  org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver.initExceptionHandlerAdviceCache():279 - Detected ResponseBodyAdvice implementation in org.springframework.boot.actuate.autoconfigure.EndpointWebMvcHypermediaManagementContextConfiguration$ActuatorEndpointLinksAdvice
+20171118 00:00:17.433  [restartedMain] INFO  org.springframework.web.servlet.handler.SimpleUrlHandlerMapping.registerHandler():362 - Mapped URL path [/**/favicon.ico] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+20171118 00:00:18.712  [restartedMain] INFO  org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer.startServer():58 - LiveReload server is running on port 35729
+20171118 00:00:18.912  [restartedMain] INFO  org.springframework.jmx.export.annotation.AnnotationMBeanExporter.afterSingletonsInstantiated():431 - Registering beans for JMX exposure on startup
+20171118 00:00:18.913  [restartedMain] INFO  org.springframework.jmx.export.annotation.AnnotationMBeanExporter.autodetect():916 - Bean with name 'dataSource' has been autodetected for JMX exposure
+20171118 00:00:18.922  [restartedMain] INFO  org.springframework.jmx.export.annotation.AnnotationMBeanExporter.registerBeanInstance():671 - Located MBean 'dataSource': registering with JMX server as MBean [com.alibaba.druid.pool:name=dataSource,type=DruidDataSource]
+20171118 00:00:18.923  [restartedMain] INFO  org.springframework.boot.actuate.endpoint.jmx.EndpointMBeanExporter.afterSingletonsInstantiated():431 - Registering beans for JMX exposure on startup
+20171118 00:00:18.928  [restartedMain] INFO  org.springframework.context.support.DefaultLifecycleProcessor.start():343 - Starting beans in phase 0
+20171118 00:00:18.932  [restartedMain] INFO  org.springframework.boot.actuate.endpoint.jmx.EndpointMBeanExporter.registerBeanInstance():678 - Located managed bean 'requestMappingEndpoint': registering with JMX server as MBean [org.springframework.boot:type=Endpoint,name=requestMappingEndpoint]
+20171118 00:00:18.955  [restartedMain] INFO  org.springframework.boot.actuate.endpoint.jmx.EndpointMBeanExporter.registerBeanInstance():678 - Located managed bean 'environmentEndpoint': registering with JMX server as MBean [org.springframework.boot:type=Endpoint,name=environmentEndpoint]
+20171118 00:00:18.959  [restartedMain] INFO  org.springframework.boot.actuate.endpoint.jmx.EndpointMBeanExporter.registerBeanInstance():678 - Located managed bean 'healthEndpoint': registering with JMX server as MBean [org.springframework.boot:type=Endpoint,name=healthEndpoint]
+20171118 00:00:18.962  [restartedMain] INFO  org.springframework.boot.actuate.endpoint.jmx.EndpointMBeanExporter.registerBeanInstance():678 - Located managed bean 'beansEndpoint': registering with JMX server as MBean [org.springframework.boot:type=Endpoint,name=beansEndpoint]
+20171118 00:00:18.964  [restartedMain] INFO  org.springframework.boot.actuate.endpoint.jmx.EndpointMBeanExporter.registerBeanInstance():678 - Located managed bean 'infoEndpoint': registering with JMX server as MBean [org.springframework.boot:type=Endpoint,name=infoEndpoint]
+20171118 00:00:18.967  [restartedMain] INFO  org.springframework.boot.actuate.endpoint.jmx.EndpointMBeanExporter.registerBeanInstance():678 - Located managed bean 'metricsEndpoint': registering with JMX server as MBean [org.springframework.boot:type=Endpoint,name=metricsEndpoint]
+20171118 00:00:18.970  [restartedMain] INFO  org.springframework.boot.actuate.endpoint.jmx.EndpointMBeanExporter.registerBeanInstance():678 - Located managed bean 'traceEndpoint': registering with JMX server as MBean [org.springframework.boot:type=Endpoint,name=traceEndpoint]
+20171118 00:00:18.972  [restartedMain] INFO  org.springframework.boot.actuate.endpoint.jmx.EndpointMBeanExporter.registerBeanInstance():678 - Located managed bean 'dumpEndpoint': registering with JMX server as MBean [org.springframework.boot:type=Endpoint,name=dumpEndpoint]
+20171118 00:00:18.977  [restartedMain] INFO  org.springframework.boot.actuate.endpoint.jmx.EndpointMBeanExporter.registerBeanInstance():678 - Located managed bean 'autoConfigurationReportEndpoint': registering with JMX server as MBean [org.springframework.boot:type=Endpoint,name=autoConfigurationReportEndpoint]
+20171118 00:00:18.980  [restartedMain] INFO  org.springframework.boot.actuate.endpoint.jmx.EndpointMBeanExporter.registerBeanInstance():678 - Located managed bean 'configurationPropertiesReportEndpoint': registering with JMX server as MBean [org.springframework.boot:type=Endpoint,name=configurationPropertiesReportEndpoint]
+20171118 00:00:18.981  [restartedMain] INFO  org.springframework.context.support.DefaultLifecycleProcessor.start():343 - Starting beans in phase 2147483647
+20171118 00:00:18.981  [restartedMain] INFO  springfox.documentation.spring.web.plugins.DocumentationPluginsBootstrapper.start():147 - Context refreshed
+20171118 00:00:18.997  [restartedMain] INFO  springfox.documentation.spring.web.plugins.DocumentationPluginsBootstrapper.start():150 - Found 1 custom documentation plugin(s)
+20171118 00:00:19.028  [restartedMain] INFO  springfox.documentation.spring.web.scanners.ApiListingReferenceScanner.scan():41 - Scanning for api listing references
+20171118 00:00:19.528  [restartedMain] INFO  org.apache.coyote.http11.Http11NioProtocol.log():179 - Initializing ProtocolHandler ["http-nio-9550"]
+20171118 00:00:19.539  [restartedMain] INFO  org.apache.coyote.http11.Http11NioProtocol.log():179 - Starting ProtocolHandler ["http-nio-9550"]
+20171118 00:00:19.551  [restartedMain] INFO  org.apache.tomcat.util.net.NioSelectorPool.log():179 - Using a shared selector for servlet write/read
+20171118 00:00:19.568  [restartedMain] INFO  org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainer.start():198 - Tomcat started on port(s): 9550 (http)
+20171118 00:00:19.576  [restartedMain] INFO  cn.tech.yozo.factoryrp.WebApplication.logStarted():57 - Started WebApplication in 41.169 seconds (JVM running for 43.316)
+20171118 00:01:52.975  [restartedMain] INFO  cn.tech.yozo.factoryrp.WebApplication.logStarting():48 - Starting WebApplication on DESKTOP-JJVA60K with PID 15680 (D:\GitCode\FactoryRP\FactoryRP\target\classes started by Singer in D:\GitCode\FactoryRP\FactoryRP)
+20171118 00:01:52.976  [restartedMain] DEBUG cn.tech.yozo.factoryrp.WebApplication.logStarting():51 - Running with Spring Boot v1.4.7.RELEASE, Spring v4.3.9.RELEASE
+20171118 00:01:52.977  [restartedMain] INFO  cn.tech.yozo.factoryrp.WebApplication.logStartupProfileInfo():662 - No active profile set, falling back to default profiles: default
+20171118 00:01:53.049  [restartedMain] INFO  org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext.prepareRefresh():583 - Refreshing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@2898e8fe: startup date [Sat Nov 18 00:01:53 CST 2017]; root of context hierarchy
+20171118 00:01:53.178  [background-preinit] INFO  org.hibernate.validator.internal.util.Version.<clinit>():30 - HV000001: Hibernate Validator 5.2.5.Final
+20171118 00:01:55.077  [restartedMain] INFO  org.springframework.beans.factory.support.DefaultListableBeanFactory.registerBeanDefinition():828 - Overriding bean definition for bean 'managementServletContext' with a different definition: replacing [Root bean: class [null]; scope=; abstract=false; lazyInit=false; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=org.springframework.boot.actuate.autoconfigure.EndpointWebMvcHypermediaManagementContextConfiguration; factoryMethodName=managementServletContext; initMethodName=null; destroyMethodName=(inferred); defined in class path resource [org/springframework/boot/actuate/autoconfigure/EndpointWebMvcHypermediaManagementContextConfiguration.class]] with [Root bean: class [null]; scope=; abstract=false; lazyInit=false; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=org.springframework.boot.actuate.autoconfigure.EndpointWebMvcAutoConfiguration; factoryMethodName=managementServletContext; initMethodName=null; destroyMethodName=(inferred); defined in class path resource [org/springframework/boot/actuate/autoconfigure/EndpointWebMvcAutoConfiguration.class]]
+20171118 00:01:55.146  [restartedMain] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate.multipleStoresDetected():170 - Multiple Spring Data modules found, entering strict repository configuration mode!
+20171118 00:01:55.294  [restartedMain] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate.multipleStoresDetected():170 - Multiple Spring Data modules found, entering strict repository configuration mode!
+20171118 00:01:55.346  [restartedMain] INFO  org.springframework.data.repository.config.RepositoryConfigurationExtensionSupport.isStrictRepositoryCandidate():283 - Spring Data Redis - Could not safely identify store assignment for repository candidate interface cn.tech.yozo.factoryrp.repository.UserRoleRepository.
+20171118 00:01:55.347  [restartedMain] INFO  org.springframework.data.repository.config.RepositoryConfigurationExtensionSupport.isStrictRepositoryCandidate():283 - Spring Data Redis - Could not safely identify store assignment for repository candidate interface cn.tech.yozo.factoryrp.repository.MenuRepository.
+20171118 00:01:55.347  [restartedMain] INFO  org.springframework.data.repository.config.RepositoryConfigurationExtensionSupport.isStrictRepositoryCandidate():283 - Spring Data Redis - Could not safely identify store assignment for repository candidate interface cn.tech.yozo.factoryrp.repository.CorporateRepository.
+20171118 00:01:55.348  [restartedMain] INFO  org.springframework.data.repository.config.RepositoryConfigurationExtensionSupport.isStrictRepositoryCandidate():283 - Spring Data Redis - Could not safely identify store assignment for repository candidate interface cn.tech.yozo.factoryrp.repository.PermissionRoleRepository.
+20171118 00:01:55.348  [restartedMain] INFO  org.springframework.data.repository.config.RepositoryConfigurationExtensionSupport.isStrictRepositoryCandidate():283 - Spring Data Redis - Could not safely identify store assignment for repository candidate interface cn.tech.yozo.factoryrp.repository.DepartmentRepository.
+20171118 00:01:55.349  [restartedMain] INFO  org.springframework.data.repository.config.RepositoryConfigurationExtensionSupport.isStrictRepositoryCandidate():283 - Spring Data Redis - Could not safely identify store assignment for repository candidate interface cn.tech.yozo.factoryrp.repository.UserRepository.
+20171118 00:01:55.349  [restartedMain] INFO  org.springframework.data.repository.config.RepositoryConfigurationExtensionSupport.isStrictRepositoryCandidate():283 - Spring Data Redis - Could not safely identify store assignment for repository candidate interface cn.tech.yozo.factoryrp.repository.RoleRepository.
+20171118 00:01:55.350  [restartedMain] INFO  org.springframework.data.repository.config.RepositoryConfigurationExtensionSupport.isStrictRepositoryCandidate():283 - Spring Data Redis - Could not safely identify store assignment for repository candidate interface cn.tech.yozo.factoryrp.repository.PermissionRepository.
+20171118 00:01:55.498  [restartedMain] INFO  com.alibaba.dubbo.common.logger.LoggerFactory.info():58 - using logger: com.alibaba.dubbo.common.logger.log4j.Log4jLoggerAdapter
+20171118 00:01:55.692  [restartedMain] INFO  org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.<init>():155 - JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
+20171118 00:01:55.870  [restartedMain] INFO  org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker.postProcessAfterInitialization():325 - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$48bffcb4] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+20171118 00:01:56.043  [restartedMain] INFO  org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker.postProcessAfterInitialization():325 - Bean 'org.springframework.cache.annotation.ProxyCachingConfiguration' of type [org.springframework.cache.annotation.ProxyCachingConfiguration$$EnhancerBySpringCGLIB$$91d232d2] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+20171118 00:01:56.072  [restartedMain] INFO  org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker.postProcessAfterInitialization():325 - Bean 'org.springframework.boot.autoconfigure.cache.CacheAutoConfiguration' of type [org.springframework.boot.autoconfigure.cache.CacheAutoConfiguration$$EnhancerBySpringCGLIB$$8645f776] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+20171118 00:01:56.183  [restartedMain] INFO  org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker.postProcessAfterInitialization():325 - Bean 'spring.cache-org.springframework.boot.autoconfigure.cache.CacheProperties' of type [org.springframework.boot.autoconfigure.cache.CacheProperties] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+20171118 00:01:56.199  [restartedMain] INFO  org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker.postProcessAfterInitialization():325 - Bean 'org.springframework.boot.autoconfigure.cache.CacheManagerCustomizers' of type [org.springframework.boot.autoconfigure.cache.CacheManagerCustomizers] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+20171118 00:01:56.207  [restartedMain] INFO  org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker.postProcessAfterInitialization():325 - Bean 'org.springframework.boot.autoconfigure.cache.RedisCacheConfiguration' of type [org.springframework.boot.autoconfigure.cache.RedisCacheConfiguration$$EnhancerBySpringCGLIB$$36d793d0] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+20171118 00:01:56.217  [restartedMain] INFO  org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker.postProcessAfterInitialization():325 - Bean 'org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration$RedisConfiguration' of type [org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration$RedisConfiguration$$EnhancerBySpringCGLIB$$8e628241] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+20171118 00:01:56.236  [restartedMain] INFO  org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker.postProcessAfterInitialization():325 - Bean 'spring.redis-org.springframework.boot.autoconfigure.data.redis.RedisProperties' of type [org.springframework.boot.autoconfigure.data.redis.RedisProperties] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+20171118 00:01:56.251  [restartedMain] INFO  org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker.postProcessAfterInitialization():325 - Bean 'org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration$RedisConnectionConfiguration' of type [org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration$RedisConnectionConfiguration$$EnhancerBySpringCGLIB$$dcba23c3] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+20171118 00:01:56.319  [restartedMain] INFO  org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker.postProcessAfterInitialization():325 - Bean 'redisConnectionFactory' of type [org.springframework.data.redis.connection.jedis.JedisConnectionFactory] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+20171118 00:01:56.389  [restartedMain] INFO  org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker.postProcessAfterInitialization():325 - Bean 'redisTemplate' of type [org.springframework.data.redis.core.RedisTemplate] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+20171118 00:01:56.567  [restartedMain] INFO  org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker.postProcessAfterInitialization():325 - Bean 'cacheManager' of type [org.springframework.data.redis.cache.RedisCacheManager] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+20171118 00:01:56.595  [restartedMain] INFO  org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker.postProcessAfterInitialization():325 - Bean 'cacheAutoConfigurationValidator' of type [org.springframework.boot.autoconfigure.cache.CacheAutoConfiguration$CacheManagerValidator] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+20171118 00:01:57.158  [restartedMain] INFO  org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainer.initialize():89 - Tomcat initialized with port(s): 9550 (http)
+20171118 00:01:57.198  [restartedMain] INFO  org.apache.catalina.core.StandardService.log():179 - Starting service [Tomcat]
+20171118 00:01:57.200  [restartedMain] INFO  org.apache.catalina.core.StandardEngine.log():179 - Starting Servlet Engine: Apache Tomcat/8.5.15
+20171118 00:01:57.319  [localhost-startStop-1] INFO  org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/].log():179 - Initializing Spring embedded WebApplicationContext
+20171118 00:01:57.319  [localhost-startStop-1] INFO  org.springframework.web.context.ContextLoader.prepareEmbeddedWebApplicationContext():276 - Root WebApplicationContext: initialization completed in 4270 ms
+20171118 00:01:57.388  [localhost-startStop-1] INFO  cn.tech.yozo.factoryrp.config.DruidConfiguration.info():58 -  [DUBBO] init Druid Servlet Configuration , dubbo version: 2.5.3, current host: 127.0.0.1
+20171118 00:01:57.875  [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean.configure():258 - Mapping filter: 'metricsFilter' to: [/*]
+20171118 00:01:57.875  [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean.configure():258 - Mapping filter: 'characterEncodingFilter' to: [/*]
+20171118 00:01:57.875  [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean.configure():258 - Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
+20171118 00:01:57.875  [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean.configure():258 - Mapping filter: 'httpPutFormContentFilter' to: [/*]
+20171118 00:01:57.876  [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean.configure():258 - Mapping filter: 'requestContextFilter' to: [/*]
+20171118 00:01:57.876  [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean.configure():258 - Mapping filter: 'webRequestLoggingFilter' to: [/*]
+20171118 00:01:57.876  [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean.configure():271 - Mapping filter: 'webStatFilter' to urls: [/*]
+20171118 00:01:57.876  [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean.configure():258 - Mapping filter: 'applicationContextIdFilter' to: [/*]
+20171118 00:01:57.876  [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.ServletRegistrationBean.onStartup():190 - Mapping servlet: 'statViewServlet' to [/druid/*]
+20171118 00:01:57.877  [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.ServletRegistrationBean.onStartup():190 - Mapping servlet: 'dispatcherServlet' to [/]
+20171118 00:01:57.923  [restartedMain] INFO  cn.tech.yozo.factoryrp.config.DruidConfiguration.info():58 -  [DUBBO] >>>>>>>>>>>>>开始配置druid连接池<<<<<<<<<<<<<<<<<<, dubbo version: 2.5.3, current host: 127.0.0.1
+20171118 00:02:00.910  [restartedMain] INFO  com.alibaba.druid.pool.DruidDataSource.init():889 - {dataSource-1} inited
+20171118 00:02:01.214  [restartedMain] INFO  org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory():349 - Building JPA container EntityManagerFactory for persistence unit 'default'
+20171118 00:02:01.260  [restartedMain] INFO  org.hibernate.jpa.internal.util.LogHelper.logPersistenceUnitInformation():31 - HHH000204: Processing PersistenceUnitInfo [
+	name: default
+	...]
+20171118 00:02:01.552  [restartedMain] INFO  org.hibernate.Version.logVersion():37 - HHH000412: Hibernate Core {5.0.12.Final}
+20171118 00:02:01.560  [restartedMain] INFO  org.hibernate.cfg.Environment.<clinit>():213 - HHH000206: hibernate.properties not found
+20171118 00:02:01.565  [restartedMain] INFO  org.hibernate.cfg.Environment.buildBytecodeProvider():317 - HHH000021: Bytecode provider name : javassist
+20171118 00:02:01.776  [restartedMain] INFO  org.hibernate.annotations.common.Version.<clinit>():66 - HCANN000001: Hibernate Commons Annotations {5.0.1.Final}
+20171118 00:02:02.132  [restartedMain] INFO  org.hibernate.dialect.Dialect.<init>():156 - HHH000400: Using dialect: org.hibernate.dialect.MySQL5Dialect
+20171118 00:02:02.165  [restartedMain] INFO  org.hibernate.engine.jdbc.env.internal.LobCreatorBuilderImpl.useContextualLobCreation():98 - HHH000423: Disabling contextual LOB creation as JDBC driver reported JDBC version [3] less than 4
+20171118 00:02:02.404  [restartedMain] WARN  net.sf.ehcache.config.ConfigurationFactory.parseConfiguration():136 - No configuration found. Configuring ehcache from ehcache-failsafe.xml  found in the classpath: jar:file:/D:/MavenRepository/net/sf/ehcache/ehcache/2.10.4/ehcache-2.10.4.jar!/ehcache-failsafe.xml
+20171118 00:02:02.493  [restartedMain] INFO  org.hibernate.cache.spi.UpdateTimestampsCache.<init>():55 - HHH000250: Starting update timestamps cache at region: org.hibernate.cache.spi.UpdateTimestampsCache
+20171118 00:02:02.495  [restartedMain] WARN  org.hibernate.cache.ehcache.AbstractEhcacheRegionFactory.getCache():161 - HHH020003: Could not find a specific ehcache configuration for cache named [org.hibernate.cache.spi.UpdateTimestampsCache]; using defaults.
+20171118 00:02:02.580  [restartedMain] INFO  org.hibernate.cache.internal.StandardQueryCache.<init>():74 - HHH000248: Starting query cache at region: org.hibernate.cache.internal.StandardQueryCache
+20171118 00:02:02.580  [restartedMain] WARN  org.hibernate.cache.ehcache.AbstractEhcacheRegionFactory.getCache():161 - HHH020003: Could not find a specific ehcache configuration for cache named [org.hibernate.cache.internal.StandardQueryCache]; using defaults.
+20171118 00:02:02.636  [restartedMain] WARN  org.hibernate.cache.ehcache.AbstractEhcacheRegionFactory.getCache():161 - HHH020003: Could not find a specific ehcache configuration for cache named [entityCache]; using defaults.
+20171118 00:02:02.918  [restartedMain] INFO  org.hibernate.tool.hbm2ddl.SchemaUpdate.execute():105 - HHH000228: Running hbm2ddl schema update
+20171118 00:02:26.006  [restartedMain] INFO  org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.buildNativeEntityManagerFactory():379 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+20171118 00:02:26.467  [restartedMain] INFO  org.hibernate.engine.internal.StatisticalLoggingSessionEventListener.end():258 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+20171118 00:02:26.471  [restartedMain] INFO  org.hibernate.engine.internal.StatisticalLoggingSessionEventListener.end():258 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+20171118 00:02:26.472  [restartedMain] INFO  org.hibernate.engine.internal.StatisticalLoggingSessionEventListener.end():258 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+20171118 00:02:26.487  [restartedMain] INFO  org.hibernate.engine.internal.StatisticalLoggingSessionEventListener.end():258 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+20171118 00:02:26.528  [restartedMain] INFO  org.hibernate.engine.internal.StatisticalLoggingSessionEventListener.end():258 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+20171118 00:02:26.561  [restartedMain] INFO  org.hibernate.engine.internal.StatisticalLoggingSessionEventListener.end():258 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+20171118 00:02:26.599  [restartedMain] INFO  org.hibernate.engine.internal.StatisticalLoggingSessionEventListener.end():258 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+20171118 00:02:26.704  [restartedMain] INFO  org.hibernate.engine.internal.StatisticalLoggingSessionEventListener.end():258 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+20171118 00:02:26.706  [restartedMain] INFO  org.hibernate.engine.internal.StatisticalLoggingSessionEventListener.end():258 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+20171118 00:02:26.708  [restartedMain] INFO  org.hibernate.engine.internal.StatisticalLoggingSessionEventListener.end():258 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+20171118 00:02:26.710  [restartedMain] INFO  org.hibernate.engine.internal.StatisticalLoggingSessionEventListener.end():258 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+20171118 00:02:26.817  [restartedMain] INFO  org.hibernate.engine.internal.StatisticalLoggingSessionEventListener.end():258 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+20171118 00:02:26.820  [restartedMain] INFO  org.hibernate.engine.internal.StatisticalLoggingSessionEventListener.end():258 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+20171118 00:02:26.821  [restartedMain] INFO  org.hibernate.engine.internal.StatisticalLoggingSessionEventListener.end():258 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+20171118 00:02:26.825  [restartedMain] INFO  org.hibernate.engine.internal.StatisticalLoggingSessionEventListener.end():258 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+20171118 00:02:26.954  [restartedMain] INFO  org.hibernate.engine.internal.StatisticalLoggingSessionEventListener.end():258 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+20171118 00:02:26.958  [restartedMain] INFO  org.hibernate.engine.internal.StatisticalLoggingSessionEventListener.end():258 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+20171118 00:02:26.959  [restartedMain] INFO  org.hibernate.engine.internal.StatisticalLoggingSessionEventListener.end():258 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+20171118 00:02:26.964  [restartedMain] INFO  org.hibernate.engine.internal.StatisticalLoggingSessionEventListener.end():258 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+20171118 00:02:26.967  [restartedMain] INFO  org.hibernate.engine.internal.StatisticalLoggingSessionEventListener.end():258 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+20171118 00:02:28.988  [restartedMain] INFO  org.hibernate.engine.internal.StatisticalLoggingSessionEventListener.end():258 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+20171118 00:02:28.990  [restartedMain] INFO  org.hibernate.engine.internal.StatisticalLoggingSessionEventListener.end():258 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+20171118 00:02:28.991  [restartedMain] INFO  org.hibernate.engine.internal.StatisticalLoggingSessionEventListener.end():258 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+20171118 00:02:28.999  [restartedMain] INFO  org.hibernate.engine.internal.StatisticalLoggingSessionEventListener.end():258 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+20171118 00:02:29.000  [restartedMain] INFO  org.hibernate.engine.internal.StatisticalLoggingSessionEventListener.end():258 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+20171118 00:02:29.001  [restartedMain] INFO  org.hibernate.engine.internal.StatisticalLoggingSessionEventListener.end():258 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+20171118 00:02:29.003  [restartedMain] INFO  org.hibernate.engine.internal.StatisticalLoggingSessionEventListener.end():258 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+20171118 00:02:29.012  [restartedMain] INFO  org.hibernate.engine.internal.StatisticalLoggingSessionEventListener.end():258 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+20171118 00:02:29.014  [restartedMain] INFO  org.hibernate.engine.internal.StatisticalLoggingSessionEventListener.end():258 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+20171118 00:02:29.014  [restartedMain] INFO  org.hibernate.engine.internal.StatisticalLoggingSessionEventListener.end():258 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+20171118 00:02:29.024  [restartedMain] INFO  org.hibernate.engine.internal.StatisticalLoggingSessionEventListener.end():258 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+20171118 00:02:29.026  [restartedMain] INFO  org.hibernate.engine.internal.StatisticalLoggingSessionEventListener.end():258 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+20171118 00:02:29.027  [restartedMain] INFO  org.hibernate.engine.internal.StatisticalLoggingSessionEventListener.end():258 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+20171118 00:02:29.764  [restartedMain] INFO  org.springframework.boot.actuate.endpoint.mvc.EndpointHandlerMapping.register():543 - Mapped "{[/dump || /dump.json],methods=[GET],produces=[application/json]}" onto public java.lang.Object org.springframework.boot.actuate.endpoint.mvc.EndpointMvcAdapter.invoke()
+20171118 00:02:29.765  [restartedMain] INFO  org.springframework.boot.actuate.endpoint.mvc.EndpointHandlerMapping.register():543 - Mapped "{[/metrics/{name:.*}],methods=[GET],produces=[application/json]}" onto public java.lang.Object org.springframework.boot.actuate.endpoint.mvc.MetricsMvcEndpoint.value(java.lang.String)
+20171118 00:02:29.766  [restartedMain] INFO  org.springframework.boot.actuate.endpoint.mvc.EndpointHandlerMapping.register():543 - Mapped "{[/metrics || /metrics.json],methods=[GET],produces=[application/json]}" onto public java.lang.Object org.springframework.boot.actuate.endpoint.mvc.EndpointMvcAdapter.invoke()
+20171118 00:02:29.767  [restartedMain] INFO  org.springframework.boot.actuate.endpoint.mvc.EndpointHandlerMapping.register():543 - Mapped "{[/beans || /beans.json],methods=[GET],produces=[application/json]}" onto public java.lang.Object org.springframework.boot.actuate.endpoint.mvc.EndpointMvcAdapter.invoke()
+20171118 00:02:29.768  [restartedMain] INFO  org.springframework.boot.actuate.endpoint.mvc.EndpointHandlerMapping.register():543 - Mapped "{[/mappings || /mappings.json],methods=[GET],produces=[application/json]}" onto public java.lang.Object org.springframework.boot.actuate.endpoint.mvc.EndpointMvcAdapter.invoke()
+20171118 00:02:29.769  [restartedMain] INFO  org.springframework.boot.actuate.endpoint.mvc.EndpointHandlerMapping.register():543 - Mapped "{[/info || /info.json],methods=[GET],produces=[application/json]}" onto public java.lang.Object org.springframework.boot.actuate.endpoint.mvc.EndpointMvcAdapter.invoke()
+20171118 00:02:29.770  [restartedMain] INFO  org.springframework.boot.actuate.endpoint.mvc.EndpointHandlerMapping.register():543 - Mapped "{[/autoconfig || /autoconfig.json],methods=[GET],produces=[application/json]}" onto public java.lang.Object org.springframework.boot.actuate.endpoint.mvc.EndpointMvcAdapter.invoke()
+20171118 00:02:29.774  [restartedMain] INFO  org.springframework.boot.actuate.endpoint.mvc.EndpointHandlerMapping.register():543 - Mapped "{[/configprops || /configprops.json],methods=[GET],produces=[application/json]}" onto public java.lang.Object org.springframework.boot.actuate.endpoint.mvc.EndpointMvcAdapter.invoke()
+20171118 00:02:29.776  [restartedMain] INFO  org.springframework.boot.actuate.endpoint.mvc.EndpointHandlerMapping.register():543 - Mapped "{[/trace || /trace.json],methods=[GET],produces=[application/json]}" onto public java.lang.Object org.springframework.boot.actuate.endpoint.mvc.EndpointMvcAdapter.invoke()
+20171118 00:02:29.777  [restartedMain] INFO  org.springframework.boot.actuate.endpoint.mvc.EndpointHandlerMapping.register():543 - Mapped "{[/env/{name:.*}],methods=[GET],produces=[application/json]}" onto public java.lang.Object org.springframework.boot.actuate.endpoint.mvc.EnvironmentMvcEndpoint.value(java.lang.String)
+20171118 00:02:29.777  [restartedMain] INFO  org.springframework.boot.actuate.endpoint.mvc.EndpointHandlerMapping.register():543 - Mapped "{[/env || /env.json],methods=[GET],produces=[application/json]}" onto public java.lang.Object org.springframework.boot.actuate.endpoint.mvc.EndpointMvcAdapter.invoke()
+20171118 00:02:30.073  [restartedMain] INFO  springfox.documentation.spring.web.PropertySourcedRequestMappingHandlerMapping.initHandlerMethods():69 - Mapped URL path [/v2/api-docs] onto method [public org.springframework.http.ResponseEntity<springfox.documentation.spring.web.json.Json> springfox.documentation.swagger2.web.Swagger2Controller.getDocumentation(java.lang.String,javax.servlet.http.HttpServletRequest)]
+20171118 00:02:30.383  [restartedMain] INFO  org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.initControllerAdviceCache():534 - Looking for @ControllerAdvice: org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@2898e8fe: startup date [Sat Nov 18 00:01:53 CST 2017]; root of context hierarchy
+20171118 00:02:30.395  [restartedMain] INFO  org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.initControllerAdviceCache():566 - Detected ResponseBodyAdvice bean in org.springframework.boot.actuate.autoconfigure.EndpointWebMvcHypermediaManagementContextConfiguration$ActuatorEndpointLinksAdvice
+20171118 00:02:30.571  [restartedMain] INFO  org.springframework.web.servlet.handler.SimpleUrlHandlerMapping.registerHandler():362 - Mapped URL path [/webjars/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+20171118 00:02:30.571  [restartedMain] INFO  org.springframework.web.servlet.handler.SimpleUrlHandlerMapping.registerHandler():362 - Mapped URL path [/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+20171118 00:02:30.604  [restartedMain] INFO  org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver.initExceptionHandlerAdviceCache():279 - Detected ResponseBodyAdvice implementation in org.springframework.boot.actuate.autoconfigure.EndpointWebMvcHypermediaManagementContextConfiguration$ActuatorEndpointLinksAdvice
+20171118 00:02:30.702  [restartedMain] INFO  org.springframework.web.servlet.handler.SimpleUrlHandlerMapping.registerHandler():362 - Mapped URL path [/**/favicon.ico] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+20171118 00:02:31.910  [restartedMain] INFO  org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer.startServer():58 - LiveReload server is running on port 35729
+20171118 00:02:32.337  [restartedMain] INFO  org.springframework.jmx.export.annotation.AnnotationMBeanExporter.afterSingletonsInstantiated():431 - Registering beans for JMX exposure on startup
+20171118 00:02:32.340  [restartedMain] INFO  org.springframework.jmx.export.annotation.AnnotationMBeanExporter.autodetect():916 - Bean with name 'dataSource' has been autodetected for JMX exposure
+20171118 00:02:32.362  [restartedMain] INFO  org.springframework.jmx.export.annotation.AnnotationMBeanExporter.registerBeanInstance():671 - Located MBean 'dataSource': registering with JMX server as MBean [com.alibaba.druid.pool:name=dataSource,type=DruidDataSource]
+20171118 00:02:32.363  [restartedMain] INFO  org.springframework.boot.actuate.endpoint.jmx.EndpointMBeanExporter.afterSingletonsInstantiated():431 - Registering beans for JMX exposure on startup
+20171118 00:02:32.373  [restartedMain] INFO  org.springframework.context.support.DefaultLifecycleProcessor.start():343 - Starting beans in phase 0
+20171118 00:02:32.382  [restartedMain] INFO  org.springframework.boot.actuate.endpoint.jmx.EndpointMBeanExporter.registerBeanInstance():678 - Located managed bean 'requestMappingEndpoint': registering with JMX server as MBean [org.springframework.boot:type=Endpoint,name=requestMappingEndpoint]
+20171118 00:02:32.431  [restartedMain] INFO  org.springframework.boot.actuate.endpoint.jmx.EndpointMBeanExporter.registerBeanInstance():678 - Located managed bean 'environmentEndpoint': registering with JMX server as MBean [org.springframework.boot:type=Endpoint,name=environmentEndpoint]
+20171118 00:02:32.440  [restartedMain] INFO  org.springframework.boot.actuate.endpoint.jmx.EndpointMBeanExporter.registerBeanInstance():678 - Located managed bean 'healthEndpoint': registering with JMX server as MBean [org.springframework.boot:type=Endpoint,name=healthEndpoint]
+20171118 00:02:32.450  [restartedMain] INFO  org.springframework.boot.actuate.endpoint.jmx.EndpointMBeanExporter.registerBeanInstance():678 - Located managed bean 'beansEndpoint': registering with JMX server as MBean [org.springframework.boot:type=Endpoint,name=beansEndpoint]
+20171118 00:02:32.455  [restartedMain] INFO  org.springframework.boot.actuate.endpoint.jmx.EndpointMBeanExporter.registerBeanInstance():678 - Located managed bean 'infoEndpoint': registering with JMX server as MBean [org.springframework.boot:type=Endpoint,name=infoEndpoint]
+20171118 00:02:32.461  [restartedMain] INFO  org.springframework.boot.actuate.endpoint.jmx.EndpointMBeanExporter.registerBeanInstance():678 - Located managed bean 'metricsEndpoint': registering with JMX server as MBean [org.springframework.boot:type=Endpoint,name=metricsEndpoint]
+20171118 00:02:32.467  [restartedMain] INFO  org.springframework.boot.actuate.endpoint.jmx.EndpointMBeanExporter.registerBeanInstance():678 - Located managed bean 'traceEndpoint': registering with JMX server as MBean [org.springframework.boot:type=Endpoint,name=traceEndpoint]
+20171118 00:02:32.472  [restartedMain] INFO  org.springframework.boot.actuate.endpoint.jmx.EndpointMBeanExporter.registerBeanInstance():678 - Located managed bean 'dumpEndpoint': registering with JMX server as MBean [org.springframework.boot:type=Endpoint,name=dumpEndpoint]
+20171118 00:02:32.485  [restartedMain] INFO  org.springframework.boot.actuate.endpoint.jmx.EndpointMBeanExporter.registerBeanInstance():678 - Located managed bean 'autoConfigurationReportEndpoint': registering with JMX server as MBean [org.springframework.boot:type=Endpoint,name=autoConfigurationReportEndpoint]
+20171118 00:02:32.491  [restartedMain] INFO  org.springframework.boot.actuate.endpoint.jmx.EndpointMBeanExporter.registerBeanInstance():678 - Located managed bean 'configurationPropertiesReportEndpoint': registering with JMX server as MBean [org.springframework.boot:type=Endpoint,name=configurationPropertiesReportEndpoint]
+20171118 00:02:32.494  [restartedMain] INFO  org.springframework.context.support.DefaultLifecycleProcessor.start():343 - Starting beans in phase 2147483647
+20171118 00:02:32.494  [restartedMain] INFO  springfox.documentation.spring.web.plugins.DocumentationPluginsBootstrapper.start():147 - Context refreshed
+20171118 00:02:32.529  [restartedMain] INFO  springfox.documentation.spring.web.plugins.DocumentationPluginsBootstrapper.start():150 - Found 1 custom documentation plugin(s)
+20171118 00:02:32.599  [restartedMain] INFO  springfox.documentation.spring.web.scanners.ApiListingReferenceScanner.scan():41 - Scanning for api listing references
+20171118 00:02:33.275  [restartedMain] INFO  org.apache.coyote.http11.Http11NioProtocol.log():179 - Initializing ProtocolHandler ["http-nio-9550"]
+20171118 00:02:33.285  [restartedMain] INFO  org.apache.coyote.http11.Http11NioProtocol.log():179 - Starting ProtocolHandler ["http-nio-9550"]
+20171118 00:02:33.298  [restartedMain] INFO  org.apache.tomcat.util.net.NioSelectorPool.log():179 - Using a shared selector for servlet write/read
+20171118 00:02:33.317  [restartedMain] INFO  org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainer.start():198 - Tomcat started on port(s): 9550 (http)
+20171118 00:02:33.324  [restartedMain] INFO  cn.tech.yozo.factoryrp.WebApplication.logStarted():57 - Started WebApplication in 41.256 seconds (JVM running for 42.525)
+20171118 00:02:51.346  [Thread-89] INFO  org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext.doClose():984 - Closing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@2898e8fe: startup date [Sat Nov 18 00:01:53 CST 2017]; root of context hierarchy
+20171118 00:02:51.355  [Thread-89] INFO  org.springframework.context.support.DefaultLifecycleProcessor.stop():358 - Stopping beans in phase 2147483647
+20171118 00:02:51.358  [Thread-89] INFO  org.springframework.context.support.DefaultLifecycleProcessor.stop():358 - Stopping beans in phase 0
+20171118 00:02:51.361  [Thread-89] INFO  org.springframework.boot.actuate.endpoint.jmx.EndpointMBeanExporter.destroy():449 - Unregistering JMX-exposed beans on shutdown
+20171118 00:02:51.362  [Thread-89] INFO  org.springframework.boot.actuate.endpoint.jmx.EndpointMBeanExporter.unregisterBeans():241 - Unregistering JMX-exposed beans
+20171118 00:02:51.363  [Thread-89] INFO  org.springframework.jmx.export.annotation.AnnotationMBeanExporter.destroy():449 - Unregistering JMX-exposed beans on shutdown
+20171118 00:02:51.369  [Thread-89] INFO  org.springframework.jmx.export.annotation.AnnotationMBeanExporter.unregisterBeans():241 - Unregistering JMX-exposed beans
+20171118 00:02:51.376  [Thread-89] INFO  org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.destroy():548 - Closing JPA EntityManagerFactory for persistence unit 'default'
+20171118 00:02:51.606  [Thread-89] INFO  com.alibaba.druid.pool.DruidDataSource.close():1658 - {dataSource-1} closed
+20171118 00:02:52.688  [restartedMain] INFO  cn.tech.yozo.factoryrp.WebApplication.main():36 - 启动SpringBoot---------
+20171118 00:03:02.533  [restartedMain] INFO  cn.tech.yozo.factoryrp.WebApplication.logStarting():48 - Starting WebApplication on DESKTOP-JJVA60K with PID 15680 (D:\GitCode\FactoryRP\FactoryRP\target\classes started by Singer in D:\GitCode\FactoryRP\FactoryRP)
+20171118 00:03:02.533  [restartedMain] DEBUG cn.tech.yozo.factoryrp.WebApplication.logStarting():51 - Running with Spring Boot v1.4.7.RELEASE, Spring v4.3.9.RELEASE
+20171118 00:03:02.534  [restartedMain] INFO  cn.tech.yozo.factoryrp.WebApplication.logStartupProfileInfo():662 - No active profile set, falling back to default profiles: default
+20171118 00:03:02.539  [restartedMain] INFO  org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext.prepareRefresh():583 - Refreshing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@b47ac5: startup date [Sat Nov 18 00:03:02 CST 2017]; root of context hierarchy
+20171118 00:03:04.422  [restartedMain] INFO  org.springframework.beans.factory.support.DefaultListableBeanFactory.registerBeanDefinition():828 - Overriding bean definition for bean 'managementServletContext' with a different definition: replacing [Root bean: class [null]; scope=; abstract=false; lazyInit=false; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=org.springframework.boot.actuate.autoconfigure.EndpointWebMvcHypermediaManagementContextConfiguration; factoryMethodName=managementServletContext; initMethodName=null; destroyMethodName=(inferred); defined in class path resource [org/springframework/boot/actuate/autoconfigure/EndpointWebMvcHypermediaManagementContextConfiguration.class]] with [Root bean: class [null]; scope=; abstract=false; lazyInit=false; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=org.springframework.boot.actuate.autoconfigure.EndpointWebMvcAutoConfiguration; factoryMethodName=managementServletContext; initMethodName=null; destroyMethodName=(inferred); defined in class path resource [org/springframework/boot/actuate/autoconfigure/EndpointWebMvcAutoConfiguration.class]]
+20171118 00:03:04.493  [restartedMain] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate.multipleStoresDetected():170 - Multiple Spring Data modules found, entering strict repository configuration mode!
+20171118 00:03:04.616  [restartedMain] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate.multipleStoresDetected():170 - Multiple Spring Data modules found, entering strict repository configuration mode!
+20171118 00:03:04.657  [restartedMain] INFO  org.springframework.data.repository.config.RepositoryConfigurationExtensionSupport.isStrictRepositoryCandidate():283 - Spring Data Redis - Could not safely identify store assignment for repository candidate interface cn.tech.yozo.factoryrp.repository.UserRoleRepository.
+20171118 00:03:04.658  [restartedMain] INFO  org.springframework.data.repository.config.RepositoryConfigurationExtensionSupport.isStrictRepositoryCandidate():283 - Spring Data Redis - Could not safely identify store assignment for repository candidate interface cn.tech.yozo.factoryrp.repository.MenuRepository.
+20171118 00:03:04.658  [restartedMain] INFO  org.springframework.data.repository.config.RepositoryConfigurationExtensionSupport.isStrictRepositoryCandidate():283 - Spring Data Redis - Could not safely identify store assignment for repository candidate interface cn.tech.yozo.factoryrp.repository.CorporateRepository.
+20171118 00:03:04.658  [restartedMain] INFO  org.springframework.data.repository.config.RepositoryConfigurationExtensionSupport.isStrictRepositoryCandidate():283 - Spring Data Redis - Could not safely identify store assignment for repository candidate interface cn.tech.yozo.factoryrp.repository.PermissionRoleRepository.
+20171118 00:03:04.659  [restartedMain] INFO  org.springframework.data.repository.config.RepositoryConfigurationExtensionSupport.isStrictRepositoryCandidate():283 - Spring Data Redis - Could not safely identify store assignment for repository candidate interface cn.tech.yozo.factoryrp.repository.DepartmentRepository.
+20171118 00:03:04.659  [restartedMain] INFO  org.springframework.data.repository.config.RepositoryConfigurationExtensionSupport.isStrictRepositoryCandidate():283 - Spring Data Redis - Could not safely identify store assignment for repository candidate interface cn.tech.yozo.factoryrp.repository.UserRepository.
+20171118 00:03:04.660  [restartedMain] INFO  org.springframework.data.repository.config.RepositoryConfigurationExtensionSupport.isStrictRepositoryCandidate():283 - Spring Data Redis - Could not safely identify store assignment for repository candidate interface cn.tech.yozo.factoryrp.repository.RoleRepository.
+20171118 00:03:04.661  [restartedMain] INFO  org.springframework.data.repository.config.RepositoryConfigurationExtensionSupport.isStrictRepositoryCandidate():283 - Spring Data Redis - Could not safely identify store assignment for repository candidate interface cn.tech.yozo.factoryrp.repository.PermissionRepository.
+20171118 00:03:04.712  [restartedMain] INFO  org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.<init>():155 - JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
+20171118 00:03:04.739  [restartedMain] INFO  org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker.postProcessAfterInitialization():325 - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$48bffcb4] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+20171118 00:03:04.777  [restartedMain] INFO  org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker.postProcessAfterInitialization():325 - Bean 'org.springframework.cache.annotation.ProxyCachingConfiguration' of type [org.springframework.cache.annotation.ProxyCachingConfiguration$$EnhancerBySpringCGLIB$$91d232d2] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+20171118 00:03:04.793  [restartedMain] INFO  org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker.postProcessAfterInitialization():325 - Bean 'org.springframework.boot.autoconfigure.cache.CacheAutoConfiguration' of type [org.springframework.boot.autoconfigure.cache.CacheAutoConfiguration$$EnhancerBySpringCGLIB$$8645f776] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+20171118 00:03:04.816  [restartedMain] INFO  org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker.postProcessAfterInitialization():325 - Bean 'spring.cache-org.springframework.boot.autoconfigure.cache.CacheProperties' of type [org.springframework.boot.autoconfigure.cache.CacheProperties] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+20171118 00:03:04.827  [restartedMain] INFO  org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker.postProcessAfterInitialization():325 - Bean 'org.springframework.boot.autoconfigure.cache.CacheManagerCustomizers' of type [org.springframework.boot.autoconfigure.cache.CacheManagerCustomizers] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+20171118 00:03:04.832  [restartedMain] INFO  org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker.postProcessAfterInitialization():325 - Bean 'org.springframework.boot.autoconfigure.cache.RedisCacheConfiguration' of type [org.springframework.boot.autoconfigure.cache.RedisCacheConfiguration$$EnhancerBySpringCGLIB$$36d793d0] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+20171118 00:03:04.839  [restartedMain] INFO  org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker.postProcessAfterInitialization():325 - Bean 'org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration$RedisConfiguration' of type [org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration$RedisConfiguration$$EnhancerBySpringCGLIB$$8e628241] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+20171118 00:03:04.854  [restartedMain] INFO  org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker.postProcessAfterInitialization():325 - Bean 'spring.redis-org.springframework.boot.autoconfigure.data.redis.RedisProperties' of type [org.springframework.boot.autoconfigure.data.redis.RedisProperties] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+20171118 00:03:04.862  [restartedMain] INFO  org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker.postProcessAfterInitialization():325 - Bean 'org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration$RedisConnectionConfiguration' of type [org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration$RedisConnectionConfiguration$$EnhancerBySpringCGLIB$$dcba23c3] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+20171118 00:03:04.874  [restartedMain] INFO  org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker.postProcessAfterInitialization():325 - Bean 'redisConnectionFactory' of type [org.springframework.data.redis.connection.jedis.JedisConnectionFactory] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+20171118 00:03:04.900  [restartedMain] INFO  org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker.postProcessAfterInitialization():325 - Bean 'redisTemplate' of type [org.springframework.data.redis.core.RedisTemplate] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+20171118 00:03:05.004  [restartedMain] INFO  org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker.postProcessAfterInitialization():325 - Bean 'cacheManager' of type [org.springframework.data.redis.cache.RedisCacheManager] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+20171118 00:03:05.020  [restartedMain] INFO  org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker.postProcessAfterInitialization():325 - Bean 'cacheAutoConfigurationValidator' of type [org.springframework.boot.autoconfigure.cache.CacheAutoConfiguration$CacheManagerValidator] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+20171118 00:03:05.290  [restartedMain] INFO  org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainer.initialize():89 - Tomcat initialized with port(s): 9550 (http)
+20171118 00:03:05.290  [restartedMain] INFO  org.apache.catalina.core.StandardService.log():179 - Starting service [Tomcat]
+20171118 00:03:05.291  [restartedMain] INFO  org.apache.catalina.core.StandardEngine.log():179 - Starting Servlet Engine: Apache Tomcat/8.5.15
+20171118 00:03:05.307  [localhost-startStop-1] INFO  org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/].log():179 - Initializing Spring embedded WebApplicationContext
+20171118 00:03:05.308  [localhost-startStop-1] INFO  org.springframework.web.context.ContextLoader.prepareEmbeddedWebApplicationContext():276 - Root WebApplicationContext: initialization completed in 2769 ms
+20171118 00:03:05.376  [localhost-startStop-1] INFO  cn.tech.yozo.factoryrp.config.DruidConfiguration.info():58 -  [DUBBO] init Druid Servlet Configuration , dubbo version: 2.5.3, current host: 127.0.0.1
+20171118 00:03:05.722  [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean.configure():258 - Mapping filter: 'metricsFilter' to: [/*]
+20171118 00:03:05.722  [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean.configure():258 - Mapping filter: 'characterEncodingFilter' to: [/*]
+20171118 00:03:05.722  [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean.configure():258 - Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
+20171118 00:03:05.722  [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean.configure():258 - Mapping filter: 'httpPutFormContentFilter' to: [/*]
+20171118 00:03:05.723  [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean.configure():258 - Mapping filter: 'requestContextFilter' to: [/*]
+20171118 00:03:05.723  [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean.configure():258 - Mapping filter: 'webRequestLoggingFilter' to: [/*]
+20171118 00:03:05.723  [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean.configure():271 - Mapping filter: 'webStatFilter' to urls: [/*]
+20171118 00:03:05.723  [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean.configure():258 - Mapping filter: 'applicationContextIdFilter' to: [/*]
+20171118 00:03:05.723  [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.ServletRegistrationBean.onStartup():190 - Mapping servlet: 'statViewServlet' to [/druid/*]
+20171118 00:03:05.723  [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.ServletRegistrationBean.onStartup():190 - Mapping servlet: 'dispatcherServlet' to [/]
+20171118 00:03:05.737  [restartedMain] INFO  cn.tech.yozo.factoryrp.config.DruidConfiguration.info():58 -  [DUBBO] >>>>>>>>>>>>>开始配置druid连接池<<<<<<<<<<<<<<<<<<, dubbo version: 2.5.3, current host: 127.0.0.1
+20171118 00:03:07.793  [restartedMain] INFO  com.alibaba.druid.pool.DruidDataSource.init():889 - {dataSource-2} inited
+20171118 00:03:07.914  [restartedMain] INFO  org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory():349 - Building JPA container EntityManagerFactory for persistence unit 'default'
+20171118 00:03:07.914  [restartedMain] INFO  org.hibernate.jpa.internal.util.LogHelper.logPersistenceUnitInformation():31 - HHH000204: Processing PersistenceUnitInfo [
+	name: default
+	...]
+20171118 00:03:07.932  [restartedMain] INFO  org.hibernate.dialect.Dialect.<init>():156 - HHH000400: Using dialect: org.hibernate.dialect.MySQL5Dialect
+20171118 00:03:07.935  [restartedMain] INFO  org.hibernate.engine.jdbc.env.internal.LobCreatorBuilderImpl.useContextualLobCreation():98 - HHH000423: Disabling contextual LOB creation as JDBC driver reported JDBC version [3] less than 4
+20171118 00:03:08.033  [restartedMain] WARN  net.sf.ehcache.config.ConfigurationFactory.parseConfiguration():136 - No configuration found. Configuring ehcache from ehcache-failsafe.xml  found in the classpath: jar:file:/D:/MavenRepository/net/sf/ehcache/ehcache/2.10.4/ehcache-2.10.4.jar!/ehcache-failsafe.xml
+20171118 00:03:08.057  [restartedMain] INFO  org.hibernate.cache.spi.UpdateTimestampsCache.<init>():55 - HHH000250: Starting update timestamps cache at region: org.hibernate.cache.spi.UpdateTimestampsCache
+20171118 00:03:08.058  [restartedMain] WARN  org.hibernate.cache.ehcache.AbstractEhcacheRegionFactory.getCache():161 - HHH020003: Could not find a specific ehcache configuration for cache named [org.hibernate.cache.spi.UpdateTimestampsCache]; using defaults.
+20171118 00:03:08.076  [restartedMain] INFO  org.hibernate.cache.internal.StandardQueryCache.<init>():74 - HHH000248: Starting query cache at region: org.hibernate.cache.internal.StandardQueryCache
+20171118 00:03:08.076  [restartedMain] WARN  org.hibernate.cache.ehcache.AbstractEhcacheRegionFactory.getCache():161 - HHH020003: Could not find a specific ehcache configuration for cache named [org.hibernate.cache.internal.StandardQueryCache]; using defaults.
+20171118 00:03:08.095  [restartedMain] WARN  org.hibernate.cache.ehcache.AbstractEhcacheRegionFactory.getCache():161 - HHH020003: Could not find a specific ehcache configuration for cache named [entityCache]; using defaults.
+20171118 00:03:08.136  [restartedMain] INFO  org.hibernate.tool.hbm2ddl.SchemaUpdate.execute():105 - HHH000228: Running hbm2ddl schema update
+20171118 00:03:29.155  [restartedMain] INFO  org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.buildNativeEntityManagerFactory():379 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+20171118 00:03:29.404  [restartedMain] INFO  org.hibernate.engine.internal.StatisticalLoggingSessionEventListener.end():258 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+20171118 00:03:29.405  [restartedMain] INFO  org.hibernate.engine.internal.StatisticalLoggingSessionEventListener.end():258 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+20171118 00:03:29.407  [restartedMain] INFO  org.hibernate.engine.internal.StatisticalLoggingSessionEventListener.end():258 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+20171118 00:03:29.409  [restartedMain] INFO  org.hibernate.engine.internal.StatisticalLoggingSessionEventListener.end():258 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+20171118 00:03:29.410  [restartedMain] INFO  org.hibernate.engine.internal.StatisticalLoggingSessionEventListener.end():258 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+20171118 00:03:29.453  [restartedMain] INFO  org.hibernate.engine.internal.StatisticalLoggingSessionEventListener.end():258 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+20171118 00:03:29.454  [restartedMain] INFO  org.hibernate.engine.internal.StatisticalLoggingSessionEventListener.end():258 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+20171118 00:03:29.454  [restartedMain] INFO  org.hibernate.engine.internal.StatisticalLoggingSessionEventListener.end():258 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+20171118 00:03:29.456  [restartedMain] INFO  org.hibernate.engine.internal.StatisticalLoggingSessionEventListener.end():258 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+20171118 00:03:29.501  [restartedMain] INFO  org.hibernate.engine.internal.StatisticalLoggingSessionEventListener.end():258 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+20171118 00:03:29.502  [restartedMain] INFO  org.hibernate.engine.internal.StatisticalLoggingSessionEventListener.end():258 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+20171118 00:03:29.503  [restartedMain] INFO  org.hibernate.engine.internal.StatisticalLoggingSessionEventListener.end():258 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+20171118 00:03:29.504  [restartedMain] INFO  org.hibernate.engine.internal.StatisticalLoggingSessionEventListener.end():258 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+20171118 00:03:29.546  [restartedMain] INFO  org.hibernate.engine.internal.StatisticalLoggingSessionEventListener.end():258 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+20171118 00:03:29.547  [restartedMain] INFO  org.hibernate.engine.internal.StatisticalLoggingSessionEventListener.end():258 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+20171118 00:03:29.548  [restartedMain] INFO  org.hibernate.engine.internal.StatisticalLoggingSessionEventListener.end():258 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+20171118 00:03:29.549  [restartedMain] INFO  org.hibernate.engine.internal.StatisticalLoggingSessionEventListener.end():258 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+20171118 00:03:29.551  [restartedMain] INFO  org.hibernate.engine.internal.StatisticalLoggingSessionEventListener.end():258 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}

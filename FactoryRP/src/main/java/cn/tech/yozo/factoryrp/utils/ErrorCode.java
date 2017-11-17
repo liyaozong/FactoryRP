@@ -18,7 +18,8 @@ public enum ErrorCode {
     ERROR("999999","业务处理异常"),
     LOGIN_FAILED("000001","登陆失败(用户名密码错误)"),
     NEED_LOGIN("000002","请登录"),
-    NO_PERMISSION("000003","没有权限");
+    NO_PERMISSION("000003","没有权限"),
+    PARAM_ERROR("000004","参数格式错误");
 
 
     private String code;

@@ -47,6 +47,4 @@ public class AuthorizationController extends BaseController{
         return apiResponse(requestSeqNo,roleResps);
     }
 
-    /*@ApiImplicitParam(dataType = "String" ,name = "corporateIdentify", paramType = "query" ,
-            value = "企业唯一标识",required = true,defaultValue = "111")*/
 }

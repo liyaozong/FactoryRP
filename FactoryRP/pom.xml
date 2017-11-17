@@ -3,13 +3,14 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>FacroryRP</groupId>
-    <artifactId>cn.tech.yozo.facroryrp</artifactId>
+    <groupId>cn.tech.yozo.facroryrp</groupId>
+    <artifactId>FacroryRP</artifactId>
     <version>1.0-SNAPSHOT</version>
     <name>FacroryRP</name>
     <packaging>jar</packaging>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.build.version>1.0.0</project.build.version>
         <java.version>1.8</java.version>
         <swagger.version>2.7.0</swagger.version>
         <shiro.version>1.4.0</shiro.version>
@@ -234,6 +235,31 @@
                     <fork>true</fork>
                     <mainClass>cn.tech.yozo.factoryrp.WebApplication</mainClass>
                 </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <appendAssemblyId>true</appendAssemblyId>
+                    <finalName>${project.artifactId}-${project.build.version}</finalName>
+                    <descriptors>
+                        <!--打包描述文件的位置-->
+                        <descriptor>assembly/package.xml</descriptor>
+                    </descriptors>
+                </configuration>
+                <executions>
+
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
             </plugin>
         </plugins>
     </build>

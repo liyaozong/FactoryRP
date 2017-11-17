@@ -2,5 +2,32 @@
 <configuration>
     <include resource="org/springframework/boot/logging/logback/base.xml" />
     <logger name="org.springframework.web" level="INFO"/>
+    <!-- log base path -->
+    <property name="LOG_HOME" value="log"/>
+    <!-- log name -->
+    <property name="SRVNAME" value="FactoryRP-console"/>
+    <!-- back log base path -->
+    <property name="LOG_BACK_HOME" value="log/backup"/>
+
+    <!-- 系统服务日志 -->
+    <appender name="FILE"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_HOME}/${SRVNAME}.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- daily rollover -->
+            <fileNamePattern>${LOG_BACK_HOME}/${SRVNAME}_%d{yyyyMMdd}.log</fileNamePattern>
+
+            <!-- keep 30 days' worth of history -->
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>100MB</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyyMMdd HH:mm:ss.SSS} %X{LOG_ID} [%thread] %-5level %logger{100}.%method\(\):%L - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <root level="info">
+        <appender-ref ref="FILE"/>
+    </root>
 
 </configuration>

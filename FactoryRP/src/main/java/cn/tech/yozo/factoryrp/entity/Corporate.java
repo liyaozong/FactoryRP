@@ -18,39 +18,23 @@ public class Corporate extends BaseEntity implements Serializable {
 
 
     /**
-     * 企业唯一标识
+     * 企业名称
      */
-    @Column(name = "corporate_identify")
-    private Long corporateIdentify;
-
-
-    /**
-     * 企业唯一标识
-     */
-    @Column(name = "corporate_name")
-    private Long corporateName;
+    @Column(name = "corporate_name" , length = 20)
+    private String corporateName;
 
 
     /**
      * 是否启用 1启用2不启用
      */
-    @Column(name = "enable_status")
+    @Column(name = "enable_status" ,length = 20)
     private Integer enableStatus;
 
-
-    public Long getCorporateIdentify() {
-        return corporateIdentify;
-    }
-
-    public void setCorporateIdentify(Long corporateIdentify) {
-        this.corporateIdentify = corporateIdentify;
-    }
-
-    public Long getCorporateName() {
+    public String getCorporateName() {
         return corporateName;
     }
 
-    public void setCorporateName(Long corporateName) {
+    public void setCorporateName(String corporateName) {
         this.corporateName = corporateName;
     }
 
