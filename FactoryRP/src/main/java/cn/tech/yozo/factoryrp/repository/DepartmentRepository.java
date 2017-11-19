@@ -18,4 +18,11 @@ public interface DepartmentRepository extends BaseRepository<Department,Long>{
      * @return
      */
     public List<Department> findByCorporateIdentifyAndStatusFlag(Long corporateIdentify, Integer statusFlag);
+
+    /**
+     * 根据上级部门ID查询
+     * @param parentId
+     * @return
+     */
+    public List<Department> findByParentId(Long parentId);
 }

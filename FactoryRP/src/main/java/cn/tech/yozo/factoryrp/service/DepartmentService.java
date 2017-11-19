@@ -25,4 +25,11 @@ public interface DepartmentService {
      * @return
      */
     public Department save(SaveDepartmentReq param,Integer opType);
+
+    /**
+     * 删除部门级子部门
+     * @param id
+     * @return
+     */
+    public void delete(Long id);
 }

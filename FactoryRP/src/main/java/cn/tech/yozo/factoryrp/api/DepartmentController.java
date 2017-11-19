@@ -49,4 +49,12 @@ public class DepartmentController {
     public Department updateDept(@RequestBody SaveDepartmentReq param){
         return departmentService.save(param,3);
     }
+
+    @ApiOperation(value = "删除部门",notes = "删除部门",httpMethod = "GET")
+    @RequestMapping("deleteDept")
+    @ApiImplicitParams(@ApiImplicitParam(paramType = "query",dataType = "Long",name = "id",
+            value = "需要删除部门主键",required = true,defaultValue = "6"))
+    public void deleteDept(Long id){
+        departmentService.delete(id);
+    }
 }

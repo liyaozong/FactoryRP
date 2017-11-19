@@ -4,6 +4,7 @@ import cn.tech.yozo.factoryrp.entity.Department;
 import cn.tech.yozo.factoryrp.repository.DepartmentRepository;
 import cn.tech.yozo.factoryrp.service.DepartmentService;
 import cn.tech.yozo.factoryrp.vo.req.SaveDepartmentReq;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,5 +42,16 @@ public class DepartmentServiceImpl implements DepartmentService{
         d.setCode(param.getCode());
         d.setName(param.getName());
         return departmentRepository.save(d);
+    }
+
+    @Override
+    public void delete(Long id) {
+        List<Department> needDelete = departmentRepository.findByParentId(id);
+        if (CollectionUtils.isNotEmpty(needDelete)){
+            for (Department d : needDelete){
+                departmentRepository.delete(d.getId());
+            }
+        }
+        departmentRepository.delete(id);
     }
 }
