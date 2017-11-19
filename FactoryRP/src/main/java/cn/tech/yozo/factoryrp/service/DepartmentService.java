@@ -32,4 +32,13 @@ public interface DepartmentService {
      * @return
      */
     public void delete(Long id);
+
+    /**
+     * 调整上级部门
+     * @param id
+     * @param parentId
+     * @return
+     */
+    public Department updateUpLevel(Long id,Long parentId);
+
 }

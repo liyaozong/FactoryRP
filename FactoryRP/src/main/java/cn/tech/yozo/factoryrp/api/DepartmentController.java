@@ -57,4 +57,13 @@ public class DepartmentController {
     public void deleteDept(Long id){
         departmentService.delete(id);
     }
+
+    @ApiOperation(value = "调整上级部门",notes = "调整上级部门",httpMethod = "GET")
+    @RequestMapping("updateUpLevel")
+    @ApiImplicitParams({@ApiImplicitParam(paramType = "query",dataType = "Long",name = "id",
+            value = "需要调整都部门主键",required = true,defaultValue = "1"),@ApiImplicitParam(paramType = "query",dataType = "Long",name = "parentId",
+            value = "上级部门ID",required = true,defaultValue = "2")})
+    public void updateUpLevel(Long id,Long parentId){
+        departmentService.updateUpLevel(id,parentId);
+    }
 }

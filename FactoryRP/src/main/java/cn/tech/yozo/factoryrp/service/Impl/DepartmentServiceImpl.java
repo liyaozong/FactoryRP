@@ -54,4 +54,11 @@ public class DepartmentServiceImpl implements DepartmentService{
         }
         departmentRepository.delete(id);
     }
+
+    @Override
+    public Department updateUpLevel(Long id, Long parentId) {
+       Department d= departmentRepository.getOne(id);
+       d.setParentId(parentId);
+       return departmentRepository.save(d);
+    }
 }
