@@ -19,7 +19,8 @@ public enum ErrorCode {
     LOGIN_FAILED("000001","登陆失败(用户名密码错误)"),
     NEED_LOGIN("000002","请登录"),
     NO_PERMISSION("000003","没有权限"),
-    PARAM_ERROR("000004","参数格式错误");
+    PARAM_ERROR("000004","参数格式错误"),
+    CORPORATENAME__REPETED_ERROR("000005","企业名称已经存在");
 
 
     private String code;

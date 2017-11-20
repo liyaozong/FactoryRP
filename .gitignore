@@ -12,6 +12,7 @@ target/
 ## Idea
 .idea/
 *.iml
+*.yml
 
 ## Mac crap
 .DS_Store

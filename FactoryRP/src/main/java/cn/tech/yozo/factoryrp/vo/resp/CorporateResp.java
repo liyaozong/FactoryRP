@@ -32,6 +32,12 @@ public class CorporateResp extends ApiCorporateIdentifyRsponse implements Serial
     private String enableStatus;
 
 
+    /**
+     * 企业唯一标识
+     */
+    @ApiModelProperty(value = "企业唯一标识",required = true,notes = "企业唯一标识",example = "323213213213213")
+    private String corporateIdentify;
+
     public String getCorporateName() {
         return corporateName;
     }
@@ -46,5 +52,15 @@ public class CorporateResp extends ApiCorporateIdentifyRsponse implements Serial
 
     public void setEnableStatus(String enableStatus) {
         this.enableStatus = enableStatus;
+    }
+
+    @Override
+    public String getCorporateIdentify() {
+        return corporateIdentify;
+    }
+
+    @Override
+    public void setCorporateIdentify(String corporateIdentify) {
+        this.corporateIdentify = corporateIdentify;
     }
 }
