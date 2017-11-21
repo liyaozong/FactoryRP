@@ -1,5 +1,6 @@
 package cn.tech.yozo.factoryrp.entity;
 
+import lombok.Data;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.Cacheable;
@@ -17,6 +18,7 @@ import java.io.Serializable;
 @Entity
 @Cacheable
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "entityCache")
+@Data
 public class Menu extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 9004310558317140193L;
@@ -55,4 +57,15 @@ public class Menu extends BaseEntity implements Serializable {
      */
     @Column(name = "remark",length = 50)
     private String remark;
+
+
+    /**
+     * userId
+     */
+    @Column(name = "user_id",length = 20)
+    private Long userId;
+
+
+
+
 }

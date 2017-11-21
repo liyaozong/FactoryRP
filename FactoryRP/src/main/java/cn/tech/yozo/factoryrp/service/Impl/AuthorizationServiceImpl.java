@@ -1,14 +1,15 @@
 package cn.tech.yozo.factoryrp.service.Impl;
 
-import cn.tech.yozo.factoryrp.entity.Corporate;
 import cn.tech.yozo.factoryrp.entity.Role;
+import cn.tech.yozo.factoryrp.exception.BussinessException;
 import cn.tech.yozo.factoryrp.repository.CorporateRepository;
+import cn.tech.yozo.factoryrp.repository.PermissionRepository;
 import cn.tech.yozo.factoryrp.repository.RoleRepository;
+import cn.tech.yozo.factoryrp.repository.UserRepository;
 import cn.tech.yozo.factoryrp.service.AuthorizationService;
 import cn.tech.yozo.factoryrp.utils.CheckParam;
-import cn.tech.yozo.factoryrp.utils.UUIDSequenceWorker;
-import cn.tech.yozo.factoryrp.vo.req.CorporateReq;
-import cn.tech.yozo.factoryrp.vo.resp.CorporateResp;
+import cn.tech.yozo.factoryrp.utils.ErrorCode;
+import cn.tech.yozo.factoryrp.vo.req.RoleReq;
 import cn.tech.yozo.factoryrp.vo.resp.RoleResp;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +32,48 @@ public class AuthorizationServiceImpl implements AuthorizationService {
     @Resource
     private CorporateRepository corporateRepository;
 
+
+    @Resource
+    private  UserRepository userRepository;
+
+
+    @Resource
+    private  PermissionRepository permissionRepository;
+
+
+    /**
+     * 新增角色
+     * @param roleReq
+     * @return
+     */
+    public RoleResp addRole(RoleReq roleReq){
+        Role role = roleRepository.findByRoleCodeAndCorporateIdentify(roleReq.getRoleCode(), Long.parseLong(roleReq.getCorporateIdentify()));
+
+        if(!CheckParam.isNull(role)){
+            throw new BussinessException(ErrorCode.ROLE__REPETED_ERROR.getCode(),ErrorCode.ROLE__REPETED_ERROR.getMessage());
+        }
+
+        role = new Role();
+        role.setRoleCode(roleReq.getRoleCode());
+        role.setRoleName(roleReq.getRoleName());
+        role.setEnableStatus(roleReq.getEnableStatus());
+        role.setCorporateIdentify(Long.parseLong(roleReq.getCorporateIdentify()));
+        role.setRoleDescription(roleReq.getRoleDescription());
+
+        RoleResp roleResp = new RoleResp();
+        roleResp.setRoleDescription(roleReq.getRoleDescription());
+        roleResp.setRoleId(String.valueOf(role.getId()));
+        roleResp.setRoleName(role.getRoleName());
+        roleResp.setRoleCode(role.getRoleCode());
+        roleResp.setEnableStatus(roleReq.getEnableStatus());
+        roleResp.setCorporateIdentify(roleReq.getCorporateIdentify());
+
+        return roleResp;
+    }
+
+
+
+
     /**
      * 根据企业标识码查询企业所有的角色
      * @param corporateIdentify
@@ -39,8 +82,6 @@ public class AuthorizationServiceImpl implements AuthorizationService {
     public List<RoleResp> queryRolesByorporateIdentify(String corporateIdentify){
 
         List<Role> roleList = roleRepository.findByCorporateIdentify(Long.parseLong(corporateIdentify));
-
-
 
         if(!CheckParam.isNull(roleList)){
             List<RoleResp> roleResps = new ArrayList<>();
@@ -61,32 +102,5 @@ public class AuthorizationServiceImpl implements AuthorizationService {
     }
 
 
-    /**
-     * 新增企业
-     * @param corporateReq
-     * @return
-     */
-    public CorporateResp addCorporate(CorporateReq corporateReq){
-
-        Corporate corporate = corporateRepository.findByCorporateName(corporateReq.getCorporateName());
-
-        if(CheckParam.isNull(corporate)){
-            corporate = new Corporate();
-            corporate.setCorporateName(corporateReq.getCorporateName());
-            corporate.setCorporateIdentify(UUIDSequenceWorker.uniqueSequenceId());
-            corporate.setEnableStatus(Integer.valueOf(corporateReq.getEnableStatus()));
-
-            corporateRepository.save(corporate);
-
-            CorporateResp corporateResp = new CorporateResp();
-            corporateResp.setCorporateName(corporate.getCorporateName());
-            corporateResp.setEnableStatus(String.valueOf(corporate.getEnableStatus()));
-            corporateResp.setCorporateIdentify(String.valueOf(corporate.getCorporateIdentify()));
-
-            return corporateResp;
-        }
-
-            return null;
-    }
 
 }

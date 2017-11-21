@@ -1,5 +1,6 @@
 package cn.tech.yozo.factoryrp.vo.base;
 
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.io.Serializable;
@@ -9,6 +10,7 @@ import java.io.Serializable;
  * @time 2017/11/17
  * @description
  */
+@ApiModel
 public class ApiCorporateIdentifyRsponse extends ApiResponse implements Serializable{
 
 

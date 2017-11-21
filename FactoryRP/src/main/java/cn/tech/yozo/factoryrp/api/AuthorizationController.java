@@ -2,6 +2,7 @@ package cn.tech.yozo.factoryrp.api;
 
 import cn.tech.yozo.factoryrp.service.AuthorizationService;
 import cn.tech.yozo.factoryrp.vo.base.ApiResponse;
+import cn.tech.yozo.factoryrp.vo.req.RoleReq;
 import cn.tech.yozo.factoryrp.vo.resp.RoleResp;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -10,6 +11,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -25,6 +27,7 @@ public class AuthorizationController extends BaseController{
 
     @Resource
     private AuthorizationService authorizationService;
+
 
 
     /**
@@ -46,5 +49,20 @@ public class AuthorizationController extends BaseController{
         List<RoleResp> roleResps = authorizationService.queryRolesByorporateIdentify(corporateIdentify);
         return apiResponse(requestSeqNo,roleResps);
     }
+
+
+    /**
+     * 新增角色
+     * @param roleReq
+     * @return
+     */
+    @ApiOperation(value = "新增角色",notes = "新增角色",httpMethod = "POST")
+    @PostMapping("/addRole")
+    @ApiImplicitParam(dataType = "RoleReq" ,name = "roleReq", paramType = "VO" ,
+            value = "企业新增相关信息",required = true)
+    public ApiResponse<RoleResp> addRole(@Valid @RequestBody RoleReq roleReq){
+        return apiResponse(roleReq,authorizationService.addRole(roleReq));
+    }
+
 
 }

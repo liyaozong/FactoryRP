@@ -1,5 +1,6 @@
 package cn.tech.yozo.factoryrp.service;
 
+import cn.tech.yozo.factoryrp.vo.req.RoleReq;
 import cn.tech.yozo.factoryrp.vo.resp.RoleResp;
 
 import java.util.List;
@@ -18,5 +19,13 @@ public interface AuthorizationService {
      * @return
      */
     List<RoleResp> queryRolesByorporateIdentify(String corporateIdentify);
+
+
+    /**
+     * 新增角色
+     * @param roleReq
+     * @return
+     */
+    RoleResp addRole(RoleReq roleReq);
 
 }

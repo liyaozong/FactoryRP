@@ -4,6 +4,7 @@ import cn.tech.yozo.factoryrp.exception.ApiException;
 import cn.tech.yozo.factoryrp.exception.BussinessException;
 import cn.tech.yozo.factoryrp.utils.DateTimeUtil;
 import cn.tech.yozo.factoryrp.utils.ErrorCode;
+import cn.tech.yozo.factoryrp.vo.base.ApiCorporateIdentifyRequest;
 import cn.tech.yozo.factoryrp.vo.base.ApiRequest;
 import cn.tech.yozo.factoryrp.vo.base.ApiResponse;
 import org.slf4j.Logger;
@@ -49,6 +50,20 @@ public class BaseController {
     public ApiResponse apiResponse(String requestSeqNo,Object object){
         ApiResponse apiResponse = new ApiResponse();
         apiResponse.setRequestSeqNo(requestSeqNo);
+        apiResponse.setResponseTime(DateTimeUtil.currentDateToStr(""));
+        apiResponse.setData(object);
+        return apiResponse;
+    }
+
+    /**
+     * 生成DATA里面带有指定类型的
+     * @param apiRequest
+     * @param object
+     * @return
+     */
+    public ApiResponse apiResponse(ApiCorporateIdentifyRequest apiRequest, Object object){
+        ApiResponse apiResponse = new ApiResponse();
+        apiResponse.setRequestSeqNo(apiRequest.getRequestSeqNo());
         apiResponse.setResponseTime(DateTimeUtil.currentDateToStr(""));
         apiResponse.setData(object);
         return apiResponse;

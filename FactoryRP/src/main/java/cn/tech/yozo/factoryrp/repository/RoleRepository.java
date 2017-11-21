@@ -31,4 +31,14 @@ public interface RoleRepository extends BaseRepository<Role,Long>{
      */
     List<Role> findByCorporateIdentify(Long corporateIdentify);
 
+
+    /**
+     * 根据角色code和企业标识查询角色信息
+     * @param roleCode
+     * @param CorporateIdentify
+     * @return
+     */
+    Role findByRoleCodeAndCorporateIdentify(String roleCode,Long CorporateIdentify);
+
+
 }
