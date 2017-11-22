@@ -14,6 +14,13 @@ import org.springframework.stereotype.Repository;
 public interface MenuRepository extends BaseRepository<Menu,Long>{
 
 
-
+    /**
+     * 根据名称,url,企业唯一标识进行查找
+     * @param name
+     * @param url
+     * @param corporateIdentify
+     * @return
+     */
+    Menu findByNameAndUrlAndCorporateIdentify(String name,String url,Long corporateIdentify);
 
 }

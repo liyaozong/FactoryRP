@@ -1,5 +1,6 @@
 package cn.tech.yozo.factoryrp.entity;
 
+import lombok.Data;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -11,28 +12,28 @@ import java.io.Serializable;
 
 /**
  * @author created by Singer email:313402703@qq.com
- * @time 2017/11/16
- * @description 权限角色关联实体
+ * @time 2017/11/21
+ * @description
  */
-@Table(name = "system_permission_role")
+@Table(name = "system_menu_role")
 @Entity
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "entityCache")
-public class PermissionRole extends BaseEntity implements Serializable {
+@Data
+public class MenuRole extends BaseEntity implements Serializable {
 
-    private static final long serialVersionUID = -299645908618274956L;
 
     /**
      * 角色标识
      */
-    @Column(name = "role_id")
+    @Column(name = "role_id", length = 20)
     private Long roleId;
 
     /**
      * 权限ID
      */
-    @Column(name = "permission_id")
-    private Long permissionId;
+    @Column(name = "menu_id", length = 20)
+    private Long menuId;
 
 
     /**
@@ -40,7 +41,6 @@ public class PermissionRole extends BaseEntity implements Serializable {
      */
     @Column(name = "remark",length = 50)
     private String remark;
-
 
     public Long getRoleId() {
         return roleId;
@@ -50,12 +50,12 @@ public class PermissionRole extends BaseEntity implements Serializable {
         this.roleId = roleId;
     }
 
-    public Long getPermissionId() {
-        return permissionId;
+    public Long getMenuId() {
+        return menuId;
     }
 
-    public void setPermissionId(Long permissionId) {
-        this.permissionId = permissionId;
+    public void setMenuId(Long menuId) {
+        this.menuId = menuId;
     }
 
     public String getRemark() {

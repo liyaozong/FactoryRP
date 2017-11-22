@@ -123,6 +123,7 @@ public class BaseController {
     private ApiResponse<Map<String, Object>> otherExceptionHandler(ApiResponse<Map<String, Object>> resp,Exception e){
         resp.setErrorCode(ErrorCode.ERROR.getCode());
         resp.setErrorMessage(ErrorCode.ERROR.getMessage());
+        logger.error("发生系统异常:"+e.getMessage(),e);
         return resp;
     }
 

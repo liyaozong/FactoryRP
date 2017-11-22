@@ -3,9 +3,11 @@ package cn.tech.yozo.factoryrp.entity;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import javax.persistence.*;
+import javax.persistence.Cacheable;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * @author created by Singer email:313402703@qq.com
@@ -63,8 +65,8 @@ public class Permission extends BaseEntity implements Serializable {
      * 配置该注解的mappedBy="xxx"即可。xxx是对方实体（映射主体）中集合
      * 属性的名称。表示由对方主体的哪个属性来完成映射关系。
      */
-    @ManyToMany(mappedBy="permissionList")
-    private List<Role> roleList;
+   /* @ManyToMany(mappedBy="permissionList")
+    private List<Role> roleList;*/
 
     public String getPermissionUrl() {
         return permissionUrl;
@@ -107,13 +109,13 @@ public class Permission extends BaseEntity implements Serializable {
         this.perssionType = perssionType;
     }
 
-    public List<Role> getRoleList() {
+  /*  public List<Role> getRoleList() {
         return roleList;
     }
 
     public void setRoleList(List<Role> roleList) {
         this.roleList = roleList;
-    }
+    }*/
 
     public String getName() {
         return name;

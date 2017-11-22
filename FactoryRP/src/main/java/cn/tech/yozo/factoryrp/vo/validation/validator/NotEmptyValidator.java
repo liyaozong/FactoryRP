@@ -20,7 +20,8 @@ public class NotEmptyValidator implements ConstraintValidator<NotEmpty,String>{
     }
 
     @Override
-    public boolean isValid(String value, ConstraintValidatorContext constraintValidatorContext) {
+    public boolean isValid(String value, ConstraintValidatorContext context) {
         return !CheckParam.isNull(value);
     }
+
 }

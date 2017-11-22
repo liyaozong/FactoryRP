@@ -85,12 +85,12 @@ public class StateLessShiroRealm extends AuthorizingRealm {
             /**
              * 赋予角色
              */
-            roleList.stream().forEach(u1 ->{
+           /* roleList.stream().forEach(u1 ->{
                 info.addRole(u1.getRoleName());
                 u1.getPermissionList().stream().forEach(p1 ->{
                     permissionNameList.add(p1.getName()); //拿到权限名称
                 });
-            });
+            });*/
 
             info.addStringPermissions(permissionNameList);
 

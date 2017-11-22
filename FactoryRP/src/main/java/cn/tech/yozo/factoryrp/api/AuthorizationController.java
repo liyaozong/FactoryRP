@@ -2,7 +2,11 @@ package cn.tech.yozo.factoryrp.api;
 
 import cn.tech.yozo.factoryrp.service.AuthorizationService;
 import cn.tech.yozo.factoryrp.vo.base.ApiResponse;
+import cn.tech.yozo.factoryrp.vo.req.MenuReq;
+import cn.tech.yozo.factoryrp.vo.req.MenuRoleReq;
 import cn.tech.yozo.factoryrp.vo.req.RoleReq;
+import cn.tech.yozo.factoryrp.vo.resp.MenuResp;
+import cn.tech.yozo.factoryrp.vo.resp.RoleMenuQueryResp;
 import cn.tech.yozo.factoryrp.vo.resp.RoleResp;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -62,6 +66,58 @@ public class AuthorizationController extends BaseController{
             value = "企业新增相关信息",required = true)
     public ApiResponse<RoleResp> addRole(@Valid @RequestBody RoleReq roleReq){
         return apiResponse(roleReq,authorizationService.addRole(roleReq));
+    }
+
+    /**
+     * 根据企业标识查询所有角色
+     * @param corporateIdentify
+     * @return
+     */
+    @ApiOperation(value = "根据企业标识和角色id查询角色具备的菜单",notes = "根据企业标识和角色id查询角色具备的菜单",httpMethod = "GET")
+    @GetMapping("/queryByRoleIdAndCorporateIdentify/{requestSeqNo}")
+    @ApiImplicitParams({
+            @ApiImplicitParam(dataType = "Long" ,name = "corporateIdentify", paramType = "query" ,
+                    value = "企业唯一标识",required = true,defaultValue = "3123881"),
+            @ApiImplicitParam(dataType = "Long" ,name = "roleId", paramType = "query" ,
+                    value = "角色id",required = true,defaultValue = "3"),
+            @ApiImplicitParam(dataType = "Long" ,name = "requestSeqNo", paramType = "path" ,
+                    value = "请求流水号",required = true,defaultValue = "12345678")
+    })
+    public ApiResponse<RoleMenuQueryResp> queryByRoleIdAndCorporateIdentify(@PathVariable("requestSeqNo") String requestSeqNo,
+                                                                          @RequestParam(value="corporateIdentify",required = true,defaultValue = "1")
+                                                                            Long corporateIdentify, @RequestParam(value="roleId",required = true,defaultValue = "1")
+                                                                                      Long roleId){
+
+        return apiResponse(requestSeqNo,authorizationService.queryByRoleIdAndCorporateIdentify(roleId,corporateIdentify));
+    }
+
+
+
+    /**
+     * 新增菜单
+     * @param menuReq
+     * @return
+     */
+    @ApiOperation(value = "新增菜单",notes = "新增菜单",httpMethod = "POST")
+    @PostMapping("/addMenu")
+    @ApiImplicitParam(dataType = "MenuReq" ,name = "menuReq", paramType = "VO" ,
+            value = "新增菜单",required = true)
+    public ApiResponse<MenuResp> addMenu(@Valid @RequestBody MenuReq menuReq){
+        return apiResponse(menuReq,authorizationService.addMenu(menuReq));
+    }
+
+
+    /**
+     * 为角色新增能访问的菜单
+     * @param menuRoleReq
+     * @return
+     */
+    @ApiOperation(value = "为角色新增能访问的菜单",notes = "为角色新增能访问的菜单",httpMethod = "POST")
+    @PostMapping("/addMenuRole")
+    @ApiImplicitParam(dataType = "MenuRoleReq" ,name = "menuRoleReq", paramType = "VO" ,
+            value = "为角色新增能访问的菜单",required = true)
+    public ApiResponse<MenuResp> addMenuRole(@Valid @RequestBody MenuRoleReq menuRoleReq){
+        return apiResponse(menuRoleReq,authorizationService.addMenuRole(menuRoleReq));
     }
 
 
