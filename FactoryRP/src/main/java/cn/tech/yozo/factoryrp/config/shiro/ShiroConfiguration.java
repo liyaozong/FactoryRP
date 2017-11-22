@@ -1,26 +1,29 @@
 package cn.tech.yozo.factoryrp.config.shiro;
 
+import cn.tech.yozo.factoryrp.config.redis.RedisCacheManager;
+import cn.tech.yozo.factoryrp.config.redis.RedisObjectSerializer;
+import cn.tech.yozo.factoryrp.config.redis.RedisSessionRepository;
 import cn.tech.yozo.factoryrp.config.shiro.filter.AuthenticationFilter;
 import cn.tech.yozo.factoryrp.config.shiro.filter.StatelessAuthcFilter;
-import cn.tech.yozo.factoryrp.config.shiro.filter.StatelessDefaultSubjectFactory;
-import net.sf.ehcache.CacheManager;
-import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
-import org.apache.shiro.cache.ehcache.EhCacheManager;
 import org.apache.shiro.session.mgt.DefaultSessionManager;
-import org.apache.shiro.spring.LifecycleBeanPostProcessor;
+import org.apache.shiro.session.mgt.SessionManager;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.filter.authc.LogoutFilter;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.MethodInvokingFactoryBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.cache.ehcache.EhCacheCacheManager;
-import org.springframework.cache.ehcache.EhCacheManagerFactoryBean;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.DependsOn;
-import org.springframework.core.io.ClassPathResource;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
+import org.springframework.data.redis.core.RedisTemplate;
+import redis.clients.jedis.JedisPoolConfig;
 
+import javax.annotation.Resource;
 import javax.servlet.Filter;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -32,124 +35,67 @@ import java.util.Map;
  * @time 2017/11/16
  * @description Shiro配置类
  */
-//@Configuration
+
+
+@Configuration
+@EnableCaching
 public class ShiroConfiguration {
 
 
+    //@Value("${spring.redis.host}")
+    //private String host = "10.108.44.15";
 
+    //@Value("${spring.redis.port}")
+    //private int port = 6379;
 
-    /**
-     * 设定EhCache管理器
-     * @return
-     */
-    @Bean(name = "shiroEhCacheManager")
-    @DependsOn("lifecycleBeanPostProcessor")
-    public EhCacheManager shiroEhCacheManager() {
-        EhCacheManager em = new EhCacheManager();
-        em.setCacheManagerConfigFile("classpath:ehcache-shiro.xml");
-        CacheManager cacheManager = ehCacheCacheManager().getCacheManager();
-        em.setCacheManager(cacheManager);
-        String cacheManagerConfigFile = em.getCacheManagerConfigFile();
-        String name1 = em.getCacheManager().getName();
-        //em.setCacheManagerConfigFile("classpath:ehcache-jpa.xml");
-        return em;
+    @Value("${spring.redis.host}")
+    private String host;
 
-    }
+    @Value("${spring.redis.port}")
+    private int port;
 
-    /*
-     * ehcache 主要的管理器
-     */
-    @Bean(name = "appEhCacheCacheManager")
-    public EhCacheCacheManager ehCacheCacheManager(){
-        EhCacheManagerFactoryBean cacheManagerFactoryBean = new EhCacheManagerFactoryBean ();
-        cacheManagerFactoryBean.setConfigLocation (new ClassPathResource("classpath:ehcache-shiro.xml"));
-        cacheManagerFactoryBean.setShared (true);
-        EhCacheCacheManager ehCacheCacheManager = new EhCacheCacheManager(cacheManagerFactoryBean.getObject());
-        return ehCacheCacheManager;
-    }
+    @Autowired
+    private RedisSessionRepository redisSessionRepository;
 
-
-    /*
-     * 据shared与否的设置,Spring分别通过CacheManager.create()或new CacheManager()方式来创建一个ehcache基地.
-     */
-   /* @Bean(name = "ehCacheManagerFactoryBean")
-    public EhCacheManagerFactoryBean ehCacheManagerFactoryBean(){
-        EhCacheManagerFactoryBean cacheManagerFactoryBean = new EhCacheManagerFactoryBean ();
-        cacheManagerFactoryBean.setConfigLocation (new ClassPathResource("classpath:ehcache-shiro.xml"));
-        cacheManagerFactoryBean.setShared (true);
-        return cacheManagerFactoryBean;
-    }*/
-
-   /*@Bean(name = "ehCacheManagerFactoryBean ")
-   EhCacheManagerFactoryBean EhCacheManagerFactoryBean(){
-        EhCacheManagerFactoryBean ehCacheManagerFactoryBean = new EhCacheManagerFactoryBean();
-        ehCacheManagerFactoryBean.setConfigLocation();
-        return ehCacheManagerFactoryBean
-    }*/
+    @Resource
+    private RedisTemplate redisTemplate;
 
     /**
      * LifecycleBeanPostProcessor，这是个DestructionAwareBeanPostProcessor的子类，
      * 负责org.apache.shiro.util.Initializable类型bean的生命周期的，初始化和销毁。
      * 主要是AuthorizingRealm类的子类，以及EhCacheManager类。
      */
-    @Bean(name = "lifecycleBeanPostProcessor")
-    public LifecycleBeanPostProcessor lifecycleBeanPostProcessor() {
+   /* @Bean(name = "lifecycleBeanPostProcessor")
+    public static LifecycleBeanPostProcessor lifecycleBeanPostProcessor() {
         return new LifecycleBeanPostProcessor();
-    }
+    }*/
 
     /**
      * HashedCredentialsMatcher，这个类是为了对密码进行编码的，
      * 防止密码在数据库里明码保存，当然在登陆认证的时候，
      * 这个类也负责对form里输入的密码进行编码。
      */
-    @Bean(name = "hashedCredentialsMatcher")
-    public HashedCredentialsMatcher hashedCredentialsMatcher() {
-        HashedCredentialsMatcher credentialsMatcher = new HashedCredentialsMatcher();
-        credentialsMatcher.setHashAlgorithmName("MD5");
-        credentialsMatcher.setHashIterations(2);
-        credentialsMatcher.setStoredCredentialsHexEncoded(true);
-        return credentialsMatcher;
-    }
-
     /**StateLessShiroRealm，这是个自定义的认证类，继承自AuthorizingRealm，
      * 负责用户的认证和权限的处理，可以参考JdbcRealm的实现。
      */
+
+    //@DependsOn("lifecycleBeanPostProcessor")
     @Bean(name = "shiroRealm")
-    @DependsOn("lifecycleBeanPostProcessor")
     public StateLessShiroRealm shiroRealm() {
         StateLessShiroRealm realm = new StateLessShiroRealm();
         //realm.setCredentialsMatcher(hashedCredentialsMatcher());
         return realm;
     }
 
-    /**
-     * EhCacheManager，缓存管理，用户登陆成功后，把用户信息和权限信息缓存起来，
-     * 然后每次用户请求时，放入用户的session中，如果不设置这个bean，每个请求都会查询一次数据库。
-     */
-    /*@Bean(name = "shiroEhCacheManager")
-    @DependsOn("lifecycleBeanPostProcessor")
-    public EhCacheManager shiroEhCacheManager() {
-       return new EhCacheManager();
-   }*/
+    /*@Bean(name = "hashedCredentialsMatcher")
+    public HashedCredentialsMatcher hashedCredentialsMatcher() {
+        HashedCredentialsMatcher credentialsMatcher = new HashedCredentialsMatcher();
+        credentialsMatcher.setHashAlgorithmName("MD5");
+        credentialsMatcher.setHashIterations(2);
+        credentialsMatcher.setStoredCredentialsHexEncoded(true);
+        return credentialsMatcher;
+    }*/
 
-
-    @Bean(name = "sessionManager")
-    public DefaultSessionManager sessionManager(){
-        DefaultSessionManager defaultSessionManager = new DefaultSessionManager();
-        //禁用Session
-        defaultSessionManager.setSessionValidationSchedulerEnabled(false);
-        return defaultSessionManager;
-    }
-
-
-    /**
-     * 注入无状态的Session工厂
-     * @return
-     */
-    @Bean(name = "subjectFactory")
-    public StatelessDefaultSubjectFactory subjectFactory(){
-        return new StatelessDefaultSubjectFactory();
-    }
     /**
      * SecurityManager，权限管理，这个类组合了登陆，登出，权限，session的处理，是个比较重要的类。
      */
@@ -157,13 +103,47 @@ public class ShiroConfiguration {
     public DefaultWebSecurityManager securityManager() {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         securityManager.setRealm(shiroRealm());
-        securityManager.setCacheManager(shiroEhCacheManager());
-        //securityManager.getSubjectDAO().
+        securityManager.setCacheManager(shiroRedisCacheManager());
         securityManager.setSessionManager(sessionManager());
-        securityManager.setSubjectFactory(subjectFactory());
+        //securityManager.setSessionManager(defaultSessionManager());
+        //securityManager.setSubjectFactory(subjectFactory());
         return securityManager;
     }
 
+    @Bean(name = "sessionManager")
+    public SessionManager sessionManager() {
+        DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
+        sessionManager.setSessionDAO(redisSessionRepository);
+        sessionManager.setGlobalSessionTimeout(1800);
+        sessionManager.setCacheManager(shiroRedisCacheManager());
+        return sessionManager;
+    }
+
+    /**
+     * cacheManager 缓存 redis实现
+     *
+     * @return
+     */@Bean(name = "shiroRedisCacheManager")
+   public RedisCacheManager shiroRedisCacheManager() {
+       RedisCacheManager redisCacheManager = new RedisCacheManager();
+       redisCacheManager.setRedisTemplate(redisTemplate());
+       return redisCacheManager;
+    }
+
+    /**
+     * 配置shiro redisManager
+     *
+     * @return
+     */
+   /* public RedisManager redisManager() {
+        RedisManager redisManager = new RedisManager();
+        redisManager.setHost(host);
+        redisManager.setPort(port);
+        redisManager.setExpire(1800);// 配置过期时间
+        // redisManager.setTimeout(timeout);
+        // redisManager.setPassword(password);
+        return redisManager;
+    }*/
 
     /**
      * 相当于调用SecurityUtils.setSecurityManager(securityManager)
@@ -185,10 +165,10 @@ public class ShiroConfiguration {
      * 注入无状态的认证Filter
      * @return
      */
-    @Bean(name = "statelessAuthcFilter")
+    /*@Bean(name = "statelessAuthcFilter")
     public StatelessAuthcFilter statelessAuthcFilter(){
         return new StatelessAuthcFilter();
-    }
+    }*/
 
 
     /**
@@ -208,8 +188,9 @@ public class ShiroConfiguration {
     public ShiroFilterFactoryBean shiroFilterFactoryBean(){
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(securityManager());
+        shiroFilterFactoryBean.setLoginUrl("api/login");
         Map<String, Filter> filters = new LinkedHashMap<>();
-        filters.put("statelessAuthc",statelessAuthcFilter());
+        //filters.put("statelessAuthc",statelessAuthcFilter());
         LogoutFilter logoutFilter = new LogoutFilter();
         logoutFilter.setRedirectUrl("/login");
         //filters.put("logout",null);
@@ -222,13 +203,28 @@ public class ShiroConfiguration {
         //filterChainDefinitionMap.put("/user/**", "authc,roles[ROLE_USER]");//用户为ROLE_USER 角色可以访问。由用户角色控制用户行为。
         //filterChainDefinitionMap.put("/events/**", "authc,roles[ROLE_ADMIN]");
 
-        filterChainDefinitionMap.put("/**", "statelessAuthc");
+        //filterChainDefinitionMap.put("/**", "statelessAuthc");
+        filterChainDefinitionMap.put("/**", "authc");
 
 
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         shiroFilterFactoryBean.setSuccessUrl("/");
         shiroFilterFactoryBean.setUnauthorizedUrl("/403");
         return shiroFilterFactoryBean;
+    }
+
+
+    @Bean(name = "defaultSessionManager")
+    public DefaultSessionManager defaultSessionManager(){
+        DefaultSessionManager defaultSessionManager = new DefaultSessionManager();
+        defaultSessionManager.setSessionDAO(redisSessionRepository);
+        defaultSessionManager.setCacheManager(shiroRedisCacheManager());
+        return defaultSessionManager;
+    }
+
+    @Bean(name = "statelessAuthcFilter")
+    public StatelessAuthcFilter statelessAuthcFilter(){
+        return new StatelessAuthcFilter();
     }
 
     /**
@@ -261,17 +257,17 @@ public class ShiroConfiguration {
         return shiroFilterFactoryBean;
     }*/
 
-
     /**
+     *     @ConditionalOnMissingBean
      * DefaultAdvisorAutoProxyCreator，Spring的一个bean，由Advisor决定对哪些类的方法进行AOP代理。
      */
     @Bean
-    @ConditionalOnMissingBean
     public DefaultAdvisorAutoProxyCreator defaultAdvisorAutoProxyCreator() {
         DefaultAdvisorAutoProxyCreator defaultAAP = new DefaultAdvisorAutoProxyCreator();
         defaultAAP.setProxyTargetClass(true);
         return defaultAAP;
     }
+
 
     /**
      * AuthorizationAttributeSourceAdvisor，shiro里实现的Advisor类，
@@ -279,9 +275,53 @@ public class ShiroConfiguration {
      */
     @Bean
     public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor() {
-        AuthorizationAttributeSourceAdvisor aASA = new AuthorizationAttributeSourceAdvisor();
-        aASA.setSecurityManager(securityManager());
-        return aASA;
+        System.out.println("开启了Shiro注解支持");
+        AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor = new AuthorizationAttributeSourceAdvisor();
+        authorizationAttributeSourceAdvisor.setSecurityManager(securityManager());
+        return authorizationAttributeSourceAdvisor;
     }
+
+
+   /* @Bean
+    public CacheManager redisCacheManager() {
+        org.springframework.data.redis.cache.RedisCacheManager cacheManager = new org.springframework.data.redis.cache.RedisCacheManager(redisTemplate());
+        cacheManager.setDefaultExpiration(1800);
+        return cacheManager;
+    }*/
+
+    @Bean(name = "redisTemplate")
+    public RedisTemplate redisTemplate(){
+        RedisTemplate redisTemplate = new RedisTemplate();
+        redisTemplate.setConnectionFactory(jedisConnectionFactory());
+        redisTemplate.setDefaultSerializer(new RedisObjectSerializer());
+
+        return redisTemplate;
+    }
+
+    @Bean(name = "jedisPoolConfig")
+    public JedisPoolConfig jedisPoolConfig(){
+        JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
+        jedisPoolConfig.setMaxIdle(6);
+        jedisPoolConfig.setMaxTotal(32);
+        jedisPoolConfig.setMaxWaitMillis(15000);
+        jedisPoolConfig.setTimeBetweenEvictionRunsMillis(60000L);
+        jedisPoolConfig.setNumTestsPerEvictionRun(3);
+
+        return jedisPoolConfig;
+
+    }
+
+    @Bean(name = "jedisConnectionFactory")
+    public JedisConnectionFactory jedisConnectionFactory(){
+        JedisConnectionFactory jedisConnectionFactory = new JedisConnectionFactory();
+        jedisConnectionFactory.setPoolConfig(jedisPoolConfig());
+        jedisConnectionFactory.setHostName(host);
+        jedisConnectionFactory.setPort(port);
+        jedisConnectionFactory.setUsePool(true);
+
+        return jedisConnectionFactory;
+    }
+
+
 
 }

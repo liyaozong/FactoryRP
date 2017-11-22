@@ -13,12 +13,39 @@ public class StatelessToken implements AuthenticationToken {
     //private Map<String, ?> params;
     private String sequence;
 
-    public StatelessToken(String username, String sequence) {
+    private String password;
+
+    public StatelessToken(String username, String sequence,String password) {
         this.username = username;
+        this.sequence = sequence;
+        this.password = password;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getSequence() {
+        return sequence;
+    }
+
+    public void setSequence(String sequence) {
         this.sequence = sequence;
     }
 
-    public Object getPrincipal() {  return username;}
-    public Object getCredentials() {  return sequence;}
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Object getPrincipal() {  return this.username;}
+    public Object getCredentials() {  return this.password;}
 
 }

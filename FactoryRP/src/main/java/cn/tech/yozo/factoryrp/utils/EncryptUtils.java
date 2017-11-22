@@ -122,9 +122,13 @@ public class EncryptUtils {
         return md5Hex(password + salt).equals(new String(cs1));
     }
 
+
+
+
     public static void main(String[] args) {
-        String sault = generateSalt();
+        String sault = "6375026571448750";
         String md5ed = generate("123",sault);
+        System.out.println("md5Hex:"+md5Hex("123"));
         System.out.println(md5ed);
         System.out.println(sault);
         System.out.println(verify("123",md5ed));

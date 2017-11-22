@@ -60,6 +60,10 @@ spring:
           sharedCache:
             mode: ENABLE_SELECTIVE # 配置shared-cache-mode
 
+  redis:
+    host: 10.108.44.15
+    port: 6379
+    password:
 
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss

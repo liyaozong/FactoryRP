@@ -3,9 +3,7 @@ package cn.tech.yozo.factoryrp;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
@@ -16,10 +14,10 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  * Created by Singer on 2017/7/25.
  */
 @Configuration
-@EnableAutoConfiguration
+//@EnableAutoConfiguration
 @ComponentScan
 @EnableAspectJAutoProxy
-@EnableCaching
+//@EnableCaching
 //@SpringBootApplication(exclude={DataSourceAutoConfiguration.class,HibernateJpaAutoConfiguration.class})
 @SpringBootApplication
 @EnableTransactionManagement

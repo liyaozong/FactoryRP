@@ -15,5 +15,6 @@ public class ShiroConstant {
 
     public static String PARAM_SEQUENCE = "sequence";
 
+    public static String PARAM_PASSWORD = "password";
 
 }

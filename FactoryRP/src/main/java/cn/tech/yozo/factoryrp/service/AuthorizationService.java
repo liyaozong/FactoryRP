@@ -15,6 +15,15 @@ import java.util.List;
  */
 public interface AuthorizationService {
 
+
+
+    /**
+     * 根据企业角色标识查询企业的所有用户
+     * @param corporateIdentify
+     * @return
+     */
+    UserRespWarpResp queryAllUserByCorporateIdentify(Long corporateIdentify);
+
     /**
      * 为用户添加角色
      * @param userRoleReq

@@ -1,6 +1,7 @@
 package cn.tech.yozo.factoryrp.api;
 
 import cn.tech.yozo.factoryrp.service.AuthorizationService;
+import cn.tech.yozo.factoryrp.utils.UUIDSequenceWorker;
 import cn.tech.yozo.factoryrp.vo.base.ApiResponse;
 import cn.tech.yozo.factoryrp.vo.req.MenuReq;
 import cn.tech.yozo.factoryrp.vo.req.MenuRoleReq;
@@ -13,6 +14,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -33,7 +36,11 @@ public class AuthorizationController extends BaseController{
     @Resource
     private AuthorizationService authorizationService;
 
+    @Value("${spring.redis.host}")
+    private String host;
 
+    @Resource
+    private RedisTemplate redisTemplate;
 
     /**
      * 根据企业标识查询所有角色
@@ -51,6 +58,26 @@ public class AuthorizationController extends BaseController{
     public ApiResponse<List<RoleResp>> queryRolesByorporateIdentify(@PathVariable("requestSeqNo") String requestSeqNo,
                                                                     @RequestParam(value="corporateIdentify",required = true,defaultValue = "1")
                                                                             String corporateIdentify){
+
+        try{
+
+            redisTemplate.opsForValue().set("1234",String.valueOf(UUIDSequenceWorker.uniqueSequenceId()),500000);
+            redisTemplate.opsForValue().set("1231234",String.valueOf(UUIDSequenceWorker.uniqueSequenceId()),500000);
+            redisTemplate.opsForValue().set("1233123",String.valueOf(UUIDSequenceWorker.uniqueSequenceId()),500000);
+            redisTemplate.opsForValue().set("12331232",String.valueOf(UUIDSequenceWorker.uniqueSequenceId()),500000);
+            redisTemplate.opsForValue().set("312312",String.valueOf(UUIDSequenceWorker.uniqueSequenceId()),500000);
+            String str = String.valueOf(redisTemplate.opsForValue().get("123"));
+            System.out.println(String.valueOf(redisTemplate.opsForValue().get("1234")));
+            System.out.println(String.valueOf(redisTemplate.opsForValue().get("1231234")));
+            System.out.println(String.valueOf(redisTemplate.opsForValue().get("1233123")));
+            System.out.println(String.valueOf(redisTemplate.opsForValue().get("1233123")));
+            System.out.println(String.valueOf(redisTemplate.opsForValue().get("12331232")));
+            System.out.println(String.valueOf(redisTemplate.opsForValue().get("312312")));
+            Object o = redisTemplate.opsForValue().get("1234");
+            System.out.println(o);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         List<RoleResp> roleResps = authorizationService.queryRolesByorporateIdentify(corporateIdentify);
         return apiResponse(requestSeqNo,roleResps);
     }
@@ -92,6 +119,27 @@ public class AuthorizationController extends BaseController{
         return apiResponse(requestSeqNo,authorizationService.queryByRoleIdAndCorporateIdentify(roleId,corporateIdentify));
     }
 
+
+    /**
+     * 根据企业角色标识查询企业的所有用户
+     * @param requestSeqNo
+     * @param corporateIdentify
+     * @return
+     */
+    @ApiOperation(value = "根据企业角色标识查询企业的所有用户",notes = "根据企业角色标识查询企业的所有用户",httpMethod = "GET")
+    @GetMapping("/queryAllUserByCorporateIdentify/{requestSeqNo}")
+    @ApiImplicitParams({
+            @ApiImplicitParam(dataType = "Long" ,name = "corporateIdentify", paramType = "query" ,
+                    value = "企业唯一标识",required = true,defaultValue = "3123881"),
+            @ApiImplicitParam(dataType = "Long" ,name = "requestSeqNo", paramType = "path" ,
+                    value = "请求流水号",required = true,defaultValue = "12345678")
+    })
+    public ApiResponse<RoleMenuQueryResp> queryAllUserByCorporateIdentify(@PathVariable("requestSeqNo") String requestSeqNo,
+                                                                            @RequestParam(value="corporateIdentify",required = true,defaultValue = "1")
+                                                                                    Long corporateIdentify){
+
+        return apiResponse(requestSeqNo,authorizationService.queryAllUserByCorporateIdentify(corporateIdentify));
+    }
 
 
     /**

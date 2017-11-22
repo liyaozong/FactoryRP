@@ -1,6 +1,5 @@
 package cn.tech.yozo.factoryrp.config.shiro;
 
-import cn.tech.yozo.factoryrp.entity.Role;
 import cn.tech.yozo.factoryrp.entity.User;
 import cn.tech.yozo.factoryrp.repository.RoleRepository;
 import cn.tech.yozo.factoryrp.repository.UserRepository;
@@ -9,18 +8,19 @@ import cn.tech.yozo.factoryrp.utils.CheckParam;
 import cn.tech.yozo.factoryrp.utils.EncryptUtils;
 import com.alibaba.fastjson.JSON;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.*;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.AuthenticationInfo;
+import org.apache.shiro.authc.AuthenticationToken;
+import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
-import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.Resource;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -29,6 +29,14 @@ import java.util.Set;
  * @description 认证类
  */
 public class StateLessShiroRealm extends AuthorizingRealm {
+
+    public void setAuthorizationCachingEnabled(){
+        super.setAuthorizationCachingEnabled(true);
+    }
+
+    public void setCachingEnabled(){
+        super.setCachingEnabled(true);
+    }
 
     @Override
     public boolean supports(AuthenticationToken token) {
@@ -77,20 +85,8 @@ public class StateLessShiroRealm extends AuthorizingRealm {
             //权限信息对象info,用来存放查出的用户的所有的角色（role）及权限（permission）
             SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
 
-            //用户的角色集合
-            List<Role> roleList = user.getRoleList();
 
             Set<String> permissionNameList = new HashSet<>();
-
-            /**
-             * 赋予角色
-             */
-           /* roleList.stream().forEach(u1 ->{
-                info.addRole(u1.getRoleName());
-                u1.getPermissionList().stream().forEach(p1 ->{
-                    permissionNameList.add(p1.getName()); //拿到权限名称
-                });
-            });*/
 
             info.addStringPermissions(permissionNameList);
 
@@ -119,16 +115,16 @@ public class StateLessShiroRealm extends AuthorizingRealm {
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
         logger.info("doGetAuthenticationInfo +"  + authenticationToken.toString());
-        UsernamePasswordToken token = null;
+        StatelessToken token = null;
         try{
-            token = (UsernamePasswordToken) authenticationToken;
+            token = (StatelessToken) authenticationToken;
 
         }catch (Exception e){
             e.printStackTrace();
         }
 
         String userName = token.getUsername();
-        String tokenPassword = String.valueOf(token.getPassword());
+        String tokenPassword = token.getPassword();
         logger.info(">>>>>>>>>doGetAuthenticationInfo密码<<<<<<<<<<<<<<<<<<<"+token.getPassword());
 
         User user = userRepository.findByUserName(userName);
@@ -137,16 +133,24 @@ public class StateLessShiroRealm extends AuthorizingRealm {
             String sault = user.getSault();
             //ShiroUser shiroUser=new ShiroUser(user.getId(), user.getLoginName(), user.getName());
             //设置用户session
-            Session session = SecurityUtils.getSubject().getSession();
-            session.setAttribute("user", user);
+            //Session session = SecurityUtils.getSubject().getSession();
+            //session.setAttribute("user", user);
 
             //处理盐
-            token.setPassword(EncryptUtils.generate(tokenPassword,user.getSault()).toCharArray());
+            //token.setPassword(EncryptUtils.generate(tokenPassword,user.getSault()));
+            //token.setPassword("123");
             // 若存在，将此用户存放到登录认证info中，无需自己做密码对比，Shiro会为我们进行密码对比校验
-            return new SimpleAuthenticationInfo(userName,user.getPassword(),getName());
+            //return new SimpleAuthenticationInfo(token,user.getPassword(),getName());
+            return new SimpleAuthenticationInfo(token,"123",getName());
         } else {
             return null;
         }
 
     }
+
+    public static void main(String[] args) {
+        String generate = EncryptUtils.generate("ewqewqeqwewqewq", "eqwewqeqweqw");
+        System.out.println(generate);
+    }
+
 }

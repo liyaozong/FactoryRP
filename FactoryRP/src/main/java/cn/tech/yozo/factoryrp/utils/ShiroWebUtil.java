@@ -1,14 +1,15 @@
 package cn.tech.yozo.factoryrp.utils;
 
+import cn.tech.yozo.factoryrp.config.shiro.StatelessToken;
 import cn.tech.yozo.factoryrp.vo.base.ApiResponse;
 import com.alibaba.fastjson.JSON;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationToken;
-import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
@@ -113,25 +114,30 @@ public class ShiroWebUtil {
 	 * @param subject
 	 * @throws IOException
 	 */
-	public static void loginSuccess(ServletRequest request, ServletResponse response, AuthenticationToken token,
+	public static void loginSuccess(ServletRequest request,
+                                    ServletResponse response, AuthenticationToken token,
 			Subject subject) throws IOException {
 		ApiResponse<LoginSuccessResut> apiResponse = new ApiResponse<>();
-		PrintWriter out = null;
+		ServletOutputStream out = null;
 		try {
 			preSetResponse(response);
 
 			//shiro自动生成的token
 			String tokenStr = subject.getSession().getId().toString();
-			apiResponse.setData(new LoginSuccessResut(((UsernamePasswordToken) token).getUsername(),
+			apiResponse.setData(new LoginSuccessResut(((StatelessToken) token).getUsername(),
 					tokenStr));
 			apiResponse.setErrorCode(ErrorCode.SUCCESS.getCode());
 			apiResponse.setErrorMessage(ErrorCode.SUCCESS.getMessage());
 		} catch (Exception e) {
 			logger.error("loginSuccess error:" + e.getMessage(), e);
 		} finally {
-			out = response.getWriter();
-			out.append(JSON.toJSONString(apiResponse));
-			out.flush();
+            HttpServletResponse httpResponse = (HttpServletResponse) response;
+            httpResponse.getWriter().write(JSON.toJSONString(apiResponse));
+
+			//out = response.getOutputStream();
+			//out.write(JSON.toJSONString(apiResponse).getBytes());
+			//out.flush();
+			//out.close();
 		}
 	}
 
@@ -163,16 +169,17 @@ public class ShiroWebUtil {
 	 * @param response
 	 * @param ex
 	 */
-	public static void loginFailed(ServletRequest request, ServletResponse response, AuthenticationException ex) {
+	public static void loginFailed(ServletRequest request,
+                                   ServletResponse response, AuthenticationToken token,
+                                   Subject subject) {
 		ApiResponse apiResponse = new ApiResponse();
 		preSetResponse(response);
 		PrintWriter out = null;
 		apiResponse.setErrorCode(ErrorCode.LOGIN_FAILED.getCode());
 		apiResponse.setErrorMessage(ErrorCode.LOGIN_FAILED.getMessage());
 		try {
-			out = response.getWriter();
-			out.append(JSON.toJSONString(apiResponse));
-			out.flush();
+            HttpServletResponse httpResponse = (HttpServletResponse) response;
+            httpResponse.getWriter().write(JSON.toJSONString(apiResponse));
 		} catch (IOException e) {
 			logger.error("loginFailed error:" + e.getMessage(), e);
 		}

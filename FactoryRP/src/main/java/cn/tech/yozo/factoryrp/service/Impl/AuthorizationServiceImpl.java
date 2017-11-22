@@ -1,9 +1,6 @@
 package cn.tech.yozo.factoryrp.service.Impl;
 
-import cn.tech.yozo.factoryrp.entity.Menu;
-import cn.tech.yozo.factoryrp.entity.MenuRole;
-import cn.tech.yozo.factoryrp.entity.Role;
-import cn.tech.yozo.factoryrp.entity.UserRole;
+import cn.tech.yozo.factoryrp.entity.*;
 import cn.tech.yozo.factoryrp.exception.BussinessException;
 import cn.tech.yozo.factoryrp.repository.*;
 import cn.tech.yozo.factoryrp.service.AuthorizationService;
@@ -35,10 +32,8 @@ public class AuthorizationServiceImpl implements AuthorizationService {
     @Resource
     private CorporateRepository corporateRepository;
 
-
     @Resource
     private  UserRepository userRepository;
-
 
     @Resource
     private  PermissionRepository permissionRepository;
@@ -51,6 +46,31 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 
     @Resource
     private UserRoleRepository userRoleRepository;
+
+
+    /**
+     * 根据企业角色标识查询企业的所有用户
+     * @param corporateIdentify
+     * @return
+     */
+    public UserRespWarpResp queryAllUserByCorporateIdentify(Long corporateIdentify){
+
+        List<User> userList = userRepository.findByCorporateIdentify(corporateIdentify);
+        List<UserResp> userRespList = new ArrayList<>();
+        userList.stream().forEach(u1 ->{
+            UserResp userResp = new UserResp();
+            userResp.setUserId(u1.getUserId());
+            userResp.setRoleId(u1.getRoleId());
+            userResp.setUserName(u1.getUserName());
+
+            userRespList.add(userResp);
+        });
+
+        UserRespWarpResp userRespWarpResp = new UserRespWarpResp();
+
+        userRespWarpResp.setUserRespList(userRespList);
+        return userRespWarpResp;
+    }
 
     /**
      * 为用户添加角色

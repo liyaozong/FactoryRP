@@ -2,11 +2,14 @@ package cn.tech.yozo.factoryrp.config.shiro.filter;
 
 import cn.tech.yozo.factoryrp.config.shiro.ShiroConstant;
 import cn.tech.yozo.factoryrp.config.shiro.StatelessToken;
+import cn.tech.yozo.factoryrp.utils.ShiroWebUtil;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.AuthenticationToken;
+import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.AccessControlFilter;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -28,28 +31,40 @@ public class StatelessAuthcFilter extends AccessControlFilter {
         //String clientDigest = request.getParameter(ShiroConstant.PARAM_DIGEST);
         String sequence = request.getParameter(ShiroConstant.PARAM_SEQUENCE);
         //2、客户端传入的用户身份
+        String tokenStr = request.getParameter(ShiroConstant.PARAM_TOKEN);
         String username = request.getParameter(ShiroConstant.PARAM_USERNAME);
+        String password = request.getParameter(ShiroConstant.PARAM_PASSWORD);
         //3、客户端请求的参数列表
         Map<String, String[]> params =
                 new HashMap<String, String[]>(request.getParameterMap());
         params.remove(ShiroConstant.PARAM_DIGEST);
         //4、生成无状态Token
-        StatelessToken token = new StatelessToken(username, sequence);
+        StatelessToken token = new StatelessToken(username, sequence,password);
         try {
+
+            Subject subject = SecurityUtils.getSubject();
+
             //5、委托给Realm进行登录
             getSubject(request, response).login(token);
+
+            //登陆成功之后的逻辑
+            return onLoginSuccess(token,getSubject(request,response),request,response);
         } catch (Exception e) {
             e.printStackTrace();
             //6、登录失败
-            onLoginFail(response);
+            onLoginFail(token,getSubject(request,response),request,response);
             return false;
         }
-        return true;
     }
     //登录失败时默认返回401状态码
-    private void onLoginFail(ServletResponse response) throws IOException {
-        HttpServletResponse httpResponse = (HttpServletResponse) response;
-        httpResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        httpResponse.getWriter().write("login error");
+    private void onLoginFail(AuthenticationToken token, Subject subject, ServletRequest request,
+                             ServletResponse response) throws IOException {
+        ShiroWebUtil.loginFailed(request, response, token, subject);
+    }
+
+    protected boolean onLoginSuccess(AuthenticationToken token, Subject subject, ServletRequest request,
+                                     ServletResponse response) throws Exception {
+        ShiroWebUtil.loginSuccess(request, response, token, subject);
+        return false;
     }
 }

@@ -23,7 +23,7 @@ public class AuthenticationFilter extends FormAuthenticationFilter {
     @Override
     protected boolean onLoginFailure(AuthenticationToken token, AuthenticationException e, ServletRequest request,
                                      ServletResponse response) {
-        ShiroWebUtil.loginFailed(request, response, e);
+        //ShiroWebUtil.loginFailed(request, response, e);
         return false;
     }
 
