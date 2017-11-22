@@ -22,8 +22,9 @@ public enum ErrorCode {
     PARAM_ERROR("000004","参数格式错误"),
     CORPORATENAME__REPETED_ERROR("000005","企业名称已经存在"),
     ROLE__REPETED_ERROR("000006","当前企业的角色已经存在"),
-    MENU__REPETED_ERROR("000006","当前企业的角色已经存在"),
-    MENUROLE__REPETED_ERROR("000006","当前企业的角色已经存在");
+    MENU__REPETED_ERROR("000007","当前企业的菜单已经存在"),
+    MENUROLE__REPETED_ERROR("000008","当前企业的菜单-角色已经存在"),
+    USERROLE__REPETED_ERROR("000009","当前企业的用户-角色已经存在");
 
 
     private String code;

@@ -45,7 +45,7 @@ public class RoleResp implements Serializable{
 
 
     @ApiModelProperty(value = "企业唯一标识",required = true,notes = "企业唯一标识",example = "32132132132213")
-    private String corporateIdentify;
+    private Long corporateIdentify;
 
 
     public String getRoleId() {
@@ -88,11 +88,11 @@ public class RoleResp implements Serializable{
         this.enableStatus = enableStatus;
     }
 
-    public String getCorporateIdentify() {
+    public Long getCorporateIdentify() {
         return corporateIdentify;
     }
 
-    public void setCorporateIdentify(String corporateIdentify) {
+    public void setCorporateIdentify(Long corporateIdentify) {
         this.corporateIdentify = corporateIdentify;
     }
 }

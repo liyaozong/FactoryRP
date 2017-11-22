@@ -3,10 +3,8 @@ package cn.tech.yozo.factoryrp.service;
 import cn.tech.yozo.factoryrp.vo.req.MenuReq;
 import cn.tech.yozo.factoryrp.vo.req.MenuRoleReq;
 import cn.tech.yozo.factoryrp.vo.req.RoleReq;
-import cn.tech.yozo.factoryrp.vo.resp.MenuResp;
-import cn.tech.yozo.factoryrp.vo.resp.MenuRoleResp;
-import cn.tech.yozo.factoryrp.vo.resp.RoleMenuQueryResp;
-import cn.tech.yozo.factoryrp.vo.resp.RoleResp;
+import cn.tech.yozo.factoryrp.vo.req.UserRoleReq;
+import cn.tech.yozo.factoryrp.vo.resp.*;
 
 import java.util.List;
 
@@ -16,6 +14,13 @@ import java.util.List;
  * @description 权限相关服务
  */
 public interface AuthorizationService {
+
+    /**
+     * 为用户添加角色
+     * @param userRoleReq
+     * @return
+     */
+    UserRoleResp addUserRole(UserRoleReq userRoleReq);
 
     /**
      * 根据企业标识和角色id查询角色具备的菜单

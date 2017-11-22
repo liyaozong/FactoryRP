@@ -2,6 +2,7 @@ package cn.tech.yozo.factoryrp.vo.base;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 
 import java.io.Serializable;
 
@@ -11,20 +12,14 @@ import java.io.Serializable;
  * @description
  */
 @ApiModel
+@Data
 public class ApiCorporateIdentifyRequest extends ApiRequest implements Serializable{
 
         private static final long serialVersionUID = -4494715239670697718L;
 
         @ApiModelProperty(value = "企业唯一标识",required = true,notes = "企业唯一标识",example = "32132132132213")
-        private String corporateIdentify;
+        private Long corporateIdentify;
 
 
-        public String getCorporateIdentify() {
-            return corporateIdentify;
-        }
-
-        public void setCorporateIdentify(String corporateIdentify) {
-            this.corporateIdentify = corporateIdentify;
-        }
 
 }

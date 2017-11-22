@@ -3,6 +3,7 @@ package cn.tech.yozo.factoryrp.service.Impl;
 import cn.tech.yozo.factoryrp.entity.Menu;
 import cn.tech.yozo.factoryrp.entity.MenuRole;
 import cn.tech.yozo.factoryrp.entity.Role;
+import cn.tech.yozo.factoryrp.entity.UserRole;
 import cn.tech.yozo.factoryrp.exception.BussinessException;
 import cn.tech.yozo.factoryrp.repository.*;
 import cn.tech.yozo.factoryrp.service.AuthorizationService;
@@ -11,6 +12,7 @@ import cn.tech.yozo.factoryrp.utils.ErrorCode;
 import cn.tech.yozo.factoryrp.vo.req.MenuReq;
 import cn.tech.yozo.factoryrp.vo.req.MenuRoleReq;
 import cn.tech.yozo.factoryrp.vo.req.RoleReq;
+import cn.tech.yozo.factoryrp.vo.req.UserRoleReq;
 import cn.tech.yozo.factoryrp.vo.resp.*;
 import org.springframework.stereotype.Service;
 
@@ -45,8 +47,42 @@ public class AuthorizationServiceImpl implements AuthorizationService {
     private MenuRepository menuRepository;
 
     @Resource
-    private
-    MenuRoleRepository menuRoleRepository;
+    private MenuRoleRepository menuRoleRepository;
+
+    @Resource
+    private UserRoleRepository userRoleRepository;
+
+    /**
+     * 为用户添加角色
+     * @param userRoleReq
+     * @return
+     */
+    public UserRoleResp addUserRole(UserRoleReq userRoleReq){
+
+        UserRole userRole = userRoleRepository.findByUserIdAndRoleIdAndCorporateIdentify(userRoleReq.getUserId(),
+                userRoleReq.getRoleId(), userRoleReq.getCorporateIdentify());
+
+        if(!CheckParam.isNull(userRole)){
+            throw new BussinessException(ErrorCode.USERROLE__REPETED_ERROR.getCode(),ErrorCode.USERROLE__REPETED_ERROR.getMessage());
+        }
+
+        userRole = new UserRole();
+
+        userRole.setRoleId(userRoleReq.getRoleId());
+        userRole.setCorporateIdentify(userRoleReq.getCorporateIdentify());
+        userRole.setUserId(userRoleReq.getUserId());
+
+        userRoleRepository.save(userRole);
+
+        UserRoleResp userRoleResp = new UserRoleResp();
+
+        userRoleResp.setRoleId(userRole.getRoleId());
+        userRoleResp.setUserId(userRole.getUserId());
+        userRoleResp.setId(userRole.getId());
+
+        return userRoleResp;
+
+    }
 
 
     /**
@@ -95,7 +131,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
      */
     public MenuRoleResp addMenuRole(MenuRoleReq menuRoleReq){
 
-        MenuRole menuRole = menuRoleRepository.findByRoleIdAndMenuIdAndCorporateIdentify(menuRoleReq.getRoleId(), menuRoleReq.getMenuId(), Long.parseLong(menuRoleReq.getCorporateIdentify()));
+        MenuRole menuRole = menuRoleRepository.findByRoleIdAndMenuIdAndCorporateIdentify(menuRoleReq.getRoleId(), menuRoleReq.getMenuId(),menuRoleReq.getCorporateIdentify());
 
         if(!CheckParam.isNull(menuRole)){
             throw new BussinessException(ErrorCode.MENUROLE__REPETED_ERROR.getCode(),ErrorCode.MENUROLE__REPETED_ERROR.getMessage());
@@ -105,7 +141,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 
         menuRole.setMenuId(menuRoleReq.getMenuId());
         menuRole.setRoleId(menuRoleReq.getRoleId());
-        menuRole.setCorporateIdentify(Long.parseLong(menuRoleReq.getCorporateIdentify()));
+        menuRole.setCorporateIdentify(menuRoleReq.getCorporateIdentify());
         menuRole.setRemark(menuRoleReq.getRemark());
 
         MenuRoleResp menuRoleResp = new MenuRoleResp();
@@ -127,7 +163,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
      */
     public MenuResp addMenu(MenuReq menuReq){
         Menu menu = menuRepository.findByNameAndUrlAndCorporateIdentify(menuReq.getName(),
-                menuReq.getUrl(),Long.parseLong(menuReq.getCorporateIdentify()));
+                menuReq.getUrl(),menuReq.getCorporateIdentify());
 
         if(!CheckParam.isNull(menu)){
             throw new BussinessException(ErrorCode.MENU__REPETED_ERROR.getCode(),ErrorCode.MENU__REPETED_ERROR.getMessage());
@@ -138,7 +174,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
         menu.setName(menuReq.getName());
         menu.setParentId(menuReq.getParentId());
         menu.setRemark(menuReq.getRemark());
-        menu.setCorporateIdentify(Long.parseLong(menuReq.getCorporateIdentify()));
+        menu.setCorporateIdentify(menuReq.getCorporateIdentify());
         menu.setOrderNumber(menuReq.getOrderNumber());
         menu.setUrl(menuReq.getUrl());
 
@@ -159,7 +195,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
      * @return
      */
     public RoleResp addRole(RoleReq roleReq){
-        Role role = roleRepository.findByRoleCodeAndCorporateIdentify(roleReq.getRoleCode(), Long.parseLong(roleReq.getCorporateIdentify()));
+        Role role = roleRepository.findByRoleCodeAndCorporateIdentify(roleReq.getRoleCode(),roleReq.getCorporateIdentify());
 
         if(!CheckParam.isNull(role)){
             throw new BussinessException(ErrorCode.ROLE__REPETED_ERROR.getCode(),ErrorCode.ROLE__REPETED_ERROR.getMessage());
@@ -169,7 +205,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
         role.setRoleCode(roleReq.getRoleCode());
         role.setRoleName(roleReq.getRoleName());
         role.setEnableStatus(roleReq.getEnableStatus());
-        role.setCorporateIdentify(Long.parseLong(roleReq.getCorporateIdentify()));
+        role.setCorporateIdentify(roleReq.getCorporateIdentify());
         role.setRoleDescription(roleReq.getRoleDescription());
 
         RoleResp roleResp = new RoleResp();
@@ -199,7 +235,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
             List<RoleResp> roleResps = new ArrayList<>();
             roleList.stream().forEach(r1 ->{
                 RoleResp roleResp = new RoleResp();
-                roleResp.setCorporateIdentify(String.valueOf(r1.getCorporateIdentify()));
+                roleResp.setCorporateIdentify(r1.getCorporateIdentify());
                 roleResp.setEnableStatus(r1.getEnableStatus());
                 roleResp.setRoleCode(r1.getRoleCode());
                 roleResp.setRoleDescription(r1.getRoleDescription());

@@ -5,6 +5,7 @@ import cn.tech.yozo.factoryrp.vo.base.ApiResponse;
 import cn.tech.yozo.factoryrp.vo.req.MenuReq;
 import cn.tech.yozo.factoryrp.vo.req.MenuRoleReq;
 import cn.tech.yozo.factoryrp.vo.req.RoleReq;
+import cn.tech.yozo.factoryrp.vo.req.UserRoleReq;
 import cn.tech.yozo.factoryrp.vo.resp.MenuResp;
 import cn.tech.yozo.factoryrp.vo.resp.RoleMenuQueryResp;
 import cn.tech.yozo.factoryrp.vo.resp.RoleResp;
@@ -120,5 +121,18 @@ public class AuthorizationController extends BaseController{
         return apiResponse(menuRoleReq,authorizationService.addMenuRole(menuRoleReq));
     }
 
+
+    /**
+     * 为用户添加角色
+     * @param userRoleReq
+     * @return
+     */
+    @ApiOperation(value = "为用户添加角色",notes = "为用户添加角色",httpMethod = "POST")
+    @PostMapping("/addUserRole")
+    @ApiImplicitParam(dataType = "UserRoleReq" ,name = "userRoleReq", paramType = "VO" ,
+            value = "为用户添加角色",required = true)
+    public ApiResponse<MenuResp> addUserRole(@Valid @RequestBody UserRoleReq userRoleReq){
+        return apiResponse(userRoleReq,authorizationService.addUserRole(userRoleReq));
+    }
 
 }
