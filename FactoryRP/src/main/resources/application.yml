@@ -61,7 +61,7 @@ spring:
             mode: ENABLE_SELECTIVE # 配置shared-cache-mode
 
   redis:
-    host: 10.108.44.15
+    host: localhost
     port: 6379
     password:
 
