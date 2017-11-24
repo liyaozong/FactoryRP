@@ -43,7 +43,7 @@ public class AuthorizationController extends BaseController{
     @Resource
     private AuthorizationService authorizationService;
 
-    @Value("${spring.redis.host}")
+    /*@Value("${spring.redis.host}")
     private String host;
 
     @Resource
@@ -51,7 +51,7 @@ public class AuthorizationController extends BaseController{
 
 
     @Resource
-    private StringRedisTemplate stringRedisTemplate;
+    private StringRedisTemplate stringRedisTemplate;*/
     /**
      * 根据企业标识查询所有角色
      * @param corporateIdentify
@@ -68,38 +68,6 @@ public class AuthorizationController extends BaseController{
     public ApiResponse<List<RoleResp>> queryRolesByorporateIdentify(@PathVariable("requestSeqNo") String requestSeqNo,
                                                                     @RequestParam(value="corporateIdentify",required = true,defaultValue = "1")
                                                                             String corporateIdentify){
-
-        try{
-
-            User user = new User();
-
-            user.setId(UUIDSequenceWorker.uniqueSequenceId());
-            user.setUserName("你好");
-
-            String string = JSON.toJSONString(user);
-            stringRedisTemplate.opsForValue().set("qwe",string);
-
-            String qwe = stringRedisTemplate.opsForValue().get("qwe");
-
-            System.out.println(qwe);
-
-            redisTemplate.opsForValue().set("1234",String.valueOf("SpringRedis"),500000);
-            redisTemplate.opsForValue().set("1231234","中国",500000);
-            redisTemplate.opsForValue().set("1233123",String.valueOf(UUIDSequenceWorker.uniqueSequenceId()),500000);
-            redisTemplate.opsForValue().set("12331232",String.valueOf(UUIDSequenceWorker.uniqueSequenceId()),500000);
-            redisTemplate.opsForValue().set("312312",String.valueOf(UUIDSequenceWorker.uniqueSequenceId()),500000);
-            String str = String.valueOf(redisTemplate.opsForValue().get("123"));
-            System.out.println(String.valueOf(redisTemplate.opsForValue().get("1234")));
-            System.out.println(String.valueOf(redisTemplate.opsForValue().get("1231234")));
-            System.out.println(String.valueOf(redisTemplate.opsForValue().get("1233123")));
-            System.out.println(String.valueOf(redisTemplate.opsForValue().get("1233123")));
-            System.out.println(String.valueOf(redisTemplate.opsForValue().get("12331232")));
-            System.out.println(String.valueOf(redisTemplate.opsForValue().get("312312")));
-            Object o = redisTemplate.opsForValue().get("1234");
-            System.out.println(o);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
         List<RoleResp> roleResps = authorizationService.queryRolesByorporateIdentify(corporateIdentify);
         return apiResponse(requestSeqNo,roleResps);
     }
@@ -205,6 +173,13 @@ public class AuthorizationController extends BaseController{
         return apiResponse(userRoleReq,authorizationService.addUserRole(userRoleReq));
     }
 
+
+    /**
+     * 没有token的返回接口，没啥用
+     * @param request
+     * @param response
+     * @return
+     */
     @GetMapping("/unAuthToken")
     public ApiResponse unAuthToken(HttpServletRequest request, HttpServletResponse response){
         return AuthWebUtil.needLogin1(request,response);
@@ -213,13 +188,20 @@ public class AuthorizationController extends BaseController{
 
     /**
      * 登陆接口,其实没啥用
+     * 如果不定义，SpringBoot会把登陆接口重置为/error
      * @param request
      * @param response
      * @return
      */
-    @ApiImplicitParam(dataType = "Stirng" ,name = "requestSeqNo", paramType = "String" ,
-            value = "请求流水号",required = true)
-    @ApiOperation(value = "登陆接口",notes = "登陆接口",httpMethod = "POST")
+    @ApiImplicitParams({
+            @ApiImplicitParam(dataType = "String" ,name = "username", paramType = "query" ,
+                    value = "用户名",required = true,defaultValue = "张三"),
+            @ApiImplicitParam(dataType = "String" ,name = "password", paramType = "query" ,
+                    value = "用户密码",required = true,defaultValue = "123"),
+            @ApiImplicitParam(dataType = "Long" ,name = "requestSeqNo", paramType = "path" ,
+                    value = "请求流水号",required = true,defaultValue = "12345678")
+    })
+    @ApiOperation(value = "登陆接口",notes = "登陆接口",httpMethod = "GET")
     @GetMapping("/login")
     public ApiResponse<AuthUser> login(HttpServletRequest request, HttpServletResponse response){
         //return AuthWebUtil.needLogin1(request,response);

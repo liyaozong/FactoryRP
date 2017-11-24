@@ -1,11 +1,9 @@
 package cn.tech.yozo.factoryrp.config.auth;
 
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.config.annotation.*;
 
 /**
  * @author created by Singer email:313402703@qq.com
@@ -13,7 +11,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
  * @description
  */
 //@EnableWebMvc
-//@Configuration
+@Configuration
+//@EnableAutoConfiguration
 public class WebAuthConfigurer extends WebMvcConfigurerAdapter {
 
 
@@ -27,12 +26,25 @@ public class WebAuthConfigurer extends WebMvcConfigurerAdapter {
         return new AuthIntercepter();
     }
 
+
+
     @Override
    public void addInterceptors(InterceptorRegistry registry) {
         userAuthService();
-        registry.addInterceptor(localInterceptor()).addPathPatterns("/api/*");
+        registry.addInterceptor(localInterceptor()).addPathPatterns("/api/**")
         //.excludePathPatterns("*/swagger-resources/*")
-        //.excludePathPatterns("*.html");//暂时设置为拦截所有请求
+        //.excludePathPatterns("/**/swagger-ui.html")
+        .excludePathPatterns("/**/*.html")
+        .excludePathPatterns("/**/fonts/*")
+        .excludePathPatterns("/**/*.css")
+        .excludePathPatterns("/**/*.js")
+        .excludePathPatterns("/**/*.png")
+        .excludePathPatterns("/**/*.gif")
+        .excludePathPatterns("/**/*.jpg")
+        .excludePathPatterns("/**/*.jpeg")
+        .excludePathPatterns("/**/*.js")
+        .excludePathPatterns("/webjars/**")
+        .excludePathPatterns("/**/**/testAPI/*");//暂时设置为拦截所有请求
 
     }
  /*.excludePathPatterns("/api/authorization/unAuthToken")

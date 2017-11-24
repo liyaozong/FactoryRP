@@ -2,7 +2,10 @@ package cn.tech.yozo.factoryrp.config.auth;
 
 import cn.tech.yozo.factoryrp.entity.User;
 import cn.tech.yozo.factoryrp.service.AuthorizationService;
-import cn.tech.yozo.factoryrp.utils.*;
+import cn.tech.yozo.factoryrp.utils.AuthWebUtil;
+import cn.tech.yozo.factoryrp.utils.CheckParam;
+import cn.tech.yozo.factoryrp.utils.EncryptUtils;
+import cn.tech.yozo.factoryrp.utils.TokenUtil;
 import cn.tech.yozo.factoryrp.vo.resp.auth.AuthUser;
 import cn.tech.yozo.factoryrp.vo.resp.auth.AuthUserMenu;
 import com.alibaba.fastjson.JSON;
@@ -12,8 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
+import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -27,7 +30,7 @@ import java.util.List;
  * @description 权限拦截器
  */
 @Component
-public class AuthIntercepter extends HandlerInterceptorAdapter {
+public class AuthIntercepter implements HandlerInterceptor {
 
 
     Logger logger  = LoggerFactory.getLogger(AuthIntercepter.class);

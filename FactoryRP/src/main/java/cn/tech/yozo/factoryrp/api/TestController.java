@@ -22,7 +22,7 @@ import java.util.List;
  * 测试前端控制器
  */
 @RestController
-@RequestMapping(value = "api/test")
+@RequestMapping(value = "/test")
 @Api(description = "测试接口名称")
 public class TestController  extends BaseController{
 
