@@ -123,7 +123,15 @@ public class EncryptUtils {
     }
 
 
-
+    /**
+     * 验证密码
+     * @param password 加盐后的密码
+     * @param encryptedPassword 需要被验证的密码和盐生成的密码
+     * @return
+     */
+    public static boolean verifyPassword(String password,String encryptedPassword){
+        return password.equals(encryptedPassword);
+    }
 
     public static void main(String[] args) {
         String sault = "6375026571448750";

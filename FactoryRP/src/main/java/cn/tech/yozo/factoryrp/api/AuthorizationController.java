@@ -1,6 +1,8 @@
 package cn.tech.yozo.factoryrp.api;
 
+import cn.tech.yozo.factoryrp.entity.User;
 import cn.tech.yozo.factoryrp.service.AuthorizationService;
+import cn.tech.yozo.factoryrp.utils.AuthWebUtil;
 import cn.tech.yozo.factoryrp.utils.UUIDSequenceWorker;
 import cn.tech.yozo.factoryrp.vo.base.ApiResponse;
 import cn.tech.yozo.factoryrp.vo.req.MenuReq;
@@ -10,15 +12,20 @@ import cn.tech.yozo.factoryrp.vo.req.UserRoleReq;
 import cn.tech.yozo.factoryrp.vo.resp.MenuResp;
 import cn.tech.yozo.factoryrp.vo.resp.RoleMenuQueryResp;
 import cn.tech.yozo.factoryrp.vo.resp.RoleResp;
+import cn.tech.yozo.factoryrp.vo.resp.auth.AuthUser;
+import com.alibaba.fastjson.JSON;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -42,6 +49,9 @@ public class AuthorizationController extends BaseController{
     @Resource
     private RedisTemplate redisTemplate;
 
+
+    @Resource
+    private StringRedisTemplate stringRedisTemplate;
     /**
      * 根据企业标识查询所有角色
      * @param corporateIdentify
@@ -61,8 +71,20 @@ public class AuthorizationController extends BaseController{
 
         try{
 
-            redisTemplate.opsForValue().set("1234",String.valueOf(UUIDSequenceWorker.uniqueSequenceId()),500000);
-            redisTemplate.opsForValue().set("1231234",String.valueOf(UUIDSequenceWorker.uniqueSequenceId()),500000);
+            User user = new User();
+
+            user.setId(UUIDSequenceWorker.uniqueSequenceId());
+            user.setUserName("你好");
+
+            String string = JSON.toJSONString(user);
+            stringRedisTemplate.opsForValue().set("qwe",string);
+
+            String qwe = stringRedisTemplate.opsForValue().get("qwe");
+
+            System.out.println(qwe);
+
+            redisTemplate.opsForValue().set("1234",String.valueOf("SpringRedis"),500000);
+            redisTemplate.opsForValue().set("1231234","中国",500000);
             redisTemplate.opsForValue().set("1233123",String.valueOf(UUIDSequenceWorker.uniqueSequenceId()),500000);
             redisTemplate.opsForValue().set("12331232",String.valueOf(UUIDSequenceWorker.uniqueSequenceId()),500000);
             redisTemplate.opsForValue().set("312312",String.valueOf(UUIDSequenceWorker.uniqueSequenceId()),500000);
@@ -181,6 +203,27 @@ public class AuthorizationController extends BaseController{
             value = "为用户添加角色",required = true)
     public ApiResponse<MenuResp> addUserRole(@Valid @RequestBody UserRoleReq userRoleReq){
         return apiResponse(userRoleReq,authorizationService.addUserRole(userRoleReq));
+    }
+
+    @GetMapping("/unAuthToken")
+    public ApiResponse unAuthToken(HttpServletRequest request, HttpServletResponse response){
+        return AuthWebUtil.needLogin1(request,response);
+    }
+
+
+    /**
+     * 登陆接口,其实没啥用
+     * @param request
+     * @param response
+     * @return
+     */
+    @ApiImplicitParam(dataType = "Stirng" ,name = "requestSeqNo", paramType = "String" ,
+            value = "请求流水号",required = true)
+    @ApiOperation(value = "登陆接口",notes = "登陆接口",httpMethod = "POST")
+    @GetMapping("/login")
+    public ApiResponse<AuthUser> login(HttpServletRequest request, HttpServletResponse response){
+        //return AuthWebUtil.needLogin1(request,response);
+        return null;
     }
 
 }

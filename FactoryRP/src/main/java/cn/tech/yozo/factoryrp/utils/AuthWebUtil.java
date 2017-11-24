@@ -1,11 +1,8 @@
 package cn.tech.yozo.factoryrp.utils;
 
-import cn.tech.yozo.factoryrp.config.shiro.StatelessToken;
 import cn.tech.yozo.factoryrp.vo.base.ApiResponse;
+import cn.tech.yozo.factoryrp.vo.resp.auth.AuthUser;
 import com.alibaba.fastjson.JSON;
-import org.apache.shiro.authc.AuthenticationException;
-import org.apache.shiro.authc.AuthenticationToken;
-import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,8 +19,8 @@ import java.io.PrintWriter;
  * @author Administrator
  *
  */
-public class ShiroWebUtil {
-	private static final Logger logger = LoggerFactory.getLogger(ShiroWebUtil.class);
+public class AuthWebUtil {
+	private static final Logger logger = LoggerFactory.getLogger(AuthWebUtil.class);
 
 	/**
 	 * 预设响应头信息
@@ -40,6 +37,27 @@ public class ShiroWebUtil {
 	}
 
 
+    /**
+     * 需要登录的响应
+     *
+     * @param request
+     * @param response
+     */
+    public static ApiResponse needLogin1(ServletRequest request, ServletResponse response) {
+
+        ApiResponse apiResponse = new ApiResponse();
+        preSetResponse(response);
+        PrintWriter out = null;
+        apiResponse.setErrorCode(ErrorCode.NEED_LOGIN.getCode());
+        apiResponse.setErrorMessage(ErrorCode.NEED_LOGIN.getMessage());
+        apiResponse.setResponseTime(DateTimeUtil.currentDateToStr(""));
+        apiResponse.setRequestSeqNo(request.getParameter("requestSeqNo"));
+            HttpServletResponse httpResponse = (HttpServletResponse) response;
+            System.out.println(JSON.toJSONString(apiResponse));
+
+        return apiResponse;
+    }
+
 	/**
 	 * 需要登录的响应
 	 * 
@@ -47,16 +65,18 @@ public class ShiroWebUtil {
 	 * @param response
 	 */
 	public static void needLogin(ServletRequest request, ServletResponse response) {
-		preSetResponse(response);
-		PrintWriter out = null;
-		ApiResponse apiResponse = new ApiResponse();
 
-		apiResponse.setErrorCode(ErrorCode.NEED_LOGIN.getCode());
-		apiResponse.setErrorMessage(ErrorCode.NEED_LOGIN.getMessage());
+        ApiResponse apiResponse = new ApiResponse();
+        preSetResponse(response);
+        PrintWriter out = null;
+        apiResponse.setErrorCode(ErrorCode.NEED_LOGIN.getCode());
+        apiResponse.setErrorMessage(ErrorCode.NEED_LOGIN.getMessage());
+        apiResponse.setResponseTime(DateTimeUtil.currentDateToStr(""));
+        apiResponse.setRequestSeqNo(request.getParameter("requestSeqNo"));
 		try {
-			out = response.getWriter();
-			out.append(JSON.toJSONString(apiResponse));
-			out.flush();
+            HttpServletResponse httpResponse = (HttpServletResponse) response;
+            System.out.println(JSON.toJSONString(apiResponse));
+            httpResponse.getWriter().write(JSON.toJSONString(apiResponse));
 		} catch (IOException e) {
 			logger.error("needLogin error:" + e.getMessage(), e);
 		}
@@ -74,6 +94,8 @@ public class ShiroWebUtil {
 		ApiResponse apiResponse = new ApiResponse();
 		apiResponse.setErrorCode(ErrorCode.NO_PERMISSION.getCode());
 		apiResponse.setErrorMessage(ErrorCode.NO_PERMISSION.getMessage());
+        apiResponse.setResponseTime(DateTimeUtil.currentDateToStr(""));
+        apiResponse.setRequestSeqNo(request.getParameter("requestSeqNo"));
 		
 		try {
 			out = response.getWriter();
@@ -96,6 +118,8 @@ public class ShiroWebUtil {
 		PrintWriter out = null;
 		apiResponse.setErrorMessage(ErrorCode.ERROR.getMessage());
 		apiResponse.setErrorCode(ErrorCode.ERROR.getMessage());
+        apiResponse.setResponseTime(DateTimeUtil.currentDateToStr(""));
+        apiResponse.setRequestSeqNo(request.getParameter("requestSeqNo"));
 		try {
 			out = response.getWriter();
 			out.append(JSON.toJSONString(apiResponse));
@@ -110,24 +134,20 @@ public class ShiroWebUtil {
 	 * 
 	 * @param request
 	 * @param response
-	 * @param token
-	 * @param subject
 	 * @throws IOException
 	 */
 	public static void loginSuccess(ServletRequest request,
-                                    ServletResponse response, AuthenticationToken token,
-			Subject subject) throws IOException {
-		ApiResponse<LoginSuccessResut> apiResponse = new ApiResponse<>();
+                                    ServletResponse response,AuthUser authUser) throws IOException {
+		ApiResponse<AuthUser> apiResponse = new ApiResponse<>();
 		ServletOutputStream out = null;
 		try {
 			preSetResponse(response);
 
-			//shiro自动生成的token
-			String tokenStr = subject.getSession().getId().toString();
-			apiResponse.setData(new LoginSuccessResut(((StatelessToken) token).getUsername(),
-					tokenStr));
 			apiResponse.setErrorCode(ErrorCode.SUCCESS.getCode());
 			apiResponse.setErrorMessage(ErrorCode.SUCCESS.getMessage());
+			apiResponse.setData(authUser);
+            apiResponse.setResponseTime(DateTimeUtil.currentDateToStr(""));
+            apiResponse.setRequestSeqNo(request.getParameter("requestSeqNo"));
 		} catch (Exception e) {
 			logger.error("loginSuccess error:" + e.getMessage(), e);
 		} finally {
@@ -153,6 +173,8 @@ public class ShiroWebUtil {
 		PrintWriter out = null;
 		apiResponse.setErrorCode(ErrorCode.SUCCESS.getCode());
 		apiResponse.setErrorMessage(ErrorCode.SUCCESS.getMessage());
+        apiResponse.setResponseTime(DateTimeUtil.currentDateToStr(""));
+        apiResponse.setRequestSeqNo(request.getParameter("requestSeqNo"));
 		try {
 			out = response.getWriter();
 			out.append(JSON.toJSONString(apiResponse));
@@ -167,16 +189,16 @@ public class ShiroWebUtil {
 	 * 
 	 * @param request
 	 * @param response
-	 * @param ex
 	 */
 	public static void loginFailed(ServletRequest request,
-                                   ServletResponse response, AuthenticationToken token,
-                                   Subject subject) {
+                                   ServletResponse response) {
 		ApiResponse apiResponse = new ApiResponse();
 		preSetResponse(response);
 		PrintWriter out = null;
 		apiResponse.setErrorCode(ErrorCode.LOGIN_FAILED.getCode());
 		apiResponse.setErrorMessage(ErrorCode.LOGIN_FAILED.getMessage());
+        apiResponse.setResponseTime(DateTimeUtil.currentDateToStr(""));
+        apiResponse.setRequestSeqNo(request.getParameter("requestSeqNo"));
 		try {
             HttpServletResponse httpResponse = (HttpServletResponse) response;
             httpResponse.getWriter().write(JSON.toJSONString(apiResponse));
@@ -198,6 +220,8 @@ public class ShiroWebUtil {
 		PrintWriter out = null;
 		apiResponse.setErrorCode(ErrorCode.LOGIN_FAILED.getCode());
 		apiResponse.setErrorMessage(ErrorCode.LOGIN_FAILED.getMessage());
+        apiResponse.setResponseTime(DateTimeUtil.currentDateToStr(""));
+        apiResponse.setRequestSeqNo(request.getParameter("requestSeqNo"));
 		try {
 			out = response.getWriter();
 			out.append(JSON.toJSONString(apiResponse));
@@ -210,11 +234,11 @@ public class ShiroWebUtil {
 
 class LoginSuccessResut {
 	private String username;
-	private String jsessionId;
-	public LoginSuccessResut(String username, String jsessionId) {
+	private String token;
+	public LoginSuccessResut(String username, String token) {
 		super();
 		this.username = username;
-		this.jsessionId = jsessionId;
+		this.token = token;
 	}
 
 	public String getUsername() {
@@ -225,13 +249,11 @@ class LoginSuccessResut {
 		this.username = username;
 	}
 
-	public String getJsessionId() {
-		return jsessionId;
+	public String getToken() {
+		return token;
 	}
 
-	public void setJsessionId(String jsessionId) {
-		this.jsessionId = jsessionId;
+	public void setToken(String token) {
+		this.token = token;
 	}
-
-
 }

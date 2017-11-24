@@ -9,7 +9,9 @@ import org.springframework.core.annotation.Order;
 import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.JacksonJsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializer;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 import redis.clients.jedis.JedisPoolConfig;
 
 /**
@@ -68,16 +70,21 @@ public class RedisConfig {
     public RedisTemplate redisTemplate(){
         RedisTemplate redisTemplate = new RedisTemplate();
         redisTemplate.setConnectionFactory(jedisConnectionFactory());
-        redisTemplate.setDefaultSerializer(new RedisObjectSerializer());
+/*        redisTemplate.setDefaultSerializer(fastJson2JsonRedisSerializer());
         redisTemplate.setValueSerializer(fastJson2JsonRedisSerializer());
-        redisTemplate.setKeySerializer(fastJson2JsonRedisSerializer());
+        redisTemplate.setKeySerializer(fastJson2JsonRedisSerializer());*/
+        RedisSerializer stringSerializer = new StringRedisSerializer();
+        redisTemplate.setKeySerializer(stringSerializer);
+        redisTemplate.setValueSerializer(stringSerializer);
+        redisTemplate.setHashKeySerializer(stringSerializer);
+        redisTemplate.setHashValueSerializer(fastJson2JsonRedisSerializer());
         redisTemplate.setEnableDefaultSerializer(false);
         return redisTemplate;
     }
 
     @Bean
     public RedisSerializer fastJson2JsonRedisSerializer() {
-        return new FastJson2JsonRedisSerializer<Object>(Object.class);
+        return new FastJson2JsonRedisSerializer<String>(String.class);
     }
 
 

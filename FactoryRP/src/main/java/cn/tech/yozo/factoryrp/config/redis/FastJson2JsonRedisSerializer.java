@@ -5,6 +5,7 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.SerializationException;
 
+import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 
 /**
@@ -34,7 +35,12 @@ public class FastJson2JsonRedisSerializer<T> implements RedisSerializer<T> {
         if (bytes == null || bytes.length <= 0) {
             return null;
         }
-        String str = new String(bytes, DEFAULT_CHARSET);
+        String str = null;
+        try {
+            str = new String(bytes, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
 
         return (T) JSON.parseObject(str, clazz);
     }

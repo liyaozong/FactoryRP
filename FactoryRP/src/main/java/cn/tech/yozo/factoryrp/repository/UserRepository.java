@@ -3,6 +3,8 @@ package cn.tech.yozo.factoryrp.repository;
 import cn.tech.yozo.factoryrp.entity.User;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -18,6 +20,14 @@ public interface UserRepository extends BaseRepository<User,Long>{
 
 
     /**
+     * 根据用户名和企业唯一标识进行查询
+     * @param userName
+     * @param corporateIdentify
+     * @return
+     *//*
+    User findByUserNameAndCorporateIdentify(String userName,String corporateIdentify);*/
+
+    /**
      * 根据企业标识进行查找
      * @param corporateIdentify
      * @return
@@ -30,8 +40,8 @@ public interface UserRepository extends BaseRepository<User,Long>{
      * @param corporateIdentify
      * @return
      */
-    @Cacheable
-    User findByUserNameAndCorporateIdentify(String userName,Long corporateIdentify);
+    @Query(value = "select u from User u where userName = :userName and corporateIdentify = :corporateIdentify")
+    User findByUserNameAndCorporateIdentify(@Param("userName") String userName, @Param("corporateIdentify")Long corporateIdentify);
 
 
     /**

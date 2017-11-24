@@ -1,5 +1,6 @@
 package cn.tech.yozo.factoryrp.service;
 
+import cn.tech.yozo.factoryrp.entity.User;
 import cn.tech.yozo.factoryrp.vo.req.MenuReq;
 import cn.tech.yozo.factoryrp.vo.req.MenuRoleReq;
 import cn.tech.yozo.factoryrp.vo.req.RoleReq;
@@ -16,6 +17,20 @@ import java.util.List;
 public interface AuthorizationService {
 
 
+    /**
+     * 根据用户名进行查询
+     * @param userName
+     * @return
+     */
+    User findByUserName(String userName);
+
+    /**
+     * 根据用户名和企业唯一标识进行查找
+     * @param username
+     * @param corporateIdentify
+     * @return
+     */
+    User queryUserByNameAndCorporateIdentify(String username, Long corporateIdentify);
 
     /**
      * 根据企业角色标识查询企业的所有用户

@@ -35,6 +35,8 @@ public class BaseController {
      */
     public ApiResponse apiResponse(ApiRequest apiRequest){
         ApiResponse apiResponse = new ApiResponse();
+        apiResponse.setErrorMessage(ErrorCode.SUCCESS.getMessage());
+        apiResponse.setErrorCode(ErrorCode.SUCCESS.getCode());
         apiResponse.setRequestSeqNo(apiRequest.getRequestSeqNo());
         apiResponse.setResponseTime(DateTimeUtil.currentDateToStr(""));
         return apiResponse;
@@ -49,6 +51,8 @@ public class BaseController {
      */
     public ApiResponse apiResponse(String requestSeqNo,Object object){
         ApiResponse apiResponse = new ApiResponse();
+        apiResponse.setErrorMessage(ErrorCode.SUCCESS.getMessage());
+        apiResponse.setErrorCode(ErrorCode.SUCCESS.getCode());
         apiResponse.setRequestSeqNo(requestSeqNo);
         apiResponse.setResponseTime(DateTimeUtil.currentDateToStr(""));
         apiResponse.setData(object);
@@ -63,6 +67,8 @@ public class BaseController {
      */
     public ApiResponse apiResponse(ApiCorporateIdentifyRequest apiRequest, Object object){
         ApiResponse apiResponse = new ApiResponse();
+        apiResponse.setErrorMessage(ErrorCode.SUCCESS.getMessage());
+        apiResponse.setErrorCode(ErrorCode.SUCCESS.getCode());
         apiResponse.setRequestSeqNo(apiRequest.getRequestSeqNo());
         apiResponse.setResponseTime(DateTimeUtil.currentDateToStr(""));
         apiResponse.setData(object);
@@ -77,6 +83,8 @@ public class BaseController {
      */
     public ApiResponse apiResponse(ApiRequest apiRequest,Object object){
         ApiResponse apiResponse = new ApiResponse();
+        apiResponse.setErrorMessage(ErrorCode.SUCCESS.getMessage());
+        apiResponse.setErrorCode(ErrorCode.SUCCESS.getCode());
         apiResponse.setRequestSeqNo(apiRequest.getRequestSeqNo());
         apiResponse.setResponseTime(DateTimeUtil.currentDateToStr(""));
         apiResponse.setData(object);
@@ -90,6 +98,8 @@ public class BaseController {
      */
     public ApiResponse apiResponse(HttpServletRequest request){
         ApiResponse apiResponse = new ApiResponse();
+        apiResponse.setErrorMessage(ErrorCode.SUCCESS.getMessage());
+        apiResponse.setErrorCode(ErrorCode.SUCCESS.getCode());
         apiResponse.setResponseTime(DateTimeUtil.currentDateToStr(""));
         apiResponse.setRequestSeqNo(request.getParameter("requestSeqNo"));
 

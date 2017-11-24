@@ -67,7 +67,7 @@ public class Role extends BaseEntity implements Serializable {
     @JoinTable(name="system_menu_role",
             joinColumns={@JoinColumn(name="role_id", referencedColumnName="id")},
             inverseJoinColumns={@JoinColumn(name="menu_id", referencedColumnName="id")})
-    @ManyToMany(cascade = { CascadeType.PERSIST }, targetEntity = Menu.class, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = { CascadeType.PERSIST }, targetEntity = Menu.class, fetch = FetchType.EAGER)
     private List<Menu> menuList;
 
     public String getRoleCode() {

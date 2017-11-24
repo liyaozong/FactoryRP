@@ -18,7 +18,7 @@ public class MenuResp  implements Serializable {
 
 
     /**
-     * 菜单访问URL
+     * 菜单id
      */
     @ApiModelProperty(value = "菜单id",required = true,notes = "菜单id",example = "1")
     private String id;

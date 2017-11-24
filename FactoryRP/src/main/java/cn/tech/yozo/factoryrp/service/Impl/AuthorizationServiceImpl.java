@@ -22,7 +22,7 @@ import java.util.List;
  * @time 2017/11/17
  * @description 权限相关服务
  */
-@Service
+@Service("authorizationService")
 public class AuthorizationServiceImpl implements AuthorizationService {
 
 
@@ -47,6 +47,25 @@ public class AuthorizationServiceImpl implements AuthorizationService {
     @Resource
     private UserRoleRepository userRoleRepository;
 
+    /**
+     * 根据用户名进行查询
+     * @param userName
+     * @return
+     */
+    public User findByUserName(String userName){
+        return userRepository.findByUserName(userName);
+    }
+
+    /**
+     * 根据用户名和企业唯一标识进行查找
+     * @param username
+     * @param corporateIdentify
+     * @return
+     */
+    public User queryUserByNameAndCorporateIdentify(String username,Long corporateIdentify){
+        User byUserNameAndCorporateIdentify = userRepository.findByUserNameAndCorporateIdentify(username, corporateIdentify);
+        return  byUserNameAndCorporateIdentify;
+    }
 
     /**
      * 根据企业角色标识查询企业的所有用户
