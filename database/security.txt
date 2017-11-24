@@ -2,6 +2,7 @@ ECS
 
 161646
 
+Domain:factoryrp.yozo.tech
 IP: 47.96.28.88
 port:22
 user: developer
