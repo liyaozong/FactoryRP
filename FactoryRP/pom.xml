@@ -3,14 +3,20 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>FacroryRP</groupId>
-    <artifactId>cn.tech.yozo.facroryrp</artifactId>
+    <groupId>cn.tech.yozo.facroryrp</groupId>
+    <artifactId>FacroryRP</artifactId>
     <version>1.0-SNAPSHOT</version>
     <name>FacroryRP</name>
+    <packaging>jar</packaging>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.build.version>1.0.0</project.build.version>
         <java.version>1.8</java.version>
         <swagger.version>2.7.0</swagger.version>
+        <shiro.version>1.4.0</shiro.version>
+        <junit.version>4.10</junit.version>
+        <ehcache.version>2.10.4</ehcache.version>
+        <lombok.version>1.16.8</lombok.version>
     </properties>
 
     <!-- Inherit defaults from Spring Boot -->
@@ -21,24 +27,26 @@
     </parent>
 
     <dependencies>
-    <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-web</artifactId>
-    </dependency>
-
-    <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-autoconfigure</artifactId>
-    </dependency>
-
-    <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-configuration-processor</artifactId>
-    </dependency>
+        <!-- https://mvnrepository.com/artifact/junit/junit -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-devtools</artifactId>
+            <artifactId>spring-boot-autoconfigure</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
         </dependency>
 
         <dependency>
@@ -48,12 +56,14 @@
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-aop</artifactId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
         </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-redis</artifactId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <version>1.5.7.RELEASE</version>
+            <scope>test</scope>
         </dependency>
 
         <!--监控相关-->
@@ -71,6 +81,29 @@
             <artifactId>spring-boot-starter-aop</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-cache</artifactId>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-ehcache</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>net.sf.ehcache</groupId>
+                    <artifactId>ehcache-core</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>net.sf.ehcache</groupId>
+            <artifactId>ehcache</artifactId>
+            <version>${ehcache.version}</version>
+        </dependency>
+
         <!-- Swagger -->
         <dependency>
             <groupId>io.springfox</groupId>
@@ -85,15 +118,15 @@
         </dependency>
 
         <dependency>
-            <groupId>org.json</groupId>
-            <artifactId>json</artifactId>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>5.0.1.RELEASE</version>
+            <scope>test</scope>
         </dependency>
 
         <dependency>
-            <groupId>org.apache.zookeeper</groupId>
-            <artifactId>zookeeper</artifactId>
-            <version>3.4.10</version>
-            <type>pom</type>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
         </dependency>
 
         <!--alibaba组件相关-->
@@ -123,12 +156,6 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        <!--zk相关-->
-        <dependency>
-            <groupId>com.github.sgroschupf</groupId>
-            <artifactId>zkclient</artifactId>
-            <version>0.1</version>
-        </dependency>
         <!--SpringBoot开发工具-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -154,40 +181,73 @@
             <artifactId>jackson-datatype-jsr310</artifactId>
             <version>2.8.6</version>
         </dependency>
-       <!-- <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-config</artifactId>
-        </dependency>-->
+        <!-- <dependency>
+             <groupId>org.springframework.cloud</groupId>
+             <artifactId>spring-cloud-starter-config</artifactId>
+         </dependency>-->
         <dependency>
             <groupId>commons-codec</groupId>
             <artifactId>commons-codec</artifactId>
             <version>1.9</version>
         </dependency>
+
+        <!--Shiro相关-->
+        <dependency>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-core</artifactId>
+            <version>${shiro.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-web</artifactId>
+            <version>${shiro.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-spring</artifactId>
+            <version>${shiro.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-ehcache</artifactId>
+            <version>${shiro.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-guice</artifactId>
+            <version>${shiro.version}</version>
+        </dependency>
+        <!--Shiro end-->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+        </dependency>
     </dependencies>
 
     <build>
+        <finalName>FactoryRP</finalName>
         <plugins>
-            <!--开启热部署-->
-            <!--<plugin>
+            <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    &lt;!&ndash;fork :  如果没有该项配置，肯呢个devtools不会起作用，即应用不会restart &ndash;&gt;
                     <fork>true</fork>
-                    &lt;!&ndash;<maxAttempts>500</maxAttempts>
-                    <mainClass>cn.source.WebApplication</mainClass>&ndash;&gt;
+                    <mainClass>cn.tech.yozo.factoryrp.WebApplication</mainClass>
                 </configuration>
-            </plugin>-->
-            <!--plugin>
+            </plugin>
+            <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <configuration>
-                    <appendAssemblyId>false</appendAssemblyId>
-                    <finalName>${project.artifactId}-${project.build.finalName}-${maven.build.timestamp}}</finalName>
+                    <appendAssemblyId>true</appendAssemblyId>
+                    <finalName>${project.artifactId}-${project.build.version}</finalName>
                     <descriptors>
-                        <descriptor>src/main/assembly/src.xml</descriptor>
+                        <!--打包描述文件的位置-->
+                        <descriptor>assembly/package.xml</descriptor>
                     </descriptors>
                 </configuration>
                 <executions>
+
                     <execution>
                         <id>make-assembly</id>
                         <phase>package</phase>
@@ -196,8 +256,11 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>-->
-
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+            </plugin>
         </plugins>
     </build>
 </project>

@@ -1,0 +1,1024 @@
+<style>
+.btn {
+    width: auto;
+    min-width: 80px;
+    font-size: 14px;
+    height: 30px;
+    line-height: 30px;
+    margin: 5px 20px 0 0;
+    cursor: pointer;
+    background: #4da7fd
+}
+
+.btns {
+    min-width: 70px;
+    width: auto;
+    font-size: 14px;
+    height: 30px;
+    line-height: 30px;
+    margin: 5px 20px 0 0;
+    cursor: pointer;
+    background: #ff8208
+}
+
+.remarkDiv {
+    padding: 10px;
+}
+
+.mainContain .orderDetailList ul {
+    min-height: 40px;
+    line-height: 40px;
+    border-bottom: 1px solid #f6f6f6;
+    height: auto;
+}
+.mainContain .orderDetailList h1{
+    width: 100%;
+}
+/*.mainContain .orderDetailList ul:first-child{*/
+/*background: #4da7fd;*/
+/*}*/
+/*.mainContain .orderDetailList ul:first-child li{*/
+/*background: #4da7fd;*/
+/*color: #fff;*/
+/*}*/
+.mainContain .orderDetailList ul li {
+    width: 33%;
+    float: left;
+    border: none;
+    clear: none;
+
+}
+
+.mainContain .orderDetailList .alignPattern tr td {
+    padding: 0 3px;
+    text-indent: 0;
+    text-align: center;
+}
+.mainContain .orderDetailList .alignPattern tr th {
+    padding: 0 3px;
+    text-indent: 0;
+    text-align: center;
+}
+
+.mainContain .orderDetailInfo .orderDetailInfoList table tr th {
+    background: #e7ecf2;
+}
+
+.mainContain .orderDetailList .diTabl tr td {
+    text-indent: 2px;
+    padding-left: 0;
+}
+
+.mainContain .orderDetailList .appCheatList ul.tabList li {
+    border: none;
+    float: left;
+    overflow: hidden;
+    width: 200px;
+    text-align: center;
+    clear: none;
+    background-color: #f6f6f6;
+    margin-right: 20px;
+    cursor: pointer;
+    text-indent: 0;
+    border: none;
+    margin-bottom: 5px;
+}
+
+.mainContain .orderDetailList h4 {
+    width: 100%;
+}
+
+.mainContain ol {
+    margin: 5px 10px 0px 10px;
+}
+
+.mainContain ol li {
+    border: none;
+    float: left;
+    overflow: hidden;
+    width: auto;
+    text-align: left;
+    clear: none;
+    line-height: 25px;
+
+    margin-right: 12px;
+
+}
+
+.mainContain .orderDetailList .appCheatList ul {
+    border: none;
+}
+
+.mainContain .orderDetailList .appCheatList ul.tabList li.activeApp {
+    background-color: #4da7fd;
+    color: #fff;
+    text-indent: 0;
+    border: none;
+}
+
+.page-list .pagination span {
+    text-indent: 0;
+}
+
+.mainContain .orderDetailList ul li {
+    border: none;
+}
+
+.mainContain .orderDetailList h3 {
+    padding: 5px 5px 0px 25px;
+    color: #333;
+    font-size: 17px;
+}
+
+.loanq tr {
+    border-bottom: 1px solid #ccc;
+    line-height: 35px;
+}
+
+.loanq tr th {
+    background-color: #fff;
+    text-align: center;
+}
+
+/*.borderLine{*/
+/*border-bottom: 1px solid #ccc;*/
+/*}*/
+.againResualt {
+
+    width: 876px;
+    position: absolute;
+    left: 150px;
+    top: 10px;
+}
+
+.againResualt > li {
+    border-bottom: 1px solid #e6e6e6;
+    width: 730px;
+    line-height: 35px !important;
+    height: 35px !important;
+
+}
+
+.againResualt > li:hover {
+    background: #e6e6e6;
+}
+
+.checkResult {
+    position: absolute;
+    left: 335px;
+    width: 330px;
+    top: 0px;
+
+}
+
+.checkResult > li {
+    width: 330px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    -o-text-overflow: ellipsis;
+    cursor: pointer;
+}
+
+.detailAgainstCheat {
+    position: absolute;
+    width: 90px;
+    left: 922px;
+}
+
+.borderLine {
+    border-bottom: 1px dashed #ccc;
+    width: 1026px;
+}
+
+.borderLine > span {
+    font-weight: bold;
+}
+
+.btn {
+    float: none !important;
+}
+
+.conclusion {
+    position: absolute;
+    left: 672px;
+    top: 0;
+}
+.bg-color{
+    background-color: #CCCCCC;
+}
+.clickNav{
+    position: fixed;
+    width: 65px;
+    background-color: #ffffff;
+    margin: 10px;
+    top: calc(50% - 576/2)!important;
+    z-index: 10000;
+    right: 0;
+    box-shadow: 0px 0px 2px 2px #DDDDDD;
+}
+.clickNav >ul>li{
+    padding: 10px;
+    font-size: 15px;
+    text-align: center;
+    cursor: pointer;
+    color: #808080;
+    height: 70px!important;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    flex-direction: column;
+}
+.tableListDiv .titles{
+    background: #e7ecf2;
+}
+.tableListDiv .titles li{
+    line-height: 45px;
+}
+.tableListDiv ul{
+    min-height: 45px;
+    display: inline-block;
+    width: 100%;
+    border: 1px solid #e6e6e6;
+    margin-top: -5px;
+}
+.tableListDiv ul .detail{
+    clear: both;
+    background: #f6f6f6;
+    position: relative;
+    height: auto;
+    padding-bottom: 15px;
+}
+.tableListDiv ul .detail svg{
+    position: absolute;
+    top: -23px;
+    left: 97px;
+}
+.tableListDiv ul .detail p{
+    display: inline-block;
+    width: 100%;
+    margin: 15px auto auto 98px;
+}
+.tableListDiv ul .detail p label span{
+    margin-right: 0;
+}
+.tableListDiv ul .detail p span{
+    margin-right: 100px;
+}
+.tableListDiv ul li{
+    width: 14.2%;
+    height: auto;
+    line-height: 45px;
+    float: left;
+    text-align: center;
+    position: relative;
+}
+.tableListDiv ul li svg{
+    position: absolute;
+    top: 14px;
+    left: 48px;
+    cursor: pointer;
+}
+.has-switch{
+    top:8px;
+    margin-right: 10px;;
+}
+.has-switch span{
+    font-size: 12px !important;
+}
+.has-switch label{
+    font-size: 12px !important;
+}
+.businessAuth p input{
+    width: 150px !important;
+}
+.addCompanyInfo .businessAuth p input{
+    width: 155px !important;
+}
+.addCompanyInfo .businessAuth p select{
+    width: 155px !important;
+    border: 1px solid #e6e6e6;
+    height: 35px;
+    line-height: 35px;
+}
+.addCompanyInfo .businessAuth p{
+    text-align: left;
+    font-size: 14px;
+}
+.addCompanyInfo .businessAuth p input[type='radio']{
+    width: auto !important;
+    border: none;
+    box-shadow: none;
+    margin-top: -3px;
+}
+.trMore{
+    position: relative;
+    display: block;
+}
+.trMore svg{
+    position: absolute;
+}
+.result p{
+    min-width: 135px;padding-left: 15px;
+}
+#companyContainer ul{
+    border: none;
+    border-right: 1px solid #e6e6e6;
+}
+#companyContainer ul li{
+    border-bottom: 1px solid #e6e6e6;
+    /* border: none; */
+    border-left: 1px solid #e6e6e6;
+}
+.mainContain .orderDetailList table tr td:hover{
+    background: #e7ecf2;
+}
+.mainContain .tableListDiv{
+    margin-bottom: 10px;
+}
+.mainContain .tableListDiv tr th{
+    background: #e7ecf2;
+}
+.mainContain .orderDetailList .tableBorder{
+    width: 99%;
+    margin: auto !important;
+}
+.mainContain .orderDetailList table tr th:hover{
+    background: #e7ecf2;
+}
+.mainContain .orderDetailList{
+    margin-bottom: 10px;
+}
+</style>
+<div class="mainContain">
+    <div class="orderDetailList ">
+        <h3 style="margin:0;">承诺函信息</h3>
+        <!--<p style="background-color: #e7ecf2;font-size: 16px;text-indent: 20px; color:#4da7fd;">总备注</p>-->
+        <div style="text-align: center;border: 1px solid #e6e6e6;padding: 10px;width: 98%;margin:10px auto 10px" class="">
+            <img ng-model="commitmentImage" ng-show="commitmentImg!=''" ng-repeat="commitmentImg in commitmentImgs" alt="请上传承诺函照片" style="cursor: pointer;margin: 0;margin-left: 25px;" src="{{commitmentImg}}" alt="图片" width="357" ng-click="imgShow(commitmentImg)"/>
+            <img ng-show="commitmentImg==''||commitmentImg==null||commitmentImg==undefined" src="" alt="请上传承诺函图片信息"/>
+        </div>
+        <p><button style="width: auto;height: 32px;margin: 20px;" onClick="popupDiv('BusinessFillAgain')" class="btn">上传承诺函</button></p>
+    </div>
+    <!--添加备注 start-->
+    <div class="orderDetailList ">
+        <h3 style="margin:0;">添加备注 <button  onClick="popupDiv('NoteDiv')" class="btn" style="margin-left: 30px">添加</button> </h3>
+        <!--<p style="background-color: #e7ecf2;font-size: 16px;text-indent: 20px; color:#4da7fd;">总备注</p>-->
+        <div class="remarkDiv">
+            <table class="tableBorder">
+                <thead>
+                <tr>
+                    <th>时间</th>
+                    <th>部门</th>
+                    <th>姓名</th>
+                    <th>备注类型</th>
+                    <th>报单结果</th>
+                    <th>备注</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="RemarkList in RemarkLists">
+                    <td>xx</td>
+                    <td>xx</td>
+                    <td>xx</td>
+                    <td>xx</td>
+                    <td>xx</td>
+                    <td>xxx</td>
+                <tr ng-show="RemarkLists==''||RemarkLists==null||RemarkLists==undefined">
+                    <td colspan="6" style="text-align: center">暂无备注信息！</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!--添加备注 end-->
+    <!--处理意见 start-->
+    <div ng-show="channelProductCode=='CCB_E_COMMERCE_LOANS'" id="orderdetail_advice" class="orderDetailList" style="height: auto;">
+        <h3 style="margin-top: 0">处理意见</h3>
+        <div class="ProcessOpinion">
+            <!--<textarea style="width:40%; height: 290px;margin-left: 10px;" id="ProcessOpinion" ng-blur="saveData()" ng-model="ProcessOpinion" placeholder="请输入处理意见"></textarea>-->
+            <div style="width:99%;height: auto;background: #fff;border: 1px solid #e6e6e6;margin: auto;float: none;" class="FormDiv">
+                <p style="font-size: 14px;margin:20px 0 5px;">
+                    <label style="height: 30px;line-height: 30px;margin: 0 30px 0 30px" for="PASSED">
+                        <input ng-model="handleStatus" style="margin-top: 7px;margin-right: 5px" id="PASSED" value="PASSED" name="Process" type="radio">
+                        <span>通过</span>
+                    </label>
+                    <label style="height: 30px;line-height: 30px;margin: 0 30px 0 30px" for="Refused">
+                        <input ng-model="handleStatus" style="margin-top: 7px;margin-right: 5px" id="Refused" value="NOT_SUBMITTED" name="Process" type="radio">
+                        <span>补充资料</span>
+                    </label>
+                    <label style="height: 35px;line-height: 35px;margin: 0 0 0 26px;">
+                        <button style="margin: 0" ng-click="submitAndRemarkNew()" class="btn" id="handleOrder">提交</button>
+                    </label>
+                </p>
+                <p style="margin: 20px 0;" class="align_center"></p>
+            </div>
+            <!--<p class="sendMessageP"><button class="sendMessage">发送短信</button></p>-->
+        </div>
+    </div>
+    <!--处理意见 end-->
+</div>
+<!--添加备注弹出框 start-->
+<div style="min-width: 400px" class="ImportantNote NoteDiv">
+    <div class="headline">
+        <span>添加备注</span>
+        <img style="left: 94%;" onClick="hideDiv('NoteDiv')" class="companyCloseImg" src="image/comm/diffClosed.png" width="22" height="22">
+    </div>
+    <div style="padding: 30px 50px;" class="businessAuth">
+        <div class="imgDiv">
+            <textarea id="operAdvice" ng-model="operAdvice" placeholder="请输入备注内容"></textarea>
+        </div>
+        <div class="submitBtn1" style="text-align: center;margin-top: 25px;">
+            <button ng-click="addRemark()" class="btn">确定</button>
+            <button type="button" class="btn" style="background: #ccc;" onClick="hideDiv('NoteDiv')">关闭</button>
+        </div>
+    </div>
+</div>
+<!--添加备注弹出框 end-->
+<div class="ImportantNote transferInfo">
+    <div class="headline">
+        <span>重要提示</span>
+        <img onclick="hideDiv('transferInfo')" class="companyCloseImg" src="image/comm/diffClosed.png" width="22" height="22">
+    </div>
+    <div class="businessAuth">
+        <p><img src="image/comm/attentionPlease.png" alt="注意："/><span class="Message"></span></p>
+
+        <div class="submitBtn1" style="text-align: right;">
+            <button ng-click="goBack()" type="button" class="btn">返回上一页</button>
+        </div>
+    </div>
+</div>
+<!--转交信息 end-->
+<!--转交信息 start-->
+<div class="ImportantNote moneyLimited">
+    <div class="headline">
+        <span>重要提示</span>
+        <img  onclick="hideDiv('moneyLimited')" class="companyCloseImg" src="image/comm/diffClosed.png" width="22" height="22">
+    </div>
+    <div class="businessAuth">
+        <p><img src="image/comm/attentionPlease.png" alt="注意："/><span class="Message"></span></p>
+
+        <div class="submitBtn1" style="text-align: right;">
+            <input onclick="hideDiv('moneyLimited')" type="button" value="确定" class="btn">
+        </div>
+    </div>
+</div>
+<!--转交信息 end-->
+<!--基本信息失效 start-->
+<div class="ImportantNote baseInfoReset">
+    <div class="headline">
+        <span>重要提示</span>
+        <img onclick="hideDiv('baseInfoReset')" class="companyCloseImg" src="image/comm/diffClosed.png" width="22"
+             height="22">
+    </div>
+    <div class="businessAuth">
+        <p>
+            <img src="image/comm/attentionPlease.png" alt="注意："/>
+            <span class="Message">确定将 <span style="color: orange">{{userName}}</span> 的基本信息进行失效操作？</span>
+        </p>
+
+        <div class="submitBtn1" style="text-align: right;">
+            <input ng-click="baseInfoResetSure()" type="button" value="确定" class="btn">
+        </div>
+    </div>
+</div>
+<!--基本信息失效 end-->
+
+<!--淘宝认证失效 start-->
+<div class="ImportantNote taoBaoInfoReset">
+    <div class="headline">
+        <span>重要提示</span>
+        <img onclick="hideDiv('taoBaoInfoReset')" class="companyCloseImg" src="image/comm/diffClosed.png" width="22"
+             height="22">
+    </div>
+    <div class="businessAuth">
+        <p>
+            <img src="image/comm/attentionPlease.png" alt="注意："/>
+            <span class="Message">确定将 <span style="color: orange">{{userName}}</span> 的淘宝认证信息进行失效操作？</span>
+        </p>
+
+        <div class="submitBtn1" style="text-align: right;">
+            <input ng-click="taoBaoInfoResetSure()" type="button" value="确定" class="btn">
+        </div>
+    </div>
+</div>
+<!--淘宝认证失效 end-->
+
+<!--工资流水失效 start-->
+<div class="ImportantNote salaryRecordReset">
+    <div class="headline">
+        <span>重要提示</span>
+        <img onclick="hideDiv('salaryRecordReset')" class="companyCloseImg" src="image/comm/diffClosed.png" width="22"
+             height="22">
+    </div>
+    <div class="businessAuth">
+        <p>
+            <img src="image/comm/attentionPlease.png" alt="注意："/>
+            <span class="Message">确定将 <span style="color: orange">{{userName}}</span> 的工资流水信息进行失效操作？</span>
+        </p>
+
+        <div class="submitBtn1" style="text-align: right;">
+            <input ng-click="salaryRecordResetSure()" type="button" value="确定" class="btn">
+        </div>
+    </div>
+</div>
+<!--工资流水失效 end-->
+
+<!--人行征信失效 start-->
+<div class="ImportantNote pbcRecordReset">
+    <div class="headline">
+        <span>重要提示</span>
+        <img onclick="hideDiv('pbcRecordReset')" class="companyCloseImg" src="image/comm/diffClosed.png" width="22"
+             height="22">
+    </div>
+    <div class="businessAuth">
+        <p>
+            <img src="image/comm/attentionPlease.png" alt="注意："/>
+            <span class="Message">确定将 <span style="color: orange">{{userName}}</span> 的人行征信信息进行失效操作？</span>
+        </p>
+
+        <div class="submitBtn1" style="text-align: right;">
+            <input ng-click="pbcRecordResetSure()" type="button" value="确定" class="btn">
+        </div>
+    </div>
+</div>
+<!--人行征信失效 end-->
+
+<!--签约信息失效 start-->
+<div class="ImportantNote signRecordReset">
+    <div class="headline">
+        <span>重要提示</span>
+        <img onclick="hideDiv('signRecordReset')" class="companyCloseImg" src="image/comm/diffClosed.png" width="22"
+             height="22">
+    </div>
+    <div class="businessAuth">
+        <p>
+            <img src="image/comm/attentionPlease.png" alt="注意："/>
+            <span class="Message">确定将 <span style="color: orange">{{userName}}</span> 的签约认证进行失效操作？</span>
+        </p>
+
+        <div class="submitBtn1" style="text-align: right;">
+            <input ng-click="signRecordResetSure()" type="button" value="确定" class="btn">
+        </div>
+    </div>
+</div>
+<!--签约信息失效 end-->
+<!--保存成功start-->
+<div class="ImportantNote SaveSuccess">
+    <div class="headline">
+        <span>重要提示</span>
+        <img onclick="hideDiv('SaveSuccess')" class="companyCloseImg" src="image/comm/diffClosed.png" width="22"
+             height="22">
+    </div>
+    <div class="businessAuth">
+        <p><img src="image/comm/attentionPlease.png" alt="注意："/><span class="Message"></span></p>
+
+        <div class="submitBtn1" style="text-align: right;">
+            <input ng-click="reload()" onClick="hideDiv('SaveSuccess')" type="button" value="确定" class="btn">
+        </div>
+    </div>
+</div>
+<!--保存成功end-->
+<!--图片查看通用弹出框start-->
+<div style="min-width: 400px" class="ImportantNote imgShow">
+    <div class="headline">
+        <span>图片查看</span>
+        <img style="left: 95%;" onClick="hideDiv('imgShow')" class="companyCloseImg"
+             src="image/comm/diffClosed.png" width="22" height="22">
+    </div>
+    <div class="businessAuth">
+        <div class="imgDiv">
+            <a href="{{chooled}}" rel="{{chooled}}"><img class="artZoom" ng-show="chooled!=''" alt="请重填身份证照片"
+                                                         style="cursor: pointer;margin: 0" src="{{chooled}}"
+                                                         width="700"/></a>
+        </div>
+        <div class="submitBtn1" style="text-align: right;">
+            <input type="button" value="关闭" class="btnNoAct" onClick="hideDiv('imgShow')">
+        </div>
+    </div>
+</div>
+<!--图片查看通用弹出框start-->
+<!--重构失效 start-->
+<div class="ImportantNote resetFuc">
+    <div class="headline">
+        <span>重要提示</span>
+        <img onclick="hideDiv('resetFuc')" class="companyCloseImg" src="image/comm/diffClosed.png" width="22"
+             height="22">
+    </div>
+    <div class="businessAuth">
+        <p>
+            <img src="image/comm/attentionPlease.png" alt="注意："/>
+            <span class="Message"></span>
+        </p>
+
+        <div class="submitBtn1" style="text-align: right;">
+            <input ng-click="resetFucSure()" type="button" value="确定" class="btn">
+            <input onclick="hideDiv('resetFuc')" type="button" value="取消" class="btn">
+        </div>
+    </div>
+</div>
+<!--重构失效 end-->
+<!--查询中 end-->
+<div class="ImportantNote loading">
+    <div class="businessAuth">
+        <p><img src="image/comm/wait.gif" alt="查询中"/><span class="Message">正在刷新报告，请耐心等待......</span></p>
+    </div>
+</div>
+<!--查询中 end-->
+<!--添加共同借款人有企业 start-->
+<div style="min-width: 400px" class="ImportantNote addCommonLoader">
+    <div class="headline">
+        <a style="width: 100%;text-align: left; text-indent: 24px;" ng-class="{'activeLoader': activePerson  == true} "  href="javascript:void(0);" ng-click="addPerson()">添加共同借款人</a>
+        <!--<a ng-class="{'activeLoader': activeCompany == true} " href="javascript:void(0);" ng-click="addCompany()">企业</a>-->
+    </div>
+    <div style="padding: 30px 50px;height: 310px;" class="businessAuth">
+        <!--个人 start-->
+        <div ng-show="activePerson" class="imgDiv">
+            <!--<p><span style="width: 123px;text-align: right">上传人行征信：</span><label style="text-align: left" for="yes"><input id="yes1" type="checkbox" ng-model="needCredit"/>是</label></p>-->
+            <p><span style="width: 70px;text-align: right" >姓名：</span><input type="text" placeholder="请输入共同借款人姓名" ng-model="jointLoanUserName" id="firPersonN" style="width: 195px !important;"/></p>
+            <p><span style="width: 70px;text-align: right" >手机号码：</span><input type="text" placeholder="请输入共同借款人手机号码" ng-model="jointLoanPhone" id="jointLoanPhone" maxlength="12" style="width: 195px !important;"/></p>
+            <p><span style="width: 70px;text-align: right" >身份证号：</span><input type="text" placeholder="请输入共同借款人身份证号码" ng-model="jointLoanIDcard" id="jointLoanIDcard" maxlength="18" style="width: 195px !important;"/></p>
+            <div class="submitBtn1" style="text-align: center;margin-top: 25px;">
+                <button id="commonBtnStatus" ng-click="addCommonLoanerP()" class="btn store">保存</button>
+                <button type="button" class="btn" onclick="hideDiv('addCommonLoader')">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--添加共同借款人有企业 end-->
+<!--添加放款条件弹出框 start-->
+<div style="min-width: 400px" class="ImportantNote addConditions">
+    <div class="headline">
+        <span>添加放款条件资料</span>
+        <img style="left: 94%;" onClick="hideDiv('addConditions')" class="companyCloseImg" src="image/comm/diffClosed.png" width="22" height="22">
+    </div>
+    <div style="padding: 30px 50px;" class="businessAuth">
+        <div class="imgDiv">
+            <p><span>添加放款条件资料：</span>
+                <select name="selectedCommonCondId" id="selectedCommonCondId"  ng-model="selectedCommonCondId" ng-options="queryConNameDetail.id as queryConNameDetail.name for queryConNameDetail in queryConName">
+                    <option value="">请选择放款条件资料</option>
+                </select>
+            </p>
+            <textarea ng-model="remark" placeholder="请输入备注内容"></textarea>
+        </div>
+        <div class="submitBtn1" style="text-align: center;margin-top: 25px;">
+            <button ng-click="addLoanconditions()" class="btn">确定</button>
+            <button type="button" class="btn" onClick="hideDiv('addConditions')">关闭</button>
+        </div>
+    </div>
+</div>
+<!--添加放款条件弹出框 end-->
+<!--工商重填弹出框 BusinessFillAgain start-->
+<div class="ImportantNote BusinessFillAgain">
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" />
+    <div class="headline">
+        <span>上传承诺函<span style="color:red;"></span></span>
+        <img ng-click="reload()" style="left: 95%;" onClick="hideDiv('BusinessFillAgain')" class="companyCloseImg" src="image/comm/diffClosed.png" width="22" height="22">
+    </div>
+    <div style="padding: 20px 20px 20px 20px;width: 795px;" class="businessAuth">
+        <div class="container">
+            <div class="row">
+                <div>
+                    <h3 style="font-family: 'microsoft yahei';font-size: 16px;margin: 0">请上传承诺函图片</h3>
+                    <input id="uploadRealFile" class="btn1 hide" type="file" nv-file-select="" uploader="uploader" multiple  />
+                    <button ng-disabled="uploader.queue.length<0" style="width: 150px;" ng-click="uploadFile()" class="btn btn-success" >选择需要上传的文件</button>
+                </div>
+                <div style="margin-bottom: 40px;height: 380px;overflow: auto;overflow-x: hidden;">
+                    <h3 style="font-family: 'microsoft yahei';font-size: 14px;">图片预览区域</h3>
+                    <p>图片数量：{{ uploader.queue.length }} 张</p>
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>图片名称</th>
+                            <th ng-show="uploader.isHTML5">图片大小</th>
+                            <th ng-show="uploader.isHTML5">上传进度</th>
+                            <th>上传状态</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="item in uploader.queue">
+                            <td>
+                                <strong>{{ item.file.name }}</strong>
+                                <!-- Image preview -->
+                                <!--auto height-->
+                                <!--<div ng-thumb="{ file: item.file, width: 100 }"></div>-->
+                                <!--auto width-->
+                                <div ng-show="uploader.isHTML5" ng-thumb="{ file: item._file, height: 100 }"></div>
+                                <!--fixed width and height -->
+                                <!--<div ng-thumb="{ file: item.file, width: 100, height: 100 }"></div>-->
+                            </td>
+                            <td ng-show="uploader.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
+                            <td ng-show="uploader.isHTML5">
+                                <div class="progress" style="margin-bottom: 0;">
+                                    <div class="progress-bar" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
+                                </div>
+                            </td>
+                            <td class="text-center">
+                                <span ng-show="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
+                                <span ng-show="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
+                                <span ng-show="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
+                            </td>
+                            <td nowrap>
+                                <!--<button type="button" class="btn btn-success btn-xs" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess">-->
+                                <!--上传-->
+                                <!--</button>-->
+                                <!--<button type="button" class="btn btn-warning btn-xs" ng-click="item.cancel()" ng-disabled="!item.isUploading">-->
+                                <!--取消-->
+                                <!--</button>-->
+                                <button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()">
+                                    移除
+                                </button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div>
+                        <div>
+                            上传进度:
+                            <div class="progress" style="">
+                                <div class="progress-bar" role="progressbar" ng-style="{ 'width': uploader.progress + '%' }"></div>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-success btn-s" ng-click="uploader.uploadAll()" ng-disabled="uploader.getNotUploadedItems().length<1">
+                            全部上传
+                        </button>
+                        <!--<button type="button" class="btn btn-warning btn-s" ng-click="uploader.cancelAll()" ng-disabled="!uploader.isUploading">-->
+                        <!--全部取消-->
+                        <!--</button>-->
+                        <button type="button" class="btn btn-danger btn-s" ng-click="uploader.clearQueue()" ng-disabled="!uploader.queue.length">
+                            全部移除
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="submitBtn1" style="text-align: center;padding: 5px 0 25px;">
+        <input ng-click="submitCommitmentInfo()" type="button" value="确定" class="btn">
+        <input ng-click="reload()" type="button" value="取消" class="btn" onClick="hideDiv('BusinessFillAgain')">
+    </div>
+</div>
+<!--工商重填弹出框 BusinessFillAgain end-->
+<!--添加企业信息 addCompanyInfo start-->
+<!--<div style="min-width: 400px" class="ImportantNote addCompanyInfo">-->
+    <!--<div class="headline">-->
+        <!--<span>添加企业</span>-->
+        <!--<img style="left: 94%;" onClick="hideDiv('addCompanyInfo')" class="companyCloseImg" src="image/comm/diffClosed.png" width="22" height="22">-->
+    <!--</div>-->
+    <!--<div style="padding: 30px 50px;" class="businessAuth">-->
+        <!--<p style="margin-bottom: 20px;">-->
+            <!--<label style="width: 341px;display: inline-block;">-->
+                <!--<span style="width: 180px;text-align: right">实际控制人是否为股东:</span>-->
+                <!--<input ng-model="shPerson" type="radio" name="isSHPerson" value="1"/>是-->
+                <!--<input ng-model="shPerson" type="radio" name="isSHPerson" value="0"/>否-->
+            <!--</label>-->
+            <!--<label style="width: 337px;display: inline-block;">-->
+                <!--<span style="width: 180px;text-align: right">公司类型:</span>-->
+                <!--<input ng-model="companyType" type="radio" name="companyType" value="100000"/>个体工商户-->
+                <!--<input ng-model="companyType" type="radio" name="companyType" value="010100"/>企业-->
+            <!--</label>-->
+            <!--<label for="realControllerId" style="width:auto;margin-left: 0">-->
+                <!--<span style="width: 180px;text-align: right">选择实际控制人:</span>-->
+                <!--<select ng-change="realControllerChange(realControllerId)" name="realControllerId" id="realControllerId" ng-model="realControllerId" ng-options="RealController.userId as RealController.userName for RealController in RealControllers">-->
+                    <!--<option value="">请选择实际控制人</option>-->
+                <!--</select>-->
+            <!--</label>-->
+        <!--</p>-->
+        <!--<p>-->
+            <!--<label for="shopName" style="width:auto;margin-left: 0">-->
+                <!--<span style="width: 180px;text-align: right">选择店铺:</span>-->
+                <!--<select name="shopName" id="shopName" ng-model="shopName" ng-options="storeInfo.nickName as storeInfo.shopName for storeInfo in storeInfos">-->
+                    <!--<option value="">请选择店铺</option>-->
+                <!--</select>-->
+            <!--</label>-->
+            <!--<label for="companyName" style="width:auto;">-->
+                <!--<span style="width: 180px;text-align: right">公司名称:</span>-->
+                <!--<input ng-model="companyName" id="companyName" type="text" placeholder="请输入公司名称" />-->
+            <!--</label>-->
+            <!--<label for="licenceNo" style="width:auto;">-->
+                <!--<span style="width: 180px;text-align: right">营业执照号:</span>-->
+                <!--<input ng-model="licenceNo" id="licenceNo" type="text" placeholder="请输入营业执照号" />-->
+            <!--</label>-->
+        <!--</p>-->
+        <!--<p style="margin: 10px 0 10px;text-align: center;text-align: center"><a style="color: #71B9FE;font-size: 14px;text-decoration: none" ng-click="addHouse()" href="javascript:void(0)">+添加股东</a></p>-->
+        <!--<p ng-repeat="channelsTypeDetail in channelsTypes" style="margin-bottom: 20px;" ng-init="outerIndex = $index+1" class="{{$index}} sectionNew">-->
+            <!--<label>-->
+                <!--<span style="width: 180px;text-align: right">股东{{$index+1}}姓名:</span>-->
+                <!--<input type="text" name="shareHolderName{{outerIndex}}" id="shareHolderName{{outerIndex}}" placeholder="请输入股东姓名" ng-model="channelsTypeDetail.shareHolderName"/>-->
+            <!--</label>-->
+            <!--<label>-->
+                <!--<span style="width: 180px;text-align: right">股东{{$index+1}}电话:</span>-->
+                <!--<input type="text" name="shareHolderPhone{{outerIndex}}" id="shareHolderPhone{{outerIndex}}" placeholder="请输入股东电话" ng-model="channelsTypeDetail.shareHolderPhone"/>-->
+            <!--</label>-->
+            <!--<label>-->
+                <!--<span style="width: 180px;text-align: right">股东{{$index+1}}身份证:</span>-->
+                <!--<input type="text" name="shareHolderCardNo{{outerIndex}}" id="shareHolderCardNo{{outerIndex}}" placeholder="请输入股东身份证" ng-model="channelsTypeDetail.shareHolderCardNo"/>-->
+            <!--</label>-->
+            <!--<label>-->
+                <!--<a style="color: #71B9FE;font-size: 14px;text-decoration: none" href="javascript:void(0)" ng-click="delHouse(channelsTypeDetail,$index)">移除</a>-->
+            <!--</label>-->
+        <!--</p>-->
+        <!--<div class="submitBtn1" style="text-align: center;margin-top: 25px;">-->
+            <!--<button ng-click="addCompanySure()" class="btn">确定</button>-->
+            <!--<button type="button" class="btn" onClick="hideDiv('addCompanyInfo')">关闭</button>-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</div>-->
+<!--添加企业信息 end-->
+
+<!--单个删除弹出框start-->
+<div class="ImportantNote deleteCommonLoanContainer">
+    <div class="headline">
+        <span>删除{{titleName}}</span>
+        <img onClick="hideDiv('deleteCommonLoanContainer')" class="companyCloseImg" src="image/comm/diffClosed.png" width="22" height="22">
+    </div>
+    <div class="businessAuth">
+        <p>确定要删除 <span style="color: #ff0000;">{{CommonLoanName}}</span> 该{{titleName}}？</p>
+        <div class="submitBtn1" style="text-align: center;">
+            <input type="button" value="删除" style="" class="btn" ng-click="deleteCommonLoanSure()"/>
+            <input type="button" value="取消" class="btn" onClick="hideDiv('deleteCommonLoanContainer')">
+        </div>
+    </div>
+</div>
+
+<!--单个删除弹出框end-->
+<!--放款条件 文件列表 start-->
+<div class="ImportantNote fileList">
+    <div class="headline">
+        <span>文件列表</span>
+        <img onClick="hideDiv('fileList')" class="companyCloseImg" src="image/comm/diffClosed.png" width="22" height="22">
+    </div>
+    <div class="businessAuth">
+        <div style="overflow: auto;min-width: 400px;width: auto" class="tableDiv" id="disSaler1">
+            <table style="width: 100%;">
+                <thead>
+                <tr>
+                    <td>序号</td>
+                    <td>资料名称</td>
+                    <td>操作</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr id="memberChoose" ng-repeat="fileDetail in fileLists">
+                    <td>{{$index+1}}</td>
+                    <td>{{fileName}}</td>
+                    <td><a style="color: #4da7fd" href="{{fileDetail}}" target="_blank">下载</a></td>
+                </tr>
+                <tr ng-show="fileLists==''||fileLists==null||fileLists==undefined">
+                    <td style="text-align: center" colspan="3">暂无上传的文件！</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="submitBtn1" style="text-align: right;">
+            <input type="button" value="关闭" style="background: #4da7fd" class="btn" onClick="hideDiv('fileList')">
+        </div>
+    </div>
+</div>
+<!--放款条件 文件列表 end-->
+<!--转交弹出框 start-->
+<div class="ImportantNote transfer">
+    <div class="headline">
+        <span>请选择转交候选人</span>
+        <img onClick="hideDiv('transfer')" class="companyCloseImg" src="image/comm/diffClosed.png" width="22" height="22">
+    </div>
+    <div class="businessAuth">
+        <div class="tableDiv">
+            <table>
+                <thead>
+                <tr>
+                    <td>选择</td>
+                    <!--<td>电话号码</td>-->
+                    <td>待处理人</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr id="memberChoose1" ng-repeat="transfer in transfers">
+                    <td><input value="{{transfer.employeeCodes}}" ng-model="EmployeChoose" type="radio" name="person"/></td>
+                    <!--<td>{{transfer.phone}}</td>-->
+                    <td>{{transfer.employeeNames}}</td>
+                </tr>
+                <tr ng-show="transfers==''||transfers==undefined||transfers==null">
+                    <td colspan="3" style="text-align: center">未获取到数据</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="submitBtn1" style="text-align: center;">
+            <button type="button" ng-click="transferMember(transfer);" value="" class="btn">确定</button>
+            <button type="button" value="" class="btn" onClick="hideDiv('transfer')">取消</button>
+        </div>
+    </div>
+</div>
+<!--转交弹出框 end-->
+<!--图片查看通用弹出框start-->
+<div style="min-width: 400px" class="ImportantNote imgShow">
+    <div class="headline">
+        <span>图片查看</span>
+        <img style="left: 95%;" ng-click="reload()" onClick="hideDiv('imgShow')" class="companyCloseImg" src="image/comm/diffClosed.png" width="22" height="22">
+    </div>
+    <div class="businessAuth">
+        <div class="imgDiv">
+            <a href="{{chooled}}" rel="{{chooled}}"><img class="artZoom" ng-show="chooled!=''" alt="请重填身份证照片" style="cursor: pointer;margin: 0" src="{{chooled}}" width="700"/></a>
+        </div>
+        <div class="submitBtn1" style="text-align: right;">
+            <input type="button" value="关闭" class="btnNoAct" ng-click="reload()" onClick="hideDiv('imgShow')">
+        </div>
+    </div>
+</div>
+<!--图片查看通用弹出框start-->
+<script>
+    function tabChangeInfo(obj){
+        var names = $(obj).attr('title');
+        $("#"+names).css("display","block").siblings().css("display","none");
+        $(obj).addClass("activeApp").siblings().removeClass("activeApp");
+    }
+    function wholeDis(obj){
+        var cont = $(obj).attr("name");
+
+        $(obj).append("<span style='z-index:100000;position:absolute;top: 35px;left: 50%;display: inline-block;height: 1px;width: 18px;background-color:#FFFFFF;'></span><img style='position:absolute;top: 22px;left: 50%;' src='image/comm/arrow1.png' width='18' height='14;'/><div id='displayWholeInformation' style='position: absolute;border: 1px solid #ccc;border-radius:5px;background: #fff;z-index: 999;padding: 5px 10px;;top: 35px;left: 200px;width: 600px!important; height: auto!important;max-height: 500px;overflow: auto;overflow-x: hidden;'>" +
+                cont+"</div>");
+    }
+    function wholeHide(obj){
+        $(obj).find("div#displayWholeInformation").css("display","none");
+        $(obj).find("div#displayWholeInformation").prev().hide();
+
+    }
+
+    /*隐性负债验证优化start*/
+    function wholeDisDebt(obj){
+        var cont = $(obj).attr("name");
+        $(obj).append(" <img src='image/comm/diffClosed.png' onclick='wholeHideDebt(event,this)' style='cursor: pointer;display: inline-block;width: 18;height: 18px;position: absolute;z-index:1000;right: -45px;top: 40px;'/><div onclick='wholeNoDisDebt(event)' id='displayWholeInformation1' style='position: absolute;border: 1px solid #ccc;border-radius:5px;background: #fff;z-index: 999;padding: 10px 10px;top: 30px;left: 200px;width: 600px!important; height: auto!important;max-height: 500px;overflow: auto;overflow-x: hidden;border-top: 35px solid #e7ecf2;'>" +
+                cont+"<br /><button onclick='wholeHideDebt1(event,this)' style='cursor: pointer;outline:none;display: inline-block;margin-left: calc(50% - 25px);'class='btn'>关闭</button>   "+
+                "</div>");
+    }
+    function wholeNoDisDebt(event){
+        event.stopPropagation();
+    }
+    function wholeHideDebt(event,obj){
+        event.stopPropagation();
+        $(obj).next().hide();
+        $(obj).hide();
+    }
+    function wholeHideDebt1(event,obj){
+        event.stopPropagation();
+        $(obj).parent().hide();
+        $(obj).parent().prev().hide();
+    }
+    /*隐性负债验证优化end*/
+
+
+    function newLineBySign(msgs){
+
+        ss=$.trim(msgs);
+
+
+        if(ss.indexOf("\\n")>0) {
+            var result='';
+            result=ss.replace(/(\\n)/g,"$1\n");
+
+            result=result.replace(/(\\n)/g,"");
+            return result;
+        }else{
+            return ss;
+        }
+
+
+    }
+
+    /*锚点start*/
+    function clickNav(obj){
+        var $index = ''
+        $index = $(obj).index();
+        $('#clickNav ul li').eq($index).addClass('anchor').siblings().removeClass('anchor');
+        if($index==0){
+
+        }else if($index==1){
+            document.getElementById('applyHistory').scrollIntoView();
+
+        }else if($index==2){
+            document.getElementById('payWater').scrollIntoView();
+
+        }else if($index==3){
+
+            document.getElementById('operatorsReport').scrollIntoView();
+
+        }else if($index==4){
+
+            document.getElementById('operatorData').scrollIntoView();
+
+        }else if($index==5){
+
+            document.getElementById('againstReportCur').scrollIntoView();
+
+        }else if($index==6){
+
+            document.getElementById('privateData').scrollIntoView();
+
+        }else{
+            document.getElementById('applyHistory').scrollIntoView();
+        }
+    }
+    /*锚点end*/
+</script>

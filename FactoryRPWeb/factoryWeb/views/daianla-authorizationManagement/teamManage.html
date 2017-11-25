@@ -1,0 +1,178 @@
+<style>
+	.businessAuth >p{
+		text-align: left!important;
+	}
+</style>
+<div class="mainContain">
+
+    <!--查询div start-->
+    <div style="padding: 20px 0 0;" class="queryDiv" > 
+        <!--报单待处理 start-->
+        <ul>
+            <li>
+                <label for="1"><span style="width: auto!important;padding-left: 10px;">组名：</span>
+                    <input type="text" id="1" placeholder="请输入小组名称" ng-model="QueryName"/>
+                </label>
+                <label>
+                    <button class="btn" ng-click="onQuery()">查询</button>
+                    <button style="margin-left: 10px;" class="btn" onclick="popupDiv('functionBalance')" ng-click="addTeam()">新增小组</button>
+                </label>
+            </li>
+            <!--<li>-->
+
+                <!--<p  class="searchBg1">-->
+                    <!--<button style="margin-left: 777px;" class="btn" onclick="popupDiv('functionBalance')"><span style="font-weight: 700; font-size: 18px; display: inline;" >+</span>新增功能</button>-->
+                <!--</p>-->
+                <!--<p  class="searchBg">-->
+                    <!--<input type="text" value="" ng-model="test"/>-->
+                    <!--<button  class="searchBtn" ng-click="onQuery()"></button>-->
+                <!--</p>-->
+            <!--</li>-->
+        </ul>
+        <!--报单待处理 end-->
+    </div>
+    <!--查询div end-->
+    <!--table start-->
+    <div class="tableListDiv data-container jurisdiction">
+        <table>
+            <thead>
+            <tr>
+                <th style="min-width: 30px;">序号</th>
+                <th>组名</th>
+                <th>组长</th>
+                <th>组员名单</th>
+                <th>区域</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody> 
+            <!--<tr ng-repeat="orderDetail in orderList | filter:test">-->
+            <tr ng-repeat="orderDetail in orderList | filter:QueryName">
+                <td class="firstTd">{{$index+1}}</td>
+                <td>{{orderDetail.name}}</td>
+                <td><span ng-repeat="managerName in orderDetail.managerNames">{{managerName}}<span ng-if="$index!=orderDetail.managerNames.length-1">、</span></span></td>
+                <td><span ng-repeat="employeeName in orderDetail.employeeNames">{{employeeName}}<span ng-if="$index!=orderDetail.employeeNames.length-1">、</span></span></td>
+                <td><span ng-repeat="provinceName in orderDetail.provinceNames">{{provinceName}}<span ng-if="$index!=orderDetail.provinceNames.length-1">、</span></span></td>
+                <td>
+                    <a href="javascript:void(0)" class="resBtn editBtn" ng-click="getGroupInfo(orderDetail.code)">
+                        <img src="image/comm/resBtnEdit.png" alt="编辑"/>
+                        <b class="title">编辑</b>
+                    </a>
+                    <a href="javascript:void(0)" class="resBtn deleteBtn" ng-click="deletefunctionBalance(orderDetail.code)">
+                        <img src="image/comm/resBtnDelete.png" alt="删除"/>
+                        <b class="title">删除</b>
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+    </div>
+    <!--table end-->
+</div>
+
+<!--新增小组弹出框start-->
+<div class="ImportantNote functionBalance">
+    <div class="headline">
+        <span>{{headerText}}</span>
+        <img onClick="hideDiv('functionBalance')" class="companyCloseImg" src="image/comm/diffClosed.png" width="22" height="22">
+    </div>
+    <div class="businessAuth">
+        <p style="margin-bottom: 20px;">
+            <label style="width:auto;">
+                <span style="width: 80px;text-align: right">业务类型:</span>
+				<select name="" ng-model="businessType" id="businessType" ng-change="businessTypeChange(businessType)">
+                    <option value="">请选择业务类型</option>
+					<option ng-repeat="productType in allListProductType" value="{{productType.typeCode}}">{{productType.name}}</option>
+				</select>
+            </label>
+        </p>
+        <p style="margin-bottom: 20px;">
+            <label style="width:auto;">
+                <span style="width: 80px;text-align: right">组名:</span>
+				<select name="" ng-model="groupCode" id="groupName" >
+					<option value="">请选择组名</option>
+					<option ng-repeat="department in allDepartment" value="{{department.code}}">{{department.name}}</option>
+				</select>
+            </label>
+        </p>
+        <div style="margin-bottom: 0px;">
+            <label style="width:auto;">
+                <span style="width: 80px;text-align: right;font-size: 16px">组长:</span>
+				<div style="float: right;width: 1000px;margin-bottom:10px;min-height:50px;border: 1px solid #ccc;">
+					<ul>
+	                    <li style="float: left;padding: 5px;width: 85px;" ng-repeat="employee in allEmployee">
+	                        <input  class="subCheckBox" type="checkbox" ng-checked="isChecked1(employee.code)" ng-click="updateSelection1($event,employee.code,employee.name)" value=""  name="che"/>
+	                        <a style="font-size: 13px;font-weight: bold;">{{employee.name}}</a>
+	                    </li>
+	               	</ul>
+				</div>
+            </label>
+        </div>
+        <div style="clear: both;"></div>
+        <div style="margin-bottom: 0px;">
+            <label style="width:auto;">
+                <span style="width: 80px;text-align: right;;font-size: 16px">组员:</span>
+				<div style="float: right;width: 1000px;margin-bottom:10px;min-height:50px;border: 1px solid #ccc;">
+					<ul>
+                        <li style="float: left;padding: 5px;width: 85px;" ng-repeat="employee in allEmployee">
+                            <input  class="subCheckBox" type="checkbox" ng-checked="isChecked2(employee.code)" ng-click="updateSelection2($event,employee.code,employee.name)" value=""  name="che"/>
+                            <a style="font-size: 13px;font-weight: bold;">{{employee.name}}</a>
+                        </li>
+                    </ul>
+				</div>
+            </label>
+        </div>
+        <div style="clear: both;"></div>
+        <div style="margin-bottom: 20px;" ng-if="isJYD&&groupCode=='59e5e446559b2772f7f28b0c'">
+            <label style="width:auto;">
+                <span style="width: 80px;text-align: right;font-size: 16px">区域:</span>
+                <div style="float: right;width: 1000px;margin-bottom:10px;min-height:50px;border: 1px solid #ccc;">
+				<ul>
+                        <li style="float: left;padding: 5px;" ng-repeat="provinceList in provinceLists">
+                            <input  class="subCheckBox" type="checkbox" ng-checked="isChecked3(provinceList.code)" ng-click="updateSelection3($event,provinceList.code,provinceList.name)" value=""  name="che"/>
+                            <a style="font-size: 13px;font-weight: bold;">{{provinceList.name}}</a>
+                        </li>
+                    </ul>
+                 </div>   
+            </label>
+        </div>
+        <div style="clear: both;"></div>
+        <div class="submitBtn1" style="text-align: center;">
+            <input type="button" ng-click="addfunctionBalance()" value="保存" class="btn">
+            <input type="button" value="取消" class="btn" onClick="hideDiv('functionBalance')">
+        </div>
+    </div>
+</div>
+
+<!--新增小组弹出框end-->
+<!--删除弹出框start-->
+<div class="ImportantNote deleteFunction">
+    <div class="headline">
+        <span>删除小组</span>
+        <img onClick="hideDiv('deleteFunction')" class="companyCloseImg" src="image/comm/diffClosed.png" width="22" height="22">
+    </div>
+    <div class="businessAuth">
+        <p>确认删除此小组？</p>
+        <div class="submitBtn1" style="text-align: center;">
+            <input type="button" value="确定" class="btn" ng-click="removeGroup()"/>
+            <input type="button" value="取消" class="btn" onClick="hideDiv('deleteFunction')">
+        </div>
+    </div>
+</div>
+
+<!--删除弹出框end-->
+<!--保存成功start-->
+<div class="ImportantNote SaveSuccess">
+    <div class="headline">
+        <span>重要提示</span>
+        <img  onClick="hideDiv('SaveSuccess')" class="companyCloseImg" src="image/comm/diffClosed.png" width="22" height="22">
+    </div>
+    <div class="businessAuth">
+        <p><img src="image/comm/attentionPlease.png" alt="注意："/><span class="Message"></span></p>
+        <div class="submitBtn1" style="text-align: right;">
+            <input ng-click="reload()" onClick="hideDiv('SaveSuccess')" type="button" value="确定" class="btn">
+        </div>
+    </div>
+</div>
+<!--保存成功end-->

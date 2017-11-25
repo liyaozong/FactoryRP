@@ -1,0 +1,108 @@
+<div class="mainContain">
+
+    <!--查询div start-->
+    <div style="padding: 20px 0 0;" class="queryDiv" >
+        <!--报单待处理 start-->
+        <ul>
+            <li>
+                <label for="1"><span>关键字名称：</span>
+                    <input type="text" id="1" placeholder="请输入关键字名称" ng-model="QueryName"/>
+                </label>
+                <label>
+                    <button class="btn" ng-click="queryAllwords()">查询</button>
+                    <button style="margin-left: 10px; width: 150px; " class="btn" onclick="popupDiv('functionBalance')"><span style="font-weight: 700; font-size: 16px; display: inline;" >+</span>新增敏感关键词</button>
+                </label>
+            </li>
+
+        </ul>
+        <!--报单待处理 end-->
+    </div>
+    <!--查询div end-->
+    <!--table start-->
+    <div class="tableListDiv data-container jurisdiction">
+        <table>
+            <thead>
+            <tr>
+                <th style="min-width: 30px;">编号</th>
+                <th>关键词</th>
+
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            <tr ng-repeat="orderDetail in orderList | filter:test">
+                <td class="firstTd">{{$index+1}}</td>
+
+                <td>{{orderDetail.msg}}</td>
+               <td>
+                    <button class="deleteBtn" ng-click="deletefunctionBalance(orderDetail)">删除</button>
+                </td>
+            </tr>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td style="text-align: center" colspan="11"><tm-pagination conf="paginationConf"></tm-pagination></td>
+            </tr>
+            </tfoot>
+        </table>
+
+    </div>
+    <!--table end-->
+</div>
+
+<!--新增功能点弹出框start-->
+<div class="ImportantNote functionBalance">
+    <div class="headline">
+        <span>新增关键词</span>
+        <img onClick="hideDiv('functionBalance')" class="companyCloseImg" src="image/comm/diffClosed.png" width="22" height="22">
+    </div>
+    <div class="businessAuth">
+
+        <p style="margin-bottom: 20px;">
+            <label style="width:auto;">
+                <span style="width: 100px;text-align: right">关键词名称:</span>
+                <textarea placeholder="请输入关键词名称" id="addName" ng-model="addName" style="margin-left: 10px; width: 300px; height:200px; border: 1px solid #e6e6e6;"></textarea>
+            </label>
+
+        </p>
+
+        <div class="submitBtn1" style="text-align: center;">
+            <input type="button" ng-click="addfunctionBalance()" value="保存" class="btn">
+            <input type="button" value="取消" class="btnNoAct" onClick="hideDiv('functionBalance')">
+        </div>
+    </div>
+</div>
+
+<!--新增功能点弹出框end-->
+
+<!--删除弹出框start-->
+<div class="ImportantNote deleteFunction">
+    <div class="headline">
+        <span>删除关键词</span>
+        <img onClick="hideDiv('deleteFunction')" class="companyCloseImg" src="image/comm/diffClosed.png" width="22" height="22">
+    </div>
+    <div class="businessAuth">
+        <p>确认删除此删除关键词？</p>
+        <div class="submitBtn1" style="text-align: center;">
+            <input type="button" value="保存" class="btn" ng-click="deleteFunction()"/>
+            <input type="button" value="取消" class="btnNoAct" onClick="hideDiv('deleteFunction')">
+        </div>
+    </div>
+</div>
+
+<!--删除弹出框end-->
+<!--保存成功start-->
+<div class="ImportantNote SaveSuccess">
+    <div class="headline">
+        <span>重要提示</span>
+        <img ng-click="reload()" onClick="hideDiv('SaveSuccess')" class="companyCloseImg" src="image/comm/diffClosed.png" width="22" height="22">
+    </div>
+    <div class="businessAuth">
+        <p><img src="image/comm/attentionPlease.png" alt="注意："/><span class="Message"></span></p>
+        <div class="submitBtn1" style="text-align: right;">
+            <input ng-click="reload()" onClick="hideDiv('SaveSuccess')" type="button" value="确定" class="btn">
+        </div>
+    </div>
+</div>
+<!--保存成功end-->

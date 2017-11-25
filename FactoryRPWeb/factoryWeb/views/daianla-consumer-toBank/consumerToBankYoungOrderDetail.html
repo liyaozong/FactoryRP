@@ -1,0 +1,358 @@
+<style>
+    .btn{width: auto;min-width:80px;font-size: 14px;height: 30px;line-height: 30px;margin: 5px 20px 0 0;cursor: pointer;background: #4da7fd}
+    .btns{
+        min-width: 70px;width: auto;font-size: 14px;height: 30px;line-height: 30px;margin: 5px 20px 0 0;cursor: pointer;background: #ff8208
+    }
+    .remarkDiv{
+        padding: 10px;
+    }
+    .mainContain .orderDetailList ul{
+        min-height: 40px;
+        line-height: 40px;
+        border-bottom: 1px solid #f6f6f6;
+        height: auto;
+    }
+    /*.mainContain .orderDetailList ul:first-child{*/
+    /*background: #4da7fd;*/
+    /*}*/
+    /*.mainContain .orderDetailList ul:first-child li{*/
+    /*background: #4da7fd;*/
+    /*color: #fff;*/
+    /*}*/
+    .mainContain .orderDetailList ul li{
+        width: 33%;
+        float: left;
+        border: none;
+        clear: none;
+
+    }
+
+    .mainContain .orderDetailList .alignPattern tr td{
+        padding-left:7px;
+    }
+    .mainContain .orderDetailInfo .orderDetailInfoList table tr th{
+        background:#e7ecf2;
+    }
+
+    .mainContain .orderDetailList .diTabl tr td{
+        text-indent: 2px;
+        padding-left: 0;
+    }
+
+    .mainContain .orderDetailList .appCheatList ul.tabList li{
+        border:none;
+        float: left;
+        overflow: hidden;
+        width: 200px;
+        text-align: center;
+        clear: none;
+        background-color: #f6f6f6;
+        margin-right: 20px;
+        cursor: pointer;
+        text-indent: 0;
+        border: none;
+        margin-bottom: 5px;
+    }
+    .mainContain .orderDetailList h4{
+        width: 100%;
+    }
+    .mainContain ol{
+        margin: 5px 10px 0px 10px;
+    }
+    .mainContain ol li{
+        border:none;
+        float: left;
+        overflow: hidden;
+        width: auto;
+        text-align: left;
+        clear: none;
+        line-height: 25px;
+
+        margin-right: 12px;
+
+
+    }
+    .mainContain .orderDetailList .appCheatList ul{
+        border: none;
+    }
+    .mainContain .orderDetailList .appCheatList ul.tabList li.activeApp{
+        background-color: #4da7fd;
+        color: #fff;
+        text-indent: 0;
+        border: none;
+    }
+    .page-list .pagination span{
+        text-indent: 0;
+    }
+    .mainContain .orderDetailList ul li{
+        border: none;
+    }
+    .mainContain .orderDetailList h3{
+        padding: 5px 5px 0px 25px;
+        color: #333;
+        font-size: 17px;
+    }
+    .loanq tr{
+        border-bottom: 1px solid #ccc;
+        line-height: 35px;
+    }
+    .loanq tr th{
+        background-color: #fff;
+        text-align: center;
+    }
+    /*.borderLine{*/
+    /*border-bottom: 1px solid #ccc;*/
+    /*}*/
+    .againResualt{
+
+        width: 876px;
+        position: absolute;
+        left: 150px;
+        top: 10px;
+    }
+    .againResualt>li{
+        border-bottom: 1px solid #e6e6e6;
+        width: 730px;
+        line-height: 35px!important;
+        height: 35px!important;
+
+    }
+    .againResualt>li:hover{
+        background: #e6e6e6;
+    }
+    .checkResult{
+        position: absolute;
+        left: 335px;
+        width: 330px;
+        top: 0px;
+
+
+
+    }
+    .checkResult>li{
+        width: 330px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        -o-text-overflow:ellipsis;
+        cursor: pointer;
+    }
+    .detailAgainstCheat{
+        position: absolute;
+        width: 90px;
+        left:922px;
+    }
+    .borderLine{
+        border-bottom: 1px dashed #ccc;
+        width: 1026px;
+    }
+    .borderLine >span{
+        font-weight: bold;
+    }
+    .btn{
+        float:none!important;
+    }
+    .conclusion{
+        position: absolute;
+        left: 672px;
+        top: 0;
+    }
+</style>
+<div class="mainContain">
+<!--orderDetailList 受理记录 start-->
+
+
+
+    <!--青春贷详情 start-->
+<div id="withHoldDt" class="orderDetailList tableListDiv">
+    <h3 style="padding: 5px 5px 0px 25px;">青春贷订单详情</h3>
+    <table class="loanCondition alignPattern">
+
+        <tbody>
+        <tr>
+            <th colspan="12">基本信息</th>
+
+        </tr>
+
+        <tr>
+            <td>客户姓名</td>
+            <td>{{queryYoungOrderDt.userName}}</td>
+            <td>手机号码</td>
+            <td>{{queryYoungOrderDt.userPhone}}</td>
+            <td>申请金额(单位：元)</td>
+            <td>{{queryYoungOrderDt.loanAmount}}</td>
+            <td>消费用途</td>
+            <td>{{queryYoungOrderDt.loanPurpose}}</td>
+            <td>身份证号码</td>
+            <td>{{queryYoungOrderDt.idCardNo}}</td>
+            <!--<td>推荐人手机号</td>-->
+            <!--<td>{{queryYoungOrderDt.recommondPhone}}</td>-->
+
+        </tr>
+        <tr>
+            <td>职业</td>
+            <td>{{queryYoungOrderDt.career}}</td>
+            <td>学历</td>
+            <td>{{queryYoungOrderDt.degree}}</td>
+            <td>婚姻状态</td>
+            <td>{{queryYoungOrderDt.marryStatus}}</td>
+            <td>教育程度</td>
+            <td>{{queryYoungOrderDt.educationLevel}}</td>
+            <td>卡片寄送地址类型</td>
+            <td>{{queryYoungOrderDt.cardSendAddressType}}</td>
+            <td>电子邮箱</td>
+            <td>{{queryYoungOrderDt.email}}</td>
+
+        </tr>
+
+        </tbody>
+    </table>
+    <table class="loanCondition alignPattern">
+
+        <tbody>
+       <tr>
+            <th colspan="8">房产信息</th>
+
+        </tr>
+
+        <tr>
+            <td>住宅情况</td>
+            <td>{{queryYoungOrderDt.houseStatus}}</td>
+            <td>房产所在的省市</td>
+            <td>{{queryYoungOrderDt.houseProvice}}{{queryYoungOrderDt.houseCity}}</td>
+
+            <td>房产详细地址</td>
+            <td>{{queryYoungOrderDt.houseDetailAddress}}</td>
+            <td>房产所在地邮编</td>
+            <td>{{queryYoungOrderDt.houseZipCode}}</td>
+
+        </tr>
+
+        </tbody>
+    </table>
+    <table class="loanCondition alignPattern">
+
+        <tbody>
+
+        <tr>
+            <th colspan="12">单位信息</th>
+
+        </tr>
+
+        <tr>
+            <td>公司名称</td>
+            <td>{{queryYoungOrderDt.companyName}}</td>
+            <td>职业类别</td>
+            <td>{{queryYoungOrderDt.jobType}}</td>
+            <td>职业</td>
+            <td>{{queryYoungOrderDt.job}}</td>
+            <td>行业类别</td>
+            <td>{{queryYoungOrderDt.industryType}}</td>
+            <td>行业</td>
+            <td>{{queryYoungOrderDt.industry}}</td>
+            <td>任职部门</td>
+            <td>{{queryYoungOrderDt.departMentName}}</td>
+
+
+        </tr>
+        <tr>
+            <td>现单位工龄</td>
+            <td>{{queryYoungOrderDt.seniority}}年</td>
+            <td>税后年薪</td>
+            <td>{{queryYoungOrderDt.annualSalary}}万元</td>
+            <td>单位详细地址</td>
+            <td>{{queryYoungOrderDt.companyDetailAddress}}</td>
+            <td>单位座机</td>
+            <td>{{queryYoungOrderDt.companyPhone}}</td>
+            <td>单位所在地邮编</td>
+            <td colspan="3">{{queryYoungOrderDt.companyZipCode}}</td>
+        </tr>
+
+
+        </tbody>
+    </table>
+    <table class="loanCondition alignPattern">
+
+        <tbody>
+
+
+        <tr>
+            <th colspan="8">联系人信息</th>
+
+        </tr>
+
+        <tr>
+            <td>直系亲属姓名</td>
+            <td>{{queryYoungOrderDt.immediateContactName}}</td>
+            <td>直系亲属关系</td>
+            <td>{{queryYoungOrderDt.immediateContactRelation}}</td>
+            <td>直系亲属手机号</td>
+            <td>{{queryYoungOrderDt.immediateContactPhone}}</td>
+            <td>直系亲属联系地址</td>
+            <td>{{queryYoungOrderDt.immediateContactAddress}}</td>
+
+        </tr>
+        <tr>
+            <td>其他联系人姓名</td>
+            <td>{{queryYoungOrderDt.otherContactName}}</td>
+            <td>其他联系人关系</td>
+            <td>{{queryYoungOrderDt.otherContactRelation}}</td>
+            <td>其他联系人手机号</td>
+            <td colspan="3">{{queryYoungOrderDt.otherContactPhone}}</td>
+
+        </tr>
+
+
+
+        </tbody>
+    </table>
+    <table class="loanCondition alignPattern">
+
+        <tbody>
+
+
+        <tr>
+            <th colspan="12">申请信息</th>
+
+        </tr>
+
+        <tr>
+            <td>收款银行卡类型</td>
+            <td>{{queryYoungOrderDt.bankType}}</td>
+            <td>分期期数</td>
+            <td>{{queryYoungOrderDt.loanMonth}}期</td>
+            <td>手续费支付方式</td>
+            <td>{{queryYoungOrderDt.payTypeString}}</td>
+            <!--<td>手续费支付费率</td>-->
+            <!--<td>{{queryYoungOrderDt.rate}}</td>-->
+            <td>银行卡归属省市</td>
+            <td>{{queryYoungOrderDt.bankProvince}}-{{queryYoungOrderDt.bankCity}}</td>
+            <td>开户行名称</td>
+            <td>{{queryYoungOrderDt.bankName}}</td>
+
+
+
+        </tr>
+        <tr>
+            <td>开户行全称</td>
+            <td>{{queryYoungOrderDt.bankFullName}}</td>
+            <td>绑定银行卡号</td>
+            <td>{{queryYoungOrderDt.bankCardNo}}</td>
+            <td>证件有效期</td>
+            <td>{{queryYoungOrderDt.idCardExpirationDate}}</td>
+            <td>qq号</td>
+            <td>{{queryYoungOrderDt.qqNo}}</td>
+            <td>设备信息</td>
+            <td colspan="3">{{queryYoungOrderDt.deviceType}}</td>
+
+
+
+
+        </tr>
+        </tbody>
+    </table>
+</div>
+<!--青春贷详情 end-->
+
+
+</div>

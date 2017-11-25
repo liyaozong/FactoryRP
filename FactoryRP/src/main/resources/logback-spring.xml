@@ -2,5 +2,43 @@
 <configuration>
     <include resource="org/springframework/boot/logging/logback/base.xml" />
     <logger name="org.springframework.web" level="INFO"/>
+    <!-- log base path -->
+    <property name="LOG_HOME" value="log"/>
+    <!-- log name -->
+    <property name="SRVNAME" value="FactoryRP-console"/>
+    <!-- back log base path -->
+    <property name="LOG_BACK_HOME" value="log/backup"/>
 
+    <appender name="RollingFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+
+        <!-- 可让每天产生一个日志文件，最多 10 个，自动回滚 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${user.dir}/logs/log-%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>60</maxHistory>
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- 下面配置一些第三方包的日志过滤级别，用于避免刷屏 -->
+
+    <logger name="org.hibernate" level="WARN"/>
+    <logger name="org.springframework" level="WARN"/>
+    <logger name="com.opensymphony" level="WARN"/>
+    <logger name="org.apache" level="WARN"/>
+
+    <logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="WARN"/>
+    <logger name="org.hibernate.type.descriptor.sql.BasicExtractor" level="DEBUG"/>
+    <logger name="org.hibernate.SQL" level="INFO"/>
+    <logger name="org.hibernate.engine.QueryParameters" level="INFO"/>
+    <logger name="org.hibernate.engine.query.HQLQueryPlan" level="INFO"/>
+
+    <logger name="org.eclipse.jetty" level="WARN"/>
+    <logger name="org.jboss.netty" level="INFO"/>
 </configuration>

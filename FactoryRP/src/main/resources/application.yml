@@ -42,8 +42,21 @@ spring:
     show-sql: true
     properties:
       hibernate:
+        generate_statistics: true  # 打开hibernate统计信息
+        cache:
+          use_second_level_cache: true # 打开二级缓存
+          use_query_cache: true # 打开查询缓存
+          ehcache:
+            config: classpath:ehcache-jpa.xml
+          region:
+            factory_class: org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory # 指定缓存provider
         hbm2ddl:
-          auto: create
+          auto: update
+      javax:
+        persistence:
+          sharedCache:
+            mode: ENABLE_SELECTIVE # 配置shared-cache-mode
+
 
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss

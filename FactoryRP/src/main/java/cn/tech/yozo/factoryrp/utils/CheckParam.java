@@ -1,21 +1,31 @@
 package cn.tech.yozo.factoryrp.utils;
 
+import javax.imageio.ImageIO;
+import javax.imageio.ImageReader;
+import javax.imageio.stream.ImageInputStream;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Iterator;
-
-import javax.imageio.ImageIO;
-import javax.imageio.ImageReader;
-import javax.imageio.stream.ImageInputStream;
+import java.util.List;
 
 /**
  * 参数检查类
  */
 public class CheckParam {
-	
+
+
+	/**
+	 * 判断集合是否为空
+	 * @param list
+	 * @return
+	 */
+	public static boolean isNull(List<Object> list){
+		return isNull(list) && list.isEmpty();
+	}
+
 	/**
 	 * 验证字符串是否为空
 	 * @param str
