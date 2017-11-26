@@ -54,7 +54,7 @@ spring:
           region:
             factory_class: org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory # 指定缓存provider
         hbm2ddl:
-          auto: update
+          auto: none
       javax:
         persistence:
           sharedCache:

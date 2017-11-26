@@ -32,5 +32,5 @@ public class Department extends BaseEntity implements Serializable{
 
     @ApiModelProperty(value = "是否有效",notes ="是否有效" )
     @Column(name="status_flag")
-    private Integer statusFlag;
+    private Integer statusFlag=1;
 }
