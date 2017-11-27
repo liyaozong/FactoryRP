@@ -45,6 +45,7 @@ public class ContactCompanyServiceImpl implements ContactCompanyService{
                 if (!StringUtils.isEmpty(param.getContactName())){
                     listCon.add(criteriaBuilder.like(root.get("contactName").as(String.class),"%"+param.getContactName()+"%"));
                 }
+                listCon.add(criteriaBuilder.equal(root.get("statusFlag").as(Integer.class),1));
                 criteriaQuery.orderBy(criteriaBuilder.desc(root.get("createTime")));
                 Predicate[] predicates = new Predicate[listCon.size()];
                 predicates = listCon.toArray(predicates);

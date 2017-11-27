@@ -30,15 +30,15 @@ public class DeviceInfo extends BaseEntity implements Serializable{
 
     @ApiModelProperty(value = "生产厂商",notes ="生产厂商" )
     @Column(name = "manufacturer")
-    private String manufacturer;
+    private Long manufacturer;
 
     @ApiModelProperty(value = "供应商",notes ="供应商" )
     @Column(name = "supplier")
-    private String supplier;
+    private Long supplier;
 
     @ApiModelProperty(value = "设备类别",notes ="设备类别" )
     @Column(name = "device_type")
-    private String deviceType;
+    private Long deviceType;
 
     @ApiModelProperty(value = "购置时间",notes ="购置时间" )
     @Column(name = "buy_date")
@@ -70,7 +70,7 @@ public class DeviceInfo extends BaseEntity implements Serializable{
 
     @ApiModelProperty(value = "使用状况",notes ="使用状况" )
     @Column(name = "use_status")
-    private String useStatus;
+    private Integer useStatus;
 
     @ApiModelProperty(value = "安装地点",notes ="安装地点" )
     @Column(name = "installation_address")
@@ -82,7 +82,7 @@ public class DeviceInfo extends BaseEntity implements Serializable{
 
     @ApiModelProperty(value = "使用部门",notes ="使用部门" )
     @Column(name = "use_dept")
-    private String useDept;
+    private Long useDept;
 
     @ApiModelProperty(value = "备注",notes ="备注" )
     @Column(name = "remark")
