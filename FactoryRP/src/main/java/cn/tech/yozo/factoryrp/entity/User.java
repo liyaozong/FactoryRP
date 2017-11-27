@@ -60,8 +60,8 @@ public class User extends BaseEntity implements Serializable{
     /**
      * 用户角色标识
      */
-    @Column(name = "role_id")
-    private Long roleId;
+    /*@Column(name = "role_id")
+    private Long roleId;*/
 
 
     @JoinTable(name="system_user_role",
@@ -110,13 +110,13 @@ public class User extends BaseEntity implements Serializable{
         this.corporateIdentify = corporateIdentify;
     }
 
-    public Long getRoleId() {
+    /*public Long getRoleId() {
         return roleId;
     }
 
     public void setRoleId(Long roleId) {
         this.roleId = roleId;
-    }
+    }*/
 
     public List<Role> getRoleList() {
         return roleList;

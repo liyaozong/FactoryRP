@@ -1,5 +1,6 @@
-package cn.tech.yozo.factoryrp.vo.resp;
+package cn.tech.yozo.factoryrp.vo.resp.role;
 
+import cn.tech.yozo.factoryrp.vo.resp.menu.MenuQueryResp;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;

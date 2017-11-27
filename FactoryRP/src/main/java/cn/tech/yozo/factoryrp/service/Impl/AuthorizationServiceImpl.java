@@ -5,12 +5,19 @@ import cn.tech.yozo.factoryrp.exception.BussinessException;
 import cn.tech.yozo.factoryrp.repository.*;
 import cn.tech.yozo.factoryrp.service.AuthorizationService;
 import cn.tech.yozo.factoryrp.utils.CheckParam;
+import cn.tech.yozo.factoryrp.utils.EncryptUtils;
 import cn.tech.yozo.factoryrp.utils.ErrorCode;
-import cn.tech.yozo.factoryrp.vo.req.MenuReq;
-import cn.tech.yozo.factoryrp.vo.req.MenuRoleReq;
-import cn.tech.yozo.factoryrp.vo.req.RoleReq;
-import cn.tech.yozo.factoryrp.vo.req.UserRoleReq;
-import cn.tech.yozo.factoryrp.vo.resp.*;
+import cn.tech.yozo.factoryrp.utils.UUIDSequenceWorker;
+import cn.tech.yozo.factoryrp.vo.req.*;
+import cn.tech.yozo.factoryrp.vo.resp.menu.MenuQueryResp;
+import cn.tech.yozo.factoryrp.vo.resp.menu.MenuResp;
+import cn.tech.yozo.factoryrp.vo.resp.menu.MenuRoleResp;
+import cn.tech.yozo.factoryrp.vo.resp.role.RoleMenuQueryResp;
+import cn.tech.yozo.factoryrp.vo.resp.role.RoleResp;
+import cn.tech.yozo.factoryrp.vo.resp.user.UserAddResp;
+import cn.tech.yozo.factoryrp.vo.resp.user.UserResp;
+import cn.tech.yozo.factoryrp.vo.resp.user.UserRespWarpResp;
+import cn.tech.yozo.factoryrp.vo.resp.user.UserRoleResp;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -79,7 +86,6 @@ public class AuthorizationServiceImpl implements AuthorizationService {
         userList.stream().forEach(u1 ->{
             UserResp userResp = new UserResp();
             userResp.setUserId(u1.getUserId());
-            userResp.setRoleId(u1.getRoleId());
             userResp.setUserName(u1.getUserName());
 
             userRespList.add(userResp);
@@ -121,6 +127,35 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 
         return userRoleResp;
 
+    }
+
+
+    /**
+     * 根据企业唯一标识查询菜单
+     * @param corporateIdentify
+     * @return
+     */
+    public List<MenuResp> queryMenuByCorporateIdentify(Long corporateIdentify){
+
+        List<Menu> menuList = menuRepository.findByCorporateIdentify(corporateIdentify);
+
+          if(!CheckParam.isNull(menuList) && !menuList.isEmpty()){
+              List<MenuResp> menuRespList = new ArrayList<>();
+
+              menuList.stream().forEach(m1 -> {
+                  MenuResp menuResp = new MenuResp();
+
+                  menuResp.setId(String.valueOf(m1.getId()));
+                  menuResp.setOrderNumber(m1.getOrderNumber());
+                  menuResp.setUrl(m1.getUrl());
+                  menuResp.setCorporateIdentify(String.valueOf(m1.getCorporateIdentify()));
+
+                  menuRespList.add(menuResp);
+
+              });
+              return menuRespList;
+          }
+                return null;
     }
 
 
@@ -289,5 +324,43 @@ public class AuthorizationServiceImpl implements AuthorizationService {
     }
 
 
+    /**
+     * 企业新增用户
+     * @param userAddReq
+     * @return
+     */
+    public UserAddResp addUser(UserAddReq userAddReq){
+
+        Corporate corporate = corporateRepository.findByCorporateIdentify(userAddReq.getCorporateIdentify());
+
+        if(CheckParam.isNull(corporate)){
+            throw new BussinessException(ErrorCode.CORPORATE__NOTEXIST_ERROR.getCode(),ErrorCode.CORPORATE__NOTEXIST_ERROR.getMessage());
+        }
+
+        User userInCorporate = userRepository.findByUserNameAndCorporateIdentify(userAddReq.getUserName(), userAddReq.getCorporateIdentify());
+
+        if(CheckParam.isNull(userInCorporate)) {
+            throw new BussinessException(ErrorCode.CORPORATE_USER__REPET_ERROR.getCode(),ErrorCode.CORPORATE_USER__REPET_ERROR.getMessage());
+        }
+
+        User user =  new User();
+
+        user.setCorporateIdentify(userAddReq.getCorporateIdentify());
+        user.setUserName(userAddReq.getUserName());
+        user.setUserId(UUIDSequenceWorker.uniqueSequenceId());
+        user.setPassword(EncryptUtils.generate(userAddReq.getPassword(),EncryptUtils.generateSalt()));
+
+        userRepository.save(user);
+
+        UserAddResp userAddResp  = new UserAddResp();
+
+        userAddResp.setUserName(user.getUserName());
+        userAddResp.setCorporateIdentify(user.getCorporateIdentify());
+        userAddResp.setUserId(user.getId());
+
+
+        return userAddResp;
+
+    }
 
 }

@@ -1,11 +1,14 @@
 package cn.tech.yozo.factoryrp.service;
 
 import cn.tech.yozo.factoryrp.entity.User;
-import cn.tech.yozo.factoryrp.vo.req.MenuReq;
-import cn.tech.yozo.factoryrp.vo.req.MenuRoleReq;
-import cn.tech.yozo.factoryrp.vo.req.RoleReq;
-import cn.tech.yozo.factoryrp.vo.req.UserRoleReq;
-import cn.tech.yozo.factoryrp.vo.resp.*;
+import cn.tech.yozo.factoryrp.vo.req.*;
+import cn.tech.yozo.factoryrp.vo.resp.menu.MenuResp;
+import cn.tech.yozo.factoryrp.vo.resp.menu.MenuRoleResp;
+import cn.tech.yozo.factoryrp.vo.resp.role.RoleMenuQueryResp;
+import cn.tech.yozo.factoryrp.vo.resp.role.RoleResp;
+import cn.tech.yozo.factoryrp.vo.resp.user.UserAddResp;
+import cn.tech.yozo.factoryrp.vo.resp.user.UserRespWarpResp;
+import cn.tech.yozo.factoryrp.vo.resp.user.UserRoleResp;
 
 import java.util.List;
 
@@ -47,6 +50,13 @@ public interface AuthorizationService {
     UserRoleResp addUserRole(UserRoleReq userRoleReq);
 
     /**
+     * 根据企业唯一标识查询菜单
+     * @param corporateIdentify
+     * @return
+     */
+    List<MenuResp> queryMenuByCorporateIdentify(Long corporateIdentify);
+
+    /**
      * 根据企业标识和角色id查询角色具备的菜单
      * @param roleId
      * @param corporateIdentify
@@ -83,5 +93,13 @@ public interface AuthorizationService {
      * @return
      */
     MenuResp addMenu(MenuReq menuReq);
+
+
+    /**
+     * 企业新增用户
+     * @param userAddReq
+     * @return
+     */
+    UserAddResp addUser(UserAddReq userAddReq);
 
 }

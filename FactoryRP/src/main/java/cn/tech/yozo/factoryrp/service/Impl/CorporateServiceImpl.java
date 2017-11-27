@@ -8,7 +8,7 @@ import cn.tech.yozo.factoryrp.utils.CheckParam;
 import cn.tech.yozo.factoryrp.utils.ErrorCode;
 import cn.tech.yozo.factoryrp.utils.UUIDSequenceWorker;
 import cn.tech.yozo.factoryrp.vo.req.CorporateReq;
-import cn.tech.yozo.factoryrp.vo.resp.CorporateResp;
+import cn.tech.yozo.factoryrp.vo.resp.corporate.CorporateResp;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

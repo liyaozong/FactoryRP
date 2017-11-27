@@ -24,7 +24,9 @@ public enum ErrorCode {
     ROLE__REPETED_ERROR("000006","当前企业的角色已经存在"),
     MENU__REPETED_ERROR("000007","当前企业的菜单已经存在"),
     MENUROLE__REPETED_ERROR("000008","当前企业的菜单-角色已经存在"),
-    USERROLE__REPETED_ERROR("000009","当前企业的用户-角色已经存在");
+    USERROLE__REPETED_ERROR("000009","当前企业的用户-角色已经存在"),
+    CORPORATE__NOTEXIST_ERROR("0000010","企业信息不存在"),
+    CORPORATE_USER__REPET_ERROR("0000011","当前企业已经存在此用户");
 
 
     private String code;

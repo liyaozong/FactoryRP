@@ -1,26 +1,18 @@
 package cn.tech.yozo.factoryrp.api;
 
-import cn.tech.yozo.factoryrp.entity.User;
 import cn.tech.yozo.factoryrp.service.AuthorizationService;
 import cn.tech.yozo.factoryrp.utils.AuthWebUtil;
-import cn.tech.yozo.factoryrp.utils.UUIDSequenceWorker;
 import cn.tech.yozo.factoryrp.vo.base.ApiResponse;
-import cn.tech.yozo.factoryrp.vo.req.MenuReq;
-import cn.tech.yozo.factoryrp.vo.req.MenuRoleReq;
-import cn.tech.yozo.factoryrp.vo.req.RoleReq;
-import cn.tech.yozo.factoryrp.vo.req.UserRoleReq;
-import cn.tech.yozo.factoryrp.vo.resp.MenuResp;
-import cn.tech.yozo.factoryrp.vo.resp.RoleMenuQueryResp;
-import cn.tech.yozo.factoryrp.vo.resp.RoleResp;
+import cn.tech.yozo.factoryrp.vo.req.*;
+import cn.tech.yozo.factoryrp.vo.resp.menu.MenuResp;
+import cn.tech.yozo.factoryrp.vo.resp.role.RoleMenuQueryResp;
+import cn.tech.yozo.factoryrp.vo.resp.role.RoleResp;
 import cn.tech.yozo.factoryrp.vo.resp.auth.AuthUser;
-import com.alibaba.fastjson.JSON;
+import cn.tech.yozo.factoryrp.vo.resp.user.UserAddResp;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -159,6 +151,18 @@ public class AuthorizationController extends BaseController{
         return apiResponse(menuRoleReq,authorizationService.addMenuRole(menuRoleReq));
     }
 
+    /**
+     * 企业新增用户
+     * @param userAddReq
+     * @return
+     */
+    @ApiOperation(value = "企业新增用户",notes = "企业新增用户企业新增用户",httpMethod = "POST")
+    @PostMapping("/addUser")
+    @ApiImplicitParam(dataType = "UserAddReq" ,name = "userAddReq", paramType = "VO" ,
+            value = "企业新增用户",required = true)
+    public ApiResponse<MenuResp> addUser(@Valid @RequestBody UserAddReq userAddReq){
+        return apiResponse(userAddReq,authorizationService.addUser(userAddReq));
+    }
 
     /**
      * 为用户添加角色
@@ -173,6 +177,19 @@ public class AuthorizationController extends BaseController{
         return apiResponse(userRoleReq,authorizationService.addUserRole(userRoleReq));
     }
 
+    /**
+     * 根据企业唯一标识查询菜单
+     * @param corporateIdentify
+     * @return
+     */
+    @ApiOperation(value = "根据企业唯一标识查询菜单",notes = "根据企业唯一标识查询菜单",httpMethod = "GET")
+    @GetMapping("/queryMenuByCorporateIdentify")
+    @ApiImplicitParam(dataType = "Long" ,name = "corporateIdentify", paramType = "query" ,
+            value = "根据企业唯一标识查询菜单",required = true,defaultValue = "1")
+    public ApiResponse<List<MenuResp>> queryMenuByCorporateIdentify(@RequestParam(value="corporateIdentify",required = true,defaultValue = "1")
+                                                                                Long corporateIdentify){
+        return apiResponse(String.valueOf(corporateIdentify),authorizationService.queryMenuByCorporateIdentify(corporateIdentify));
+    }
 
     /**
      * 没有token的返回接口，没啥用

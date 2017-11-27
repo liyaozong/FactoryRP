@@ -1,4 +1,4 @@
-package cn.tech.yozo.factoryrp.vo.resp;
+package cn.tech.yozo.factoryrp.vo.resp.corporate;
 
 import cn.tech.yozo.factoryrp.vo.base.ApiCorporateIdentifyRsponse;
 import io.swagger.annotations.ApiModel;

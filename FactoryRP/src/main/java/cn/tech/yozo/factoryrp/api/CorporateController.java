@@ -3,7 +3,7 @@ package cn.tech.yozo.factoryrp.api;
 import cn.tech.yozo.factoryrp.service.CorporateService;
 import cn.tech.yozo.factoryrp.vo.base.ApiResponse;
 import cn.tech.yozo.factoryrp.vo.req.CorporateReq;
-import cn.tech.yozo.factoryrp.vo.resp.CorporateResp;
+import cn.tech.yozo.factoryrp.vo.resp.corporate.CorporateResp;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;

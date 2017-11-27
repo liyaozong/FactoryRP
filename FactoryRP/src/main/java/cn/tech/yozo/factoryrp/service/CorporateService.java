@@ -1,7 +1,7 @@
 package cn.tech.yozo.factoryrp.service;
 
 import cn.tech.yozo.factoryrp.vo.req.CorporateReq;
-import cn.tech.yozo.factoryrp.vo.resp.CorporateResp;
+import cn.tech.yozo.factoryrp.vo.resp.corporate.CorporateResp;
 
 /**
  * @author created by Singer email:313402703@qq.com

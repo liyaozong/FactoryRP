@@ -30,6 +30,13 @@ public class Corporate extends BaseEntity implements Serializable {
     @Column(name = "enable_status" ,length = 20)
     private Integer enableStatus;
 
+
+    /**
+     * 企业code
+     */
+    @Column(name = "corporate_code" ,length = 20)
+    private String corporateCode;
+
     public String getCorporateName() {
         return corporateName;
     }

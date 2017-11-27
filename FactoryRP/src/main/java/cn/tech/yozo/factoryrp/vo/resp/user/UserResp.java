@@ -1,4 +1,4 @@
-package cn.tech.yozo.factoryrp.vo.resp;
+package cn.tech.yozo.factoryrp.vo.resp.user;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -31,9 +31,9 @@ public class UserResp implements Serializable {
 
     /**
      * 用户角色标识
-     */
+     *//*
     @ApiModelProperty(value = "用户角色标识",required = true,notes = "用户角色标识",example = "1")
-    private Long roleId;
+    private Long roleId;*/
 
 
 }

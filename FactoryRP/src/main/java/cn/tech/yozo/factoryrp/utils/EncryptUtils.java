@@ -75,7 +75,7 @@ public class EncryptUtils {
      * 生成盐
      * @return
      */
-    private static String generateSalt(){
+    public static String generateSalt(){
         Random r = new Random();
         StringBuilder sb = new StringBuilder(16);
         sb.append(r.nextInt(99999999)).append(r.nextInt(99999999));

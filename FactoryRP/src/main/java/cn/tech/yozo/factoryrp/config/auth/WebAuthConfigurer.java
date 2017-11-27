@@ -1,9 +1,10 @@
 package cn.tech.yozo.factoryrp.config.auth;
 
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.*;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 /**
  * @author created by Singer email:313402703@qq.com
@@ -11,7 +12,7 @@ import org.springframework.web.servlet.config.annotation.*;
  * @description
  */
 //@EnableWebMvc
-@Configuration
+//@Configuration
 //@EnableAutoConfiguration
 public class WebAuthConfigurer extends WebMvcConfigurerAdapter {
 

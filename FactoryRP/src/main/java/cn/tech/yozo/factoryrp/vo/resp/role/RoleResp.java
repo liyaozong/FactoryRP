@@ -1,4 +1,4 @@
-package cn.tech.yozo.factoryrp.vo.resp;
+package cn.tech.yozo.factoryrp.vo.resp.role;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
