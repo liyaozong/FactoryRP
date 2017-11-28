@@ -60,7 +60,7 @@ public class SpareParts extends BaseEntity implements Serializable {
 
     @ApiModelProperty(value = "换算比例",notes ="换算比例" )
     @Column(name = "conversion_ratio",length = 20)
-    private Double ConversionRatio;
+    private Double conversionRatio;
 
     @ApiModelProperty(value = "规格型号",notes ="规格型号" )
     @Column(name = "specifications_andodels",length = 20)
@@ -115,10 +115,10 @@ public class SpareParts extends BaseEntity implements Serializable {
 
     @ApiModelProperty(value = "自定义日期1",notes ="自定义日期1" )
     @Column(name = "extend_date_field_one")
-    private String extendDateFieldOne;
+    private Date extendDateFieldOne = new Date();
 
     @ApiModelProperty(value = "自定义日期2",notes ="自定义日期2" )
     @Column(name = "extend_date_field_two")
-    private Date extendDateFieldTwo;
+    private Date extendDateFieldTwo = new Date();
 
 }

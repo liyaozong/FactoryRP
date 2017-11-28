@@ -16,7 +16,7 @@ import java.util.Date;
  */
 @ApiModel
 @Data
-public class SparePartsReq extends ApiCorporateIdentifyRequest implements Serializable {
+public class SparePartsAddReq extends ApiCorporateIdentifyRequest implements Serializable {
 
     private static final long serialVersionUID = 3974816824139446195L;
 
@@ -100,8 +100,7 @@ public class SparePartsReq extends ApiCorporateIdentifyRequest implements Serial
     private String extendFieldSeven;
 
     @ApiModelProperty(value = "自定义日期1",notes ="自定义日期1" )
-    @NotEmpty(message = "自定义日期1-不能为空")
-    private String extendDateFieldOne;
+    private Date extendDateFieldOne;
 
     @ApiModelProperty(value = "自定义日期2",notes ="自定义日期2" )
     private Date extendDateFieldTwo;

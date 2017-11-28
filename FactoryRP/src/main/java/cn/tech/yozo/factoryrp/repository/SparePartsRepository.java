@@ -8,4 +8,23 @@ import cn.tech.yozo.factoryrp.entity.SpareParts;
  * @description 备件相关Repository
  */
 public interface SparePartsRepository extends BaseRepository<SpareParts,Long> {
+
+
+    /**
+     * 根据备件名称进行查询
+     * @param name
+     * @return
+     */
+    SpareParts findByName(String name);
+
+
+    /**
+     * 根据备件名称和企业唯一标识进行查询
+     * @param name
+     * @param corporateIdentify
+     * @return
+     */
+    SpareParts findByNameAndCorporateIdentify(String name,Long corporateIdentify);
+
+
 }

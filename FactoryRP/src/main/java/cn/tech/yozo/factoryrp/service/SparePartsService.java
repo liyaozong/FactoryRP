@@ -1,7 +1,10 @@
 package cn.tech.yozo.factoryrp.service;
 
 import cn.tech.yozo.factoryrp.entity.SpareParts;
-import cn.tech.yozo.factoryrp.vo.req.SparePartsReq;
+import cn.tech.yozo.factoryrp.page.Pagination;
+import cn.tech.yozo.factoryrp.vo.req.SparePartsAddReq;
+import cn.tech.yozo.factoryrp.vo.req.SparePartsQueryReq;
+import cn.tech.yozo.factoryrp.vo.resp.sparepars.SparePartsResp;
 import org.springframework.data.domain.Page;
 
 /**
@@ -12,10 +15,20 @@ import org.springframework.data.domain.Page;
 public interface SparePartsService {
 
 
-    Page<SpareParts> findByPage();
+    /**
+     * 根据条件分页查询
+     * @param sparePartsQueryReq
+     * @return
+     */
+    Pagination<SpareParts> findByPage(SparePartsQueryReq sparePartsQueryReq);
 
 
-    void addSpareParts(SparePartsReq sparePartsReq);
+    /**
+     * 新增备件
+     * @param sparePartsReq
+     * @return
+     */
+    SparePartsResp addSpareParts(SparePartsAddReq sparePartsReq);
 
 
 }
