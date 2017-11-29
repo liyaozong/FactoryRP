@@ -28,10 +28,18 @@ public class ContactCompanyServiceImpl implements ContactCompanyService{
 
     @Override
     public Pagination<ContactCompany> findByPage(ContactCompanyReq param) {
-        if (param.getCurrentPage() > 0) {
-            param.setCurrentPage(param.getCurrentPage()-1);
+        Integer currentPage = param.getCurrentPage();
+        Integer itemsPerPage = param.getItemsPerPage();
+        if(null==currentPage){
+            currentPage=0;
         }
-        Pageable p = new PageRequest(param.getCurrentPage(), param.getItemsPerPage());
+        if (null==itemsPerPage){
+            itemsPerPage=10;
+        }
+        if (currentPage > 0) {
+            currentPage-=1;
+        }
+        Pageable p = new PageRequest(currentPage, itemsPerPage);
         Page<ContactCompany> page = contactCompanyRepository.findAll(new Specification<ContactCompany>() {
             @Override
             public Predicate toPredicate(Root<ContactCompany> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
@@ -56,8 +64,8 @@ public class ContactCompanyServiceImpl implements ContactCompanyService{
         if (page.hasContent()){
             res.setList(page.getContent());
         }
-        res.setCurrentPage(param.getCurrentPage());
-        res.setItemsPerPage(param.getItemsPerPage());
+        res.setCurrentPage(currentPage);
+        res.setItemsPerPage(itemsPerPage);
         res.setTotalCount((int)page.getTotalElements());
         return res;
     }

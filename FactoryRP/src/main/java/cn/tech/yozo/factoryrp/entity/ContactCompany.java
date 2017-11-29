@@ -58,4 +58,8 @@ public class ContactCompany extends BaseEntity implements Serializable{
 
     @ApiModelProperty(value = "备注",notes ="备注" )
     private String remark;
+
+    @ApiModelProperty(value = "是否有效",notes ="是否有效" )
+    @Column(name="status_flag")
+    private Integer statusFlag=1;
 }

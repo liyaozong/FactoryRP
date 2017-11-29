@@ -35,7 +35,7 @@ public class BaseController {
         ApiResponse apiResponse = new ApiResponse();
         apiResponse.setErrorMessage(ErrorCode.SUCCESS.getMessage());
         apiResponse.setErrorCode(ErrorCode.SUCCESS.getCode());
-        apiResponse.setRequestSeqNo(MDCUtils.getMsgId());
+        apiResponse.setRequestSeqNo(MDCUtils.getOrGenMsgId());
         apiResponse.setResponseTime(DateTimeUtil.currentDateToStr(""));
         return apiResponse;
     }
@@ -50,7 +50,7 @@ public class BaseController {
         ApiResponse apiResponse = new ApiResponse();
         apiResponse.setErrorMessage(ErrorCode.SUCCESS.getMessage());
         apiResponse.setErrorCode(ErrorCode.SUCCESS.getCode());
-        apiResponse.setRequestSeqNo(MDCUtils.getMsgId());
+        apiResponse.setRequestSeqNo(MDCUtils.getOrGenMsgId());
         apiResponse.setResponseTime(DateTimeUtil.currentDateToStr(""));
         apiResponse.setData(object);
         return apiResponse;

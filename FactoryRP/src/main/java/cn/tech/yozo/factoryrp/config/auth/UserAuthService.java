@@ -58,10 +58,10 @@ public class UserAuthService {
 
         AuthUser authUser = JSON.parseObject(authedUserStr, AuthUser.class);
 
-        if(CheckParam.isNull(authUser)){
+        if(!CheckParam.isNull(authUser)){
             return authUser.getCorporateIdentify();
         }
-        return null;
+        return 1l;
     }
 
 
