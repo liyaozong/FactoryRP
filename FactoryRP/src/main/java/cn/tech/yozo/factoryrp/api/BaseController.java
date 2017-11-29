@@ -4,8 +4,7 @@ import cn.tech.yozo.factoryrp.exception.ApiException;
 import cn.tech.yozo.factoryrp.exception.BussinessException;
 import cn.tech.yozo.factoryrp.utils.DateTimeUtil;
 import cn.tech.yozo.factoryrp.utils.ErrorCode;
-import cn.tech.yozo.factoryrp.vo.base.ApiCorporateIdentifyRequest;
-import cn.tech.yozo.factoryrp.vo.base.ApiRequest;
+import cn.tech.yozo.factoryrp.utils.MDCUtils;
 import cn.tech.yozo.factoryrp.vo.base.ApiResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,14 +29,13 @@ public class BaseController {
 
     /**
      * 生成APIResopnse
-     * @param apiRequest
      * @return
      */
-    public ApiResponse apiResponse(ApiRequest apiRequest){
+    public ApiResponse apiResponse(){
         ApiResponse apiResponse = new ApiResponse();
         apiResponse.setErrorMessage(ErrorCode.SUCCESS.getMessage());
         apiResponse.setErrorCode(ErrorCode.SUCCESS.getCode());
-        apiResponse.setRequestSeqNo(apiRequest.getRequestSeqNo());
+        apiResponse.setRequestSeqNo(MDCUtils.getMsgId());
         apiResponse.setResponseTime(DateTimeUtil.currentDateToStr(""));
         return apiResponse;
     }
@@ -45,64 +43,16 @@ public class BaseController {
 
     /**
      * GET请求的返回封装
-     * @param requestSeqNo
      * @param object
      * @return
      */
-    public ApiResponse apiResponse(String requestSeqNo,Object object){
+    public ApiResponse apiResponse(Object object){
         ApiResponse apiResponse = new ApiResponse();
         apiResponse.setErrorMessage(ErrorCode.SUCCESS.getMessage());
         apiResponse.setErrorCode(ErrorCode.SUCCESS.getCode());
-        apiResponse.setRequestSeqNo(requestSeqNo);
+        apiResponse.setRequestSeqNo(MDCUtils.getMsgId());
         apiResponse.setResponseTime(DateTimeUtil.currentDateToStr(""));
         apiResponse.setData(object);
-        return apiResponse;
-    }
-
-    /**
-     * 生成DATA里面带有指定类型的
-     * @param apiRequest
-     * @param object
-     * @return
-     */
-    public ApiResponse apiResponse(ApiCorporateIdentifyRequest apiRequest, Object object){
-        ApiResponse apiResponse = new ApiResponse();
-        apiResponse.setErrorMessage(ErrorCode.SUCCESS.getMessage());
-        apiResponse.setErrorCode(ErrorCode.SUCCESS.getCode());
-        apiResponse.setRequestSeqNo(apiRequest.getRequestSeqNo());
-        apiResponse.setResponseTime(DateTimeUtil.currentDateToStr(""));
-        apiResponse.setData(object);
-        return apiResponse;
-    }
-
-    /**
-     * 生成DATA里面带有指定类型的
-     * @param apiRequest
-     * @param object
-     * @return
-     */
-    public ApiResponse apiResponse(ApiRequest apiRequest,Object object){
-        ApiResponse apiResponse = new ApiResponse();
-        apiResponse.setErrorMessage(ErrorCode.SUCCESS.getMessage());
-        apiResponse.setErrorCode(ErrorCode.SUCCESS.getCode());
-        apiResponse.setRequestSeqNo(apiRequest.getRequestSeqNo());
-        apiResponse.setResponseTime(DateTimeUtil.currentDateToStr(""));
-        apiResponse.setData(object);
-        return apiResponse;
-    }
-
-    /**
-     * 根据HttpServlet生成返回请求信息
-     * @param request
-     * @return
-     */
-    public ApiResponse apiResponse(HttpServletRequest request){
-        ApiResponse apiResponse = new ApiResponse();
-        apiResponse.setErrorMessage(ErrorCode.SUCCESS.getMessage());
-        apiResponse.setErrorCode(ErrorCode.SUCCESS.getCode());
-        apiResponse.setResponseTime(DateTimeUtil.currentDateToStr(""));
-        apiResponse.setRequestSeqNo(request.getParameter("requestSeqNo"));
-
         return apiResponse;
     }
 
@@ -115,7 +65,7 @@ public class BaseController {
      */
     @ExceptionHandler
     public ApiResponse<Map<String,Object>> handleBaseException(HttpServletRequest request, Exception e){
-        ApiResponse apiResponse = apiResponse(request);
+        ApiResponse apiResponse = apiResponse();
         logger.info(">>>>>>>>>>>>>>>>>>>>>>>>>"+request.getRequestURI()+"<<<<<<<<<<<<<<<<<<<<<<<<<<<");
         if(e instanceof MethodArgumentNotValidException) return methodArgumentNotValidExceptionHandler(apiResponse,e);
         if (e instanceof ApiException) return apiExceptionHandlerMethod(apiResponse,e);

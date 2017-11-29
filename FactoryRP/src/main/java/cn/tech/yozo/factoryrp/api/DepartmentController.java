@@ -2,8 +2,12 @@ package cn.tech.yozo.factoryrp.api;
 
 import cn.tech.yozo.factoryrp.entity.Department;
 import cn.tech.yozo.factoryrp.service.DepartmentService;
+import cn.tech.yozo.factoryrp.vo.base.ApiResponse;
 import cn.tech.yozo.factoryrp.vo.req.SaveDepartmentReq;
-import io.swagger.annotations.*;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,9 +20,9 @@ import java.util.List;
  * 部门控制器
  */
 @RestController
-@RequestMapping("department")
+@RequestMapping("api/department")
 @Api(description = "部门信息相关接口")
-public class DepartmentController {
+public class DepartmentController extends BaseController{
 
     @Autowired
     private DepartmentService departmentService;
@@ -27,27 +31,27 @@ public class DepartmentController {
     @GetMapping("list")
     @ApiImplicitParams(@ApiImplicitParam(paramType = "query",dataType = "Long",name = "corporateIdentify",
             value = "企业唯一标识",required = true,defaultValue = "111"))
-    public List<Department> list(Long corporateIdentify){
-        return departmentService.list(corporateIdentify);
+    public ApiResponse<List<Department>> list(Long corporateIdentify){
+        return apiResponse(departmentService.list(corporateIdentify));
     }
 
 
     @ApiOperation(value = "添加同级部门",notes = "添加同级部门",httpMethod = "POST")
     @RequestMapping("addSameDept")
-    public Department addSameDept(@RequestBody SaveDepartmentReq param){
-        return departmentService.save(param,1);
+    public ApiResponse<Department> addSameDept(@RequestBody SaveDepartmentReq param){
+        return apiResponse(departmentService.save(param,1));
     }
 
     @ApiOperation(value = "添加下级部门",notes = "添加下级部门",httpMethod = "POST")
     @RequestMapping("addSubDept")
-    public Department addSubDept(@RequestBody SaveDepartmentReq param){
-        return departmentService.save(param,2);
+    public ApiResponse<Department> addSubDept(@RequestBody SaveDepartmentReq param){
+        return apiResponse(departmentService.save(param,2));
     }
 
     @ApiOperation(value = "修改部门",notes = "修改部门",httpMethod = "POST")
     @RequestMapping("updateDept")
-    public Department updateDept(@RequestBody SaveDepartmentReq param){
-        return departmentService.save(param,3);
+    public ApiResponse<Department> updateDept(@RequestBody SaveDepartmentReq param){
+        return apiResponse(departmentService.save(param,3));
     }
 
     @ApiOperation(value = "删除部门",notes = "删除部门",httpMethod = "GET")

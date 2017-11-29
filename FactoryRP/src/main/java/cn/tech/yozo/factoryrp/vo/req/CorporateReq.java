@@ -1,10 +1,11 @@
 package cn.tech.yozo.factoryrp.vo.req;
 
-import cn.tech.yozo.factoryrp.vo.base.ApiRequest;
+import cn.tech.yozo.factoryrp.vo.base.BaseRequest;
 import cn.tech.yozo.factoryrp.vo.validation.IsNumberStr;
 import cn.tech.yozo.factoryrp.vo.validation.NotEmpty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 
 /**
  * @author created by Singer email:313402703@qq.com
@@ -12,7 +13,8 @@ import io.swagger.annotations.ApiModelProperty;
  * @description
  */
 @ApiModel
-public class CorporateReq extends ApiRequest{
+@Data
+public class CorporateReq extends BaseRequest {
     private static final long serialVersionUID = -2215380313157569727L;
 
     /**
@@ -29,20 +31,4 @@ public class CorporateReq extends ApiRequest{
     @ApiModelProperty(value = "是否启用 1启用2不启用",required = true,notes = "是否启用 1启用2不启用",example = "1")
     @IsNumberStr(message = "启用标志格式不正确")
     private String enableStatus;
-
-    public String getCorporateName() {
-        return corporateName;
-    }
-
-    public void setCorporateName(String corporateName) {
-        this.corporateName = corporateName;
-    }
-
-    public String getEnableStatus() {
-        return enableStatus;
-    }
-
-    public void setEnableStatus(String enableStatus) {
-        this.enableStatus = enableStatus;
-    }
 }

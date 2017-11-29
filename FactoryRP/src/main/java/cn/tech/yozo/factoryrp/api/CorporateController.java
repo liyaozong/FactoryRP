@@ -39,7 +39,7 @@ public class CorporateController extends BaseController{
             @ApiImplicitParam(dataType = "CorporateReq" ,name = "corporateReq", paramType = "VO" ,
                     value = "企业新增相关信息",required = true)
     public ApiResponse<CorporateResp> queryRolesByorporateIdentify(@Valid @RequestBody CorporateReq corporateReq){
-        return apiResponse(corporateReq,corporateService.addCorporate(corporateReq));
+        return apiResponse(corporateService.addCorporate(corporateReq));
     }
 
 

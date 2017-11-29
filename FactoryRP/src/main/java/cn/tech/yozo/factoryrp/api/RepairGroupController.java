@@ -2,6 +2,7 @@ package cn.tech.yozo.factoryrp.api;
 
 import cn.tech.yozo.factoryrp.entity.RepairGroup;
 import cn.tech.yozo.factoryrp.service.RepairGroupService;
+import cn.tech.yozo.factoryrp.vo.base.ApiResponse;
 import com.alibaba.druid.util.StringUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -16,16 +17,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("repairGroup")
+@RequestMapping("api/repairGroup")
 @Api(description = "维修工段／班组接口")
-public class RepairGroupController {
+public class RepairGroupController extends BaseController{
     @Autowired
     RepairGroupService repairGroupService;
 
     @RequestMapping("list")
     @ApiOperation(value = "查询维修工段/班组列表",httpMethod = "GET")
-    public List<RepairGroup> list(){
-        return repairGroupService.listAll();
+    public ApiResponse<List<RepairGroup>> list(){
+        return apiResponse(repairGroupService.listAll());
     }
 
     @RequestMapping("add")
@@ -34,8 +35,8 @@ public class RepairGroupController {
             value = "编码",required = true,defaultValue = "001"),@ApiImplicitParam(paramType = "query",dataType = "String",name = "name",
             value = "名称",required = true,defaultValue = "主机维修"),@ApiImplicitParam(paramType = "query",dataType = "Long",name = "corporateIdentify",
             value = "企业唯一标识",required = true,defaultValue = "111")})
-    public RepairGroup add(String code,String name,Long corporateIdentify){
-        return repairGroupService.add(code,name,corporateIdentify);
+    public ApiResponse<RepairGroup> add(String code,String name,Long corporateIdentify){
+        return apiResponse(repairGroupService.add(code,name,corporateIdentify));
     }
 
     @ApiOperation(value = "批量删除维修工段/班组",notes = "批量删除维修工段/班组",httpMethod = "GET")

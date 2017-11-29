@@ -58,7 +58,7 @@ public class TestController  extends BaseController{
 
 
         logger.info("用户姓名123");
-        return apiResponse(testVo,testVo);
+        return apiResponse(testVo);
     }
 
    /* @ApiOperation(value = "测试API接口",notes = "测试API",httpMethod = "POST")

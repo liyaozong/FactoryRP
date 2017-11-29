@@ -42,7 +42,7 @@ public class SparePartsController extends BaseController{
     @ApiImplicitParam(dataType = "SparePartsAddReq" ,name = "sparePartsReq", paramType = "VO" ,
             value = "新增备件",required = true)
     public ApiResponse<SparePartsResp> addSpareParts(@Valid @RequestBody SparePartsAddReq sparePartsReq){
-        return apiResponse(sparePartsReq,sparePartsService.addSpareParts(sparePartsReq));
+        return apiResponse(sparePartsService.addSpareParts(sparePartsReq));
     }
 
     /**
@@ -55,7 +55,7 @@ public class SparePartsController extends BaseController{
     @ApiImplicitParam(dataType = "SparePartsQueryReq" ,name = "sparePartsQueryReq", paramType = "VO" ,
             value = "根据条件分页查询",required = true)
     public ApiResponse<SpareParts> findByPage(@Valid @RequestBody SparePartsQueryReq sparePartsQueryReq){
-        return apiResponse(sparePartsQueryReq,sparePartsService.findByPage(sparePartsQueryReq));
+        return apiResponse(sparePartsService.findByPage(sparePartsQueryReq));
     }
 
 }

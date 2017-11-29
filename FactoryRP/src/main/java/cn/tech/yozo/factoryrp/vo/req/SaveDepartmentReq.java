@@ -1,15 +1,14 @@
 package cn.tech.yozo.factoryrp.vo.req;
 
+import cn.tech.yozo.factoryrp.vo.base.BaseRequest;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-
-import javax.persistence.Column;
 
 /**
  * 部门请求参数
  */
 @Data
-public class SaveDepartmentReq {
+public class SaveDepartmentReq extends BaseRequest {
     @ApiModelProperty(value = "主键",example = "1")
     private Long id;
     @ApiModelProperty(value = "部门编码",example = "1212")

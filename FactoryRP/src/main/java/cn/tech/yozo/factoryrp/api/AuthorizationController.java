@@ -61,7 +61,7 @@ public class AuthorizationController extends BaseController{
                                                                     @RequestParam(value="corporateIdentify",required = true,defaultValue = "1")
                                                                             String corporateIdentify){
         List<RoleResp> roleResps = authorizationService.queryRolesByorporateIdentify(corporateIdentify);
-        return apiResponse(requestSeqNo,roleResps);
+        return apiResponse(roleResps);
     }
 
 
@@ -75,7 +75,7 @@ public class AuthorizationController extends BaseController{
     @ApiImplicitParam(dataType = "RoleReq" ,name = "roleReq", paramType = "VO" ,
             value = "企业新增相关信息",required = true)
     public ApiResponse<RoleResp> addRole(@Valid @RequestBody RoleReq roleReq){
-        return apiResponse(roleReq,authorizationService.addRole(roleReq));
+        return apiResponse(authorizationService.addRole(roleReq));
     }
 
     /**
@@ -98,7 +98,7 @@ public class AuthorizationController extends BaseController{
                                                                             Long corporateIdentify, @RequestParam(value="roleId",required = true,defaultValue = "1")
                                                                                       Long roleId){
 
-        return apiResponse(requestSeqNo,authorizationService.queryByRoleIdAndCorporateIdentify(roleId,corporateIdentify));
+        return apiResponse(authorizationService.queryByRoleIdAndCorporateIdentify(roleId,corporateIdentify));
     }
 
 
@@ -120,7 +120,7 @@ public class AuthorizationController extends BaseController{
                                                                             @RequestParam(value="corporateIdentify",required = true,defaultValue = "1")
                                                                                     Long corporateIdentify){
 
-        return apiResponse(requestSeqNo,authorizationService.queryAllUserByCorporateIdentify(corporateIdentify));
+        return apiResponse(authorizationService.queryAllUserByCorporateIdentify(corporateIdentify));
     }
 
 
@@ -134,7 +134,7 @@ public class AuthorizationController extends BaseController{
     @ApiImplicitParam(dataType = "MenuReq" ,name = "menuReq", paramType = "VO" ,
             value = "新增菜单",required = true)
     public ApiResponse<MenuResp> addMenu(@Valid @RequestBody MenuReq menuReq){
-        return apiResponse(menuReq,authorizationService.addMenu(menuReq));
+        return apiResponse(authorizationService.addMenu(menuReq));
     }
 
 
@@ -148,7 +148,7 @@ public class AuthorizationController extends BaseController{
     @ApiImplicitParam(dataType = "MenuRoleReq" ,name = "menuRoleReq", paramType = "VO" ,
             value = "为角色新增能访问的菜单",required = true)
     public ApiResponse<MenuResp> addMenuRole(@Valid @RequestBody MenuRoleReq menuRoleReq){
-        return apiResponse(menuRoleReq,authorizationService.addMenuRole(menuRoleReq));
+        return apiResponse(authorizationService.addMenuRole(menuRoleReq));
     }
 
     /**
@@ -161,7 +161,7 @@ public class AuthorizationController extends BaseController{
     @ApiImplicitParam(dataType = "UserAddReq" ,name = "userAddReq", paramType = "VO" ,
             value = "企业新增用户",required = true)
     public ApiResponse<MenuResp> addUser(@Valid @RequestBody UserAddReq userAddReq){
-        return apiResponse(userAddReq,authorizationService.addUser(userAddReq));
+        return apiResponse(authorizationService.addUser(userAddReq));
     }
 
     /**
@@ -174,7 +174,7 @@ public class AuthorizationController extends BaseController{
     @ApiImplicitParam(dataType = "UserRoleReq" ,name = "userRoleReq", paramType = "VO" ,
             value = "为用户添加角色",required = true)
     public ApiResponse<MenuResp> addUserRole(@Valid @RequestBody UserRoleReq userRoleReq){
-        return apiResponse(userRoleReq,authorizationService.addUserRole(userRoleReq));
+        return apiResponse(authorizationService.addUserRole(userRoleReq));
     }
 
     /**
@@ -188,7 +188,7 @@ public class AuthorizationController extends BaseController{
             value = "根据企业唯一标识查询菜单",required = true,defaultValue = "1")
     public ApiResponse<List<MenuResp>> queryMenuByCorporateIdentify(@RequestParam(value="corporateIdentify",required = true,defaultValue = "1")
                                                                                 Long corporateIdentify){
-        return apiResponse(String.valueOf(corporateIdentify),authorizationService.queryMenuByCorporateIdentify(corporateIdentify));
+        return apiResponse(authorizationService.queryMenuByCorporateIdentify(corporateIdentify));
     }
 
     /**

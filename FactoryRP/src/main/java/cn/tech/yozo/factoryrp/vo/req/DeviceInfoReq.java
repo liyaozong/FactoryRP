@@ -1,5 +1,6 @@
 package cn.tech.yozo.factoryrp.vo.req;
 
+import cn.tech.yozo.factoryrp.vo.base.BaseRequest;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -10,7 +11,7 @@ import java.util.Date;
  * 设备信息请求参数
  */
 @Data
-public class DeviceInfoReq implements Serializable{
+public class DeviceInfoReq extends BaseRequest implements Serializable{
 
     @ApiModelProperty(value = "设备名称",notes ="设备名称",example = "空气压缩机")
     private String name;

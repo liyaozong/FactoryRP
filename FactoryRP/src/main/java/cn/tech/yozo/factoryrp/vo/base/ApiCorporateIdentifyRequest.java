@@ -13,7 +13,7 @@ import java.io.Serializable;
  */
 @ApiModel
 @Data
-public class ApiCorporateIdentifyRequest extends ApiRequest implements Serializable{
+public class ApiCorporateIdentifyRequest extends BaseRequest implements Serializable{
 
         private static final long serialVersionUID = -4494715239670697718L;
 

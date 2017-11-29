@@ -1,10 +1,11 @@
 package cn.tech.yozo.factoryrp.vo.req;
 
+import cn.tech.yozo.factoryrp.vo.base.BaseRequest;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 @Data
-public class ContactCompanyReq {
+public class ContactCompanyReq extends BaseRequest {
     @ApiModelProperty(value = "单位编码",example = "001")
     private String code;
     @ApiModelProperty(value = "单位名称",example = "金融")
