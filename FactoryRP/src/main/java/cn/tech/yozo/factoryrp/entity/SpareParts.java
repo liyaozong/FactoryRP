@@ -22,6 +22,10 @@ public class SpareParts extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 7678699052167645691L;
 
+    @ApiModelProperty(value = "关联设备Id",notes ="关联设备Id" )
+    @Column(name = "deviceinfo_id",length = 10)
+    private Long deviceInfoId;
+
     @ApiModelProperty(value = "备件类型",notes ="备件类型" )
     @Column(name = "spare_part_type",length = 10)
     private Long sparePartType;

@@ -63,11 +63,42 @@ public class AuthIntercepter implements HandlerInterceptor {
          */
        if(requestURI.contains("api/authorization/webLogin") || requestURI.contains("api/authorization/login")){
            logger.info(">>>>>>>>>>>>>>>>>>>>>>>>>>用户开始登陆<<<<<<<<<<<<<<<<<<"+requestURI);
-           return handleLogin(request,response);
+
+
+           //临时的处理逻辑
+           String username = request.getParameter("username");
+           String password = request.getParameter("password");
+           User user = authorizationService.findByUserName(username);
+           AuthUser authUser = new AuthUser();
+           authUser.setToken("1");
+           authUser.setCorporateIdentify(1L);
+           authUser.setUserName(user.getUserName());
+           authUser.setUserId(user.getUserId());
+           List<AuthUserMenu> authUserMenuList = new ArrayList<>();
+
+           user.getRoleList().forEach(u1 ->{
+               u1.getMenuList().forEach(m1 ->{
+                   AuthUserMenu authUserMenu = new AuthUserMenu();
+                   authUserMenu.setParentId(m1.getParentId());
+                   authUserMenu.setName(m1.getName());
+                   authUserMenu.setUrl(m1.getUrl());
+                   authUserMenu.setRemark(m1.getRemark());
+
+                   authUserMenuList.add(authUserMenu);
+               });
+           });
+
+           authUser.setAuthUserMenuList(authUserMenuList);
+           AuthWebUtil.loginSuccess(request,response,authUser);
+           return true;
+
+
+           //return handleLogin(request,response);
         }
 
         logger.info(">>>>>>>>>>>>>>>>>>>>>>>>>>调用非登陆接口，开始token验证，请求地址为:<<<<<<<<<<<<<<<<<<"+requestURI);
-        return verifyToken(request,response);
+        //return verifyToken(request,response);
+        return true;
     }
 
     @Override
