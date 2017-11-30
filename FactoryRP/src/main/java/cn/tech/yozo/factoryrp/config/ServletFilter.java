@@ -50,9 +50,6 @@ public class ServletFilter implements Filter {
         HttpServletResponse res = (HttpServletResponse) response;
         String requestUri = req.getRequestURI();
         this.setMdcData(req);
-        if (this.isInvalid(requestUri)) {
-             return;
-        }
         if (this.isExclusion(requestUri)) {
             chain.doFilter(request, response);
             log.info("请求:method=" + req.getMethod());
