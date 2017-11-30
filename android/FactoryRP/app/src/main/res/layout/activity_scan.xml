@@ -5,13 +5,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="tech.yozo.factory.CaptureActivity">
+    tools:context="tech.yozo.factoryrp.scan.CaptureActivity">
 
     <SurfaceView android:id="@+id/preview_view"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"/>
 
-    <tech.yozo.factory.ViewfinderView android:id="@+id/viewfinder_view"
+    <tech.yozo.factoryrp.ui.widget.ViewfinderView
+        android:id="@+id/viewfinder_view"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"/>
 

@@ -1,0 +1,167 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              tools:context="tech.yozo.factoryrp.ui.fragment.WorkBenchFragment" android:orientation="vertical"
+              android:background="#DDDDDD">
+
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/background_light" android:paddingTop="6dp">
+        <Button
+                android:text="@string/action_ask_repair"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:id="@+id/button_ask_repair" android:layout_weight="1"
+                android:drawableTop="@drawable/selector_ask_repair"
+                android:background="@android:color/background_light" android:onClick="onButtonPressed"/>
+
+        <Button
+                android:text="@string/action_add_repair"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:id="@+id/button_add_repair" android:layout_weight="1"
+                android:drawableTop="@drawable/selector_repair_order"
+                android:background="@android:color/background_light" android:onClick="onButtonPressed"/>
+
+        <Button
+                android:text="@string/action_add_device"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:id="@+id/button_add_device" android:layout_weight="1"
+                android:drawableTop="@drawable/selector_add_device"
+                android:background="@android:color/background_light" android:onClick="onButtonPressed"/>
+
+        <Button
+                android:text="@string/action_ask_parts"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:id="@+id/button_ask_parts" android:layout_weight="1"
+                android:drawableTop="@drawable/selector_ask_parts"
+                android:background="@android:color/background_light" android:onClick="onButtonPressed"/>
+
+    </LinearLayout>
+
+    <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+    >
+        <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+        >
+            <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:background="@android:color/background_light"
+                    android:layout_marginTop="6dp" android:padding="2dp">
+
+                <TextView
+                        android:text="维修工单"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" android:id="@+id/textView3"
+                        android:textSize="18sp"/>
+                <TableLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                >
+
+                    <TableRow android:layout_width="match_parent" android:layout_height="match_parent">
+                        <TextView
+                                android:text="@string/text_repair_wait_audit"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" android:id="@+id/button_waitto_audit"
+                                android:padding="6dp"/>
+                        <TextView
+                                android:layout_width="80dp"
+                                android:layout_height="wrap_content" android:id="@+id/textView_waitto_audit"
+                                android:text="0"
+                                android:textColor="@android:color/holo_blue_dark" android:textSize="24sp"
+                                android:paddingLeft="6dp" android:textStyle="bold" android:onClick="onButtonPressed"/>
+                        <TextView
+                                android:text="@string/text_repair_wait_exec"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" android:id="@+id/button2" android:padding="6dp"/>
+                        <TextView
+                                android:text="0"
+                                android:layout_width="80dp"
+                                android:layout_height="wrap_content" android:id="@+id/textView_waitto_exec"
+                                android:textColor="@android:color/holo_blue_dark" android:textSize="24sp"
+                                android:paddingLeft="6dp" android:textStyle="bold" android:onClick="onButtonPressed"/>
+                    </TableRow>
+                    <TableRow android:layout_width="match_parent" android:layout_height="match_parent">
+                        <TextView
+                                android:text="@string/text_repair_executing"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" android:id="@+id/button4" android:padding="6dp"/>
+                        <TextView
+                                android:text="0"
+                                android:layout_width="80dp"
+                                android:layout_height="wrap_content" android:id="@+id/textView_executing"
+                                android:textColor="@android:color/holo_blue_dark" android:textSize="24sp"
+                                android:paddingLeft="6dp" android:textStyle="bold" android:onClick="onButtonPressed"/>
+                        <TextView
+                                android:text="@string/text_repair_wait_verify"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" android:id="@+id/button3" android:padding="6dp"/>
+                        <TextView
+                                android:text="0"
+                                android:layout_width="80dp"
+                                android:layout_height="wrap_content" android:id="@+id/textView_waitto_verify"
+                                android:textColor="@android:color/holo_blue_dark" android:textSize="24sp"
+                                android:paddingLeft="6dp" android:textStyle="bold" android:onClick="onButtonPressed"/>
+                    </TableRow>
+                </TableLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" android:layout_marginTop="6dp"
+                    android:background="@android:color/background_light" android:padding="2dp">
+                <TextView
+                        android:text="保养任务"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" android:id="@+id/textView10" android:textSize="18sp"
+                />
+                <FrameLayout android:layout_width="match_parent" android:layout_height="match_parent">
+                    <ListView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" android:id="@+id/listview_maintain_task"/>
+                    <TextView
+                            android:id="@+id/noNewMaintainTask"
+                            android:layout_width="match_parent"
+                            android:layout_height="120dp"
+                            android:gravity="center_vertical|center_horizontal"
+                            android:text="暂时没有新的保养任务！"/>
+                </FrameLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:background="@android:color/background_light"
+                    android:layout_marginTop="6dp" android:padding="2dp">
+
+                <TextView
+                        android:text="点检任务"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" android:id="@+id/textView11" android:textSize="18sp"
+                />
+                <FrameLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+                    <ListView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" android:id="@+id/listview_check_task"/>
+                    <TextView
+                            android:id="@+id/noNewCheckTask"
+                            android:layout_width="match_parent"
+                            android:layout_height="120dp"
+                            android:gravity="center_vertical|center_horizontal"
+                            android:text="暂时没有新的点检任务！"/>
+                </FrameLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+            android:id="@+id/navigation_device_info"
+            android:icon="@drawable/ic_device_info"
+            android:title="@string/title_device_detail"/>
+
+    <item
+            android:id="@+id/navigation_device_parts_list"
+            android:icon="@drawable/ic_device_info"
+            android:title="@string/title_device_parts"/>
+
+    <item
+            android:id="@+id/navigation_repair_record_list"
+            android:icon="@drawable/ic_device_info"
+            android:title="@string/title_device_repair_record"/>
+
+    <item
+            android:id="@+id/navigation_maintain_record_list"
+            android:icon="@drawable/ic_device_info"
+            android:title="@string/title_device_maintain_record"/>
+
+    <item
+            android:id="@+id/navigation_check_record_list"
+            android:icon="@drawable/ic_device_info"
+            android:title="@string/title_device_check_record"/>
+
+</menu>
