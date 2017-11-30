@@ -1,5 +1,6 @@
 package cn.tech.yozo.factoryrp.service.Impl;
 
+import cn.tech.yozo.factoryrp.config.auth.UserAuthService;
 import cn.tech.yozo.factoryrp.entity.ContactCompany;
 import cn.tech.yozo.factoryrp.page.Pagination;
 import cn.tech.yozo.factoryrp.repository.ContactCompanyRepository;
@@ -27,7 +28,7 @@ public class ContactCompanyServiceImpl implements ContactCompanyService{
     private ContactCompanyRepository contactCompanyRepository;
 
     @Override
-    public Pagination<ContactCompany> findByPage(ContactCompanyReq param) {
+    public Pagination<ContactCompany> findByPage(ContactCompanyReq param,Long corporateIdentify) {
         Integer currentPage = param.getCurrentPage();
         Integer itemsPerPage = param.getItemsPerPage();
         if(null==currentPage){
@@ -53,6 +54,7 @@ public class ContactCompanyServiceImpl implements ContactCompanyService{
                 if (!StringUtils.isEmpty(param.getContactName())){
                     listCon.add(criteriaBuilder.like(root.get("contactName").as(String.class),"%"+param.getContactName()+"%"));
                 }
+                listCon.add(criteriaBuilder.equal(root.get("corporateIdentify").as(Long.class),corporateIdentify));
                 listCon.add(criteriaBuilder.equal(root.get("statusFlag").as(Integer.class),1));
                 criteriaQuery.orderBy(criteriaBuilder.desc(root.get("createTime")));
                 Predicate[] predicates = new Predicate[listCon.size()];

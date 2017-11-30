@@ -1,5 +1,6 @@
 package cn.tech.yozo.factoryrp.api;
 
+import cn.tech.yozo.factoryrp.config.auth.UserAuthService;
 import cn.tech.yozo.factoryrp.entity.ContactCompany;
 import cn.tech.yozo.factoryrp.page.Pagination;
 import cn.tech.yozo.factoryrp.service.ContactCompanyService;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
@@ -22,11 +24,19 @@ import java.util.List;
 public class ContactCompanyController extends BaseController{
     @Autowired
     private ContactCompanyService contactCompanyService;
+    @Autowired
+    private UserAuthService userAuthService;
 
     @ApiOperation(value = "分页查询往来单位列表",notes = "分页查询往来单位列表",httpMethod = "POST")
     @RequestMapping("list")
-    public ApiResponse<Pagination<ContactCompany>> list(@RequestBody ContactCompanyReq param){
-        return apiResponse(contactCompanyService.findByPage(param));
+    public ApiResponse<Pagination<ContactCompany>> list(@RequestBody ContactCompanyReq param, HttpServletRequest request){
+        Long corporateIdentify = getCorId(request);
+        return apiResponse(contactCompanyService.findByPage(param,corporateIdentify));
+    }
+
+    private Long getCorId(HttpServletRequest request) {
+        String token = request.getHeader("token");
+        return userAuthService.getCurrentUserCorporateIdentify(token);
     }
 
     @ApiOperation(value = "根据ID查询往来单位列表",notes = "根据ID查询往来单位列表",httpMethod = "GET")
@@ -39,7 +49,9 @@ public class ContactCompanyController extends BaseController{
 
     @ApiOperation(value = "新增或修改往来单位",notes = "新增或修改往来单位",httpMethod = "POST")
     @RequestMapping("save")
-    public ApiResponse<ContactCompany> updateContactCompany(@RequestBody ContactCompany param){
+    public ApiResponse<ContactCompany> updateContactCompany(@RequestBody ContactCompany param, HttpServletRequest request){
+        Long corporateIdentify = getCorId(request);
+        param.setCorporateIdentify(corporateIdentify);
         return apiResponse(contactCompanyService.save(param));
     }
 

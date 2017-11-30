@@ -10,7 +10,7 @@ public interface ContactCompanyService {
      * @param param
      * @return
      */
-    public Pagination<ContactCompany> findByPage(ContactCompanyReq param);
+    public Pagination<ContactCompany> findByPage(ContactCompanyReq param,Long corporateIdentify);
 
     /**
      * 根据主键查询
