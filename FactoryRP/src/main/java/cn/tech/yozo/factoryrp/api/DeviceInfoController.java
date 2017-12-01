@@ -31,4 +31,10 @@ public class DeviceInfoController extends BaseController{
     public ApiResponse<DeviceInfo> updateContactCompany(@RequestBody DeviceInfo param){
         return apiResponse(deviceInfoService.save(param));
     }
+
+    @ApiOperation(value = "查询单个设备信息",notes = "查询单个设备信息",httpMethod = "GET")
+    @RequestMapping("get")
+    public ApiResponse<DeviceInfo> getById(Long id){
+        return apiResponse(deviceInfoService.getById(id));
+    }
 }

@@ -19,4 +19,11 @@ public interface DeviceInfoService {
      * @return
      */
     public DeviceInfo save(DeviceInfo param);
+
+    /**
+     * 根据主键查询
+     * @param id
+     * @return
+     */
+    public DeviceInfo getById(Long id);
 }

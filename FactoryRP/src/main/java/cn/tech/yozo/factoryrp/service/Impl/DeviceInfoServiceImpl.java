@@ -96,4 +96,9 @@ public class DeviceInfoServiceImpl implements DeviceInfoService{
         }
         return deviceInfoRepository.save(param);
     }
+
+    @Override
+    public DeviceInfo getById(Long id) {
+        return deviceInfoRepository.findOne(id);
+    }
 }
