@@ -18,17 +18,13 @@ public class Pagination<T extends Serializable> extends SimplePage implements
 	public Pagination() {
 	}
 
-	public Pagination(int pageNo, int pageSize, int totalCount) {
+	public Pagination(int pageNo, int pageSize, long totalCount) {
 		super(pageNo, pageSize, totalCount);
 	}
 
 	public Pagination(int pageNo, int pageSize, int totalCount, List<T> list) {
 		super(pageNo, pageSize, totalCount);
 		this.list = list;
-	}
-
-	public int getFirstResult() {
-		return (currentPage - 1) * itemsPerPage;
 	}
 
 	public List<T> getList() {

@@ -91,4 +91,9 @@ public class ContactCompanyServiceImpl implements ContactCompanyService{
         contactCompanyRepository.delete(id);
     }
 
+    @Override
+    public List<ContactCompany> list(Long corporateIdentify) {
+        return contactCompanyRepository.findByCorporateIdentifyAndStatusFlag(corporateIdentify,1);
+    }
+
 }

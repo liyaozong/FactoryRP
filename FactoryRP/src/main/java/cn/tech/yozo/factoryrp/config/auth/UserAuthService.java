@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * @author created by Singer email:313402703@qq.com
  * @time 2017/11/23
@@ -62,6 +64,16 @@ public class UserAuthService {
             return authUser.getCorporateIdentify();
         }
         return 1l;
+    }
+
+    /**
+     * 根据request拿到当前登陆人的企业合作号码
+     * @param request
+     * @return
+     */
+    public Long getCurrentUserCorporateIdentify(HttpServletRequest request){
+        String token = request.getHeader("token");
+        return this.getCurrentUserCorporateIdentify(token);
     }
 
 

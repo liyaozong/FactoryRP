@@ -1,11 +1,22 @@
 package cn.tech.yozo.factoryrp.service.Impl;
 
+import cn.tech.yozo.factoryrp.entity.ContactCompany;
+import cn.tech.yozo.factoryrp.entity.Department;
 import cn.tech.yozo.factoryrp.entity.DeviceInfo;
+import cn.tech.yozo.factoryrp.entity.DeviceType;
 import cn.tech.yozo.factoryrp.page.Pagination;
 import cn.tech.yozo.factoryrp.repository.DeviceInfoRepository;
+import cn.tech.yozo.factoryrp.service.ContactCompanyService;
+import cn.tech.yozo.factoryrp.service.DepartmentService;
 import cn.tech.yozo.factoryrp.service.DeviceInfoService;
+import cn.tech.yozo.factoryrp.service.DeviceTypeService;
+import cn.tech.yozo.factoryrp.utils.BaseUtil;
+import cn.tech.yozo.factoryrp.utils.CheckParam;
 import cn.tech.yozo.factoryrp.vo.req.DeviceInfoReq;
+import cn.tech.yozo.factoryrp.vo.resp.device.info.FullDeviceInfoResp;
+import cn.tech.yozo.factoryrp.vo.resp.device.info.SimpleDeviceInfoResp;
 import com.alibaba.druid.util.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,18 +28,24 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class DeviceInfoServiceImpl implements DeviceInfoService{
     @Autowired
     private DeviceInfoRepository deviceInfoRepository;
 
+    @Autowired
+    private DepartmentService departmentService;
+
+    @Autowired
+    private ContactCompanyService contactCompanyService;
+
+    @Autowired
+    private DeviceTypeService deviceTypeService;
 
     @Override
-    public Pagination<DeviceInfo> findByPage(DeviceInfoReq param) {
+    public Pagination<FullDeviceInfoResp> findByPage(DeviceInfoReq param,Long corporateIdentify) {
         Integer currentPage = param.getCurrentPage();
         Integer itemsPerPage = param.getItemsPerPage();
         if(null==currentPage){
@@ -72,6 +89,7 @@ public class DeviceInfoServiceImpl implements DeviceInfoService{
                 if (null!=param.getUseDept() && param.getSupplier()!=0){
                     listCon.add(criteriaBuilder.equal(root.get("useDept").as(Long.class),param.getUseDept()));
                 }
+                listCon.add(criteriaBuilder.equal(root.get("corporateIdentify").as(Long.class),corporateIdentify));
                 listCon.add(criteriaBuilder.equal(root.get("statusFlag").as(Integer.class),1));
                 criteriaQuery.orderBy(criteriaBuilder.desc(root.get("createTime")));
                 Predicate[] predicates = new Predicate[listCon.size()];
@@ -79,13 +97,43 @@ public class DeviceInfoServiceImpl implements DeviceInfoService{
                 return criteriaBuilder.and(predicates);
             }
         },p);
-        Pagination<DeviceInfo> res = new Pagination<>();
+        Pagination<FullDeviceInfoResp> res = new Pagination(currentPage+1,itemsPerPage,page.getTotalElements());
         if (page.hasContent()){
-            res.setList(page.getContent());
+            List<DeviceInfo> listDevice = page.getContent();
+            List<FullDeviceInfoResp> reList = new ArrayList<>();
+            List<Department> listDept = departmentService.list(corporateIdentify);
+            Map<Long,String> deptMap = new HashMap<>();
+            if(!CheckParam.isNull(listDept)){
+                listDept.forEach(department -> {
+                    deptMap.put(department.getId(),department.getName());
+                });
+            }
+           List<DeviceType> deviceTypeList =  deviceTypeService.list(corporateIdentify);
+            Map<Long,String> dtMap = new HashMap<>();
+            if (!CheckParam.isNull(deviceTypeList)){
+                deviceTypeList.forEach(deviceType -> {
+                    dtMap.put(deviceType.getId(),deviceType.getName());
+                });
+            }
+
+            List<ContactCompany> contactCompanyList =  contactCompanyService.list(corporateIdentify);
+            Map<Long,String> ccMap = new HashMap<>();
+            if (!CheckParam.isNull(contactCompanyList)){
+                contactCompanyList.forEach(cc -> {
+                    ccMap.put(cc.getId(),cc.getName());
+                });
+            }
+            listDevice.forEach(deviceInfo -> {
+                FullDeviceInfoResp fdi = new FullDeviceInfoResp();
+                BeanUtils.copyProperties(deviceInfo,fdi);
+                fdi.setDeviceType(dtMap.get(deviceInfo.getDeviceType()));
+                fdi.setManufacturer(ccMap.get(deviceInfo.getManufacturer()));
+                fdi.setSupplier(ccMap.get(deviceInfo.getSupplier()));
+                fdi.setUseDept(deptMap.get(deviceInfo.getUseDept()));
+                reList.add(fdi);
+            });
+            res.setList(reList);
         }
-        res.setCurrentPage(currentPage);
-        res.setItemsPerPage(itemsPerPage);
-        res.setTotalCount((int)page.getTotalElements());
         return res;
     }
 
@@ -100,5 +148,21 @@ public class DeviceInfoServiceImpl implements DeviceInfoService{
     @Override
     public DeviceInfo getById(Long id) {
         return deviceInfoRepository.findOne(id);
+    }
+
+    @Override
+    public Pagination<SimpleDeviceInfoResp> findSimpleInfoByPage(DeviceInfoReq param,Long corporateIdentify) {
+        Pagination<FullDeviceInfoResp> res = this.findByPage(param,corporateIdentify);
+        Pagination<SimpleDeviceInfoResp> r = new Pagination(res.getCurrentPage(),res.getItemsPerPage(),res.getTotalCount());
+        if (!CheckParam.isNull(res.getList())){
+            List<SimpleDeviceInfoResp> ls = new ArrayList<>();
+            res.getList().forEach(fullDeviceInfoResp -> {
+                SimpleDeviceInfoResp sr = new SimpleDeviceInfoResp();
+                BeanUtils.copyProperties(fullDeviceInfoResp,sr);
+                ls.add(sr);
+            });
+            r.setList(ls);
+        }
+        return r;
     }
 }

@@ -3,6 +3,8 @@ package cn.tech.yozo.factoryrp.service;
 import cn.tech.yozo.factoryrp.entity.DeviceInfo;
 import cn.tech.yozo.factoryrp.page.Pagination;
 import cn.tech.yozo.factoryrp.vo.req.DeviceInfoReq;
+import cn.tech.yozo.factoryrp.vo.resp.device.info.FullDeviceInfoResp;
+import cn.tech.yozo.factoryrp.vo.resp.device.info.SimpleDeviceInfoResp;
 
 public interface DeviceInfoService {
 
@@ -11,7 +13,7 @@ public interface DeviceInfoService {
      * @param param
      * @return
      */
-    public Pagination<DeviceInfo> findByPage(DeviceInfoReq param);
+    public Pagination<FullDeviceInfoResp> findByPage(DeviceInfoReq param,Long corporateIdentify);
 
     /**
      * 保存设备信息
@@ -26,4 +28,11 @@ public interface DeviceInfoService {
      * @return
      */
     public DeviceInfo getById(Long id);
+
+    /**
+     * 分页查询设备简略信息
+     * @param param
+     * @return
+     */
+    public Pagination<SimpleDeviceInfoResp> findSimpleInfoByPage(DeviceInfoReq param,Long corporateIdentify);
 }
