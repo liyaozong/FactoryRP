@@ -1,6 +1,7 @@
 package tech.yozo.factoryrp.ui.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -8,13 +9,20 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.*;
+import com.alibaba.fastjson.JSONArray;
 import com.loopj.android.http.JsonHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
 import cz.msebera.android.httpclient.Header;
+import cz.msebera.android.httpclient.entity.StringEntity;
+import org.json.JSONException;
 import org.json.JSONObject;
 import tech.yozo.factoryrp.R;
+import tech.yozo.factoryrp.vo.DeviceInfo;
+import tech.yozo.factoryrp.ui.DeviceDetailActivity;
 import tech.yozo.factoryrp.utils.HttpClient;
+
+import java.nio.charset.Charset;
+import java.util.List;
 
 
 /**
@@ -27,6 +35,13 @@ import tech.yozo.factoryrp.utils.HttpClient;
  * create an instance of this fragment.
  */
 public class DeviceListFragment extends BaseFragment {
+
+    private List<DeviceInfo> devices;
+
+    private ListView mListView;
+    private DeviceListAdapter mListAdapter;
+
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -75,35 +90,26 @@ public class DeviceListFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_device_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_device_list, container, false);
+        mListView = (ListView) view.findViewById(R.id.lv);
+        mListView.setEmptyView(view.findViewById(R.id.textView22));
+        mListAdapter = new DeviceListAdapter(getActivity());
+        mListView.setAdapter(mListAdapter);
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> arg0, View arg1, int count,
+                                    long arg3) {
+                Intent intent = new Intent(getActivity(), DeviceDetailActivity.class);
+                intent.putExtra(DeviceDetailActivity.DEVICE_OBJECT, devices.get(count));
+                startActivity(intent);
+            }
+        });
+
+        return view;
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-    }
-
-    @Override
-    protected void buildUI() {
-
-    }
-
-    @Override
-    protected void loadData() {
-        HttpClient client = HttpClient.getInstance();
-        RequestParams params = new RequestParams();
-        params.put("buyDate", "2016/11/14");
-        params.put("code", "FZK-08-00");
-        params.put("currentPage", 1);
-        params.put("deviceType", 3);
-        params.put("head", "王兵");
-        params.put("itemsPerPage", 10);
-        params.put("manufacturer", 1);
-        params.put("name", "空气压缩机");
-        params.put("supplier", 2);
-        params.put("useDept", 5);
-        params.put("useStatus", 1);
-        client.post(null, HttpClient.DEVICE_LIST, client.getHeaders(), params, "application/json", requestDeviceListResponse);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -130,6 +136,41 @@ public class DeviceListFragment extends BaseFragment {
         mListener = null;
     }
 
+    @Override
+    protected void loadData() {
+        HttpClient client = HttpClient.getInstance();
+        JSONObject object = new JSONObject();
+        StringEntity param = new StringEntity(object.toString(), Charset.forName("UTF-8"));
+        client.setHeaderParam("Content-Type", "application/json");
+        client.post(null, HttpClient.DEVICE_LIST, client.getHeaders(), param, "application/json", requestDeviceListResponse);
+    }
+
+    @Override
+    protected void buildUI() {
+
+    }
+
+    private JsonHttpResponseHandler requestDeviceListResponse = new JsonHttpResponseHandler() {
+        @Override
+        public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+            try {
+                if(response.has("data")) {
+                    devices = JSONArray.parseArray(response.getJSONObject("data").getString("list"), DeviceInfo.class);
+                    mListAdapter.notifyDataSetChanged();
+                } else {
+                    //TODO
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+            Log.d("ERROR", errorResponse.toString());
+        }
+    };
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -145,15 +186,65 @@ public class DeviceListFragment extends BaseFragment {
         void onFragmentInteraction(Uri uri);
     }
 
-    private JsonHttpResponseHandler requestDeviceListResponse = new JsonHttpResponseHandler() {
-        @Override
-        public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-            Log.d("INFO", response.toString());
+    private static class ViewHolder
+    {
+        TextView name;
+        TextView code;
+        TextView type;
+        TextView dept;
+        TextView place;
+    }
+
+    private class DeviceListAdapter extends BaseAdapter {
+        private LayoutInflater mInflater;
+
+        private DeviceListAdapter(Context context)
+        {
+            this.mInflater = LayoutInflater.from(context);
         }
 
         @Override
-        public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-            Log.d("ERROR", errorResponse.toString());
+        public int getCount() {
+            if(devices != null) {
+                return devices.size();
+            }
+            return 0;
         }
-    };
+
+        @Override
+        public Object getItem(int i) {
+            return null;
+        }
+
+        @Override
+        public long getItemId(int i) {
+            return 0;
+        }
+
+        @Override
+        public View getView(int i, View convertView, ViewGroup viewGroup) {
+            ViewHolder holder;
+            if(convertView == null) {
+                holder = new ViewHolder();
+                convertView = mInflater.inflate(R.layout.item_device_list, null);
+                holder.name = (TextView)convertView.findViewById(R.id.tv_device_name);
+                holder.code = (TextView)convertView.findViewById(R.id.tv_device_code);
+                holder.type = (TextView) convertView.findViewById(R.id.tv_device_type);
+                holder.dept = (TextView) convertView.findViewById(R.id.tv_device_dept);
+                holder.place = (TextView) convertView.findViewById(R.id.tv_device_place);
+                convertView.setTag(holder);
+            }
+            else {
+                holder = (ViewHolder)convertView.getTag();
+            }
+            holder.name.setText(devices.get(i).getName());
+            holder.code.setText(devices.get(i).getCode());
+            holder.type.setText(String.valueOf(devices.get(i).getSpecification()));
+            holder.dept.setText(String.valueOf(devices.get(i).getUseDept()));
+            holder.place.setText(devices.get(i).getInstallationAddress());
+
+            return convertView;
+        }
+    }
+
 }

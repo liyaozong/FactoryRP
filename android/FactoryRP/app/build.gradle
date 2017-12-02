@@ -35,5 +35,8 @@ dependencies {
     compile 'com.google.zxing:android-core:3.3.0'
     compile 'com.loopj.android:android-async-http:1.4.9'
     compile 'com.android.support:recyclerview-v7:25.3.1'
+    compile 'com.alibaba:fastjson:1.2.41'
+    compile 'org.projectlombok:lombok:1.16.18'
+    compile 'org.glassfish:javax.annotation:10.0-b28'
     testCompile 'junit:junit:4.12'
 }

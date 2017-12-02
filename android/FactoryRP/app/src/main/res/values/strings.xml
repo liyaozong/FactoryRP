@@ -14,9 +14,6 @@
     <string name="error_incorrect_password">用户名或密码不正确</string>
     <string name="error_field_required">必填项</string>
     <string name="exception_message">程序发生异常情况！！！</string>
-    <string name="permission_rationale">"Contacts permissions are needed for providing email
-        completions."
-    </string>
 
     <string name="title_home">首页</string>
     <string name="title_device">设备</string>
@@ -24,8 +21,8 @@
     <string name="title_person">我的</string>
     <string name="action_scan">扫描</string>
     <string name="action_ask_repair">故障报修</string>
-    <string name="action_add_device">新增设备</string>
-    <string name="action_add_repair">补维修单</string>
+    <string name="action_add_device">添加设备</string>
+    <string name="action_add_repair">填写工单</string>
     <string name="action_ask_parts">申请备件</string>
 
     <string name="title_scan_device">扫描设备条码</string>
@@ -47,5 +44,5 @@
     <string name="text_repair_executing">执行中</string>
     <string name="text_repair_wait_verify">待验收</string>
 
-
+    <string name="title_parts_info">备件信息</string>
 </resources>

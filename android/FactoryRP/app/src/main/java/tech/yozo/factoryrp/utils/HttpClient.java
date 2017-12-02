@@ -5,6 +5,7 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import cz.msebera.android.httpclient.Header;
+import cz.msebera.android.httpclient.HttpEntity;
 import cz.msebera.android.httpclient.message.BasicHeader;
 
 import java.util.ArrayList;
@@ -15,7 +16,7 @@ public class HttpClient {
     private static final String BASE_URL = "http://factoryrp.yozo.tech:9550/";
 
     public static final String LOGININ = "api/authorization/login";
-    public static final String DEVICE_LIST = "deviceInfo/list";
+    public static final String DEVICE_LIST = "api/deviceInfo/listSimpleInfo";
 
     private AsyncHttpClient client;
     private List<Header> headers;
@@ -45,7 +46,7 @@ public class HttpClient {
         client.get(context, getAbsoluteUrl(url), headers, params, responseHandler);
     }
 
-    public void post(Context context, String url, Header[] headers, RequestParams params,  String contentType, AsyncHttpResponseHandler responseHandler) {
+    public void post(Context context, String url, Header[] headers, HttpEntity params, String contentType, AsyncHttpResponseHandler responseHandler) {
         client.post(context, getAbsoluteUrl(url), headers, params, contentType, responseHandler);
     }
 

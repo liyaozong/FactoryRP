@@ -38,8 +38,21 @@
                 android:name=".ui.RepairDetailActivity"
                 android:label="@string/title_device_repair_record">
         </activity>
-        <activity android:name=".ui.RepairRecordListActivity"
+        <activity
+                android:name=".ui.RepairRecordListActivity"
                 android:label="@string/title_repair_order">
+        </activity>
+        <activity
+                android:name=".ui.PartsDetailActivity"
+                android:label="@string/title_parts_info">
+        </activity>
+        <activity
+                android:name=".ui.DeviceAddActivity"
+                android:label="@string/action_add_device">
+        </activity>
+        <activity
+                android:name=".ui.ReportFaultActivity"
+                android:label="@string/action_ask_repair">
         </activity>
     </application>
 

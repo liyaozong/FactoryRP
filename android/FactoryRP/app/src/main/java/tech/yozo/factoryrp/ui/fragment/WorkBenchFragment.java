@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.TextView;
 import tech.yozo.factoryrp.R;
 
@@ -41,6 +42,10 @@ public class WorkBenchFragment extends BaseFragment {
     private int mWaitToExec;
     private int mExecating;
     private int mWaitToVerify;
+
+    private ListView mMainTainTaskList;
+    private ListView mCheckTaskList;
+
 
     public WorkBenchFragment() {
         // Required empty public constructor
@@ -83,12 +88,16 @@ public class WorkBenchFragment extends BaseFragment {
         mTextViewExecating = (TextView) view.findViewById(R.id.textView_executing);
         mTextViewWaitToVerify = (TextView) view.findViewById(R.id.textView_waitto_verify);
 
+        mMainTainTaskList = (ListView) view.findViewById(R.id.listview_maintain_task);
+        mMainTainTaskList.setEmptyView(view.findViewById(R.id.noNewMaintainTask));
+        mCheckTaskList = (ListView) view.findViewById(R.id.listview_check_task);
+        mCheckTaskList.setEmptyView(view.findViewById(R.id.noNewCheckTask));
         return view;
     }
 
     @Override
     protected void loadData() {
-        mWaitToAudit = 100;
+        mWaitToAudit = 1;
         mWaitToExec = 2;
         mExecating = 5;
         mWaitToVerify = 3;

@@ -1,14 +1,10 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             tools:context="tech.yozo.factoryrp.ui.fragment.DeviceInfoFragment">
-
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              tools:context="tech.yozo.factoryrp.ui.fragment.DeviceInfoFragment">
+    <ListView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/textview_test"
-            android:text="@string/title_device_info"/>
-
-</FrameLayout>
+            android:layout_height="match_parent" android:id="@+id/lv_device_info"
+            android:divider="@color/colorBackground" android:dividerHeight="1dp"/>
+</LinearLayout>

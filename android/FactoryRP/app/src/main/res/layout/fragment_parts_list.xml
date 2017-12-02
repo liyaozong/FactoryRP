@@ -5,9 +5,13 @@
              tools:context="tech.yozo.factoryrp.ui.fragment.PartsListFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="@string/title_parts"/>
 
+    <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" android:divider="@color/colorBackground" android:dividerHeight="1dp"
+            android:id="@+id/lv_parts_list"/>
+    <TextView
+            android:text="备件列表为空"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" android:id="@+id/textView18" android:gravity="center"/>
 </FrameLayout>

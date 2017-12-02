@@ -186,7 +186,7 @@ public class LoginActivity extends AppCompatActivity {
     private TextHttpResponseHandler userLoginResponse = new JsonHttpResponseHandler() {
         @Override
         public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-            Log.d("ERROR", response.toString());
+            Log.d("INFO", response.toString());
             showProgress(false);
             HttpClient client = HttpClient.getInstance();
             try {

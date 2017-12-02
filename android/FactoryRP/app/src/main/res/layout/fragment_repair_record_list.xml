@@ -1,17 +1,17 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               tools:context="tech.yozo.factoryrp.ui.fragment.RepairRecordListFragment" android:orientation="vertical">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/title_device_repair_record"/>
-    <Button
-            android:text="维修信息"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:id="@+id/button6"/>
 
-</LinearLayout>
+    <TextView
+            android:text="维修工单列表为空"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" android:id="@+id/textView19" android:gravity="center"/>
+    <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" android:id="@+id/lv_repair_record"
+            android:divider="@color/colorBackground" android:dividerHeight="5dp"/>
+</FrameLayout>

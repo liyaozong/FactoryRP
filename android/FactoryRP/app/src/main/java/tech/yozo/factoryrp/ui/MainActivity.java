@@ -20,7 +20,6 @@ import tech.yozo.factoryrp.ui.fragment.PartsListFragment;
 import tech.yozo.factoryrp.ui.fragment.PersonFragment;
 import tech.yozo.factoryrp.ui.fragment.WorkBenchFragment;
 import tech.yozo.factoryrp.utils.BottomNavigationViewHelper;
-import tech.yozo.factoryrp.utils.HttpClient;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -133,7 +132,8 @@ public class MainActivity extends AppCompatActivity {
             switch (requestCode) {
                 case SCAN_CODE:
                     Intent intent = new Intent(this, DeviceDetailActivity.class);
-                    intent.putExtra(DeviceDetailActivity.DEVICE_CODE, data.getStringExtra(Intents.Scan.RESULT));
+                    //TODO
+                    //intent.putExtra(DeviceDetailActivity.DEVICE_CODE, data.getStringExtra(Intents.Scan.RESULT));
                     startActivity(intent);
             }
         }
@@ -141,18 +141,29 @@ public class MainActivity extends AppCompatActivity {
 
     public void onButtonPressed(View view) {
         switch(view.getId()){
-            case R.id.button_add_device:
+            case R.id.button_add_device: {
+                Intent intent = new Intent(this, DeviceAddActivity.class);
+                startActivity(intent);
+                break;
+            }
             case R.id.button_add_repair:
             case R.id.button_ask_parts:
-            case R.id.button_ask_repair:
                 break;
+            case R.id.button_ask_repair: {
+                Intent intent = new Intent(this, ReportFaultActivity.class);
+                startActivity(intent);
+                break;
+            }
             case R.id.textView_waitto_audit:
             case R.id.textView_waitto_exec:
             case R.id.textView_executing:
-            case R.id.textView_waitto_verify:
+            case R.id.textView_waitto_verify: {
                 Intent intent = new Intent(this, RepairRecordListActivity.class);
                 intent.putExtra(RepairRecordListActivity.RECORD_CATEGORY, view.getId());
                 startActivity(intent);
+                break;
+            }
+            default:
                 break;
         }
 
