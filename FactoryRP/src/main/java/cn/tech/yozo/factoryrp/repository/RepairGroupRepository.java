@@ -8,5 +8,5 @@ import java.util.List;
 @Repository
 public interface RepairGroupRepository extends BaseRepository<RepairGroup,Long>{
 
-    public List<RepairGroup> findByCorporateIdentifyAndStatusFlag(Long corporateIdentify, Integer statusFlag);
+    public List<RepairGroup> findByCorporateIdentify(Long corporateIdentify);
 }
