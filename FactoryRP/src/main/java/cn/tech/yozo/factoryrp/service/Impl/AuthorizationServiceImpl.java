@@ -149,7 +149,8 @@ public class AuthorizationServiceImpl implements AuthorizationService {
                   menuResp.setOrderNumber(m1.getOrderNumber());
                   menuResp.setUrl(m1.getUrl());
                   menuResp.setCorporateIdentify(String.valueOf(m1.getCorporateIdentify()));
-
+                  menuResp.setName(m1.getName());
+                  menuResp.setParentId(m1.getParentId());
                   menuRespList.add(menuResp);
 
               });
