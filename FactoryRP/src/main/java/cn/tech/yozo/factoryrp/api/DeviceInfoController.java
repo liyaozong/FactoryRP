@@ -44,8 +44,9 @@ public class DeviceInfoController extends BaseController{
 
     @ApiOperation(value = "查询单个设备信息--WEB/Mobile",notes = "查询单个设备信息--WEB/Mobile",httpMethod = "GET")
     @RequestMapping("get")
-    public ApiResponse<DeviceInfo> getById(Long id){
-        return apiResponse(deviceInfoService.getById(id));
+    public ApiResponse<FullDeviceInfoResp> getById(Long id,HttpServletRequest request){
+        Long corporateIdentify = userAuthService.getCurrentUserCorporateIdentify(request);
+        return apiResponse(deviceInfoService.getById(id,corporateIdentify));
     }
 
     @ApiOperation(value = "分页查询设备信息列表--Mobile",notes = "分页查询设备信息列表--Mobile",httpMethod = "POST")

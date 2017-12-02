@@ -29,7 +29,7 @@ public interface DeviceInfoService {
      * @param id
      * @return
      */
-    public DeviceInfo getById(Long id);
+    public FullDeviceInfoResp getById(Long id,Long corporateIdentify);
 
     /**
      * 分页查询设备简略信息

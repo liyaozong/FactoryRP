@@ -115,8 +115,15 @@ public class DeviceInfoServiceImpl implements DeviceInfoService{
     }
 
     @Override
-    public DeviceInfo getById(Long id) {
-        return deviceInfoRepository.findOne(id);
+    public FullDeviceInfoResp getById(Long id,Long corporateIdentify) {
+        DeviceInfo deviceInfo = deviceInfoRepository.findOne(id);
+        List<DeviceInfo> list =new ArrayList<>();
+        list.add(deviceInfo);
+        List<FullDeviceInfoResp> reList =convertDeviceInfo(corporateIdentify,list);
+        if (!CheckParam.isNull(reList)){
+            return reList.get(0);
+        }
+        return null;
     }
 
     @Override
