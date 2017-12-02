@@ -11,6 +11,7 @@ import cn.tech.yozo.factoryrp.vo.req.SparePartsAddReq;
 import cn.tech.yozo.factoryrp.vo.req.SparePartsQueryReq;
 import cn.tech.yozo.factoryrp.vo.resp.sparepars.SparePartsResp;
 import com.alibaba.druid.util.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -199,5 +200,17 @@ public class SparePartsServiceImpl implements SparePartsService{
         return sparePartsResp;
     }
 
-
+    @Override
+    public List<SparePartsResp> findByIds(List<Long> ids) {
+        List<SpareParts> list = sparePartsRepository.findAll(ids);
+        List<SparePartsResp> res = new ArrayList<>();
+        if (!CheckParam.isNull(list)){
+            list.forEach(spareParts -> {
+                SparePartsResp sr = new SparePartsResp();
+                BeanUtils.copyProperties(spareParts,sr);
+                res.add(sr);
+            });
+        }
+        return res;
+    }
 }

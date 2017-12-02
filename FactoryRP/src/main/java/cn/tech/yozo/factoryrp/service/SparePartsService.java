@@ -7,6 +7,8 @@ import cn.tech.yozo.factoryrp.vo.req.SparePartsQueryReq;
 import cn.tech.yozo.factoryrp.vo.resp.sparepars.SparePartsResp;
 import org.springframework.data.domain.Page;
 
+import java.util.List;
+
 /**
  * @author created by Singer email:313402703@qq.com
  * @time 2017/11/28
@@ -30,5 +32,10 @@ public interface SparePartsService {
      */
     SparePartsResp addSpareParts(SparePartsAddReq sparePartsReq);
 
-
+    /**
+     * 根据主键批量查询
+     * @param ids
+     * @return
+     */
+    List<SparePartsResp> findByIds(List<Long> ids);
 }

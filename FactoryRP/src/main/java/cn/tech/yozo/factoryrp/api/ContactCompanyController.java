@@ -54,7 +54,8 @@ public class ContactCompanyController extends BaseController{
     @RequestMapping("deleteContactCompany")
     @ApiImplicitParams(@ApiImplicitParam(paramType = "query",dataType = "Long",name = "id",
             value = "需要删除往来单位主键",required = true,defaultValue = "1"))
-    public void deleteContactCompany(Long id){
+    public ApiResponse deleteContactCompany(Long id){
         contactCompanyService.delete(id);
+        return apiResponse();
     }
 }

@@ -6,6 +6,8 @@ import cn.tech.yozo.factoryrp.vo.req.DeviceInfoReq;
 import cn.tech.yozo.factoryrp.vo.resp.device.info.FullDeviceInfoResp;
 import cn.tech.yozo.factoryrp.vo.resp.device.info.SimpleDeviceInfoResp;
 
+import java.util.List;
+
 public interface DeviceInfoService {
 
     /**
@@ -35,4 +37,11 @@ public interface DeviceInfoService {
      * @return
      */
     public Pagination<SimpleDeviceInfoResp> findSimpleInfoByPage(DeviceInfoReq param,Long corporateIdentify);
+
+    /**
+     * 根据设备主键批量查询设备信息
+     * @param ids
+     * @return
+     */
+    public List<FullDeviceInfoResp> findByIds(List<Long> ids,Long corporateIdentify);
 }

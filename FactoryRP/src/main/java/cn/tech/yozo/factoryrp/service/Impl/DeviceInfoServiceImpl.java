@@ -100,38 +100,7 @@ public class DeviceInfoServiceImpl implements DeviceInfoService{
         Pagination<FullDeviceInfoResp> res = new Pagination(currentPage+1,itemsPerPage,page.getTotalElements());
         if (page.hasContent()){
             List<DeviceInfo> listDevice = page.getContent();
-            List<FullDeviceInfoResp> reList = new ArrayList<>();
-            List<Department> listDept = departmentService.list(corporateIdentify);
-            Map<Long,String> deptMap = new HashMap<>();
-            if(!CheckParam.isNull(listDept)){
-                listDept.forEach(department -> {
-                    deptMap.put(department.getId(),department.getName());
-                });
-            }
-           List<DeviceType> deviceTypeList =  deviceTypeService.list(corporateIdentify);
-            Map<Long,String> dtMap = new HashMap<>();
-            if (!CheckParam.isNull(deviceTypeList)){
-                deviceTypeList.forEach(deviceType -> {
-                    dtMap.put(deviceType.getId(),deviceType.getName());
-                });
-            }
-
-            List<ContactCompany> contactCompanyList =  contactCompanyService.list(corporateIdentify);
-            Map<Long,String> ccMap = new HashMap<>();
-            if (!CheckParam.isNull(contactCompanyList)){
-                contactCompanyList.forEach(cc -> {
-                    ccMap.put(cc.getId(),cc.getName());
-                });
-            }
-            listDevice.forEach(deviceInfo -> {
-                FullDeviceInfoResp fdi = new FullDeviceInfoResp();
-                BeanUtils.copyProperties(deviceInfo,fdi);
-                fdi.setDeviceType(dtMap.get(deviceInfo.getDeviceType()));
-                fdi.setManufacturer(ccMap.get(deviceInfo.getManufacturer()));
-                fdi.setSupplier(ccMap.get(deviceInfo.getSupplier()));
-                fdi.setUseDept(deptMap.get(deviceInfo.getUseDept()));
-                reList.add(fdi);
-            });
+            List<FullDeviceInfoResp> reList = convertDeviceInfo(corporateIdentify, listDevice);
             res.setList(reList);
         }
         return res;
@@ -164,5 +133,54 @@ public class DeviceInfoServiceImpl implements DeviceInfoService{
             r.setList(ls);
         }
         return r;
+    }
+
+    @Override
+    public List<FullDeviceInfoResp> findByIds(List<Long> ids,Long corporateIdentify) {
+        List<DeviceInfo> listDevice = deviceInfoRepository.findAll(ids);
+        List<FullDeviceInfoResp> reList = convertDeviceInfo(corporateIdentify, listDevice);
+        return reList;
+    }
+
+    /**
+     * 转行设备信息
+     * @param corporateIdentify
+     * @param listDevice
+     * @return
+     */
+    private List<FullDeviceInfoResp> convertDeviceInfo(Long corporateIdentify, List<DeviceInfo> listDevice) {
+        List<FullDeviceInfoResp> reList = new ArrayList<>();
+        List<Department> listDept = departmentService.list(corporateIdentify);
+        Map<Long,String> deptMap = new HashMap<>();
+        if(!CheckParam.isNull(listDept)){
+            listDept.forEach(department -> {
+                deptMap.put(department.getId(),department.getName());
+            });
+        }
+        List<DeviceType> deviceTypeList =  deviceTypeService.list(corporateIdentify);
+        Map<Long,String> dtMap = new HashMap<>();
+        if (!CheckParam.isNull(deviceTypeList)){
+            deviceTypeList.forEach(deviceType -> {
+                dtMap.put(deviceType.getId(),deviceType.getName());
+            });
+        }
+
+        List<ContactCompany> contactCompanyList =  contactCompanyService.list(corporateIdentify);
+        Map<Long,String> ccMap = new HashMap<>();
+        if (!CheckParam.isNull(contactCompanyList)){
+            contactCompanyList.forEach(cc -> {
+                ccMap.put(cc.getId(),cc.getName());
+            });
+        }
+        listDevice.forEach(deviceInfo -> {
+            FullDeviceInfoResp fdi = new FullDeviceInfoResp();
+            BeanUtils.copyProperties(deviceInfo,fdi);
+            fdi.setDeviceType(dtMap.get(deviceInfo.getDeviceType()));
+            fdi.setManufacturer(ccMap.get(deviceInfo.getManufacturer()));
+            fdi.setSupplier(ccMap.get(deviceInfo.getSupplier()));
+            fdi.setUseDept(deptMap.get(deviceInfo.getUseDept()));
+            reList.add(fdi);
+        });
+        return reList;
     }
 }

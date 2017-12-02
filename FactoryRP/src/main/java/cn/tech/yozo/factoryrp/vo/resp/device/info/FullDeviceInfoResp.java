@@ -14,7 +14,8 @@ import java.util.Date;
 @Data
 @ApiModel(value = "完整设备信息")
 public class FullDeviceInfoResp implements Serializable{
-
+    @ApiModelProperty(value = "主键",notes ="主键" )
+    private Long id;
 
     @ApiModelProperty(value = "设备名称",notes ="设备名称" )
     private String name;
