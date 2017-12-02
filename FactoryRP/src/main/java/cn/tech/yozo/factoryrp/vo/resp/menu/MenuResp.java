@@ -46,6 +46,17 @@ public class MenuResp  implements Serializable {
     @ApiModelProperty(value = "企业唯一标识",required = true,notes = "企业唯一标识",example = "32132132132213")
     private String corporateIdentify;
 
+    @ApiModelProperty(value = "父级菜单ID",required = true,notes = "父级菜单ID",example = "0")
+    private Long  parentId;
+
+    public Long getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(Long parentId) {
+        this.parentId = parentId;
+    }
+
     public String getId() {
         return id;
     }
