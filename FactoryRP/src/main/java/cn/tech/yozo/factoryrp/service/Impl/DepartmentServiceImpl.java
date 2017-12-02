@@ -22,9 +22,9 @@ public class DepartmentServiceImpl implements DepartmentService{
     }
 
     @Override
-    public Department save(SaveDepartmentReq param,Integer opType) {
+    public Department save(SaveDepartmentReq param,Integer opType,Long corporateIdentify) {
         Department d = new Department();
-        d.setCorporateIdentify(param.getCorporateIdentify());
+        d.setCorporateIdentify(corporateIdentify);
         d.setStatusFlag(1);
         d.setShowOrder(999);
         if (1==opType){

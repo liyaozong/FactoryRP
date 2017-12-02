@@ -9,14 +9,12 @@ import lombok.Data;
  */
 @Data
 public class SaveDepartmentReq extends BaseRequest {
-    @ApiModelProperty(value = "主键",example = "1")
+    @ApiModelProperty(value = "主键，添加下级和修改的时候必填")
     private Long id;
-    @ApiModelProperty(value = "部门编码",example = "1212")
+    @ApiModelProperty(value = "部门编码")
     private String code;
-    @ApiModelProperty(value = "部门名称",example = "金融部")
+    @ApiModelProperty(value = "部门名称")
     private String name;
-    @ApiModelProperty(value = "企业唯一标识",example = "111")
-    private Long corporateIdentify;
-    @ApiModelProperty(value = "上级部门ID",notes ="上级部门ID" )
+    @ApiModelProperty(value = "上级部门ID，添加同级和修改的时候必填")
     private Long parentId;
 }

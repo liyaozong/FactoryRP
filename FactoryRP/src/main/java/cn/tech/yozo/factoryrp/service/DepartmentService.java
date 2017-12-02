@@ -24,7 +24,7 @@ public interface DepartmentService {
      * @param opType 保存类型，1:添加同级：2:添加下级；3：修改
      * @return
      */
-    public Department save(SaveDepartmentReq param,Integer opType);
+    public Department save(SaveDepartmentReq param,Integer opType,Long corporateIdentify);
 
     /**
      * 删除部门级子部门
