@@ -1,5 +1,6 @@
 package cn.tech.yozo.factoryrp.api;
 
+import cn.tech.yozo.factoryrp.config.auth.UserAuthService;
 import cn.tech.yozo.factoryrp.entity.RepairGroup;
 import cn.tech.yozo.factoryrp.service.RepairGroupService;
 import cn.tech.yozo.factoryrp.vo.base.ApiResponse;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,19 +25,23 @@ public class RepairGroupController extends BaseController{
     @Autowired
     RepairGroupService repairGroupService;
 
+    @Autowired
+    private UserAuthService userAuthService;
+
     @RequestMapping("list")
     @ApiOperation(value = "查询维修工段/班组列表",httpMethod = "GET")
-    public ApiResponse<List<RepairGroup>> list(){
-        return apiResponse(repairGroupService.listAll());
+    public ApiResponse<List<RepairGroup>> list(HttpServletRequest request){
+        Long corporateIdentify = userAuthService.getCurrentUserCorporateIdentify(request);
+        return apiResponse(repairGroupService.listAll(corporateIdentify));
     }
 
     @RequestMapping("add")
     @ApiOperation(value = "添加维修工段/班组列表",httpMethod = "POST")
     @ApiImplicitParams({@ApiImplicitParam(paramType = "query",dataType = "String",name = "code",
             value = "编码",required = true,defaultValue = "001"),@ApiImplicitParam(paramType = "query",dataType = "String",name = "name",
-            value = "名称",required = true,defaultValue = "主机维修"),@ApiImplicitParam(paramType = "query",dataType = "Long",name = "corporateIdentify",
-            value = "企业唯一标识",required = true,defaultValue = "111")})
-    public ApiResponse<RepairGroup> add(String code,String name,Long corporateIdentify){
+            value = "名称",required = true,defaultValue = "主机维修")})
+    public ApiResponse<RepairGroup> add(String code,String name,HttpServletRequest request){
+        Long corporateIdentify = userAuthService.getCurrentUserCorporateIdentify(request);
         return apiResponse(repairGroupService.add(code,name,corporateIdentify));
     }
 
@@ -43,7 +49,7 @@ public class RepairGroupController extends BaseController{
     @RequestMapping("delete")
     @ApiImplicitParams(@ApiImplicitParam(paramType = "query",dataType = "String",name = "ids",
             value = "需要删除维修工段/班组主键集合，逗号分割",required = true,defaultValue = "1,2"))
-    public void delete(String ids){
+    public ApiResponse delete(String ids){
         if (!StringUtils.isEmpty(ids)){
             String[] idsArray = ids.split(",");
             List<Long> nd = new ArrayList<>();
@@ -54,5 +60,6 @@ public class RepairGroupController extends BaseController{
                 repairGroupService.deleteRgs(nd);
             }
         }
+        return apiResponse();
     }
     }

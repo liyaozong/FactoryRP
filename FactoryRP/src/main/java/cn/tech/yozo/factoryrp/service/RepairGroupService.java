@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface RepairGroupService {
 
-    public List<RepairGroup> listAll();
+    public List<RepairGroup> listAll(Long corporateIdentify);
 
     public RepairGroup add(String code,String name,Long corporateIdentify);
 

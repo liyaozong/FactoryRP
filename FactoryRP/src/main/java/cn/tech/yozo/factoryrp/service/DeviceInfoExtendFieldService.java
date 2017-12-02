@@ -1,6 +1,7 @@
 package cn.tech.yozo.factoryrp.service;
 
 import cn.tech.yozo.factoryrp.entity.DeviceInfoExtendField;
+import cn.tech.yozo.factoryrp.vo.req.DeviceInfoExtendFieldReq;
 
 public interface DeviceInfoExtendFieldService {
     /**
@@ -8,7 +9,7 @@ public interface DeviceInfoExtendFieldService {
      * @param param
      * @return
      */
-    public DeviceInfoExtendField save(DeviceInfoExtendField param);
+    public DeviceInfoExtendField save(DeviceInfoExtendFieldReq param,Long corporateIdentify);
 
     /**
      * 根据企业唯一标识查询设备信息扩展字段

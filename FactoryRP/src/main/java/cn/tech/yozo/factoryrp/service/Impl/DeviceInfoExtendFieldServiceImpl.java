@@ -3,6 +3,8 @@ package cn.tech.yozo.factoryrp.service.Impl;
 import cn.tech.yozo.factoryrp.entity.DeviceInfoExtendField;
 import cn.tech.yozo.factoryrp.repository.DeviceInfoExtendFieldRepository;
 import cn.tech.yozo.factoryrp.service.DeviceInfoExtendFieldService;
+import cn.tech.yozo.factoryrp.vo.req.DeviceInfoExtendFieldReq;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,14 +18,16 @@ public class DeviceInfoExtendFieldServiceImpl implements DeviceInfoExtendFieldSe
     private DeviceInfoExtendFieldRepository deviceInfoExtendFieldRepository;
 
     @Override
-    public DeviceInfoExtendField save(DeviceInfoExtendField param) {
+    public DeviceInfoExtendField save(DeviceInfoExtendFieldReq param,Long corporateIdentify) {
         DeviceInfoExtendField old = deviceInfoExtendFieldRepository.
-                findByCorporateIdentifyAndStatusFlag(param.getCorporateIdentify(),1);
+                findByCorporateIdentifyAndStatusFlag(corporateIdentify,1);
+        DeviceInfoExtendField s = new DeviceInfoExtendField();
+        BeanUtils.copyProperties(param,s);
         if (null!=old){
-            param.setId(old.getId());
-            param.setCreateTime(old.getCreateTime());
+            s.setId(old.getId());
+            s.setCreateTime(old.getCreateTime());
         }
-        return deviceInfoExtendFieldRepository.save(param);
+        return deviceInfoExtendFieldRepository.save(s);
     }
 
     @Override

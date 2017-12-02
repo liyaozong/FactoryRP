@@ -14,8 +14,8 @@ public class RepairGroupServiceImpl implements RepairGroupService{
     RepairGroupRepository repairGroupRepository;
 
     @Override
-    public List<RepairGroup> listAll() {
-        return repairGroupRepository.findAll();
+    public List<RepairGroup> listAll(Long corporateIdentify) {
+        return repairGroupRepository.findByCorporateIdentifyAndStatusFlag(corporateIdentify,1);
     }
 
     @Override
