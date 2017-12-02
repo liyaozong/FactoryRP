@@ -23,10 +23,10 @@ public class DeviceTypeServiceImpl implements DeviceTypeService{
     }
 
     @Override
-    public DeviceType save(SaveDeviceTypeReq param, Integer opType) {
+    public DeviceType save(SaveDeviceTypeReq param, Integer opType,Long corporateIdentify) {
 
         DeviceType d = new DeviceType();
-        d.setCorporateIdentify(param.getCorporateIdentify());
+        d.setCorporateIdentify(corporateIdentify);
         d.setStatusFlag(1);
         d.setShowOrder(999);
         if (1==opType){

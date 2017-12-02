@@ -13,8 +13,6 @@ public class SaveDeviceTypeReq extends BaseRequest {
     private Long id;
     @ApiModelProperty(value = "设备类型名称",example = "打印类")
     private String name;
-    @ApiModelProperty(value = "企业唯一标识",example = "111")
-    private Long corporateIdentify;
     @ApiModelProperty(value = "上级ID",notes ="上级ID" )
     private Long parentId;
 }

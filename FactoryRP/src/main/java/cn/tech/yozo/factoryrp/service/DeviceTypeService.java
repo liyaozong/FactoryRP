@@ -20,7 +20,7 @@ public interface DeviceTypeService {
      * @param opType 保存类型，1:添加同级：2:添加下级；3：修改
      * @return
      */
-    public DeviceType save(SaveDeviceTypeReq param, Integer opType);
+    public DeviceType save(SaveDeviceTypeReq param, Integer opType,Long corporateIdentify);
 
     /**
      * 删除当前设备及子设备
