@@ -1,0 +1,1671 @@
+<style>
+.btn {
+    width: auto;
+    min-width: 80px;
+    font-size: 14px;
+    height: 30px;
+    line-height: 30px;
+    margin: 5px 20px 0 0;
+    cursor: pointer;
+    background: #4da7fd
+}
+
+.btns {
+    min-width: 70px;
+    width: auto;
+    font-size: 14px;
+    height: 30px;
+    line-height: 30px;
+    margin: 5px 20px 0 0;
+    cursor: pointer;
+    background: #ff8208
+}
+
+.remarkDiv {
+    padding: 10px;
+}
+
+.mainContain .orderDetailList ul {
+    min-height: 40px;
+    line-height: 40px;
+    border-bottom: 1px solid #f6f6f6;
+    height: auto;
+}
+.mainContain .orderDetailList h1{
+    width: 100%;
+}
+/*.mainContain .orderDetailList ul:first-child{*/
+/*background: #4da7fd;*/
+/*}*/
+/*.mainContain .orderDetailList ul:first-child li{*/
+/*background: #4da7fd;*/
+/*color: #fff;*/
+/*}*/
+.mainContain .orderDetailList ul li {
+    width: 33%;
+    float: left;
+    border: none;
+    clear: none;
+
+}
+
+.mainContain .orderDetailList .alignPattern tr td {
+    padding: 0 3px;
+    text-indent: 0;
+    text-align: center;
+}
+.mainContain .orderDetailList .alignPattern tr th {
+    padding: 0 3px;
+    text-indent: 0;
+    text-align: center;
+}
+
+.mainContain .orderDetailInfo .orderDetailInfoList table tr th {
+    background: #e7ecf2;
+}
+
+.mainContain .orderDetailList .diTabl tr td {
+    text-indent: 2px;
+    padding-left: 0;
+}
+
+.mainContain .orderDetailList .appCheatList ul.tabList li {
+    border: none;
+    float: left;
+    overflow: hidden;
+    width: 200px;
+    text-align: center;
+    clear: none;
+    background-color: #f6f6f6;
+    margin-right: 20px;
+    cursor: pointer;
+    text-indent: 0;
+    border: none;
+    margin-bottom: 5px;
+}
+
+.mainContain .orderDetailList h4 {
+    width: 100%;
+}
+
+.mainContain ol {
+    margin: 5px 10px 0px 10px;
+}
+
+.mainContain ol li {
+    border: none;
+    float: left;
+    overflow: hidden;
+    width: auto;
+    text-align: left;
+    clear: none;
+    line-height: 25px;
+
+    margin-right: 12px;
+
+}
+
+.mainContain .orderDetailList .appCheatList ul {
+    border: none;
+}
+
+.mainContain .orderDetailList .appCheatList ul.tabList li.activeApp {
+    background-color: #4da7fd;
+    color: #fff;
+    text-indent: 0;
+    border: none;
+}
+
+.page-list .pagination span {
+    text-indent: 0;
+}
+
+.mainContain .orderDetailList ul li {
+    border: none;
+}
+
+.mainContain .orderDetailList h3 {
+    padding: 5px 5px 0px 25px;
+    color: #333;
+    font-size: 17px;
+}
+
+.loanq tr {
+    border-bottom: 1px solid #ccc;
+    line-height: 35px;
+}
+
+.loanq tr th {
+    background-color: #fff;
+    text-align: center;
+}
+
+/*.borderLine{*/
+/*border-bottom: 1px solid #ccc;*/
+/*}*/
+.againResualt {
+
+    width: 876px;
+    position: absolute;
+    left: 150px;
+    top: 10px;
+}
+
+.againResualt > li {
+    border-bottom: 1px solid #e6e6e6;
+    width: 730px;
+    line-height: 35px !important;
+    height: 35px !important;
+
+}
+
+.againResualt > li:hover {
+    background: #e6e6e6;
+}
+
+.checkResult {
+    position: absolute;
+    left: 335px;
+    width: 330px;
+    top: 0px;
+
+}
+
+.checkResult > li {
+    width: 330px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    -o-text-overflow: ellipsis;
+    cursor: pointer;
+}
+
+.detailAgainstCheat {
+    position: absolute;
+    width: 90px;
+    left: 922px;
+}
+
+.borderLine {
+    border-bottom: 1px dashed #ccc;
+    width: 1026px;
+}
+
+.borderLine > span {
+    font-weight: bold;
+}
+
+.btn {
+    float: none !important;
+}
+
+.conclusion {
+    position: absolute;
+    left: 672px;
+    top: 0;
+}
+.bg-color{
+    background-color: #CCCCCC;
+}
+.clickNav{
+    position: fixed;
+    width: 65px;
+    background-color: #ffffff;
+    margin: 10px;
+    top: calc(50% - 576/2)!important;
+    z-index: 10000;
+    right: 0;
+    box-shadow: 0px 0px 2px 2px #DDDDDD;
+}
+.clickNav >ul>li{
+    padding: 10px;
+    font-size: 15px;
+    text-align: center;
+    cursor: pointer;
+    color: #808080;
+    height: 70px!important;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    flex-direction: column;
+}
+.tableListDiv .titles{
+    background: #e7ecf2;
+}
+.tableListDiv .titles li{
+    line-height: 45px;
+}
+.tableListDiv ul{
+    min-height: 45px;
+    display: inline-block;
+    width: 100%;
+    border: 1px solid #e6e6e6;
+    margin-top: -5px;
+}
+.tableListDiv ul .detail{
+    clear: both;
+    background: #f6f6f6;
+    position: relative;
+    height: auto;
+    padding-bottom: 15px;
+}
+.tableListDiv ul .detail svg{
+    position: absolute;
+    top: -23px;
+    left: 97px;
+}
+.tableListDiv ul .detail p{
+    display: inline-block;
+    width: 100%;
+    margin: 15px auto auto 98px;
+}
+.tableListDiv ul .detail p label span{
+    margin-right: 0;
+}
+.tableListDiv ul .detail p span{
+    margin-right: 100px;
+}
+.tableListDiv ul li{
+    width: 14.2%;
+    height: auto;
+    line-height: 45px;
+    float: left;
+    text-align: center;
+    position: relative;
+}
+.tableListDiv ul li svg{
+    position: absolute;
+    top: 14px;
+    left: 48px;
+    cursor: pointer;
+}
+.has-switch{
+    top:8px;
+    margin-right: 10px;;
+}
+.has-switch span{
+    font-size: 12px !important;
+}
+.has-switch label{
+    font-size: 12px !important;
+}
+.businessAuth p input{
+    width: 150px !important;
+}
+.addCompanyInfo .businessAuth p input{
+    width: 155px !important;
+}
+.addCompanyInfo .businessAuth p select{
+    width: 155px !important;
+    border: 1px solid #e6e6e6;
+    height: 35px;
+    line-height: 35px;
+}
+.addCompanyInfo .businessAuth p{
+    text-align: left;
+    font-size: 14px;
+}
+.addCompanyInfo .businessAuth p input[type='radio']{
+    width: auto !important;
+    border: none;
+    box-shadow: none;
+    margin-top: -3px;
+}
+.trMore{
+    position: relative;
+    display: block;
+}
+.trMore svg{
+    position: absolute;
+}
+.result p{
+    min-width: 135px;padding-left: 15px;
+}
+#companyContainer ul{
+    border: none;
+    border-right: 1px solid #e6e6e6;
+}
+#companyContainer ul li{
+    border-bottom: 1px solid #e6e6e6;
+    /* border: none; */
+    border-left: 1px solid #e6e6e6;
+}
+.mainContain .orderDetailList table tr td:hover{
+    background: #e7ecf2;
+}
+.mainContain .tableListDiv{
+    margin-bottom: 10px;
+}
+.mainContain .tableListDiv tr th{
+    background: #e7ecf2;
+}
+.mainContain .orderDetailList .tableBorder{
+    width: 99%;
+    margin: auto !important;
+}
+.mainContain .orderDetailList table tr th:hover{
+    background: #e7ecf2;
+}
+.mainContain .orderDetailList{
+    margin-bottom: 10px;
+}
+</style>
+<div class="mainContain">
+<!--基本资料 start-->
+<div class="tableListDiv data-container jurisdiction">
+    <h3 style=" padding: 5px 5px 0px 13px;height: 52px;line-height: 30px;font-size: 17px;font-weight: bold;">基本资料</h3>
+    <ul class="titles">
+        <li>姓名</li>
+        <li>手机号</li>
+        <li>身份证号码</li>
+        <li>当前额度(万元)</li>
+        <li>额度状态</li>
+    </ul>
+    <ul>
+        <li>
+            <svg t="1503639637670" class="icon" style="" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" width="20" height="20"><path d="M512 832a32 32 0 0 0 32-32v-256h256a32 32 0 0 0 0-64h-256V224a32 32 0 0 0-64 0v256H224a32 32 0 0 0 0 64h256v256a32 32 0 0 0 32 32" fill="#B3B3B3"></path></svg>
+            1
+        </li>
+        <li>淘宝指标</li>
+        <li>IOS联通</li>
+        <li>简单规则</li>
+        <li> 22</li>
+        <div class="detail hide">
+            <svg width="24" height="24" version="1.1" xmlns="http://www.w3.org/2000/svg">
+                <polygon points="0,24 24,24 12,12" style="fill:#f6f6f6;stroke:#e6e6e6;stroke-width:1;stroke-bottom:none;"/>
+            </svg>
+            <ul style="margin-top:0">
+                <li>序号</li>
+                <li>申请时间</li>
+                <li>授信金额(万元)</li>
+                <li>贷款期限(个月)</li>
+                <li>订单状态</li>
+            </ul>
+            <ul style="border: 0">
+                <li>11</li>
+                <li>22</li>
+                <li>333</li>
+                <li>444</li>
+                <li>555</li>
+            </ul>
+            <ul style="border: 0">
+                <li>11</li>
+                <li>22</li>
+                <li>333</li>
+                <li>444</li>
+                <li>555</li>
+            </ul>
+        </div>
+    </ul>
+    <ul>
+        <li style="width: 100%;line-height: 45px;"><tm-pagination conf="paginationConf"></tm-pagination></li>
+    </ul>
+</div>
+<!--基本资料 end-->
+<!--淘宝资料 start-->
+<div class="orderDetailList applyHistory" name="applyHistory">
+    <h3 style="padding: 5px 5px 0px 25px;">淘宝资料</h3>
+    <!--淘宝基本信息 start-->
+    <table style="width: 99%;margin: auto!important;" class="tableBorder">
+        <tbody>
+        <tr style=" background: #e7ecf2;">
+            <th colspan="8">淘宝基本信息</th>
+        </tr>
+        <tr>
+            <th>淘宝账号</th>
+            <td>xxx</td>
+            <th>淘宝实名</th>
+            <td>xxx</td>
+            <th>淘宝绑定手机</th>
+            <td>xxx</td>
+            <th>淘宝证件号码</th>
+            <td>xxx</td>
+        </tr>
+        <tr>
+            <th>支付宝账号</th>
+            <td>xxx</td>
+            <th>支付宝实名</th>
+            <td>xxx</td>
+            <th>支付宝证件号码</th>
+            <td>xxx</td>
+            <th></th>
+            <td></td>
+        </tr>
+        </tbody>
+    </table>
+    <!--淘宝基本信息 end-->
+    <!--淘宝收货地址TOP5 start-->
+    <table style="width: 99%;margin: auto!important;" class="tableBorder">
+        <tr style=" background: #e7ecf2;">
+            <th colspan="4">淘宝收货地址TOP5</th>
+        </tr>
+        <tr>
+            <th>淘宝收货姓名</th>
+            <th>淘宝收货号码</th>
+            <th>淘宝收货地址</th>
+            <th>次数</th>
+        </tr>
+        <tr>
+            <td>xxx</td>
+            <td>xxx</td>
+            <td>xxx</td>
+            <td>xxx</td>
+        </tr>
+    </table>
+    <!--淘宝收货地址TOP5 end-->
+</div>
+<!--淘宝资料 end-->
+<!--个人资料 start-->
+<div class="orderDetailList applyHistory">
+    <h3 style="padding: 5px 5px 0px 25px;">个人资料--韩冰主贷人</h3>
+    <table border="1" class="tableBorder">
+        <thead>
+        <tr>
+            <th>认证资料</th>
+            <th>上传资料（是/否）</th>
+            <th>资料详情</th>
+            <th>提交时间</th>
+            <th>状态</th>
+            <th>备注</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>居间协议</td>
+            <td></td>
+            <td><a href="javascript:void(0)" id="handle">详情</a></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>人行征信认证</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>身份证认证</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<!--个人资料 start-->
+<!--店铺资料 start-->
+<div style="padding-bottom: 0" class="orderDetailList applyHistory">
+    <h3 style="border-bottom: 1px solid #e6e6e6;height: 50px;margin-bottom: 0">店铺资料</h3>
+    <div ng-show="storeInfos==null||storeInfos==''||storeInfos==undefined" style="margin-bottom: 5px;padding-bottom: 0;height: 30px;text-indent: 25px;color: #ff0000">
+        该用户暂无认证的店铺资料！
+    </div>
+    <div ng-show="storeInfos!=null&&storeInfos!=''&&storeInfos!=undefined" style="margin-bottom: 5px;padding-bottom: 0" ng-repeat="store in storeInfos" id="storyInfo" class="orderDetailList storyInfo">
+        <h1  class="OpenAndClose" ng-click="onStoreToggle(store)">
+            <a style="color: #4da7fd; position: static;" href="{{store.shopUrl}}" target="_blank"> 店铺（{{store.shopName}}）--
+                <span class="storyType" ng-show="store.platformType=='257'" ng-model="storyType">淘宝店</span>
+                <span class="storyType" ng-show="store.platformType=='258'" ng-model="storyType">天猫店</span>
+                <span class="storyType" ng-show="store.platformType=='259'" ng-model="storyType">淘宝企业店</span>
+                <span class="storyType" ng-show="store.platformType!='257'&&store.platformType!='258'&&store.platformType!='259'" ng-model="storyType">未知类型</span>
+            </a>
+            <a class="OpenClose" ng-click="onStoreToggleAdd()" ng-class="{true: 'open', false: ''}[isActives]" href="javascript:void(0);" ></a>
+        </h1>
+        <table ng-show="store.isShow">
+            <thead>
+            <tr style="background: #fff">
+
+
+                <th>认证资料</th>
+                <!--<th class="align_center">上传资料（是/否）</th>-->
+                <!--<th class="align_center">资料详情</th>-->
+                <th class="align_center">处理时间</th>
+                <th class="align_center">状态</th>
+                <!--<th class="align_center">操作</th>-->
+                <th class="align_center">备注</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="authItem in store.items">
+                <td>{{authItem.itemName}}</td>
+                <td class="align_center">{{authItem.lastUpdateTime| date: 'yyyy-MM-dd HH:mm:ss'||'--'}}</td>
+                <td class="align_center">
+                    <span ng-show="authItem.authStatus=='0'">初始状态</span>
+                    <span ng-show="authItem.authStatus=='1'">发送完毕</span>
+                    <span ng-show="authItem.authStatus=='2'">失效</span>
+                </td>
+                <td class="align_center">{{authItem.remark}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<!--店铺资料 start-->
+<!--放款条件资料 start-->
+<div  class="orderDetailList applyHistory">
+    <h3 style="border-bottom: 1px solid #e6e6e6;height: 50px;">放款条件资料</h3>
+    <div class="orderDetailList">
+        <div class="operateStoreList tableListDiv" style="width: 98%;margin:auto;">
+            <p style="margin-bottom: 10px;">已添加共同借款人
+                <!--<button type="button" class="btn" style="margin-left: 5px;" onclick="popupDiv('addCommonLoader')">+添加</button>-->
+            </p>
+            <table>
+                <thead>
+                <tr>
+                    <th>共同借款人</th>
+                    <th>共同借款人（别名）</th>
+                    <th>身份证号</th>
+                    <th>手机号</th>
+                    <!--<th>操作</th>-->
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="commonLoaner in queryCommonloanInfos">
+                    <td class="align_center">{{commonLoaner.coBorrowerName||'--'}}</td>
+                    <td class="align_center">{{commonLoaner.coBorrowerByName||'--'}}</td>
+                    <td class="align_center">{{commonLoaner.coBorrowerCardNo||'--'}}</td>
+                    <td class="align_center">{{commonLoaner.coBorrowerPhone||'--'}}</td>
+                    <!--<td class="align_center"><button  style="color: #4da7fd; border: none; background: none;"  ng-click="deleteCommonloanInfos(commonLoaner)">删除</button></td>-->
+                </tr>
+                <tr ng-show="queryCommonloanInfos==''||queryCommonloanInfos==null||queryCommonloanInfos==undefined">
+                    <td colspan="5" style="text-align: center">暂无数据</td>
+                </tr>
+                </tbody>
+
+            </table>
+        </div>
+
+        <div id="companyContainer" class="operateStoreList tableListDiv" style="width: 98%;margin:auto;">
+            <p style="margin-bottom: 10px;">已添加企业
+                <!--<button type="button" class="btn" style="margin-left: 5px;" ng-click="addCompanyInfoClick()">+添加</button>-->
+            </p>
+            <ul class="titles">
+                <li style="width: 14.2%">实际控制人</li>
+                <li style="width: 14.2%">实际控制人电话</li>
+                <li style="width: 14.2%">实际控制人身份证</li>
+                <li style="width: 14.2%">店铺名</li>
+                <li style="width: 14.2%">企业名</li>
+                <li style="width: 14.2%">营业执照号</li>
+                <li style="width: 14.2%">操作</li>
+            </ul>
+            <ul ng-repeat="CompanyInfo in CompanyInfos">
+                <li style="width: 14.2%">{{CompanyInfo.realControllerName||'--'}}</li>
+                <li style="width: 14.2%">{{CompanyInfo.realControllerPhone||'--'}}</li>
+                <li style="width: 14.2%">{{CompanyInfo.realControllerCardNo||'--'}}</li>
+                <li style="width: 14.2%">{{CompanyInfo.shopName||'--'}}</li>
+                <li style="width: 14.2%">{{CompanyInfo.companyName||'--'}}</li>
+                <li style="width: 14.2%">{{CompanyInfo.licenceNo||'--'}}</li>
+                <li style="width: 14.2%">
+                    <a href="javascript:void(0)" style="color: #4da7fd;text-decoration: none"  ng-click="searchShareHolders($event,CompanyInfo)">查看股东</a>
+                    <!--<a href="javascript:void(0)" style="color: #4da7fd;text-decoration: none"  ng-click="deleteCompanyInfos(CompanyInfo)">删除</a>-->
+                </li>
+                <div style="padding-bottom: 0" class="detail hide">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>序号</th>
+                            <th>股东姓名</th>
+                            <th>股东电话</th>
+                            <th>股东身份证</th>
+                            <!--<th>操作</th>-->
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="shareHolder in shareHolders">
+                            <td class="align_center">{{$index+1}}</td>
+                            <td class="align_center">{{shareHolder.shareHolderName||'--'}}</td>
+                            <td class="align_center">{{shareHolder.shareHolderPhone||'--'}}</td>
+                            <td class="align_center">{{shareHolder.shareHolderCardNo||'--'}}</td>
+                            <!--<td class="align_center"><button  style="color: #4da7fd; border: none; background: none;"  ng-click="deleteCommonloanInfos(commonLoaner)">删除</button></td>-->
+                        </tr>
+                        <tr ng-show="shareHolders==''||shareHolders==null||shareHolders==undefined">
+                            <td colspan="4" style="text-align: center">暂无数据</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </ul>
+            <ul ng-show="CompanyInfos==''||CompanyInfos==null||CompanyInfos==undefined">
+                <li style="width: 100%">暂无数据</li>
+            </ul>
+        </div>
+
+        <div class="operateStoreList tableListDiv" style="width: 98%;margin:auto;">
+            <p style="margin-bottom: 10px;">已添加放款条件
+                <!--<button  type="button" class="btn" style="margin-left: 5px;" onclick="popupDiv('addConditions')">+添加</button>-->
+            </p>
+            <table>
+                <thead>
+                <tr>
+                    <th>资料名称</th>
+                    <th>上传资料（是/否）</th>
+                    <th>报单备注</th>
+                    <th>添加放款条件备注</th>
+                    <!--<th>操作</th>-->
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="loanConditions in queryloanConditionsInfos">
+                    <td class="align_center">{{loanConditions.termsType||'--'}}</td>
+                    <td class="align_center">
+                        <span ng-show="loanConditions.state==1">是</span>
+                        <span style="color: #ff0000" ng-show="loanConditions.state==0">否</span>
+                    </td>
+                    <td class="align_center">{{loanConditions.uploadRemark||'--'}}</td>
+                    <td class="align_center">{{loanConditions.remark||'--'}}</td>
+                    <!--<td class="align_center">-->
+                        <!--<button style="color: #4da7fd; border: none; background: none;" ng-click="deletequeryLoanConditonss(loanConditions)">删除</button>-->
+                        <!--<a ng-show="loanConditions.state==1" href="javascript:void(0)" ng-click="searchDetail(loanConditions)">查看</a>-->
+                    <!--</td>-->
+                </tr>
+                <tr ng-show="queryloanConditionsInfos==''||queryloanConditionsInfos==null||queryloanConditionsInfos==undefined">
+                    <td colspan="5" style="text-align: center">未获取到相关数据！</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<!--放款条件资料 end-->
+<!--企业 信息 start-->
+<div  class="orderDetailList applyHistory">
+    <h3 style="border-bottom: 1px solid #e6e6e6;height: 50px;">企业信息</h3>
+    <div class="orderDetailList">
+        <div id="companyContainer1" class="operateStoreList tableListDiv" style="width: 98%;margin:auto;">
+            <p style="margin-bottom: 10px;">企业信息
+                <!--<button type="button" class="btn" style="margin-left: 5px;" ng-click="addCompanyInfoClick()">+添加</button>-->
+            </p>
+            <ul class="titles">
+                <li style="width: 25%">实际控制人</li>
+                <li style="width: 25%">店铺名</li>
+                <li style="width: 25%">企业名</li>
+                <li style="width: 25%">营业执照号</li>
+            </ul>
+            <ul>
+                <li style="width: 25%">{{storeBaseDto.realControllerName||'--'}}</li>
+                <li style="width: 25%">{{storeBaseDto.shopName||'--'}}</li>
+                <li style="width: 25%">{{storeBaseDto.companyName||'--'}}</li>
+                <li style="width: 25%">{{storeBaseDto.licenceNo||'--'}}</li>
+            </ul>
+            <ul ng-show="storeBaseDto==''||storeBaseDto==null||storeBaseDto==undefined">
+                <li style="width: 100%">暂无数据</li>
+            </ul>
+        </div>
+        <div id="companyContainer2" class="operateStoreList tableListDiv" style="width: 98%;margin:auto;">
+            <p style="margin-bottom: 10px;">股东信息</p>
+            <ul class="titles">
+                <li style="width: 25%">股东姓名</li>
+                <li style="width: 25%">股东电话</li>
+                <li style="width: 25%">股东身份证</li>
+                <li style="width: 25%">操作</li>
+            </ul>
+            <ul ng-repeat="channelsTypeDetail in channelsTypes" ng-init="outerIndex = $index+1" class="{{$index}} sectionNew">
+                <li style="width: 25%">
+                    <input  style="width: 99%;text-align: center" type="text" name="shareHolderName{{outerIndex}}" id="shareHolderName{{outerIndex}}" placeholder="请输入股东{{outerIndex}}姓名" ng-model="channelsTypeDetail.shareHolderName"/>
+                </li>
+                <li style="width: 25%">
+                    <input style="width: 99%;text-align: center" type="text" name="shareHolderPhone{{outerIndex}}" id="shareHolderPhone{{outerIndex}}" placeholder="请输入股东{{outerIndex}}电话" ng-model="channelsTypeDetail.shareHolderPhone"/>
+                </li>
+                <li style="width: 25%">
+                    <input style="width: 99%;text-align: center" type="text" name="shareHolderCardNo{{outerIndex}}" id="shareHolderCardNo{{outerIndex}}" placeholder="请输入股东{{outerIndex}}身份证" ng-model="channelsTypeDetail.shareHolderCardNo"/>
+
+                </li>
+                <li style="width: 25%">
+                    <a style="color: #71B9FE;font-size: 14px;text-decoration: none" href="javascript:void(0)" ng-click="delHouse(channelsTypeDetail,$index)">移除</a>
+                    <!--<a style="color: #71B9FE;font-size: 14px;text-decoration: none" href="javascript:void(0)" ng-click="delHouse(channelsTypeDetail,$index)">编辑</a>-->
+                </li>
+            </ul>
+            <ul ng-show="channelsTypes==''||channelsTypes==null||channelsTypes==undefined">
+                <li style="width: 100%">暂无数据</li>
+            </ul>
+            <ul>
+                <li style="width: 100%">
+                    <button type="button" class="btn" style="margin-left: 5px;" ng-click="addHouse()">+添加股东</button>
+                    <button type="button" class="btn" style="margin-left: 5px;" ng-click="addShareHolderSure()">提交</button>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!--企业 信息 end-->
+<!--上传报告列表 start-->
+<div  class="orderDetailList applyHistory">
+    <h3 style="padding: 5px 0px 0px 25px;">查看系统报告<button class="btn" style="margin-left:30px">上传报告</button><button class="btn" ng-click="automaticCredit()" style="margin-left:30px">查看授信报告</button></h3>
+    <table border="1" class="tableBorder">
+        <thead>
+        <tr >
+            <th>报告名</th>
+            <th>上传时间</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td></td>
+            <td></td>
+            <td><a href="javascript:void(0)" id="handle">下载</a></td>
+        </tr>
+        </tbody>
+    </table>
+    <!--上传报告列表 start-->
+</div>
+<!--隐私数据查询 start-->
+<div style="padding-top: 6px;" class="orderDetailList personInfo" id="privateData" name="privateData">
+
+    <h4 style="border: none;background: #fff;color: #333;font-size: 17px;/* padding: 1px; */text-indent: 9px;border-bottom: none;">
+        隐私数据
+        <a class="showDetail ng-binding" ng-click="onSecretListToggle()" href="javascript:void(0)">{{showTitleSecret}}</a>
+    </h4>
+
+    <p ng-show="isShowSecret" style="text-indent: 30px;font-size: 16px;">
+        <label>请选择设备名称:</label>
+        <span></span>
+        <select id="equipId" style="width: 200px; height: 35px; line-height: 35px;" ng-model="equipCode"
+                ng-options="equipmentList.outerId as equipmentList.name for equipmentList in equipData" name="">
+            <option value="">请选择设备名称</option>
+        </select>
+        <button style="margin-left: 40px;" class="btn" ng-click="dataChecked(equipCode)">查询</button>
+    </p>
+</div>
+
+<div ng-show="isShowSecret" style="padding: 10px;margin-top: -38px;" class="orderDetailList loanConditions">
+<style>
+    .page-list .pagination {
+        border-bottom: none !important;
+    }
+
+    .pagination > li {
+        width: auto !important;
+    }
+</style>
+<p style="height:20px;"></p>
+
+<div class="appCheatList" style="border-bottom: 1px solid #ccc; overflow:hidden; margin-bottom: 30px;">
+    <ul class="tabList">
+        <li class="activeApp" title="contactInfo" onclick="tabChangeInfo(this)">联系人信息</li>
+        <li title="record" onclick="tabChangeInfo(this)">通话记录</li>
+        <li title="msg" onclick="tabChangeInfo(this)">短信</li>
+        <li title="position" onclick="tabChangeInfo(this)">地理位置</li>
+        <li title="device" onclick="tabChangeInfo(this)">设备信息</li>
+
+    </ul>
+</div>
+<div id="Dtwrapper">
+<!--联系人信息 start-->
+<div style="max-height: 450px;overflow: auto;overflow-x: hidden; margin-bottom:30px;" id="contactInfo">
+    <div style="overflow:hidden;border: 1px solid rgb(234, 230, 230);width: 100%">
+        <h2 style="text-align: left;font-size: 14px;width: 100%;background-color: #e6e6e6;color: #ff6600; text-indent: 10px;margin:0;">
+            查询条件</h2>
+
+        <p style="padding-top: 15px; clear: both; margin-bottom: 15px;">
+            <label style="padding-left: 14px;">电话标签关键字：</label>
+            <input type="text" ng-model="priacyConpphoneLabelKey" style="width: 260px; margin-right: 20px;"
+                   placeholder="请输入电话标签关键字">
+            <button style="margin-left: 10px;background: none;color: #4da7fd;text-decoration: underline;border: 0;font-size: 16px;"
+                    ng-click="queryContactPhoneLabelKey()">检索标签关键字
+            </button>
+            <input style="margin-left: 14px;" type="checkbox" value="1" onclick="parciyphoneSelAll(this)"
+                   id="recordphoneKeyAllSelected">全部电话标签
+        </p>
+
+        <ol ng-repeat="queryPhone in querypriacyConKeyList">
+            <li><input type="checkbox" name="praicyphoneLabelKey" value="{{queryPhone.name}}">{{queryPhone.name}}
+            </li>
+        </ol>
+        <p style="clear: both;margin-right:50px;margin-bottom: 10px;"><label
+                style="padding-left: 14px;width: 131px;display: inline-block;">联系人姓名：</label><input
+                type="text" ng-model="contactPersonName" style="width: 260px; margin-right: 30px;"
+                placeholder="请输入联系人姓名">
+            <label>联系人号码：</label><input type="text" ng-model="contactPersonNumber" style="width: 260px;"
+                                        placeholder="请输入联系人号码">
+            <button style="margin-left: 30px;" class="btn" ng-click="queryContactInfo()">查询</button>
+        </p>
+    </div>
+    <table class="loanCondition alignPattern">
+        <tr>
+            <th>序号</th>
+            <!--<th>贷安啦用户名</th>-->
+            <th>联系人姓名</th>
+            <th>联系人号码</th>
+        </tr>
+        <tr ng-repeat="order in appcontractPeopleList | filter:contactKey">
+            <td class="firstTd">{{$index+1}}</td>
+            <!--<td>{{order.name}}</td>-->
+            <td>{{order.name}}</td>
+            <td>{{order.phone}}</td>
+        </tr>
+        <tfoot>
+        <tr>
+            <td style="text-align: center" colspan="4">
+                <tm-pagination conf="paginationConf"></tm-pagination>
+            </td>
+        </tr>
+        </tfoot>
+    </table>
+</div>
+<!--联系人信息 end-->
+<!--通话记录 start-->
+<div style=" max-height: 450px;overflow: auto;overflow-x: hidden;margin-bottom:30px; display: none;"
+     id="record">
+    <table class="loanCondition alignPattern">
+        <tr>
+            <th>序号</th>
+            <!--<th>贷安啦用户名</th>-->
+            <th>呼入/呼出</th>
+            <th>对方姓名</th>
+            <th>对方号码</th>
+            <th>呼入/呼出时间</th>
+        </tr>
+
+        <tr ng-repeat="order in appuserCallRecordList">
+            <td class="firstTd">{{$index+1}}</td>
+            <!--<td>{{order.phone}}</td>-->
+            <td>{{order.type}}</td>
+            <td>{{order.name}}</td>
+            <td>{{order.phone}}</td>
+            <td>{{order.recordCreateTime| date: 'yyyy-MM-dd HH:mm:ss' ||'-'}}</td>
+
+        </tr>
+        <tfoot>
+        <tr>
+            <td style="text-align: center" colspan="6">
+                <tm-pagination conf="paginationConf1"></tm-pagination>
+            </td>
+        </tr>
+        </tfoot>
+    </table>
+</div>
+<!--通话记录 end-->
+<!--短信 start-->
+<div style="max-height: 530px;overflow: auto;overflow-x: hidden;margin-bottom:30px; display: none;"
+     id="msg">
+    <div style="overflow:hidden;border: 1px solid rgb(234, 230, 230);width: 100%" id="keyWordsquery">
+        <h2 style="text-align: left;font-size: 14px;width: 100%;background-color: #e6e6e6;color: #ff6600; text-indent: 10px;margin:0;">
+            查询条件</h2>
+
+        <p style="margin-top: 16px;"><label style="padding-left: 14px;">内容关键字：</label><input
+                style="margin-left: 14px;" type="checkbox" value="1" onclick="selAll(this)"
+                id="allSelected">全部</p>
+        <ol ng-repeat="orderDetail in orderList">
+            <li><input type="checkbox" name="che" value="{{orderDetail.keyWork}}">{{orderDetail.keyWork}}
+            </li>
+        </ol>
+        <p style="padding-top: 15px;clear: both; margin-bottom: 15px;">
+            <label style="padding-left: 14px;">电话标签关键字：</label>
+            <input type="text" ng-model="phoneLabelKey" style="width: 260px; margin-right: 30px;"
+                   placeholder="请输入电话标签关键字">
+            <button style="margin-left: 10px;background: none;color: #4da7fd;text-decoration: underline;border: 0;font-size: 16px;"
+                    ng-click="queryPhoneLabelKey()">检索标签关键字
+            </button>
+            <input style="margin-left: 14px;" type="checkbox" value="1" onclick="phoneSelAll(this)"
+                   id="phoneKeyAllSelected">全部电话标签
+        </p>
+
+        <ol ng-repeat="queryPhone in queryPhoneLabelKeyList">
+            <li><input type="checkbox" name="phoneLabelKey" value="{{queryPhone.name}}">{{queryPhone.name}}
+            </li>
+        </ol>
+        <p style="clear: both;padding-left:14px;margin-bottom: 10px;"><label
+                style="width: 117px;display: inline-block;">短信号码：</label><input type="text"
+                                                                                ng-model="msgPhone"
+                                                                                style="width: 260px; margin-right: 30px;"
+                                                                                placeholder="请输入短信号码">
+
+            <button style="margin-left: 17px;" class="btn" ng-click="queryMessageRecordInfo()">查询</button>
+        </p>
+
+    </div>
+    <table class="loanCondition alignPattern">
+        <tr>
+            <th>序号</th>
+            <!--<th>贷安啦用户名</th>-->
+            <th>短信号码</th>
+            <th>短信内容</th>
+            <th>短信接收/发送时间</th>
+            <th>短信状态</th>
+        </tr>
+        <tr ng-repeat="order in appuserMessageRecordList | filter:text">
+            <td class="firstTd">{{$index+1}}</td>
+            <!--<td>{{order.userPhone}}</td>-->
+            <td>{{order.oppositePhone}}</td>
+            <td style="max-width: 500px;">{{order.content}}</td>
+            <td>{{order.smsCreateTime| date: 'yyyy-MM-dd HH:mm:ss' }}</td>
+            <td>{{order.type}}</td>
+        </tr>
+        <tfoot>
+        <tr>
+            <td style="text-align: center" colspan="6">
+                <tm-pagination conf="paginationConf2"></tm-pagination>
+            </td>
+        </tr>
+        </tfoot>
+    </table>
+</div>
+<!--短信 end-->
+<!--地理位置 start-->
+<div style=" margin-bottom:30px;display: none" id="position">
+    <table class="loanCondition alignPattern">
+        <tr>
+            <th>序号</th>
+            <!--<th>手机联系人姓名</th>-->
+            <!--<th>手机联系人电话</th>-->
+            <!--<th>邮编</th>-->
+            <th>联系人经度</th>
+            <th>联系人纬度</th>
+            <th>联系人轨迹地址</th>
+        </tr>
+        <tr ng-repeat="order in appLocationList">
+            <td class="firstTd">{{$index+1}}</td>
+            <!--<td>{{order.name}}</td>-->
+            <!--<td>{{order.phone}}</td>-->
+            <!--<td>{{order.zipCode}}</td>-->
+            <td>{{order.location[0]}}</td>
+            <td>{{order.location[1]}}</td>
+            <td>{{order.detail}}</td>
+        </tr>
+        <tfoot>
+        <tr>
+            <td style="text-align: center" colspan="7">
+                <tm-pagination conf="paginationConf3"></tm-pagination>
+            </td>
+        </tr>
+        </tfoot>
+    </table>
+</div>
+<!--地理位置 end-->
+<!--设备信息 start-->
+<div style=" margin-bottom:30px;display: none" id="device">
+    <table class="loanCondition alignPattern">
+        <tr>
+
+            <th>序号</th>
+            <th>用户ID号</th>
+            <th>标识</th>
+            <th>设备身份码</th>
+            <th>手机卡识别码</th>
+            <th>手机卡识别码2</th>
+            <th>网卡标识</th>
+            <th>WIFI 集标识</th>
+            <th>IP地址</th>
+            <th>厂商</th>
+            <th>机型</th>
+            <th>系统版本</th>
+            <th>来源资源</th>
+        </tr>
+        <tr ng-repeat="order in appDeviceList">
+            <td class="firstTd">{{$index+1}}</td>
+            <td>{{order.userId}}</td>
+            <td>{{order.outerId}}</td>
+            <td>{{order.imei}}</td>
+            <td>{{order.imsione}}</td>
+            <td>{{order.imsitwo}}</td>
+            <td>{{order.mac}}</td>
+            <td>{{order.ssid}}</td>
+            <td>{{order.ip}}</td>
+            <td>{{order.manufacturer}}</td>
+            <td>{{order.models}}</td>
+            <td>{{order.systemVersionCode}}</td>
+            <td>{{order.resource}}</td>
+        </tr>
+        <tfoot>
+        <tr>
+            <td style="text-align: center" colspan="13">
+                <tm-pagination conf="paginationConf8"></tm-pagination>
+            </td>
+        </tr>
+        </tfoot>
+    </table>
+</div>
+<!--设备信息 end-->
+</div>
+</div>
+<!--隐私数据 end-->
+<!--添加共同借款人 start-->
+<!--<div  class="orderDetailList applyHistory">-->
+<!--<h3 style="padding: 5px 5px 0px 25px;">共同借款人<button class="btn" style="margin-left: 30px" onClick="popupDiv('commonLoaner')">添加</button></h3>-->
+<!--<table border="1" class="tableBorder">-->
+<!--<thead >-->
+<!--<tr >-->
+<!--<th>共同借款人</th>-->
+<!--<th>手机号</th>-->
+<!--<th>身份证号</th>-->
+<!--<th>操作</th>-->
+<!--</tr>-->
+<!--</thead>-->
+<!--<tbody>-->
+<!--<tr>-->
+<!--<td></td>-->
+<!--<td></td>-->
+<!--<td></td>-->
+<!--<td><a href="javascript:void(0)" id="handle">删除</a></td>-->
+<!--</tr>-->
+<!--</tbody>-->
+<!--</table>    -->
+<!--</div>-->
+<!--共同借款人弹框 start-->
+<div class="ImportantNote commonLoaner" >
+    <div class="headline">
+        <span>添加共同借款人</span>
+    </div>
+    <div class="businessAuth">
+        <ul>
+            <li>
+                <label>
+                    姓名:
+                    <input type="text" placeholder="请输入姓名">
+                </label>
+                <label>
+                    手机号码:
+                    <input type="text" placeholder="请输入手机号码">
+                </label>
+                <label>
+                    身份证号:
+                    <input type="text" placeholder="请输入身份证号">
+                </label>
+            </li>
+        </ul>
+        <div class="submitBtn1" style="text-align: right;">
+            <input type="button" value="确定" class="btn" ng-click="statisticDistrubuteOrder()">
+            <input type="button" value="取消" style="background: #4da7fd" class="btn" onClick="hideDiv('commonLoaner')">
+        </div>
+    </div>
+</div>
+<!--共同借款人弹框 end-->
+<!--添加备注 start-->
+<div class="orderDetailList ">
+    <h3 style="margin-bottom: 20px;">添加备注 <button  onClick="popupDiv('NoteDiv')" class="btn" style="margin-left: 30px">添加</button> </h3>
+    <!--<p style="background-color: #e7ecf2;font-size: 16px;text-indent: 20px; color:#4da7fd;">总备注</p>-->
+    <div class="remarkDiv">
+        <table class="tableBorder">
+            <thead>
+            <tr>
+                <th>时间</th>
+                <th>部门</th>
+                <th>姓名</th>
+                <th>备注类型</th>
+                <th>报单结果</th>
+                <th>备注</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="RemarkList in RemarkLists">
+                <td>xx</td>
+                <td>xx</td>
+                <td>xx</td>
+                <td>xx</td>
+                <td>xx</td>
+                <td>xxx</td>
+            <tr ng-show="RemarkLists==''||RemarkLists==null||RemarkLists==undefined">
+                <td colspan="6" style="text-align: center">暂无备注信息！</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<!--添加备注弹出框 start-->
+<div style="min-width: 400px" class="ImportantNote NoteDiv">
+    <div class="headline">
+        <span>添加备注</span>
+        <img style="left: 94%;" onClick="hideDiv('NoteDiv')" class="companyCloseImg" src="image/comm/diffClosed.png" width="22" height="22">
+    </div>
+    <div style="padding: 30px 50px;" class="businessAuth">
+        <div class="imgDiv">
+            <textarea id="operAdvice" ng-model="operAdvice" placeholder="请输入备注内容"></textarea>
+        </div>
+        <div class="submitBtn1" style="text-align: center;margin-top: 25px;">
+            <button ng-click="addRemark()" class="btn">确定</button>
+            <button type="button" class="btn" style="background: #ccc;" onClick="hideDiv('NoteDiv')">关闭</button>
+        </div>
+    </div>
+</div>
+<!--添加备注弹出框 end-->
+<!--添加备注 end-->
+<!--授信结果start-->
+<div  id="orderdetail_advice" class="orderDetailList" style="height: auto;">
+    <h3>授信结果</h3>
+    <div style="display: flex;flex-direction: row" class="result" >
+        <table  class="tableBorder">
+            <tbody>
+            <tr>
+                <td>反欺诈通过额度</td>
+                <td>经营贷初步额度</td>
+                <td>淘宝信用贷款可用额度</td>
+                <td>调整额度（根据淘宝贷款可用额度）</td>
+                <td>系统最终额度</td>
+                <td>期限</td>
+                <td>手续费率</td>
+            </tr>
+            <tr>
+                <td>{{credit.antiFraudLoanAmount||'--'}}元</td>
+                <td>{{credit.primaryLoanAmount||'--'}}元</td>
+                <td>{{credit.tbAvailableLoanAmount||'--'}}元</td>
+                <td>{{credit.adjustLoanAmount||'--'}}元</td>
+                <td>{{credit.finalLoanAmount||'--'}}元</td>
+                <td>{{credit.loanTerm||'--'}}月</td>
+                <td>{{credit.fee*100||'--'}}%</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<!--授信结果 start-->
+<!--处理意见 start-->
+<div  id="orderdetail_advice" class="orderDetailList" style="height: auto;">
+    <h3>处理意见</h3>
+    <div class="ProcessOpinion">
+        <!--<textarea style="width:40%; height: 290px;margin-left: 10px;" id="ProcessOpinion" ng-blur="saveData()" ng-model="ProcessOpinion" placeholder="请输入处理意见"></textarea>-->
+        <div style="width:99%;height: auto;background: #fff;border: 1px solid #e6e6e6;margin: auto;float: none;" class="FormDiv">
+            <p style="font-size: 14px;margin:20px 0 5px;">
+                <label style="height: 30px;line-height: 30px;margin: 0 0 0 26px;">
+                    <span style="">实际控制人: {{storeBaseDto.realControllerName||'--'}}</span>
+                </label>
+                <label style="height: 30px;line-height: 30px;margin: 0 0 0 26px;">
+                    <span style="">店铺: {{storeBaseDto.shopName||'--'}}</span>
+                </label>
+                <label style="height: 30px;line-height: 30px;margin: 0 0 0 26px;">
+                    <span style="">放款金额: {{credit.finalLoanAmount||'--'}}元</span>
+                </label>
+                <label style="height: 30px;line-height: 30px;margin: 0 0 0 26px;">
+                    <span style="">放款期限: {{credit.loanTerm||'--'}}月</span>
+                </label>
+                <label style="height: 30px;line-height: 30px;margin: 0 0 0 26px;">
+                    <span style="">利率: {{credit.fee*100||'--'}}%</span>
+                </label>
+                <label style="height: 35px;line-height: 35px;margin: 0 0 0 26px;" for="companyCode">
+                    <span style="margin-right: 5px;">企业中征码:</span>
+                    <input style="width: 160px;" name="companyCode" ng-model="companyCode" id="companyCode"  type="text" placeholder="请输入企业中征码"/>
+                </label>
+                <label style="height: 35px;line-height: 35px;margin: 0 0 0 26px;">
+                    <button ng-click="submitAndRemarkNew()" class="btn" id="handleOrder">提交</button>
+                </label>
+            </p>
+            <p style="margin: 20px 0;" class="align_center"></p>
+        </div>
+        <!--<p class="sendMessageP"><button class="sendMessage">发送短信</button></p>-->
+    </div>
+</div>
+<!--处理意见 end-->
+</div>
+<div class="ImportantNote transferInfo">
+    <div class="headline">
+        <span>重要提示</span>
+        <img onclick="hideDiv('transferInfo')" class="companyCloseImg" src="image/comm/diffClosed.png" width="22" height="22">
+    </div>
+    <div class="businessAuth">
+        <p><img src="image/comm/attentionPlease.png" alt="注意："/><span class="Message"></span></p>
+
+        <div class="submitBtn1" style="text-align: right;">
+            <button ng-click="goBack()" type="button" class="btn">返回上一页</button>
+        </div>
+    </div>
+</div>
+<!--转交信息 end-->
+<!--转交信息 start-->
+<div class="ImportantNote moneyLimited">
+    <div class="headline">
+        <span>重要提示</span>
+        <img  onclick="hideDiv('moneyLimited')" class="companyCloseImg" src="image/comm/diffClosed.png" width="22" height="22">
+    </div>
+    <div class="businessAuth">
+        <p><img src="image/comm/attentionPlease.png" alt="注意："/><span class="Message"></span></p>
+
+        <div class="submitBtn1" style="text-align: right;">
+            <input onclick="hideDiv('moneyLimited')" type="button" value="确定" class="btn">
+        </div>
+    </div>
+</div>
+<!--转交信息 end-->
+<!--基本信息失效 start-->
+<div class="ImportantNote baseInfoReset">
+    <div class="headline">
+        <span>重要提示</span>
+        <img onclick="hideDiv('baseInfoReset')" class="companyCloseImg" src="image/comm/diffClosed.png" width="22"
+             height="22">
+    </div>
+    <div class="businessAuth">
+        <p>
+            <img src="image/comm/attentionPlease.png" alt="注意："/>
+            <span class="Message">确定将 <span style="color: orange">{{userName}}</span> 的基本信息进行失效操作？</span>
+        </p>
+
+        <div class="submitBtn1" style="text-align: right;">
+            <input ng-click="baseInfoResetSure()" type="button" value="确定" class="btn">
+        </div>
+    </div>
+</div>
+<!--基本信息失效 end-->
+
+<!--淘宝认证失效 start-->
+<div class="ImportantNote taoBaoInfoReset">
+    <div class="headline">
+        <span>重要提示</span>
+        <img onclick="hideDiv('taoBaoInfoReset')" class="companyCloseImg" src="image/comm/diffClosed.png" width="22"
+             height="22">
+    </div>
+    <div class="businessAuth">
+        <p>
+            <img src="image/comm/attentionPlease.png" alt="注意："/>
+            <span class="Message">确定将 <span style="color: orange">{{userName}}</span> 的淘宝认证信息进行失效操作？</span>
+        </p>
+
+        <div class="submitBtn1" style="text-align: right;">
+            <input ng-click="taoBaoInfoResetSure()" type="button" value="确定" class="btn">
+        </div>
+    </div>
+</div>
+<!--淘宝认证失效 end-->
+
+<!--工资流水失效 start-->
+<div class="ImportantNote salaryRecordReset">
+    <div class="headline">
+        <span>重要提示</span>
+        <img onclick="hideDiv('salaryRecordReset')" class="companyCloseImg" src="image/comm/diffClosed.png" width="22"
+             height="22">
+    </div>
+    <div class="businessAuth">
+        <p>
+            <img src="image/comm/attentionPlease.png" alt="注意："/>
+            <span class="Message">确定将 <span style="color: orange">{{userName}}</span> 的工资流水信息进行失效操作？</span>
+        </p>
+
+        <div class="submitBtn1" style="text-align: right;">
+            <input ng-click="salaryRecordResetSure()" type="button" value="确定" class="btn">
+        </div>
+    </div>
+</div>
+<!--工资流水失效 end-->
+
+<!--人行征信失效 start-->
+<div class="ImportantNote pbcRecordReset">
+    <div class="headline">
+        <span>重要提示</span>
+        <img onclick="hideDiv('pbcRecordReset')" class="companyCloseImg" src="image/comm/diffClosed.png" width="22"
+             height="22">
+    </div>
+    <div class="businessAuth">
+        <p>
+            <img src="image/comm/attentionPlease.png" alt="注意："/>
+            <span class="Message">确定将 <span style="color: orange">{{userName}}</span> 的人行征信信息进行失效操作？</span>
+        </p>
+
+        <div class="submitBtn1" style="text-align: right;">
+            <input ng-click="pbcRecordResetSure()" type="button" value="确定" class="btn">
+        </div>
+    </div>
+</div>
+<!--人行征信失效 end-->
+
+<!--签约信息失效 start-->
+<div class="ImportantNote signRecordReset">
+    <div class="headline">
+        <span>重要提示</span>
+        <img onclick="hideDiv('signRecordReset')" class="companyCloseImg" src="image/comm/diffClosed.png" width="22"
+             height="22">
+    </div>
+    <div class="businessAuth">
+        <p>
+            <img src="image/comm/attentionPlease.png" alt="注意："/>
+            <span class="Message">确定将 <span style="color: orange">{{userName}}</span> 的签约认证进行失效操作？</span>
+        </p>
+
+        <div class="submitBtn1" style="text-align: right;">
+            <input ng-click="signRecordResetSure()" type="button" value="确定" class="btn">
+        </div>
+    </div>
+</div>
+<!--签约信息失效 end-->
+<!--保存成功start-->
+<div class="ImportantNote SaveSuccess">
+    <div class="headline">
+        <span>重要提示</span>
+        <img onclick="hideDiv('SaveSuccess')" class="companyCloseImg" src="image/comm/diffClosed.png" width="22"
+             height="22">
+    </div>
+    <div class="businessAuth">
+        <p><img src="image/comm/attentionPlease.png" alt="注意："/><span class="Message"></span></p>
+
+        <div class="submitBtn1" style="text-align: right;">
+            <input ng-click="reload()" onClick="hideDiv('SaveSuccess')" type="button" value="确定" class="btn">
+        </div>
+    </div>
+</div>
+<!--保存成功end-->
+<!--图片查看通用弹出框start-->
+<div style="min-width: 400px" class="ImportantNote imgShow">
+    <div class="headline">
+        <span>图片查看</span>
+        <img style="left: 95%;" onClick="hideDiv('imgShow')" class="companyCloseImg"
+             src="image/comm/diffClosed.png" width="22" height="22">
+    </div>
+    <div class="businessAuth">
+        <div class="imgDiv">
+            <a href="{{chooled}}" rel="{{chooled}}"><img class="artZoom" ng-show="chooled!=''" alt="请重填身份证照片"
+                                                         style="cursor: pointer;margin: 0" src="{{chooled}}"
+                                                         width="700"/></a>
+        </div>
+        <div class="submitBtn1" style="text-align: right;">
+            <input type="button" value="关闭" class="btnNoAct" onClick="hideDiv('imgShow')">
+        </div>
+    </div>
+</div>
+<!--图片查看通用弹出框start-->
+<!--重构失效 start-->
+<div class="ImportantNote resetFuc">
+    <div class="headline">
+        <span>重要提示</span>
+        <img onclick="hideDiv('resetFuc')" class="companyCloseImg" src="image/comm/diffClosed.png" width="22"
+             height="22">
+    </div>
+    <div class="businessAuth">
+        <p>
+            <img src="image/comm/attentionPlease.png" alt="注意："/>
+            <span class="Message"></span>
+        </p>
+
+        <div class="submitBtn1" style="text-align: right;">
+            <input ng-click="resetFucSure()" type="button" value="确定" class="btn">
+            <input onclick="hideDiv('resetFuc')" type="button" value="取消" class="btn">
+        </div>
+    </div>
+</div>
+<!--重构失效 end-->
+<!--查询中 end-->
+<div class="ImportantNote loading">
+    <div class="businessAuth">
+        <p><img src="image/comm/wait.gif" alt="查询中"/><span class="Message">正在刷新报告，请耐心等待......</span></p>
+    </div>
+</div>
+<!--查询中 end-->
+<!--添加共同借款人有企业 start-->
+<div style="min-width: 400px" class="ImportantNote addCommonLoader">
+    <div class="headline">
+        <a style="width: 100%;text-align: left; text-indent: 24px;" ng-class="{'activeLoader': activePerson  == true} "  href="javascript:void(0);" ng-click="addPerson()">添加共同借款人</a>
+        <!--<a ng-class="{'activeLoader': activeCompany == true} " href="javascript:void(0);" ng-click="addCompany()">企业</a>-->
+    </div>
+    <div style="padding: 30px 50px;height: 310px;" class="businessAuth">
+        <!--个人 start-->
+        <div ng-show="activePerson" class="imgDiv">
+            <!--<p><span style="width: 123px;text-align: right">上传人行征信：</span><label style="text-align: left" for="yes"><input id="yes1" type="checkbox" ng-model="needCredit"/>是</label></p>-->
+            <p><span style="width: 70px;text-align: right" >姓名：</span><input type="text" placeholder="请输入共同借款人姓名" ng-model="jointLoanUserName" id="firPersonN" style="width: 195px !important;"/></p>
+            <p><span style="width: 70px;text-align: right" >手机号码：</span><input type="text" placeholder="请输入共同借款人手机号码" ng-model="jointLoanPhone" id="jointLoanPhone" maxlength="12" style="width: 195px !important;"/></p>
+            <p><span style="width: 70px;text-align: right" >身份证号：</span><input type="text" placeholder="请输入共同借款人身份证号码" ng-model="jointLoanIDcard" id="jointLoanIDcard" maxlength="18" style="width: 195px !important;"/></p>
+            <div class="submitBtn1" style="text-align: center;margin-top: 25px;">
+                <button id="commonBtnStatus" ng-click="addCommonLoanerP()" class="btn store">保存</button>
+                <button type="button" class="btn" onclick="hideDiv('addCommonLoader')">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--添加共同借款人有企业 end-->
+<!--添加放款条件弹出框 start-->
+<div style="min-width: 400px" class="ImportantNote addConditions">
+    <div class="headline">
+        <span>添加放款条件资料</span>
+        <img style="left: 94%;" onClick="hideDiv('addConditions')" class="companyCloseImg" src="image/comm/diffClosed.png" width="22" height="22">
+    </div>
+    <div style="padding: 30px 50px;" class="businessAuth">
+        <div class="imgDiv">
+            <p><span>添加放款条件资料：</span>
+                <select name="selectedCommonCondId" id="selectedCommonCondId"  ng-model="selectedCommonCondId" ng-options="queryConNameDetail.id as queryConNameDetail.name for queryConNameDetail in queryConName">
+                    <option value="">请选择放款条件资料</option>
+                </select>
+            </p>
+            <textarea ng-model="remark" placeholder="请输入备注内容"></textarea>
+        </div>
+        <div class="submitBtn1" style="text-align: center;margin-top: 25px;">
+            <button ng-click="addLoanconditions()" class="btn">确定</button>
+            <button type="button" class="btn" onClick="hideDiv('addConditions')">关闭</button>
+        </div>
+    </div>
+</div>
+<!--添加放款条件弹出框 end-->
+
+<!--添加企业信息 addCompanyInfo start-->
+<!--<div style="min-width: 400px" class="ImportantNote addCompanyInfo">-->
+    <!--<div class="headline">-->
+        <!--<span>添加企业</span>-->
+        <!--<img style="left: 94%;" onClick="hideDiv('addCompanyInfo')" class="companyCloseImg" src="image/comm/diffClosed.png" width="22" height="22">-->
+    <!--</div>-->
+    <!--<div style="padding: 30px 50px;" class="businessAuth">-->
+        <!--<p style="margin-bottom: 20px;">-->
+            <!--<label style="width: 341px;display: inline-block;">-->
+                <!--<span style="width: 180px;text-align: right">实际控制人是否为股东:</span>-->
+                <!--<input ng-model="shPerson" type="radio" name="isSHPerson" value="1"/>是-->
+                <!--<input ng-model="shPerson" type="radio" name="isSHPerson" value="0"/>否-->
+            <!--</label>-->
+            <!--<label style="width: 337px;display: inline-block;">-->
+                <!--<span style="width: 180px;text-align: right">公司类型:</span>-->
+                <!--<input ng-model="companyType" type="radio" name="companyType" value="100000"/>个体工商户-->
+                <!--<input ng-model="companyType" type="radio" name="companyType" value="010100"/>企业-->
+            <!--</label>-->
+            <!--<label for="realControllerId" style="width:auto;margin-left: 0">-->
+                <!--<span style="width: 180px;text-align: right">选择实际控制人:</span>-->
+                <!--<select ng-change="realControllerChange(realControllerId)" name="realControllerId" id="realControllerId" ng-model="realControllerId" ng-options="RealController.userId as RealController.userName for RealController in RealControllers">-->
+                    <!--<option value="">请选择实际控制人</option>-->
+                <!--</select>-->
+            <!--</label>-->
+        <!--</p>-->
+        <!--<p>-->
+            <!--<label for="shopName" style="width:auto;margin-left: 0">-->
+                <!--<span style="width: 180px;text-align: right">选择店铺:</span>-->
+                <!--<select name="shopName" id="shopName" ng-model="shopName" ng-options="storeInfo.nickName as storeInfo.shopName for storeInfo in storeInfos">-->
+                    <!--<option value="">请选择店铺</option>-->
+                <!--</select>-->
+            <!--</label>-->
+            <!--<label for="companyName" style="width:auto;">-->
+                <!--<span style="width: 180px;text-align: right">公司名称:</span>-->
+                <!--<input ng-model="companyName" id="companyName" type="text" placeholder="请输入公司名称" />-->
+            <!--</label>-->
+            <!--<label for="licenceNo" style="width:auto;">-->
+                <!--<span style="width: 180px;text-align: right">营业执照号:</span>-->
+                <!--<input ng-model="licenceNo" id="licenceNo" type="text" placeholder="请输入营业执照号" />-->
+            <!--</label>-->
+        <!--</p>-->
+        <!--<p style="margin: 10px 0 10px;text-align: center;text-align: center"><a style="color: #71B9FE;font-size: 14px;text-decoration: none" ng-click="addHouse()" href="javascript:void(0)">+添加股东</a></p>-->
+        <!--<p ng-repeat="channelsTypeDetail in channelsTypes" style="margin-bottom: 20px;" ng-init="outerIndex = $index+1" class="{{$index}} sectionNew">-->
+            <!--<label>-->
+                <!--<span style="width: 180px;text-align: right">股东{{$index+1}}姓名:</span>-->
+                <!--<input type="text" name="shareHolderName{{outerIndex}}" id="shareHolderName{{outerIndex}}" placeholder="请输入股东姓名" ng-model="channelsTypeDetail.shareHolderName"/>-->
+            <!--</label>-->
+            <!--<label>-->
+                <!--<span style="width: 180px;text-align: right">股东{{$index+1}}电话:</span>-->
+                <!--<input type="text" name="shareHolderPhone{{outerIndex}}" id="shareHolderPhone{{outerIndex}}" placeholder="请输入股东电话" ng-model="channelsTypeDetail.shareHolderPhone"/>-->
+            <!--</label>-->
+            <!--<label>-->
+                <!--<span style="width: 180px;text-align: right">股东{{$index+1}}身份证:</span>-->
+                <!--<input type="text" name="shareHolderCardNo{{outerIndex}}" id="shareHolderCardNo{{outerIndex}}" placeholder="请输入股东身份证" ng-model="channelsTypeDetail.shareHolderCardNo"/>-->
+            <!--</label>-->
+            <!--<label>-->
+                <!--<a style="color: #71B9FE;font-size: 14px;text-decoration: none" href="javascript:void(0)" ng-click="delHouse(channelsTypeDetail,$index)">移除</a>-->
+            <!--</label>-->
+        <!--</p>-->
+        <!--<div class="submitBtn1" style="text-align: center;margin-top: 25px;">-->
+            <!--<button ng-click="addCompanySure()" class="btn">确定</button>-->
+            <!--<button type="button" class="btn" onClick="hideDiv('addCompanyInfo')">关闭</button>-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</div>-->
+<!--添加企业信息 end-->
+
+<!--单个删除弹出框start-->
+<div class="ImportantNote deleteCommonLoanContainer">
+    <div class="headline">
+        <span>删除{{titleName}}</span>
+        <img onClick="hideDiv('deleteCommonLoanContainer')" class="companyCloseImg" src="image/comm/diffClosed.png" width="22" height="22">
+    </div>
+    <div class="businessAuth">
+        <p>确定要删除 <span style="color: #ff0000;">{{CommonLoanName}}</span> 该{{titleName}}？</p>
+        <div class="submitBtn1" style="text-align: center;">
+            <input type="button" value="删除" style="" class="btn" ng-click="deleteCommonLoanSure()"/>
+            <input type="button" value="取消" class="btn" onClick="hideDiv('deleteCommonLoanContainer')">
+        </div>
+    </div>
+</div>
+
+<!--单个删除弹出框end-->
+<!--放款条件 文件列表 start-->
+<div class="ImportantNote fileList">
+    <div class="headline">
+        <span>文件列表</span>
+        <img onClick="hideDiv('fileList')" class="companyCloseImg" src="image/comm/diffClosed.png" width="22" height="22">
+    </div>
+    <div class="businessAuth">
+        <div style="overflow: auto;min-width: 400px;width: auto" class="tableDiv" id="disSaler1">
+            <table style="width: 100%;">
+                <thead>
+                <tr>
+                    <td>序号</td>
+                    <td>资料名称</td>
+                    <td>操作</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr id="memberChoose" ng-repeat="fileDetail in fileLists">
+                    <td>{{$index+1}}</td>
+                    <td>{{fileName}}</td>
+                    <td><a style="color: #4da7fd" href="{{fileDetail}}" target="_blank">下载</a></td>
+                </tr>
+                <tr ng-show="fileLists==''||fileLists==null||fileLists==undefined">
+                    <td style="text-align: center" colspan="3">暂无上传的文件！</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="submitBtn1" style="text-align: right;">
+            <input type="button" value="关闭" style="background: #4da7fd" class="btn" onClick="hideDiv('fileList')">
+        </div>
+    </div>
+</div>
+<!--放款条件 文件列表 end-->
+<!--转交弹出框 start-->
+<div class="ImportantNote transfer">
+    <div class="headline">
+        <span>请选择转交候选人</span>
+        <img onClick="hideDiv('transfer')" class="companyCloseImg" src="image/comm/diffClosed.png" width="22" height="22">
+    </div>
+    <div class="businessAuth">
+        <div class="tableDiv">
+            <table>
+                <thead>
+                <tr>
+                    <td>选择</td>
+                    <!--<td>电话号码</td>-->
+                    <td>待处理人</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr id="memberChoose1" ng-repeat="transfer in transfers">
+                    <td><input value="{{transfer.employeeCodes}}" ng-model="EmployeChoose" type="radio" name="person"/></td>
+                    <!--<td>{{transfer.phone}}</td>-->
+                    <td>{{transfer.employeeNames}}</td>
+                </tr>
+                <tr ng-show="transfers==''||transfers==undefined||transfers==null">
+                    <td colspan="3" style="text-align: center">未获取到数据</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="submitBtn1" style="text-align: center;">
+            <button type="button" ng-click="transferMember(transfer);" value="" class="btn">确定</button>
+            <button type="button" value="" class="btn" onClick="hideDiv('transfer')">取消</button>
+        </div>
+    </div>
+</div>
+<!--转交弹出框 end-->
+<script>
+    function tabChangeInfo(obj){
+        var names = $(obj).attr('title');
+        $("#"+names).css("display","block").siblings().css("display","none");
+        $(obj).addClass("activeApp").siblings().removeClass("activeApp");
+    }
+    function wholeDis(obj){
+        var cont = $(obj).attr("name");
+
+        $(obj).append("<span style='z-index:100000;position:absolute;top: 35px;left: 50%;display: inline-block;height: 1px;width: 18px;background-color:#FFFFFF;'></span><img style='position:absolute;top: 22px;left: 50%;' src='image/comm/arrow1.png' width='18' height='14;'/><div id='displayWholeInformation' style='position: absolute;border: 1px solid #ccc;border-radius:5px;background: #fff;z-index: 999;padding: 5px 10px;;top: 35px;left: 200px;width: 600px!important; height: auto!important;max-height: 500px;overflow: auto;overflow-x: hidden;'>" +
+                cont+"</div>");
+    }
+    function wholeHide(obj){
+        $(obj).find("div#displayWholeInformation").css("display","none");
+        $(obj).find("div#displayWholeInformation").prev().hide();
+
+    }
+
+    /*隐性负债验证优化start*/
+    function wholeDisDebt(obj){
+        var cont = $(obj).attr("name");
+        $(obj).append(" <img src='image/comm/diffClosed.png' onclick='wholeHideDebt(event,this)' style='cursor: pointer;display: inline-block;width: 18;height: 18px;position: absolute;z-index:1000;right: -45px;top: 40px;'/><div onclick='wholeNoDisDebt(event)' id='displayWholeInformation1' style='position: absolute;border: 1px solid #ccc;border-radius:5px;background: #fff;z-index: 999;padding: 10px 10px;top: 30px;left: 200px;width: 600px!important; height: auto!important;max-height: 500px;overflow: auto;overflow-x: hidden;border-top: 35px solid #e7ecf2;'>" +
+                cont+"<br /><button onclick='wholeHideDebt1(event,this)' style='cursor: pointer;outline:none;display: inline-block;margin-left: calc(50% - 25px);'class='btn'>关闭</button>   "+
+                "</div>");
+    }
+    function wholeNoDisDebt(event){
+        event.stopPropagation();
+    }
+    function wholeHideDebt(event,obj){
+        event.stopPropagation();
+        $(obj).next().hide();
+        $(obj).hide();
+    }
+    function wholeHideDebt1(event,obj){
+        event.stopPropagation();
+        $(obj).parent().hide();
+        $(obj).parent().prev().hide();
+    }
+    /*隐性负债验证优化end*/
+
+
+    function newLineBySign(msgs){
+
+        ss=$.trim(msgs);
+
+
+        if(ss.indexOf("\\n")>0) {
+            var result='';
+            result=ss.replace(/(\\n)/g,"$1\n");
+
+            result=result.replace(/(\\n)/g,"");
+            return result;
+        }else{
+            return ss;
+        }
+
+
+    }
+
+    /*锚点start*/
+    function clickNav(obj){
+        var $index = ''
+        $index = $(obj).index();
+        $('#clickNav ul li').eq($index).addClass('anchor').siblings().removeClass('anchor');
+        if($index==0){
+
+        }else if($index==1){
+            document.getElementById('applyHistory').scrollIntoView();
+
+        }else if($index==2){
+            document.getElementById('payWater').scrollIntoView();
+
+        }else if($index==3){
+
+            document.getElementById('operatorsReport').scrollIntoView();
+
+        }else if($index==4){
+
+            document.getElementById('operatorData').scrollIntoView();
+
+        }else if($index==5){
+
+            document.getElementById('againstReportCur').scrollIntoView();
+
+        }else if($index==6){
+
+            document.getElementById('privateData').scrollIntoView();
+
+        }else{
+            document.getElementById('applyHistory').scrollIntoView();
+        }
+    }
+    /*锚点end*/
+</script>

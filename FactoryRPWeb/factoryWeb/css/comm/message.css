@@ -1,0 +1,55 @@
+.sendMtitle{
+    border-bottom: 1px solid #ff6600;
+    line-height: 40px;
+    margin-top: 20px;
+}
+.sendMtitle span{
+    border-bottom: 2px solid #ff6600;
+    line-height: 40px;
+    display: inline-block;
+    width: 105px;
+    text-indent: 24px;
+    font-size: 15px;
+    color: #262834;
+}
+.sendWrap{
+    margin-top: 50px;
+    margin-left: 90px;
+}
+
+.sendWrap p label{
+    width: 150px;
+    display: inline-block;
+    margin-right: 10px;
+    text-align: right;
+}
+.sendWrap p textarea{
+    width:500px;
+    min-height: 150px;
+    border-radius: 5px;
+    border: 1px solid #cccccc;
+}
+.sendWrap p span{
+    color: #ff0000;
+}
+.sendWrap p input[type='button'],.sendWrap p button{
+    width: 104px;
+    height: 33px;
+    line-height: 33px;
+    background-color: #858fab;
+    color:#fff;
+    border-radius: 3px;
+    text-align: center;
+    margin-right: 15px;
+    border: none;
+    font-size: 14px;
+}
+.sendWrap p select{
+    height: 33px;
+    line-height: 33px;
+    border: 1px solid #ccc;
+    width: 182px;
+}
+.sendWrap p input[type='date']{
+    border: 1px solid #cccccc;
+}

@@ -1,0 +1,193 @@
+<div class="mainContain">
+
+    <!--查询div start-->
+    <div style="padding: 20px 0 0;" class="queryDiv" >
+        <!--报单待处理 start-->
+        <ul>
+            <li>
+                <label for="1"><span>菜单名称：</span>
+                    <input type="text" id="1" placeholder="请输入菜单名称" ng-model="QueryName"/>
+                </label>
+                <label>
+                    <button class="btn" ng-click="onQuery()">查询</button>
+                    <button style="margin-left: 10px;" class="btn" onclick="popupDiv('functionBalance')">新增菜单</button>
+                </label>
+            </li>
+            <!--<li>-->
+
+                <!--<p  class="searchBg1">-->
+                    <!--<button style="margin-left: 777px;" class="btn" onclick="popupDiv('functionBalance')"><span style="font-weight: 700; font-size: 18px; display: inline;" >+</span>新增功能</button>-->
+                <!--</p>-->
+                <!--<p  class="searchBg">-->
+                    <!--<input type="text" value="" ng-model="test"/>-->
+                    <!--<button  class="searchBtn" ng-click="onQuery()"></button>-->
+                <!--</p>-->
+            <!--</li>-->
+        </ul>
+        <!--报单待处理 end-->
+    </div>
+    <!--查询div end-->
+    <!--table start-->
+    <div class="tableListDiv data-container jurisdiction">
+        <table>
+            <thead>
+            <tr>
+                <th style="min-width: 30px;">编号</th>
+                <th>菜单名称</th>
+                <th>url地址</th>
+                <th>排序</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!--<tr>-->
+                <!--<td class="firstTd">01</td>-->
+                <!--<td>报单模块</td>-->
+                <!--<td><button class="editBtn" onclick="popupDiv('editfunctionBalance')">编辑</button><button class="deleteBtn" onclick="popupDiv('deleteFunction')"  >删除</button></td>-->
+                <!--<td>报单待处理、报单已完成、全部额度订单。。。。</td>-->
+
+            <!--</tr>-->
+            <tr ng-repeat="orderDetail in orderList | filter:test | orderBy:orderDetail.orderNumber">
+                <td class="firstTd">{{$index+1}}</td>
+                <td>{{orderDetail.name||'--'}}</td>
+                <td>{{orderDetail.url||'--'}}</td>
+                <td>{{orderDetail.orderNumber||'--'}}</td>
+                <td>
+                    <a href="javascript:void(0)" class="resBtn editBtn" ng-click="editfunctionBalance(orderDetail)">
+                        <img src="image/comm/resBtnEdit.png" alt="编辑"/>
+                        <b class="title">编辑</b>
+                    </a>
+                    <a href="javascript:void(0)" class="resBtn deleteBtn" ng-click="deletefunctionBalance(orderDetail)">
+                        <img src="image/comm/resBtnDelete.png" alt="删除"/>
+                        <b class="title">删除</b>
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+            <!--<tfoot>-->
+            <!--<tr>-->
+                <!--<td style="text-align: center" colspan="5"><tm-pagination conf="paginationConf"></tm-pagination></td>-->
+            <!--</tr>-->
+            <!--</tfoot>-->
+        </table>
+
+    </div>
+    <!--table end-->
+</div>
+
+<!--新增菜单弹出框start-->
+<div class="ImportantNote functionBalance">
+    <div class="headline">
+        <span>新增菜单</span>
+        <img onClick="hideDiv('functionBalance')" class="companyCloseImg" src="image/comm/diffClosed.png" width="22" height="22">
+    </div>
+    <div class="businessAuth">
+        <p style="margin-bottom: 20px;">
+            <label style="width:auto;">
+                <span style="width: 65px;text-align: right">名称:</span>
+                <input placeholder="请输入菜单名称" id="addName" ng-model="addName" style="margin-left: 10px;" type="text" value=""/>
+            </label>
+            <label  style="width:auto;">
+                <span style="width: 65px;text-align: right">排序:</span>
+                <input placeholder="输入序号越低，排序越高！" onkeyup="this.value=this.value.replace(/\D/g,'')" id="addSortValue" ng-model="addSortValue" style="margin-left: 10px;" type="text" value=""/>
+            </label>
+        </p>
+        <p style="margin-bottom: 20px;">
+            <label style="width:auto;">
+                <span style="width: 65px;text-align: right">父级:</span>
+                <select id="addParentsNode" style="margin-left: 10px;" ng-model="addParentsNode" ng-options="addParentsNode.id as addParentsNode.name for addParentsNode in orderList">
+                    <option value=''>请选择父级</option>
+                </select>
+            </label>
+            <label style="width:auto;">
+                <span style="width: 65px;text-align: right">url地址:</span>
+                <input placeholder="请输入url地址！" id="addUrl" ng-model="addUrl" style="margin-left: 10px;" type="text" value=""/>
+            </label>
+        </p>
+        <p style="margin-bottom: 20px;">
+            <label style="width:auto;">
+                <span style="width: 65px;text-align: right">菜单备注:</span>
+                <input placeholder="请输入菜单备注！" id="menuRemark" ng-model="menuRemark" style="width: 505px;margin-left: 10px;" type="text" value=""/>
+            </label>
+        </p>
+        <div class="submitBtn1" style="text-align: center;">
+            <input type="button" ng-click="addfunctionBalance()" value="保存" class="btn">
+            <input type="button" value="取消" class="btn" onClick="hideDiv('functionBalance')">
+        </div>
+    </div>
+</div>
+
+<!--新增菜单弹出框end-->
+<!--编辑菜单弹出框start-->
+<div class="ImportantNote editfunctionBalance">
+    <div class="headline">
+        <span>编辑菜单</span>
+        <img onClick="hideDiv('editfunctionBalance')" class="companyCloseImg" src="image/comm/diffClosed.png" width="22" height="22">
+    </div>
+    <div class="businessAuth">
+        <p style="margin-bottom: 20px;">
+            <label style="width:auto;">
+                <span style="width: 65px;text-align: right">名称:</span>
+                <input placeholder="请输入菜单名称" id="editName" ng-model="editName" style="margin-left: 10px;" type="text" value=""/>
+            </label>
+            <label  style="width:auto;">
+                <span style="width: 65px;text-align: right">排序:</span>
+                <input placeholder="输入序号越低，排序越高！" onkeyup="this.value=this.value.replace(/\D/g,'')" id="editSortValue" ng-model="editSortValue" style="margin-left: 10px;" type="text" value=""/>
+            </label>
+        </p>
+        <p style="margin-bottom: 20px;">
+            <label style="width:auto;">
+                <span style="width: 65px;text-align: right">父级:</span>
+                <select id="editParentsNode" style="margin-left: 10px;" ng-model="editParentsNode" ng-options="addParentsNode.id as addParentsNode.name for addParentsNode in orderList">
+                    <option value=''>请选择父级</option>
+                </select>
+            </label>
+            <label style="width:auto;">
+                <span style="width: 65px;text-align: right">url地址:</span>
+                <input placeholder="请输入url地址！" id="editUrl" ng-model="editUrl" style="margin-left: 10px;" type="text" value=""/>
+            </label>
+        </p>
+        <p style="margin-bottom: 20px;">
+            <label style="width:auto;">
+                <span style="width: 65px;text-align: right">菜单备注:</span>
+                <input placeholder="请输入菜单备注！" id="editMenuRemark" ng-model="editMenuRemark" style="width: 505px;margin-left: 10px;" type="text" value=""/>
+            </label>
+        </p>
+        <div class="submitBtn1" style="text-align: center;">
+            <input type="button" value="保存" class="btn" ng-click="updateSaveFunction()">
+            <input type="button" value="取消" class="btn" onClick="hideDiv('editfunctionBalance')">
+        </div>
+    </div>
+</div>
+
+<!--编辑菜单弹出框end-->
+<!--删除弹出框start-->
+<div class="ImportantNote deleteFunction">
+    <div class="headline">
+        <span>删除菜单</span>
+        <img onClick="hideDiv('deleteFunction')" class="companyCloseImg" src="image/comm/diffClosed.png" width="22" height="22">
+    </div>
+    <div class="businessAuth">
+        <p>确认删除 <span style="color: red">{{functionName}}</span> 此菜单？</p>
+        <div class="submitBtn1" style="text-align: center;">
+            <input type="button" value="保存" class="btn" ng-click="deleteFunction()"/>
+            <input type="button" value="取消" class="btn" onClick="hideDiv('deleteFunction')">
+        </div>
+    </div>
+</div>
+
+<!--删除弹出框end-->
+<!--保存成功start-->
+<div class="ImportantNote SaveSuccess">
+    <div class="headline">
+        <span>重要提示</span>
+        <img ng-click="reload()" onClick="hideDiv('SaveSuccess')" class="companyCloseImg" src="image/comm/diffClosed.png" width="22" height="22">
+    </div>
+    <div class="businessAuth">
+        <p><img src="image/comm/attentionPlease.png" alt="注意："/><span class="Message"></span></p>
+        <div class="submitBtn1" style="text-align: right;">
+            <input ng-click="reload()" onClick="hideDiv('SaveSuccess')" type="button" value="确定" class="btn">
+        </div>
+    </div>
+</div>
+<!--保存成功end-->

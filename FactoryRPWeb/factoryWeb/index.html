@@ -1,0 +1,119 @@
+<!DOCTYPE html >
+<html  ng-app="myApp">
+<body id="body" style="background-color:#1c77ac; background-image:url('images/light.png'); background-repeat:no-repeat; background-position:center top; overflow:hidden;">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>信息管理系统</title>
+<link href="css/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript">
+    document.write("<l" + "ink rel='stylesheet' type='text/css' href='css/style.css?"+  Math.random() + "'/>");
+    document.write("<l" + "ink rel='stylesheet' type='text/css' href='css/comm/style.css?"+  Math.random() + "'/>")
+    document.write("<l" + "ink rel='stylesheet' type='text/css' href='css/comm/common.css?"+  Math.random() + "'/>");
+</script>
+</head>
+
+<div ui-view></div>
+<script type="text/javascript" src="js/comm/jquery.min.js"></script>
+<script type="text/javascript" src="bower_components/angular/bootstrap.min.js"></script>
+
+<!--<script type="text/javascript" src="js/comm/jeDate-gh-pages/jedate/jedate.js"></script>-->
+<script type="text/javascript" src="js/comm/moment.min.js"></script>
+<script type="text/javascript" src="js/comm/daterangepicker.js"></script>
+<script type="text/javascript" src="bower_components/angular/angular.js"></script>
+<script type="text/javascript" src="bower_components/angular/angular-cookies.js"></script>
+<script type="text/javascript" src="bower_components/angular/angular-route.js"></script>
+<script type="text/javascript" src="bower_components/angular/angular-resource.js"></script>
+<script type="text/javascript" src="bower_components/angular/angular-ui-router.js"></script>
+<script type="text/javascript" src="bower_components/angular/angular-file-upload.js"></script>
+<script type="text/javascript" src="js/comm/ng-file-upload-shim.min.js"></script>
+<script type="text/javascript" src="bower_components/angular/angular-sanitize.min.js"></script>
+
+<script type="text/javascript" src="js/comm/UrlService.js"></script>
+<script type="text/javascript" src="js/comm/highcharts.js"></script>
+
+<script src="js/app.min.js"></script>
+<script type="text/javascript" src="js/comm/common.js"></script>
+<script type="text/javascript" src="bower_components/angular/controllers.js"></script>
+<script type="text/javascript" src="bower_components/angular/directives.js"></script>
+<script type="text/javascript" src="bower_components/angular/tm.pagination.js"></script>
+<!--引入 css js问件时加随机数   防止浏览器缓存start-->
+<script type="text/javascript">
+    document.write("<s" + "cript type='text/javascript' src='js/app.min.js?" + Math.random() + "'></s" + "cript>");
+    document.write("<s" + "cript type='text/javascript' src='js/comm/common.js?" + Math.random() + "'></s" + "cript>");
+    document.write("<s" + "cript type='text/javascript' src='js/comm/cloud.js?" + Math.random() + "'></s" + "cript>");
+    document.write("<s" + "cript type='text/javascript' src='bower_components/angular/controllers.js?" + Math.random() + "'></s" + "cript>");
+    document.write("<s" + "cript type='text/javascript' src='bower_components/angular/directives.js?" + Math.random() + "'></s" + "cript>");
+    document.write("<s" + "cript type='text/javascript' src='bower_components/angular/tm.pagination.js?" + Math.random() + "'></s" + "cript>");
+</script>
+<!--引入 css js问件时加随机数   防止浏览器缓存end-->
+<script src="app.js"></script>
+<!--<script src="js/home/HttpIntercepters.js"></script>-->
+<script src="js/comm/inderService.js"></script>
+<script type="text/javascript" src="js/home/AuthorizationService.js"></script>
+<script type="text/javascript" src="js/home/HomeController.js"></script>
+<script type="text/javascript" src="js/home/LoginController.js"></script>
+<script type="text/javascript" src="js/comm/base64.js"></script>
+<script type="text/javascript" src="js/comm/md5.js"></script>
+
+<!--权限管理 start-->
+<script type="text/javascript" src="js/daianla-authorizationM/authorizationApp.js"></script>
+<script type="text/javascript" src="js/daianla-authorizationM/userManagementService.js"></script>
+<script type="text/javascript" src="js/daianla-authorizationM/userManagementController.js"></script>
+<script type="text/javascript" src="js/daianla-authorizationM/roleManageService.js"></script>
+<script type="text/javascript" src="js/daianla-authorizationM/roleManageController.js"></script>
+<script type="text/javascript" src="js/daianla-authorizationM/functionManageController.js"></script>
+<script type="text/javascript" src="js/daianla-authorizationM/functionManageService.js"></script>
+<script type="text/javascript" src="js/daianla-authorizationM/departmentManageController.js"></script>
+<script type="text/javascript" src="js/daianla-authorizationM/departmentManageService.js"></script>
+<script type="text/javascript" src="js/daianla-authorizationM/areaManagelController.js"></script>
+<script type="text/javascript" src="js/daianla-authorizationM/areaManagelService.js"></script>
+<script type="text/javascript" src="js/daianla-authorizationM/appSetService.js"></script>
+<script type="text/javascript" src="js/daianla-authorizationM/appSetController.js"></script>
+<script type="text/javascript" src="js/daianla-authorizationM/teamManageController.js"></script>
+<script type="text/javascript" src="js/daianla-authorizationM/teamManageService.js"></script>
+<script type="text/javascript" src="js/daianla-authorizationM/repairOrderModelController.js"></script>
+<script type="text/javascript" src="js/daianla-authorizationM/repairOrderModelService.js"></script>
+<!--权限管理 end-->
+
+
+
+<!--消费贷 银行对接 start-->
+<script type="text/javascript" src="js/daianla-consumer-toBank/consumerToBankApp.js"></script>
+<script type="text/javascript" src="js/daianla-consumer-toBank/consumerToBankHadSubmitListController.js"></script>
+<script type="text/javascript" src="js/daianla-consumer-toBank/consumerToBankHadSubmitListService.js"></script>
+<script type="text/javascript" src="js/daianla-consumer-toBank/consumerToBankOrderDetailController.js"></script>
+<script type="text/javascript" src="js/daianla-consumer-toBank/consumerToBankOrderDetailService.js"></script>
+<script type="text/javascript" src="js/daianla-consumer-toBank/consumerToBankLoanOrderDetailController.js"></script>
+<script type="text/javascript" src="js/daianla-consumer-toBank/consumerToBankLoanOrderDetailService.js"></script>
+<script type="text/javascript" src="js/daianla-consumer-toBank/QueryConsumerToBankAllOrderController.js"></script>
+<script type="text/javascript" src="js/daianla-consumer-toBank/QueryConsumerToBankAllOrderService.js"></script>
+<script type="text/javascript" src="js/daianla-consumer-toBank/consumerHadSendToBankListController.js"></script>
+<script type="text/javascript" src="js/daianla-consumer-toBank/consumerHadSendToBankListService.js"></script>
+<script type="text/javascript" src="js/daianla-consumer-toBank/consumerNeedSendToBankListController.js"></script>
+<script type="text/javascript" src="js/daianla-consumer-toBank/consumerNeedSendToBankListService.js"></script>
+<script type="text/javascript" src="js/daianla-consumer-toBank/consumerNeedSendToBankLoanListController.js"></script>
+<script type="text/javascript" src="js/daianla-consumer-toBank/consumerNeedSendToBankLoanListService.js"></script>
+<script type="text/javascript" src="js/daianla-consumer-toBank/consumerSendFailToBankListController.js"></script>
+<script type="text/javascript" src="js/daianla-consumer-toBank/consumerSendFailToBankListService.js"></script>
+<script type="text/javascript" src="js/daianla-consumer-toBank/consumerYoungToBankListService.js"></script>
+<script type="text/javascript" src="js/daianla-consumer-toBank/consumerYoungToBankListController.js"></script>
+<script type="text/javascript" src="js/daianla-consumer-toBank/consumerPublicLoanController.js"></script>
+<script type="text/javascript" src="js/daianla-consumer-toBank/consumerPublicLoanService.js"></script>
+<script type="text/javascript" src="js/daianla-consumer-toBank/YouLaFastLoanOrderListController.js"></script>
+<script type="text/javascript" src="js/daianla-consumer-toBank/YouLaFastLoanOrderListService.js"></script>
+<script type="text/javascript" src="js/daianla-consumer-toBank/consumerNeedSendToCCBankListController.js"></script>
+<script type="text/javascript" src="js/daianla-consumer-toBank/consumerNeedSendToCCBankListService.js"></script>
+<script type="text/javascript" src="js/daianla-consumer-toBank/commitmentOrderController.js"></script>
+<script type="text/javascript" src="js/daianla-consumer-toBank/commitmentOrderService.js"></script>
+<script type="text/javascript" src="js/daianla-consumer-toBank/commitmentOrderDetailController.js"></script>
+<script type="text/javascript" src="js/daianla-consumer-toBank/commitmentOrderDetailService.js"></script>
+<!--消费贷 银行对接 end-->
+
+<!--参数设置 start-->
+<script type="text/javascript" src="js/factroy/factoryParameterSettingApp.js"></script>
+<script type="text/javascript" src="js/factroy/factoryParameterSettingController.js"></script>
+<script type="text/javascript" src="js/factroy/factoryParameterSettingService.js"></script>
+<script type="text/javascript" src="js/factroy/contactCompanySettingController.js"></script>
+<!--参数设置 end-->
+</body>
+</html>

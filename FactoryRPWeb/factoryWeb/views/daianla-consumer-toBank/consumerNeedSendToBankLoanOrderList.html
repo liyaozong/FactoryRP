@@ -1,0 +1,188 @@
+<div class="mainContain">
+    <!--查询div start-->
+    <div class="queryDiv">
+        <!--查询条件 start-->
+        <ul id="form_content">
+            <li>
+                <label for="cusName"><span>用户姓名：</span>
+                    <input id="cusName" ng-model="cusName" name="userName" type="text" placeholder="请输入用户姓名" >
+                </label>
+                <label>
+                    <span>用户电话：</span>
+                    <input type="text" placeholder="请输入用户电话" id="telephone" ng-model="telephone">
+                </label>
+                <label for="SendStartDate">
+                    <span style="width: 100px;">开始申请时间：</span>
+                    <input type="date" id="SendStartDate" placeholder="yyyy-MM-dd" min="20160601 | date:'yyyyMMdd" max="20201231 | date:'yyyyMMdd" required="" ng-model="SendStartDate">
+                </label>
+                <label for="SendEndDate">
+                    <span style="width: 100px;">结束申请时间：</span>
+                    <input type="date" id="SendEndDate" placeholder="yyyy-MM-dd" min="20160601 | date:'yyyyMMdd" max="20201231 | date:'yyyyMMdd" required="" ng-model="SendEndDate">
+                </label>
+            </li>
+            <li>
+                <label for="idCard">
+                    <span>身份证号码：</span>
+                    <input type="text" placeholder="请输入用户身份证号码" id="idCard" ng-model="idCard">
+                </label>
+                <label for="productName">
+                    <span>订单类型：</span>
+                    <select id="productName" ng-model="productName">
+                        <option value="">选择产品名称</option>
+                        <option value="1">经营贷</option>
+                        <option value="2">消费贷</option>
+                    </select>
+                </label>
+            </li>
+            <!--<div ng-show="moreInformation">-->
+                <!--<li>-->
+                    <!--<label>-->
+                        <!--<span>批量电话：</span>-->
+                        <!--<textarea class="batchPhone" id="userPhones" ng-model="userPhones" placeholder="请输入客户电话，多个号码查询请用'任意字符'隔开" ></textarea>-->
+                    <!--</label>-->
+                <!--</li>-->
+            <!--</div>-->
+            <div style="display:flex;">
+                <button id="clear_btn" style="margin: 10px 0 0 27px;background: #4da7fd" class="btn" ng-click="clearSearch()">清空</button>
+                <button id="search_btn" style="margin:10px 0 0 30px;" class="btn" ng-click="onQuery()">查询</button>
+                <!--<li class="moreChoose"  ng-click="morePack()"  ng-class="{true: 'open', false: ''}[isActive]">更多选项<i></i></li>-->
+            </div>
+        </ul>
+        <!--查询条件 end-->
+    </div>
+    <!--查询div end-->
+    <!--table start-->
+    <div class="tableListDiv data-container">
+        <table>
+            <thead id="apply_infos_header">
+            <tr>
+                <th><input type="checkbox" value="1" onclick="selAll(this)" id="allSelected"/>全部</th>
+                <th>申请用户</th>
+                <th>用户电话</th>
+                <th>身份证号</th>
+                <th>申请时间</th>
+                <th>创建时间</th>
+                <th>用户状态</th>
+                <!--<th>风控经理</th>-->
+                <!--<th class="belong_manager">归属经理</th>-->
+                <th>金额（万元）</th>
+                <th>订单类型</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody id="apply_infos_table">
+            <tr data-appid = "{{orderListDetail.id}}" ng-class="{'':dataNeedSendToBank=='','bg-gray':orderListDetail.id == dataNeedSendToBank}" ng-repeat="orderListDetail in orderList1" onmouseover="changeColorHad(this)" onmouseout="changeColorHide(this)">
+                <td class="firstTd">{{$index+1}}<input style="margin-left: 5px;" type="checkbox" name="che"  value="{{orderListDetail.id}}"/></td>
+                <td>{{orderListDetail.customerName||'--'}}</td>
+                <td>{{orderListDetail.mobileTelephone||'--'}}</td>
+                <td>{{orderListDetail.certNum||'--'}}</td>
+                <td>{{orderListDetail.applDate||'--'}}</td>
+                <td>{{orderListDetail.createDate||'--'}}</td>
+                <td>
+                    <span ng-show="orderListDetail.status==0">待推送</span>
+                    <span ng-show="orderListDetail.status==1">已推送</span>
+                    <span ng-show="orderListDetail.status==null||orderListDetail.status==''||orderListDetail.status==undefined">--</span>
+                </td>
+                <td>{{(orderListDetail.applysum/1000000).toFixed(2)||'--'}}</td>
+                <td>
+                    <span ng-show="orderListDetail.type==1">经营贷</span>
+                    <span ng-show="orderListDetail.type==2">消费贷</span>
+                    <span ng-show="orderListDetail.type==''||orderListDetail.type==null||orderListDetail.type==undefined">--</span>
+                </td>
+                <td><a ng-click="onhandle($event,orderListDetail)" href="javascript:void(0)" id="handle">处理</a></td>
+            </tr>
+            <tr>
+                <td><a ng-click="statisticWholePop()" href="javascript:void(0)">统一分配</a></td>
+                <td colspan="11"></td>
+            </tr>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td style="text-align: center" colspan="12"><tm-pagination conf="paginationConf"></tm-pagination></td>
+            </tr>
+            </tfoot>
+        </table>
+
+    </div>
+    <!--table end-->
+</div>
+<!--选择备注红旗 start-->
+<div class="ImportantNote redFlag">
+    <p><input   type="radio" name="flag" ng-value="0" ng-model="editMarkValue" ng-click="onFlagSelected(0)"/><span class="greyN flagWhole"></span>
+        <input  type="radio" name="flag"  ng-value="1" ng-model="editMarkValue" ng-click="onFlagSelected(1)"/><span class="redN flagWhole"></span>
+        <input  type="radio" name="flag"  ng-value="2" ng-model="editMarkValue" ng-click="onFlagSelected(2)"/><span class="orangeN flagWhole"></span>
+        <input  type="radio" name="flag" ng-value="3" ng-model="editMarkValue" ng-click="onFlagSelected(3)"/><span class="yellowN flagWhole"></span>
+        <input  type="radio" name="flag" ng-value="4" ng-model="editMarkValue" ng-click="onFlagSelected(4)" /><span class="greenN flagWhole"></span>
+        <input  type="radio" name="flag" ng-value="5" ng-model="editMarkValue" ng-click="onFlagSelected(5)" /><span class="qinN flagWhole"></span>
+        <input  type="radio" name="flag" ng-value="6" ng-model="editMarkValue" ng-click="onFlagSelected(6)" /><span class="blueN flagWhole"></span>
+        <input  type="radio" name="flag" ng-value="7" ng-model="editMarkValue" ng-click="onFlagSelected(7)" /><span class="purpleN flagWhole"></span>
+
+    </p>
+    <p><textarea style="color: #4d4d4d;" ng-model="editMarkContent"></textarea></p>
+    <div class="submitBtn1 remark" style="text-align: center;">
+        <input style="margin-right:13px;" type="button" value="保存" class="btn" ng-click="onBzContent()">
+        <input type="button" value="取消" class="btnNoAct" onClick="hideDiv('redFlag')">
+    </div>
+</div>
+<!--选择备注红旗 end-->
+<!--保存成功start-->
+<div class="ImportantNote SaveSuccess">
+    <div class="headline">
+        <span>重要提示</span>
+        <img onClick="hideDiv('SaveSuccess')" class="companyCloseImg" src="image/comm/diffClosed.png" width="22"
+             height="22">
+    </div>
+    <div class="businessAuth">
+        <p><img src="image/comm/attentionPlease.png" alt="注意："/><span class="Message"></span></p>
+
+        <div class="submitBtn1" style="text-align: right;">
+            <input ng-click="reload()" onClick="hideDiv('SaveSuccess')" type="button" value="确定" class="btn">
+        </div>
+    </div>
+</div>
+<!--保存成功end-->
+<!--统一分配 start-->
+<div class="ImportantNote statisticWhole">
+    <div class="headline">
+        <span>请选择分配人</span>
+        <img onClick="hideDiv('statisticWhole')" class="companyCloseImg" src="image/comm/diffClosed.png" width="22" height="22">
+    </div>
+    <div class="businessAuth">
+        <div class="tableDiv" id="disSaler1">
+            <table>
+                <thead>
+                <tr>
+                    <td>选择</td>
+                    <td>电话号码</td>
+                    <td>待处理人</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr id="memberChoose" ng-repeat="transfer in transfers">
+                    <td><input value="{{transfer.id}}" ng-model="EmployeChoose" type="radio" name="person"/></td>
+                    <td>{{transfer.phone}}</td>
+                    <td>{{transfer.name}}</td>
+                </tr>
+                <tr ng-show="transfers==''||transfers==undefined||transfers==null">
+                    <td colspan="2" style="text-align: center">未获取到数据</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="submitBtn1" style="text-align: right;">
+            <input type="button" value="确定" class="btn" ng-click="statisticDistrubuteOrder()">
+            <input type="button" value="取消" style="background: #4da7fd" class="btn" onClick="hideDiv('statisticWhole')">
+        </div>
+    </div>
+</div>
+<!--统一分配 end-->
+<!--查询中 end-->
+<script type="text/javascript">
+     function changeColorHad(obj){
+        $(obj).addClass('bgg-gray');
+        window.localStorage.setItem('style', JSON.stringify({background: '#ccc'}))
+    }
+     function changeColorHide(obj){
+		 $(obj).removeClass('bgg-gray');
+     }
+</script>

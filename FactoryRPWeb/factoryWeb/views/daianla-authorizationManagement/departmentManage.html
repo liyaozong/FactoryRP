@@ -1,0 +1,266 @@
+<style>
+    .tableListDiv ul li{
+        width: 19%;
+        height: 30px;
+        line-height: 30px;
+        float: left;
+        text-align: center;
+        border-left: 1px solid #e6e6e6;
+        border-bottom: 1px solid #e6e6e6;
+        background: #fff;
+    }
+    .tableListDiv ul{
+        display: block;
+        min-height: 30px;
+        height: auto;
+        background: #f6f6f6;
+    }
+    .tableListDiv .subContainer li{
+        background: #b5e0e4;
+    }
+    .tableListDiv .ul:hover{
+        background: #f6f6f6;
+    }
+    .tableListDiv .tableUl{
+        width: 100%;
+        border-top:1px solid #e6e6e6 ;
+        border-right:1px solid #e6e6e6 ;
+        background: #f6f6f6;
+    }
+    .tableListDiv .tableUl li{
+        width: 19%;
+        height: 30px;
+        line-height: 30px;
+        float: left;
+        text-align: center;
+        border-left: 1px solid #e6e6e6;
+        border-bottom: 1px solid #e6e6e6;
+        background: #f6f6f6;
+    }
+</style>
+<div class="mainContain">
+
+    <!--查询div start-->
+    <div style="padding: 20px 0 0;" class="queryDiv">
+        <!--报单待处理 start-->
+        <ul>
+            <li>
+                <label for="depName"><span>部门名称：</span>
+                    <input type="text" id="depName" placeholder="请输入部门名称" ng-model="depName"/>
+                </label>
+                <label>
+                    <button class="btn" ng-click="onQuery()">查询</button>
+                    <button style="margin-left: 10px;" class="btn" ng-click="addSamDepartment()">添加部门</button>
+                    <!--<button style="margin-left: 10px;" class="btn" ng-click="addDepartment()">添加下级</button>-->
+                </label>
+            </li>
+            <!--<li>-->
+                <!--<p  class="searchBg1">-->
+                    <!--<button style="margin-left: 777px;" class="btn" ng-click="addDepartment()"><span style="font-weight: 700; font-size: 18px; display: inline;" >+</span>新增部门</button>-->
+                <!--</p>-->
+                <!--<p  class="searchBg">-->
+                    <!--<input ng-model="test" type="text" value=""/>-->
+                    <!--<button  class="searchBtn" ></button>-->
+                <!--</p>-->
+            <!--</li>-->
+        </ul>
+        <!--报单待处理 end-->
+    </div>
+    <!--查询div end-->
+    <!--table start-->
+    <div class="tableListDiv data-container jurisdiction">
+        <ul class="tableUl">
+            <li>编号</li>
+            <li>部门名称</li>
+            <li>部门编码</li>
+            <li>创建时间</li>
+            <li>操作</li>
+        </ul>
+        <ul ng-show="order.parentId=='-1'" ng-repeat="order in orderList">
+            <li>
+                <a ng-click="showSub(order,$event)" style="font-size: 21px" href="javascript:void (0)">+</a>
+                {{$index+1}}
+                <input data-id="{{order}}" name="mainId" ng-model="mainId" type="radio" value="{{order.parentId}}"/>
+            </li>
+            <li>{{order.name||'--'}}</li>
+            <li>{{order.code||'--'}}</li>
+            <li>{{order.createTime||'--'}}</li>
+            <li>
+                <a href="javascript:void(0)" class="resBtn editBtn" ng-click="updateDepartMent(order)">
+                    <img src="image/comm/resBtnEdit.png" alt="编辑"/>
+                    <b class="title">编辑</b>
+                </a>
+                <a href="javascript:void(0)" class="resBtn deleteBtn" ng-click="deleteDepart(order)">
+                    <img src="image/comm/resBtnDelete.png" alt="删除"/>
+                    <b class="title">删除</b>
+                </a>
+            </li>
+            <div class="hide subContainer">
+                <ul ng-repeat="subDetail in subList">
+                    <li>
+                        <a ng-click="showSub(subDetail,$event)" style="font-size: 21px" href="javascript:void (0)">+</a>
+                        {{$index+1}}
+                        <input data-id="{{subDetail}}" name="mainId" ng-model="mainId" type="radio" value="{{subDetail.parentId}}"/>
+                    </li>
+                    <li>{{subDetail.name||'--'}}</li>
+                    <li>{{subDetail.code||'--'}}</li>
+                    <li>{{subDetail.createTime||'--'}}</li>
+                    <li>
+                        <a href="javascript:void(0)" class="resBtn editBtn" ng-click="updateDepartMent(subDetail)">
+                            <img src="image/comm/resBtnEdit.png" alt="编辑"/>
+                            <b class="title">编辑</b>
+                        </a>
+                        <a href="javascript:void(0)" class="resBtn deleteBtn" ng-click="deleteDepart(subDetail)">
+                            <img src="image/comm/resBtnDelete.png" alt="删除"/>
+                            <b class="title">删除</b>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </ul>
+
+        <table style="display: none">
+            <thead>
+            <tr>
+                <th style="min-width: 30px;">编号</th>
+                <th>部门名称</th>
+                <th>部门编码</th>
+                <th>创建时间</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-show="order.parentId=='-1'" ng-repeat="order in orderList">
+                <td class="firstTd">
+                    <a ng-click="showSub(order)" style="font-size: 21px" href="javascript:void (0)">+</a>
+                    {{$index+1}}
+                    <input name="mainId" ng-model="mainId" type="radio" value="{{order}}"/>
+                </td>
+                <td>{{order.name||'--'}}</td>
+                <td>{{order.code||'--'}}</td>
+                <td>{{order.createTime||'--'}}</td>
+                <td>
+                    <a href="javascript:void(0)" class="resBtn editBtn" ng-click="updateDepartMent(order)">
+                        <img src="image/comm/resBtnEdit.png" alt="编辑"/>
+                        <b class="title">编辑</b>
+                    </a>
+                    <a href="javascript:void(0)" class="resBtn deleteBtn" ng-click="deleteDepart(order)">
+                        <img src="image/comm/resBtnDelete.png" alt="删除"/>
+                        <b class="title">删除</b>
+                    </a>
+                </td>
+            </tr>
+            <tr ng-show="orderList==''||orderList==null||orderList==undefined">
+                <td colspan="5">暂未添加任何部门信息</td>
+            </tr>
+            </tbody>
+            <!--<tfoot>-->
+            <!--<tr>-->
+                <!--<td style="text-align: center" colspan="11"><tm-pagination conf="paginationConf"></tm-pagination></td>-->
+            <!--</tr>-->
+            <!--</tfoot>-->
+        </table>
+
+    </div>
+    <!--table end-->
+</div>
+
+<!--新增部门弹出框start-->
+<div class="ImportantNote departSamMentBalance">
+    <div class="headline">
+        <span>新增同级部门</span>
+        <img onClick="hideDiv('departSamMentBalance')" class="companyCloseImg" src="image/comm/diffClosed.png" width="22" height="22">
+    </div>
+    <div class="businessAuth">
+        <p style="margin-bottom: 10px">
+            <label style="text-align: right;font-size: 14px;margin-right: 5px;">上级部门:</label><select style="width: 200px;" id="NewSamDepartmentParent" ng-model="NewSamDepartmentParent" ng-options="NewDepartmentParent.id as NewDepartmentParent.name for NewDepartmentParent in orderList">
+                <option value="">请选择上级部门</option>
+            </select>
+        </p>
+        <p style="margin-bottom: 10px"><label style="text-align: right;font-size: 14px;margin-right: 5px;">部门名称:</label><input placeholder="请输入部门名称" ng-model="NewSamDeptName" id="NewSamDeptName" type="text" value="" style="width: 200px;"/></p>
+        <p><label style="text-align: right;font-size: 14px;margin-right: 5px;">部门编码:</label><input placeholder="请输入部门编码" ng-model="NewSamDeptCode" id="NewSamDeptCode" type="text" value="" style="width: 200px;"/></p>
+        <div class="submitBtn1" style="text-align: center;">
+            <input type="button" ng-click="addSamDepartMentSure()" value="保存" class="btn">
+            <input type="button" value="取消" class="btn" onClick="hideDiv('departSamMentBalance')">
+        </div>
+    </div>
+</div>
+<!--新增部门弹出框end-->
+<!--新增部门弹出框start-->
+<div class="ImportantNote departMentBalance">
+    <div class="headline">
+        <span>新增下级部门</span>
+        <img onClick="hideDiv('departMentBalance')" class="companyCloseImg" src="image/comm/diffClosed.png" width="22" height="22">
+    </div>
+    <div class="businessAuth">
+        <p style="margin-bottom: 10px">
+            <label style="text-align: right;font-size: 14px;margin-right: 5px;">上级部门:</label><select id="NewDepartmentParent" ng-model="NewDepartmentParent" ng-options="NewDepartmentParent.id as NewDepartmentParent.name for NewDepartmentParent in orderList">
+                <option value="">请选择上级部门</option>
+            </select>
+        </p>
+        <p style="margin-bottom: 10px"><label style="text-align: right;font-size: 14px;margin-right: 5px;">部门名称:</label><input placeholder="请输入部门名称" ng-model="NewDeptName" id="NewDeptName" type="text" value="" style="width: 200px;"/></p>
+        <p><label style="text-align: right;font-size: 14px;margin-right: 5px;">部门编码:</label><input placeholder="请输入部门编码" ng-model="NewDeptCode" id="NewDeptCode" type="text" value="" style="width: 200px;"/></p>
+        <div class="submitBtn1" style="text-align: center;">
+            <input type="button" ng-click="addDepartMent()" value="保存" class="btn">
+            <input type="button" value="取消" class="btn" onClick="hideDiv('departMentBalance')">
+        </div>
+    </div>
+</div>
+
+<!--新增部门弹出框end-->
+
+<!--编辑部门弹出框 start-->
+<div class="ImportantNote editdepartMentBalance">
+    <div class="headline">
+        <span>编辑部门</span>
+        <img onClick="hideDiv('editdepartMentBalance')" class="companyCloseImg" src="image/comm/diffClosed.png" width="22" height="22">
+    </div>
+    <div class="businessAuth">
+        <p style="margin-bottom: 10px">
+            <label style="text-align: right;font-size: 14px;margin-right: 5px;">上级部门:</label><select id="editDepartmentParent" ng-model="editDepartmentParent" ng-options="NewDepartmentParent.id as NewDepartmentParent.name for NewDepartmentParent in orderList">
+            <option value="">请选择上级部门</option>
+        </select>
+        </p>
+        <p style="margin-bottom: 10px">
+            <label style="text-align: right;font-size: 14px;margin-right: 5px;">部门名称:</label><input placeholder="请输入部门名称" ng-model="editNewSamDeptName" id="editNewSamDeptName" type="text" value="" style="width: 200px;"/>
+        </p>
+        <p style="margin-bottom: 10px">
+            <label style="text-align: right;font-size: 14px;margin-right: 5px;">部门编号:</label><input placeholder="请输入部门编号" ng-model="editNewSamDeptCode" id="editNewSamDeptCode" type="text" value="" style="width: 200px;"/>
+        </p>
+        <div class="submitBtn1" style="text-align: center;">
+            <input type="button" ng-click="departmentParentSubmit()" value="保存" class="btn">
+            <input type="button" value="取消" class="btn" onClick="hideDiv('editdepartMentBalance')">
+        </div>
+    </div>
+</div>
+<!--编辑部门弹出框 end-->
+<!--删除弹出框start-->
+<div class="ImportantNote deletedepart">
+    <div class="headline">
+        <span>删除部门</span>
+        <img onClick="hideDiv('deletedepart')" class="companyCloseImg" src="image/comm/diffClosed.png" width="22" height="22">
+    </div>
+    <div class="businessAuth">
+        <p>确认删除 <span style="color: red;">{{depNameNow}}</span> 此部门？</p>
+        <div class="submitBtn1" style="text-align: center;">
+            <input type="button" ng-click="deleteDeptNow()" value="保存" class="btn">
+            <input type="button" value="取消" class="btn" onClick="hideDiv('deletedepart')">
+        </div>
+    </div>
+</div>
+
+<!--删除弹出框end-->
+<!--保存成功start-->
+<div class="ImportantNote SaveSuccess">
+    <div class="headline">
+        <span>重要提示</span>
+        <img ng-click="reload()" onClick="hideDiv('SaveSuccess')" class="companyCloseImg" src="image/comm/diffClosed.png" width="22" height="22">
+    </div>
+    <div class="businessAuth">
+        <p><img src="image/comm/attentionPlease.png" alt="注意："/><span class="Message"></span></p>
+        <div class="submitBtn1" style="text-align: right;">
+            <input ng-click="reload()" onClick="hideDiv('SaveSuccess')" type="button" value="确定" class="btn">
+        </div>
+    </div>
+</div>
+<!--保存成功end-->
