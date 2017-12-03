@@ -87,6 +87,21 @@ public class UserAuthService {
         return authorizationService.queryUserByNameAndCorporateIdentify(username,corporateIdentify);
     }
 
+    /**
+     * 根据request获取当前登录人的姓名
+     * @param request
+     * @return
+     */
+    public String getCurrentUserName(HttpServletRequest request){
+        String token = request.getHeader("token");
+        String authedUserStr = stringRedisTemplate.opsForValue().get(authCachePrefix + token);
 
+        AuthUser authUser = JSON.parseObject(authedUserStr, AuthUser.class);
+
+        if(!CheckParam.isNull(authUser)){
+            return authUser.getUserName();
+        }
+        return "王浩";
+    }
 
 }
