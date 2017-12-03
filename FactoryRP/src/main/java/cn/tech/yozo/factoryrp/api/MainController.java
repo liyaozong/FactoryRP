@@ -17,7 +17,7 @@ import java.util.List;
  * main控制器
  */
 @RestController
-@RequestMapping(value = "api/main")
+@RequestMapping(value = "/main")
 @Api(description = "main控制器(系统说明)")
 public class MainController extends BaseController{
 

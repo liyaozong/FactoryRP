@@ -1,31 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="tech.yozo.factory">
+          package="tech.yozo.factoryrp">
 
     <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
-        android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
-        android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity
-            android:name=".LoginActivity"
+            android:allowBackup="true"
+            android:icon="@mipmap/ic_launcher"
             android:label="@string/app_name"
-            android:theme="@style/NoTitleFullscreen">
+            android:roundIcon="@mipmap/ic_launcher_round"
+            android:supportsRtl="true"
+            android:theme="@style/AppTheme">
+        <activity
+                android:name=".ui.LoginActivity"
+                android:label="@string/app_name"
+                android:theme="@style/NoTitleFullscreen">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
-            android:label="@string/title_activity_main" />
-        <activity android:name=".CaptureActivity">
-
+                android:name=".ui.MainActivity"
+                android:label="@string/manufacturer"/>
+        <activity
+                android:name=".scan.CaptureActivity"
+                android:label="@string/title_scan_device"
+                android:screenOrientation="portrait">
+        </activity>
+        <activity
+                android:name=".ui.DeviceDetailActivity"
+                android:label="@string/title_device_info">
+        </activity>
+        <activity
+                android:name=".ui.RepairDetailActivity"
+                android:label="@string/title_device_repair_record">
+        </activity>
+        <activity
+                android:name=".ui.RepairRecordListActivity"
+                android:label="@string/title_repair_order">
+        </activity>
+        <activity
+                android:name=".ui.PartsDetailActivity"
+                android:label="@string/title_parts_info">
+        </activity>
+        <activity
+                android:name=".ui.DeviceAddActivity"
+                android:label="@string/action_add_device">
+        </activity>
+        <activity
+                android:name=".ui.ReportFaultActivity"
+                android:label="@string/action_ask_repair">
         </activity>
     </application>
 

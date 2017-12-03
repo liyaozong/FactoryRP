@@ -54,11 +54,21 @@ public class Role extends BaseEntity implements Serializable {
     private List<User> userList;
 
 
-    @JoinTable(name="system_permission_role",
+   /* @JoinTable(name="system_permission_role",
             joinColumns={@JoinColumn(name="role_id", referencedColumnName="id")},
             inverseJoinColumns={@JoinColumn(name="permission_id", referencedColumnName="id")})
-    @ManyToMany
-    private List<Permission> permissionList;
+    @ManyToMany system_menu_role
+    private List<Permission> permissionList;*/
+
+
+    /**
+     * 系统角色菜单关联
+     */
+    @JoinTable(name="system_menu_role",
+            joinColumns={@JoinColumn(name="role_id", referencedColumnName="id")},
+            inverseJoinColumns={@JoinColumn(name="menu_id", referencedColumnName="id")})
+    @ManyToMany(cascade = { CascadeType.PERSIST }, targetEntity = Menu.class, fetch = FetchType.EAGER)
+    private List<Menu> menuList;
 
     public String getRoleCode() {
         return roleCode;
@@ -100,11 +110,19 @@ public class Role extends BaseEntity implements Serializable {
         this.userList = userList;
     }
 
-    public List<Permission> getPermissionList() {
+    public List<Menu> getMenuList() {
+        return menuList;
+    }
+
+    public void setMenuList(List<Menu> menuList) {
+        this.menuList = menuList;
+    }
+
+/* public List<Permission> getPermissionList() {
         return permissionList;
     }
 
     public void setPermissionList(List<Permission> permissionList) {
         this.permissionList = permissionList;
-    }
+    }*/
 }

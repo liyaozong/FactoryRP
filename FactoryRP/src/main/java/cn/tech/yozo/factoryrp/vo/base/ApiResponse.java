@@ -2,6 +2,7 @@ package cn.tech.yozo.factoryrp.vo.base;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 
 import java.io.Serializable;
 
@@ -11,6 +12,7 @@ import java.io.Serializable;
  * @description
  */
 @ApiModel
+@Data
 public class ApiResponse<E> implements Serializable{
 
     private static final long serialVersionUID = -8099598967725340002L;
@@ -33,14 +35,6 @@ public class ApiResponse<E> implements Serializable{
     @ApiModelProperty(value = "错误原因",required = true,notes = "错误原因",example = "登陆成功")
     private String errorMessage;
 
-
-    /**
-     *请求时间
-     */
-    /*@ApiModelProperty(value = "请求时间",required = true,notes = "请求时间",example = "yyyy-MM-dd HH:mm:ss格式，如2017-11-17 00:15:12")
-    private String requestTime;*/
-
-
     /**
      * 接口返回时间
      */
@@ -59,54 +53,6 @@ public class ApiResponse<E> implements Serializable{
         this.requestSeqNo = requestSeqNo;
         this.errorCode = errorCode;
         this.errorMessage = errorMessage;
-        this.data = data;
-    }
-
-    public String getRequestSeqNo() {
-        return requestSeqNo;
-    }
-
-    public void setRequestSeqNo(String requestSeqNo) {
-        this.requestSeqNo = requestSeqNo;
-    }
-
-    public String getErrorCode() {
-        return errorCode;
-    }
-
-    public void setErrorCode(String errorCode) {
-        this.errorCode = errorCode;
-    }
-
-    public String getErrorMessage() {
-        return errorMessage;
-    }
-
-    public void setErrorMessage(String errorMessage) {
-        this.errorMessage = errorMessage;
-    }
-
-    public String getResponseTime() {
-        return responseTime;
-    }
-
-    public void setResponseTime(String responseTime) {
-        this.responseTime = responseTime;
-    }
-
-   /* public String getRequestTime() {
-        return requestTime;
-    }
-
-    public void setRequestTime(String requestTime) {
-        this.requestTime = requestTime;
-    }*/
-
-    public E getData() {
-        return data;
-    }
-
-    public void setData(E data) {
         this.data = data;
     }
 }

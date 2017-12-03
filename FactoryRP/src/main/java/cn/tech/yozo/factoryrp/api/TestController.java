@@ -22,7 +22,7 @@ import java.util.List;
  * 测试前端控制器
  */
 @RestController
-@RequestMapping(value = "api/test")
+@RequestMapping(value = "/test")
 @Api(description = "测试接口名称")
 public class TestController  extends BaseController{
 
@@ -58,7 +58,7 @@ public class TestController  extends BaseController{
 
 
         logger.info("用户姓名123");
-        return apiResponse(testVo,testVo);
+        return apiResponse(testVo);
     }
 
    /* @ApiOperation(value = "测试API接口",notes = "测试API",httpMethod = "POST")

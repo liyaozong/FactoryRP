@@ -23,13 +23,6 @@ public class PermissionRole extends BaseEntity implements Serializable {
     private static final long serialVersionUID = -299645908618274956L;
 
     /**
-     * 企业标识
-     */
-    @Column(name = "corporate_identify")
-    private Long corporateIdentify;
-
-
-    /**
      * 角色标识
      */
     @Column(name = "role_id")
@@ -48,14 +41,6 @@ public class PermissionRole extends BaseEntity implements Serializable {
     @Column(name = "remark",length = 50)
     private String remark;
 
-
-    public Long getCorporateIdentify() {
-        return corporateIdentify;
-    }
-
-    public void setCorporateIdentify(Long corporateIdentify) {
-        this.corporateIdentify = corporateIdentify;
-    }
 
     public Long getRoleId() {
         return roleId;

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" android:orientation="vertical">
+
+    <TextView
+            android:text="TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/tv_device_name"
+            android:textSize="20sp" android:textColor="@color/colorHighlight" android:layout_margin="4dp"/>
+    <TextView
+            android:text="TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/tv_device_code" android:layout_weight="1"
+            android:textSize="16sp" android:layout_marginLeft="4dp" android:layout_marginRight="4dp"
+            android:layout_alignBaseline="@+id/textView21" android:layout_alignBottom="@+id/textView21"
+            android:layout_toEndOf="@+id/textView21"/>
+    <TextView
+            android:text="TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/tv_device_type" android:layout_weight="1"
+            android:textSize="16sp" android:layout_marginLeft="4dp" android:layout_marginRight="4dp"
+            android:layout_alignBaseline="@+id/textView23" android:layout_alignBottom="@+id/textView23"
+            android:layout_toEndOf="@+id/textView23"/>
+    <TextView
+            android:text="TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/tv_device_dept" android:layout_weight="1"
+            android:textSize="16sp" android:layout_marginLeft="4dp" android:layout_marginRight="4dp"
+            android:layout_alignBaseline="@+id/textView30" android:layout_alignBottom="@+id/textView30"
+            android:layout_toEndOf="@+id/textView30"/>
+    <TextView
+            android:text="TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/tv_device_place" android:layout_weight="1"
+            android:textSize="16sp" android:layout_marginLeft="4dp" android:layout_marginRight="4dp"
+            android:layout_alignBaseline="@+id/textView31" android:layout_alignBottom="@+id/textView31"
+            android:layout_toEndOf="@+id/textView31"/>
+    <TextView
+            android:text="设备编号："
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:layout_below="@+id/tv_device_name"
+            android:layout_alignStart="@+id/tv_device_name" android:layout_marginTop="4dp"
+            android:id="@+id/textView21" android:textSize="16sp"/>
+    <TextView
+            android:text="规格型号："
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:layout_below="@+id/textView21"
+            android:layout_alignStart="@+id/textView21" android:layout_marginTop="4dp" android:id="@+id/textView23"
+            android:textSize="16sp"/>
+    <TextView
+            android:text="使用部门："
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:layout_below="@+id/textView23"
+            android:layout_alignStart="@+id/textView23" android:layout_marginTop="4dp" android:id="@+id/textView30"
+            android:textSize="16sp"/>
+    <TextView
+            android:text="安装地点："
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:layout_below="@+id/textView30"
+            android:layout_alignStart="@+id/textView30" android:layout_marginTop="4dp" android:id="@+id/textView31"
+            android:textSize="16sp" android:layout_marginBottom="4dp"/>
+</RelativeLayout>

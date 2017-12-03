@@ -236,13 +236,13 @@
                     <mainClass>cn.tech.yozo.factoryrp.WebApplication</mainClass>
                 </configuration>
             </plugin>
-            <plugin>
+   <!--         <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <configuration>
                     <appendAssemblyId>true</appendAssemblyId>
                     <finalName>${project.artifactId}-${project.build.version}</finalName>
                     <descriptors>
-                        <!--打包描述文件的位置-->
+                        &lt;!&ndash;打包描述文件的位置&ndash;&gt;
                         <descriptor>assembly/package.xml</descriptor>
                     </descriptors>
                 </configuration>
@@ -256,7 +256,7 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
+            </plugin>-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>

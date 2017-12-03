@@ -20,4 +20,20 @@ public interface CorporateRepository extends BaseRepository<Corporate,Long>{
     Corporate findByCorporateName(String corporateName);
 
 
+    /**
+     * 根据企业唯一标识进行查询
+     * @param corporateIdentify
+     * @return
+     */
+    Corporate findByCorporateIdentify(Long corporateIdentify);
+
+
+    /**
+     * 根据企业标识和企业名称进行查找
+     * @param corporateName
+     * @param corporateIdentify
+     * @return
+     */
+    Corporate findByCorporateNameAndCorporateIdentify(String corporateName,Long corporateIdentify);
+
 }

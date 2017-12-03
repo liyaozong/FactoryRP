@@ -75,7 +75,7 @@ public class EncryptUtils {
      * 生成盐
      * @return
      */
-    private static String generateSalt(){
+    public static String generateSalt(){
         Random r = new Random();
         StringBuilder sb = new StringBuilder(16);
         sb.append(r.nextInt(99999999)).append(r.nextInt(99999999));
@@ -122,9 +122,21 @@ public class EncryptUtils {
         return md5Hex(password + salt).equals(new String(cs1));
     }
 
+
+    /**
+     * 验证密码
+     * @param password 加盐后的密码
+     * @param encryptedPassword 需要被验证的密码和盐生成的密码
+     * @return
+     */
+    public static boolean verifyPassword(String password,String encryptedPassword){
+        return password.equals(encryptedPassword);
+    }
+
     public static void main(String[] args) {
-        String sault = generateSalt();
+        String sault = "6375026571448750";
         String md5ed = generate("123",sault);
+        System.out.println("md5Hex:"+md5Hex("123"));
         System.out.println(md5ed);
         System.out.println(sault);
         System.out.println(verify("123",md5ed));
