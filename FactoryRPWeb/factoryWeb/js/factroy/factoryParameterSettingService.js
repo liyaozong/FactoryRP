@@ -1,16 +1,16 @@
 factoryParameterSettingApp.factory('factoryParameterSettingService', function($resource, $log, UrlService) {
     var allOrderList=[];
     var curHandleOrder = {};
-
+    //分页查询往来单位列表
     var queryOrder = function(queryParam, successFunc){
         console.log(queryParam);
-        var OrderQuery = $resource(UrlService.getUrl('withdrawService') + 'order/listOrderForAudit');
+        var OrderQuery = $resource(UrlService.getUrl('factoryServe') + 'contactCompany/list');
         OrderQuery.save(queryParam, function(data){
             allOrderList.length = 0;
 //            console.log(data);
 //            console.log(queryParam);
-            if(data.status==0&&data.obj.totalCount>=1){
-                data.obj.dataItem.forEach(function(item) {
+            if(data.errorCode=='000000'&&data.data.totalCount>=1){
+                data.data.list.forEach(function(item) {
                     allOrderList.push(item);
                 });
             }
@@ -20,10 +20,11 @@ factoryParameterSettingApp.factory('factoryParameterSettingService', function($r
 
         });
     };
-    /*从总配置中查询优啦产品信息和渠道产品信息 start withdrawBaseService*/
-    var _queryListProduct = function(params, successFunc){
-        var listProduct = $resource(UrlService.getUrl('withdrawBaseService') + 'config/listProduct');
-        listProduct.get(params,function (data) {
+
+   /*新增或修改往来单位 start*/
+    var _saveContactCompany = function(Param,successFunc){
+        var saveContactCompanys = $resource(UrlService.getUrl('factoryServe') + 'contactCompany/save');
+        saveContactCompanys.save(Param,function (data) {
             if (successFunc) {
                 successFunc(data);
             }
@@ -31,11 +32,12 @@ factoryParameterSettingApp.factory('factoryParameterSettingService', function($r
 
         });
     };
-    /*从总配置中查询优啦产品信息和渠道产品信息 end withdrawBaseService*/
-    /* 查询订单列表状态 start*/
-    var _queryListOrderStatus = function(params, successFunc){
-        var listOrderStatus = $resource(UrlService.getUrl('withdrawService') + 'order/listOrderStatus');
-        listOrderStatus.get(params,function (data) {
+    /*新增或修改往来单位 end*/
+
+    /*删除往来单位 start*/
+    var _deleteContactCompany = function(Param,successFunc){
+        var deleteContactCompany = $resource(UrlService.getUrl('factoryServe') + 'contactCompany/deleteContactCompany');
+        deleteContactCompany.get(Param,function (data) {
             if (successFunc) {
                 successFunc(data);
             }
@@ -43,105 +45,50 @@ factoryParameterSettingApp.factory('factoryParameterSettingService', function($r
 
         });
     };
-    /* 查询订单列表状态 end*/
-    /************备注红旗定义 start********/
-    var _queryFlagBz = function(params, successFunc){
-        var queryFlagBz = $resource(UrlService.getUrl('withdrawService') + 'order/updateMark');
-        queryFlagBz.save(params,  function (data) {
-            if (successFunc) {
-                successFunc(data);
-            }
-        }, function (err) {
-            if (failFunc) {
-                failFunc(err);
-            }
-        });
-    };
-    /**********备注红旗定义 end*********/
-    /*根据登录人 查询角色 start*/
-//    var _queryEmployees = function(needAll, successFunc, failFunc){
-//        var Employees = $resource(UrlService.getUrl('consumerNormal') + 'loan/findOperatorList');
-////        var Employees = $resource('http://192.168.6.34:8085/consumption-audit-web/web/loan/findOperatorList');
-//
-//        return Employees.get({'needAll':0}, function(data){
-//            if(successFunc){
-//                successFunc(data);
-//            }
-//        }, function(err){
-//            if(failFunc){
-//                failFunc(err);
-//            }
-//        });
-//    };
-    /*根据登录人 查询角色 end*/
-    /*********转交列表查询 start*******/
-    var _deliverList= function(type,successFunc, failFunc){
-        var deliverList = $resource(UrlService.getUrl('xfdbaodan') + 'organizationList/queryAllUser');
-        return deliverList.get({"type":true},function(data){
-            if(successFunc){
-                successFunc(data);
-            }
-        }, function(err){
-            if(failFunc){
-                failFunc(err);
-            }
-        });
-    };
-    /*********转交列表查询 end*******/
-    /*根据登录人 查询部门 start*/
-//    var _queryDepName = function(queryParam, successFunc, failFunc){
-//        var DepNames = $resource(UrlService.getUrl('LoanUser') + 'employee/queryEmployees');
-////        var Employees = $resource('http://192.168.6.34:8085/consumption-audit-web/web/loan/findOperatorList');
-//
-//        return DepNames.get(queryParam, function(data){
-//            if(successFunc){
-//                successFunc(data);
-//            }
-//        }, function(err){
-//            if(failFunc){
-//                failFunc(err);
-//            }
-//        });
-//    };
-    /*根据登录人 查询部门 end*/
-    /************产品列表 start********/
-    var _productList = function(successFunc){
-        var productList = $resource(UrlService.getUrl('xfdbaodan') + 'product/queryAll');
-        productList.get(function (data) {
-            if (successFunc) {
-                successFunc(data);
-            }
-        }, function (err) {
-            if (failFunc) {
-                failFunc(err);
-            }
-        });
-    };
-    /**********产品列表 end*********/
-    /************认证项列表 start********/
-    var _queryAuthConfig = function(successFunc){
-        var AuthConfig = $resource(UrlService.getUrl('xfdbaodan') + 'loanAuthConfigController/queryLoanAuthConfig');
-        AuthConfig.get(function (data) {
-            if (successFunc) {
-                successFunc(data);
-            }
-        }, function (err) {
-            if (failFunc) {
-                failFunc(err);
-            }
-        });
-    };
-    /**********认证项列表 end*********/
+    /*删除往来单位 end*/
 
+    /*添加维修工段/班组列表 start*/
+    var _addRepairGroup = function(Param,successFunc){
+        var addRepairGroup = $resource(UrlService.getUrl('factoryServe') + 'repairGroup/add');
+        addRepairGroup.get(Param,function (data) {
+            if (successFunc) {
+                successFunc(data);
+            }
+        }, function (err) {
+
+        });
+    };
+    /*添加维修工段/班组列表 end*/
+    /*查询维修工段/班组列表 start*/
+    var _queryRepairGroupList = function(Param,successFunc){
+        var queryRepairGroupList = $resource(UrlService.getUrl('factoryServe') + 'repairGroup/list');
+        queryRepairGroupList.get(Param,function (data) {
+            if (successFunc) {
+                successFunc(data);
+            }
+        }, function (err) {
+
+        });
+    };
+    /*查询维修工段/班组列表 end*/
+    /*批量删除维修工段/班组 start*/
+    var _deleteRepairGroup = function(Param,successFunc){
+        var deleteRepairGroup = $resource(UrlService.getUrl('factoryServe') + 'repairGroup/delete');
+        deleteRepairGroup.get(Param,function (data) {
+            if (successFunc) {
+                successFunc(data);
+            }
+        }, function (err) {
+
+        });
+    };
+    /*批量删除维修工段/班组 end*/
     return {
-        productList:_productList,
-        queryFlagBz: _queryFlagBz,
-        deliverList: _deliverList,
-        queryListProduct: _queryListProduct,
-        queryListOrderStatus: _queryListOrderStatus,
-        queryAuthConfig: _queryAuthConfig,
-//        productName:_productName,
-//        queryEmployees:_queryEmployees,
+        saveContactCompany:_saveContactCompany,
+        deleteContactCompany:_deleteContactCompany,
+        addRepairGroup:_addRepairGroup,
+        queryRepairGroupList:_queryRepairGroupList,
+        deleteRepairGroup:_deleteRepairGroup,
         queryOrder: function(queryParam, successFunc) {
             queryOrder(queryParam, successFunc);
 

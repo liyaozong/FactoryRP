@@ -98,4 +98,51 @@ myApp.controller("HomeController", function($rootScope,UrlService,$cookies,$stat
         })
     };
     /*退出登录 end*/
+    $scope.onCloseState = function(state){
+        if(!$rootScope.allStates){
+            $rootScope.allStates = [];
+        }
+
+        for(var i = 0; i < $rootScope.allStates.length; i++) {
+            if ($rootScope.allStates[i].state.name == state.name) {
+                $rootScope.allStates.splice(i,1);
+                if(state.name == $state.current.name){
+                    if($rootScope.allStates.length > 0){
+                        $state.go($rootScope.allStates[$rootScope.allStates.length - 1].state, $rootScope.allStates[$rootScope.allStates.length - 1].params);
+                    } else {
+                        $state.go("main.home");
+                    }
+
+                }
+                break;
+            }
+        }
+
+        if( $rootScope.allStates.length == 0){
+            $state.go("main.home");
+        }
+    };
+    if($location.path()=='/login'){
+        $rootScope.allStates = [];
+    };
+    $scope.onChangeState = function(stateItem){
+        $state.go(stateItem.state, stateItem.params);
+
+    };
+
+    $scope.reload = function(){
+        $state.reload($state.current);
+    };
+
+    $scope.$on('home_change', function(event,data) {
+        $scope.curFooter = data;
+    });
+
+    $scope.$on('alertMsg', function(event,data) {
+        $scope.alertMsg = data;
+
+        $timeout(function(){
+            $scope.alertMsg ='';
+        }, 1000);
+    });
 });

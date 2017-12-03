@@ -118,6 +118,9 @@ input:focus{
 }
 .ImportantNote select{
     font-size: 14px;
+    width: 155px;
+    height: 32px;
+    border: 1px solid #e6e6e6;
 }
 .addOtherInfo .imgDiv label select{
     height: 35px;
@@ -312,6 +315,7 @@ input:focus{
 .ImportantNote .businessAuth p span{
     display: inline-block;
     line-height: 30px;
+    font-size: 14px;
 }
 .ImportantNote .businessAuth .submitBtn1{
     margin-top: 35px;

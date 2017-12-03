@@ -11,7 +11,7 @@ var authorizationApp = angular.module('myApp.authorizationManagement', [ 'ui.rou
             templateUrl: "views/daianla-authorizationManagement/userManage.html",
             controller: 'userManagementController'
             })
-})
+    })
     .config(function ($stateProvider, $urlRouterProvider) {
         $stateProvider
             .state("main.roleManage", {

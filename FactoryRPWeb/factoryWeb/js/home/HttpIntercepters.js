@@ -1,7 +1,7 @@
 myApp.factory('HttpInterceptor', function($rootScope,$q,$window,$cookies,$injector) {
         var interceptor = {
             'request': function(config) {
-                //config.headers.Cookie='JSESSIONID=
+                //config.headers.Cookie='token=
                 if(config != null && config.params == null){
                     config.params = {};
                 }
@@ -10,10 +10,10 @@ myApp.factory('HttpInterceptor', function($rootScope,$q,$window,$cookies,$inject
                     config.timeout = Promise;
                 }
 
-                var JSESSIONID =  $cookies.get('JSESSIONID');
-                if(JSESSIONID) {
+                var token =  $cookies.get('token');
+                if(token) {
 
-                    config.params.JSESSIONID =JSESSIONID;
+                    config.params.token =token;
                 }
 
                 if(!$rootScope.loading) {
@@ -23,16 +23,18 @@ myApp.factory('HttpInterceptor', function($rootScope,$q,$window,$cookies,$inject
                 }
 
             	config.headers = config.headers || {};
-                if ($window.sessionStorage.token) {
-                  config.headers.Authorization = $window.sessionStorage.token;
+                if (token) {
+//                  config.headers.token = token;
+                  config.headers.token = '1';
                 }
                 return config; 
             },
             response: function (response) {
-                if(response && response.data && response.data.status == '0' && response.data.code == 'LOGIN_SUCESS'){
-                    $cookies.put('JSESSIONID', response.data.obj.jsessionId);
-//                    $cookies.put('username', response.data.obj.username);//老版登录用户名
-                    $cookies.put('username', response.data.obj.employee.phone);//新版登录用户名
+                if(response && response.data && response.data.errorCode == '000000' && response.data.errorMessage == '成功'){
+                    $cookies.put('token', response.data.data.token);
+                    $cookies.put('username', response.data.data.userName);//用户名
+                    $cookies.put('corporateIdentify', response.data.data.corporateIdentify);//企业唯一标识
+                    $cookies.put('requestSeqNo', response.data.requestSeqNo);//新版登录用户名
                     var rootScope = $injector.get('$rootScope');
                     var stateService = $injector.get('$state');
                     if(rootScope.stateBeforeLogin && rootScope.stateBeforeLogin.current &&  rootScope.stateBeforeLogin.current.name != 'login'){
@@ -41,8 +43,8 @@ myApp.factory('HttpInterceptor', function($rootScope,$q,$window,$cookies,$inject
                         stateService.go("main.home");
                     }
                     rootScope.stateBeforeLogin = null;
-                } else if(response && response.data  && response.data.status == '0' && response.data.code == 'LOGOUT_SUCESS'){
-                    $cookies.remove('JSESSIONID');
+                } else if(response && response.data  && response.data.errorCode == '000002' && response.data.errorMessage == '请登录'){
+                    $cookies.remove('token');
                     $cookies.remove('username');
 
                     var rootScope = $injector.get('$rootScope');
@@ -51,8 +53,8 @@ myApp.factory('HttpInterceptor', function($rootScope,$q,$window,$cookies,$inject
                     }
                     var stateService = $injector.get('$state');
                     stateService.go("login");
-                } else if(response && response.data  && response.data.status == 'ERROR_NEED_LOGIN' && response.data.code == 'ERROR_NEED_LOGIN'){
-                    $cookies.remove('JSESSIONID');
+                } else if(response && response.data  && response.data.errorCode == '000002' && response.data.errorMessage == '请登录'){
+                    $cookies.remove('token');
 
                     var rootScope = $injector.get('$rootScope');
                     if($injector.get('$rootScope').$state && $injector.get('$rootScope').$state.current && $injector.get('$rootScope').$state.current.name != 'login'){

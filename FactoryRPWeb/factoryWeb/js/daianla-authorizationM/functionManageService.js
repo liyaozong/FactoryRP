@@ -7,12 +7,12 @@ authorizationApp.factory('functionManageService', function($resource, $log, UrlS
     var queryOrder = function(queryParam, successFunc){
 //        alert(1);
 //        var OrderInfo = $resource(UrlService.getUrl('authorization') + 'employee/queryPermissions');
-        var OrderInfo = $resource(UrlService.getUrl('authorizationNew') + 'permission/queryByKeyWords');
-        OrderInfo.save(queryParam, function(data){
+        var OrderInfo = $resource(UrlService.getUrl('authorizationNew') + 'queryMenuByCorporateIdentify');
+        OrderInfo.get(queryParam, function(data){
 //            alert(data);
             allOrderList.length = 0;
-            if(data.obj.totalCount>=1){
-                data.obj.datas.forEach(function(item) {
+            if(data.errorCode=='000000'&&data.data!=null&&data.data!=''&&data.data){
+                data.data.forEach(function(item) {
                     allOrderList.push(item);
 //                    console.log(allOrderList)
                 });

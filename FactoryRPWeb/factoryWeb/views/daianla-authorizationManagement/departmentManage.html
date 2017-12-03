@@ -1,3 +1,43 @@
+<style>
+    .tableListDiv ul li{
+        width: 19%;
+        height: 30px;
+        line-height: 30px;
+        float: left;
+        text-align: center;
+        border-left: 1px solid #e6e6e6;
+        border-bottom: 1px solid #e6e6e6;
+        background: #fff;
+    }
+    .tableListDiv ul{
+        display: block;
+        min-height: 30px;
+        height: auto;
+        background: #f6f6f6;
+    }
+    .tableListDiv .subContainer li{
+        background: #b5e0e4;
+    }
+    .tableListDiv .ul:hover{
+        background: #f6f6f6;
+    }
+    .tableListDiv .tableUl{
+        width: 100%;
+        border-top:1px solid #e6e6e6 ;
+        border-right:1px solid #e6e6e6 ;
+        background: #f6f6f6;
+    }
+    .tableListDiv .tableUl li{
+        width: 19%;
+        height: 30px;
+        line-height: 30px;
+        float: left;
+        text-align: center;
+        border-left: 1px solid #e6e6e6;
+        border-bottom: 1px solid #e6e6e6;
+        background: #f6f6f6;
+    }
+</style>
 <div class="mainContain">
 
     <!--查询div start-->
@@ -10,7 +50,8 @@
                 </label>
                 <label>
                     <button class="btn" ng-click="onQuery()">查询</button>
-                    <button style="margin-left: 10px;" class="btn" ng-click="addDepartment()">新增部门</button>
+                    <button style="margin-left: 10px;" class="btn" ng-click="addSamDepartment()">添加部门</button>
+                    <!--<button style="margin-left: 10px;" class="btn" ng-click="addDepartment()">添加下级</button>-->
                 </label>
             </li>
             <!--<li>-->
@@ -28,20 +69,76 @@
     <!--查询div end-->
     <!--table start-->
     <div class="tableListDiv data-container jurisdiction">
-        <table>
+        <ul class="tableUl">
+            <li>编号</li>
+            <li>部门名称</li>
+            <li>部门编码</li>
+            <li>创建时间</li>
+            <li>操作</li>
+        </ul>
+        <ul ng-show="order.parentId=='-1'" ng-repeat="order in orderList">
+            <li>
+                <a ng-click="showSub(order,$event)" style="font-size: 21px" href="javascript:void (0)">+</a>
+                {{$index+1}}
+                <input data-id="{{order}}" name="mainId" ng-model="mainId" type="radio" value="{{order.parentId}}"/>
+            </li>
+            <li>{{order.name||'--'}}</li>
+            <li>{{order.code||'--'}}</li>
+            <li>{{order.createTime||'--'}}</li>
+            <li>
+                <a href="javascript:void(0)" class="resBtn editBtn" ng-click="updateDepartMent(order)">
+                    <img src="image/comm/resBtnEdit.png" alt="编辑"/>
+                    <b class="title">编辑</b>
+                </a>
+                <a href="javascript:void(0)" class="resBtn deleteBtn" ng-click="deleteDepart(order)">
+                    <img src="image/comm/resBtnDelete.png" alt="删除"/>
+                    <b class="title">删除</b>
+                </a>
+            </li>
+            <div class="hide subContainer">
+                <ul ng-repeat="subDetail in subList">
+                    <li>
+                        <a ng-click="showSub(subDetail,$event)" style="font-size: 21px" href="javascript:void (0)">+</a>
+                        {{$index+1}}
+                        <input data-id="{{subDetail}}" name="mainId" ng-model="mainId" type="radio" value="{{subDetail.parentId}}"/>
+                    </li>
+                    <li>{{subDetail.name||'--'}}</li>
+                    <li>{{subDetail.code||'--'}}</li>
+                    <li>{{subDetail.createTime||'--'}}</li>
+                    <li>
+                        <a href="javascript:void(0)" class="resBtn editBtn" ng-click="updateDepartMent(subDetail)">
+                            <img src="image/comm/resBtnEdit.png" alt="编辑"/>
+                            <b class="title">编辑</b>
+                        </a>
+                        <a href="javascript:void(0)" class="resBtn deleteBtn" ng-click="deleteDepart(subDetail)">
+                            <img src="image/comm/resBtnDelete.png" alt="删除"/>
+                            <b class="title">删除</b>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </ul>
+
+        <table style="display: none">
             <thead>
             <tr>
                 <th style="min-width: 30px;">编号</th>
                 <th>部门名称</th>
+                <th>部门编码</th>
                 <th>创建时间</th>
                 <th>操作</th>
             </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="order in orderList">
-                <td class="firstTd">{{$index+1}}</td>
+            <tr ng-show="order.parentId=='-1'" ng-repeat="order in orderList">
+                <td class="firstTd">
+                    <a ng-click="showSub(order)" style="font-size: 21px" href="javascript:void (0)">+</a>
+                    {{$index+1}}
+                    <input name="mainId" ng-model="mainId" type="radio" value="{{order}}"/>
+                </td>
                 <td>{{order.name||'--'}}</td>
-                <td>{{order.created | date:'yyyy-MM-dd HH:mm:ss' ||'--'}}</td>
+                <td>{{order.code||'--'}}</td>
+                <td>{{order.createTime||'--'}}</td>
                 <td>
                     <a href="javascript:void(0)" class="resBtn editBtn" ng-click="updateDepartMent(order)">
                         <img src="image/comm/resBtnEdit.png" alt="编辑"/>
@@ -54,7 +151,7 @@
                 </td>
             </tr>
             <tr ng-show="orderList==''||orderList==null||orderList==undefined">
-                <td colspan="4">暂未添加任何部门信息</td>
+                <td colspan="5">暂未添加任何部门信息</td>
             </tr>
             </tbody>
             <!--<tfoot>-->
@@ -68,20 +165,41 @@
     <!--table end-->
 </div>
 
-
+<!--新增部门弹出框start-->
+<div class="ImportantNote departSamMentBalance">
+    <div class="headline">
+        <span>新增同级部门</span>
+        <img onClick="hideDiv('departSamMentBalance')" class="companyCloseImg" src="image/comm/diffClosed.png" width="22" height="22">
+    </div>
+    <div class="businessAuth">
+        <p style="margin-bottom: 10px">
+            <label style="text-align: right;font-size: 14px;margin-right: 5px;">上级部门:</label><select style="width: 200px;" id="NewSamDepartmentParent" ng-model="NewSamDepartmentParent" ng-options="NewDepartmentParent.id as NewDepartmentParent.name for NewDepartmentParent in orderList">
+                <option value="">请选择上级部门</option>
+            </select>
+        </p>
+        <p style="margin-bottom: 10px"><label style="text-align: right;font-size: 14px;margin-right: 5px;">部门名称:</label><input placeholder="请输入部门名称" ng-model="NewSamDeptName" id="NewSamDeptName" type="text" value="" style="width: 200px;"/></p>
+        <p><label style="text-align: right;font-size: 14px;margin-right: 5px;">部门编码:</label><input placeholder="请输入部门编码" ng-model="NewSamDeptCode" id="NewSamDeptCode" type="text" value="" style="width: 200px;"/></p>
+        <div class="submitBtn1" style="text-align: center;">
+            <input type="button" ng-click="addSamDepartMentSure()" value="保存" class="btn">
+            <input type="button" value="取消" class="btn" onClick="hideDiv('departSamMentBalance')">
+        </div>
+    </div>
+</div>
+<!--新增部门弹出框end-->
 <!--新增部门弹出框start-->
 <div class="ImportantNote departMentBalance">
     <div class="headline">
-        <span>新增部门</span>
+        <span>新增下级部门</span>
         <img onClick="hideDiv('departMentBalance')" class="companyCloseImg" src="image/comm/diffClosed.png" width="22" height="22">
     </div>
     <div class="businessAuth">
-        <p>
-            <label>上级部门:</label><select id="NewDepartmentParent" ng-model="NewDepartmentParent" ng-options="NewDepartmentParent.code as NewDepartmentParent.name for NewDepartmentParent in departments">
+        <p style="margin-bottom: 10px">
+            <label style="text-align: right;font-size: 14px;margin-right: 5px;">上级部门:</label><select id="NewDepartmentParent" ng-model="NewDepartmentParent" ng-options="NewDepartmentParent.id as NewDepartmentParent.name for NewDepartmentParent in orderList">
                 <option value="">请选择上级部门</option>
             </select>
-            <label>部门名称:</label><input placeholder="请输入部门名称" ng-model="NewDeptName" id="NewDeptName" type="text" value="" style="width: 200px;"/>
         </p>
+        <p style="margin-bottom: 10px"><label style="text-align: right;font-size: 14px;margin-right: 5px;">部门名称:</label><input placeholder="请输入部门名称" ng-model="NewDeptName" id="NewDeptName" type="text" value="" style="width: 200px;"/></p>
+        <p><label style="text-align: right;font-size: 14px;margin-right: 5px;">部门编码:</label><input placeholder="请输入部门编码" ng-model="NewDeptCode" id="NewDeptCode" type="text" value="" style="width: 200px;"/></p>
         <div class="submitBtn1" style="text-align: center;">
             <input type="button" ng-click="addDepartMent()" value="保存" class="btn">
             <input type="button" value="取消" class="btn" onClick="hideDiv('departMentBalance')">
@@ -90,18 +208,24 @@
 </div>
 
 <!--新增部门弹出框end-->
-<!--编辑部门弹出框start-->
+
+<!--编辑部门弹出框 start-->
 <div class="ImportantNote editdepartMentBalance">
     <div class="headline">
-        <span>编辑部门信息</span>
+        <span>编辑部门</span>
         <img onClick="hideDiv('editdepartMentBalance')" class="companyCloseImg" src="image/comm/diffClosed.png" width="22" height="22">
     </div>
     <div class="businessAuth">
-        <p>
-            <label>上级部门:</label><select id="departmentParent" ng-model="departmentParent" ng-options="departmentParent.code as departmentParent.name for departmentParent in departments">
-                <option value="">请选择上级部门</option>
-            </select>
-            <label>部门名称:</label><input placeholder="请输入部门名称" ng-model="deptName" type="text" id="deptName" style="width: 200px;"/>
+        <p style="margin-bottom: 10px">
+            <label style="text-align: right;font-size: 14px;margin-right: 5px;">上级部门:</label><select id="editDepartmentParent" ng-model="editDepartmentParent" ng-options="NewDepartmentParent.id as NewDepartmentParent.name for NewDepartmentParent in orderList">
+            <option value="">请选择上级部门</option>
+        </select>
+        </p>
+        <p style="margin-bottom: 10px">
+            <label style="text-align: right;font-size: 14px;margin-right: 5px;">部门名称:</label><input placeholder="请输入部门名称" ng-model="editNewSamDeptName" id="editNewSamDeptName" type="text" value="" style="width: 200px;"/>
+        </p>
+        <p style="margin-bottom: 10px">
+            <label style="text-align: right;font-size: 14px;margin-right: 5px;">部门编号:</label><input placeholder="请输入部门编号" ng-model="editNewSamDeptCode" id="editNewSamDeptCode" type="text" value="" style="width: 200px;"/>
         </p>
         <div class="submitBtn1" style="text-align: center;">
             <input type="button" ng-click="departmentParentSubmit()" value="保存" class="btn">
@@ -109,8 +233,7 @@
         </div>
     </div>
 </div>
-
-<!--编辑部门弹出框end-->
+<!--编辑部门弹出框 end-->
 <!--删除弹出框start-->
 <div class="ImportantNote deletedepart">
     <div class="headline">

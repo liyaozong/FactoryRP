@@ -34,20 +34,14 @@ myApp.factory('AuthorizationService', function($resource,$state, $log, $cookies,
     };
     /*登录 end*/
     /*登录 新 start*/
-    var _doLoginNew = function(username, password,successFunc, failFunc){
-        var Query = $resource(UrlService.getUrl('authorizationNew') + 'login');
-//      var Query = $resource('http://192.168.1.235/security-service/'+ 'login');
-        return Query.get({'username':username, 'password':password}, function(data){
-            if(data != null && data.status == '0' && (data.code == 'LOGIN_SUCESS' || data.code == 'RE_LOGIN_ERROR')){
-                userNick = data.obj.username;
-            }else{
-//                console.log(data);
-            }
-            if(successFunc){
+    var _doLoginNew = function(params,successFunc, failFunc){
+        var doLoginNew = $resource(UrlService.getUrl('authorizationNew') + 'login');
+        doLoginNew.get(params,  function (data) {
+            if (successFunc) {
                 successFunc(data);
             }
-        }, function(err){
-            if(failFunc){
+        }, function (err) {
+            if (failFunc) {
                 failFunc(err);
             }
         });
@@ -199,7 +193,7 @@ myApp.factory('AuthorizationService', function($resource,$state, $log, $cookies,
 
     /*菜单权限 start*/
     var _getMenuPerssions = function(id,successFunc, failFunc){
-        var Query = $resource(UrlService.getUrl('authorization') + 'user/getMenuPerssions');
+        var Query = $resource(UrlService.getUrl('authorizationNew') + 'queryMenuByCorporateIdentify');
 
         return Query.get({}, function(data){
             if(data.obj != null && data.status == '0'){

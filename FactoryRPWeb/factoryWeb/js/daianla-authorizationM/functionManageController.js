@@ -1,11 +1,14 @@
 /**
  * Created by caolongping on 2016/5/18.
  */
-authorizationApp.controller('functionManageController',function ($scope,$http,UrlService,$filter, $resource, $location, $state,functionManageService) {
+authorizationApp.controller('functionManageController',function ($scope,$http,UrlService,$filter, $resource, $location,$cookies, $state,functionManageService) {
 //配置分页基本参数
 //    alert(1)
 //    $scope.WebURL=UrlService.getUrl('authorization');
     $scope.WebURL=UrlService.getUrl('authorizationNew');
+//    $scope.corporateIdentify=$cookies.get('corporateIdentify');
+    $scope.requestSeqNo=$cookies.get('requestSeqNo');
+    $scope.corporateIdentify='32132132132213';
     $scope.paginationConf = {
         currentPage: 1,
         itemsPerPage: 15
@@ -19,8 +22,9 @@ authorizationApp.controller('functionManageController',function ($scope,$http,Ur
 //        console.log($scope.Date);
         functionManageService.queryOrder({
             keyword:$scope.QueryName,
-            pageNo: $scope.paginationConf.currentPage,
-            pageSize: $scope.paginationConf.itemsPerPage
+            corporateIdentify:$scope.corporateIdentify
+//            pageNo: $scope.paginationConf.currentPage,
+//            pageSize: $scope.paginationConf.itemsPerPage
         }, function(response){
 //            if(response.obj.totalCount>=1){
 //                $scope.paginationConf.totalItems = response.obj.totalCount;
@@ -29,11 +33,11 @@ authorizationApp.controller('functionManageController',function ($scope,$http,Ur
 //                $scope.orderList.length = 0;
 //            }
 
-            if(response.obj.rowCount>=1){
-                $scope.paginationConf.totalItems = response.obj.rowCount;
-                $scope.orderList=response.obj.datas;
+            if(response.data.length>=1){
+//                $scope.paginationConf.totalItems = response.obj.rowCount;
+                $scope.orderList=response.data;
             }else{
-                $scope.paginationConf.totalItems = 0;
+//                $scope.paginationConf.totalItems = 0;
                 $scope.orderList.length = 0;
 //                $scope.orderList=response.obj.datas;
             }
@@ -41,65 +45,34 @@ authorizationApp.controller('functionManageController',function ($scope,$http,Ur
     };
     /*查询所有用户 end*/
 
-    /*查询父级list start*/
-    $scope.queryParent=function(){
-        var pa={
-            itemsPerPage:10000
-        };
-        var par={params:pa};
-        $http.get($scope.WebURL+'employee/queryGrouAndMenuIsNullPermissions',par).success(function(response){
-            $scope.parents=response.obj;
-//            console.log(100000);
-//            console.log(response.obj);
-        }).error(function(response){
-            console.log(response.message);
-        });
-    };
-//    $scope.queryParent();
-    $scope.queryParentNew=function(){
-        var pa={
-            itemsPerPage:10000
-        };
-        var par={params:pa};
-        $http.get($scope.WebURL+'permission/parentPermission',par).success(function(response){
-            $scope.parents=response.obj;
-//            console.log(100000);
-//            console.log(response.obj);
-        }).error(function(response){
-            console.log(response.message);
-        });
-    };
-    $scope.queryParentNew();
-    /*查询父级list end*/
+
 
     /*编辑 功能点 start editfunctionBalance*/
     $scope.editfunctionBalance=function(res){
         popupDiv('editfunctionBalance');
 //        $scope.id=res.id;
-        $scope.code=res.code;
-        $scope.name=res.name;
-        $scope.sortValue=res.sortValue;
-        $scope.parentsNode=res.parentId;
-        $scope.parentName=res.parentName;
-        $scope.type=res.type;
-        $scope.url=res.url;
-        $scope.percode=res.percode;
+        $scope.id=res.id;
+        $scope.editName=res.name;
+        $scope.editSortValue=res.orderNumber;
+        $scope.editParentsNode=res.parentId;
+//        $scope.parentName=res.parentName;
+        $scope.editUrl=res.url;
+        $scope.editMenuRemark=res.remark;
         /*根据ID 保存当前信息 start updateSaveFunction*/
         $scope.updateSaveFunction=function(){
             var pa={
-//                id:$scope.id,
-                code:$scope.code,
-                name:$scope.name,
-                sortValue:$scope.sortValue,
-                parentId:$scope.parentsNode,
-                parentName:$scope.parentName,
-                type:$scope.type,
-                percode:$scope.percode,
-                url:$scope.url
+                id:$scope.id,
+                corporateIdentify:$scope.corporateIdentify,
+                name:$scope.editName,
+                orderNumber:$scope.editSortValue,
+                parentId:$scope.editParentsNode,
+                remark:$scope.editMenuRemark,
+                requestSeqNo:$scope.requestSeqNo,
+                url:$scope.editUrl
             };
             var par={params:pa};
 //            $http.get($scope.WebURL+'employee/updatePermissionByVo',par).success(function(response){
-            $http.post($scope.WebURL+'permission',pa).success(function(response){
+            $http.post($scope.WebURL+'addMenu',pa).success(function(response){
                 hideDiv("editfunctionBalance");
                 popupDiv('SaveSuccess');
                 $(".Message").html(response.message);
@@ -118,27 +91,26 @@ authorizationApp.controller('functionManageController',function ($scope,$http,Ur
             $("#addName").focus();
         }else if($scope.addSortValue==null||$scope.addSortValue==''||$scope.addSortValue==undefined){
             $("#addSortValue").focus();
-        }else if($scope.addType==null||$scope.addType==''||$scope.addType==undefined){
-            $("#addType").focus();
-        }else if($scope.addPercode==null||$scope.addPercode==''||$scope.addPercode==undefined){
-            $("#addPercode").focus();
+        }else if($scope.menuRemark==null||$scope.menuRemark==''||$scope.menuRemark==undefined){
+            $("#menuRemark").focus();
         }else{
             var pa={
+                corporateIdentify:$scope.corporateIdentify,
                 name:$scope.addName,
-                sortValue:$scope.addSortValue,
+                orderNumber:$scope.addSortValue,
                 parentId:$scope.addParentsNode,
-                type:$scope.addType,
-                percode:$scope.addPercode,
+                remark:$scope.menuRemark,
+                requestSeqNo:$scope.requestSeqNo,
                 url:$scope.addUrl
             };
             var par={params:pa};
 //            $http.get($scope.WebURL+'employee/savePermissionByVo',par).success(function(response){
-            $http.post($scope.WebURL+'permission',pa).success(function(response){
+            $http.post($scope.WebURL+'addMenu',pa).success(function(response){
                 hideDiv("functionBalance");
                 popupDiv('SaveSuccess');
-                $(".Message").html(response.message);
+                $(".Message").html(response.errorMessage);
             }).error(function(response){
-                console.log(response.message);
+                console.log(response.errorMessage);
             });
         }
     };

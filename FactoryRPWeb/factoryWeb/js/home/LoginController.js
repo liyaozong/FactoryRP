@@ -248,10 +248,67 @@ myApp.controller("LoginController", function($rootScope,UrlService,$cookies,$sta
 
 
     $scope.loginToFactory=function(){
-        $state.go('main.home');
-        console.log($location.search());
-        $("body").css('background-color','#fff');
-        $("body").removeAttr('id');
+        if($("#username").val()==''||$("#username").val()==null||$("#username").val()==undefined){
+            $("#username").focus();
+        }else if($("#password").val()==''||$("#password").val()==null||$("#password").val()==undefined){
+            $("#password").focus();
+        }else if($("#requestSeqNo").val()==''||$("#requestSeqNo").val()==null||$("#requestSeqNo").val()==undefined){
+            $("#requestSeqNo").focus();
+        }else{
+            $("#loginButton").attr('disabled','disabled');
+            $("#loginButton").val('登录中......');
+            /*******登录加密 start*******/
+            //  var loginMd=$("#passWord").val();
+//            hash = faultylabs.MD5($scope.password);
+//
+//            b = base64.encode64(hash);
+////            console.log(b);
+            /*******登录加密 end****/
+            var pa={
+                username:$("#username").val(),
+                password:$("#password").val(),
+                requestSeqNo:$("#requestSeqNo").val()
+            };
+            var par={params:pa};
+            $http.get(UrlService.getUrl('authorizationNew')+'login',par).success(function(data){
+                if(data != null && data.status == '0' && (data.errorCode == '000000' && data.errorMessage=="成功")){
+                    $scope.userNick = data.obj.employee.phone;
+                    $("body").css('background-color','#fff');
+                    $("body").removeAttr('id');
+//                    $state.go('main.home',{'userName':$scope.userNick});
+                }else{
+//                    alert(data.message);
+                    $("#loginButton").removeAttr('disabled');
+                    $(".loginErrMessage").show();
+                    $(".loginErrMessage").html(data.errorMessage);
+                    $("#loginButton").val('登录');
+                }
+            }).error(function(response){
+                alert(response.message);
+            });
+           /* AuthorizationService.doLoginNew({
+                username:$("#username").val(),
+                password:$("#password").val(),
+                requestSeqNo:$("#requestSeqNo").val()
+            },function(data){
+                if(data != null && data.status == '0' && (data.errorCode == '000000' && data.errorMessage=="成功")){
+                    $scope.userNick = data.obj.employee.phone;
+                    $("body").css('background-color','#fff');
+                    $("body").removeAttr('id');
+//                    $state.go('main.home',{'userName':$scope.userNick});
+                }else{
+//                    alert(data.message);
+                    $("#loginButton").removeAttr('disabled');
+                    $(".loginErrMessage").show();
+                    $(".loginErrMessage").html(data.errorMessage);
+                    $("#loginButton").val('登录');
+                }
+            }, function(err){
+                // $rootScope.isLogin = false;
+            });*/
+        }
+//        $state.go('main.home');
+//        console.log($location.search());
     };
 
     $("body").keydown(function(e) {
