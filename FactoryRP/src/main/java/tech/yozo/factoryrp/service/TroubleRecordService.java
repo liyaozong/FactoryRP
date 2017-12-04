@@ -1,6 +1,10 @@
 package tech.yozo.factoryrp.service;
 
+import tech.yozo.factoryrp.page.Pagination;
 import tech.yozo.factoryrp.vo.req.AddTroubleRecordReq;
+import tech.yozo.factoryrp.vo.req.TroubleListReq;
+import tech.yozo.factoryrp.vo.resp.auth.AuthUser;
+import tech.yozo.factoryrp.vo.resp.device.trouble.SimpleTroubleRecordVo;
 
 /**
  * @author chenxiang
@@ -12,7 +16,14 @@ public interface TroubleRecordService {
      * 新增故障
      * @param param
      * @param corporateIdentify
-     * @param createUser
      */
-    public void addTroubleRecord(AddTroubleRecordReq param,Long corporateIdentify,String createUser);
+    public void addTroubleRecord(AddTroubleRecordReq param,Long corporateIdentify,AuthUser user);
+
+
+    /**
+     * 分页查询故障列表
+     * @param param
+     * @return
+     */
+    public Pagination<SimpleTroubleRecordVo> findByPage(TroubleListReq param);
 }

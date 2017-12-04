@@ -92,16 +92,19 @@ public class UserAuthService {
      * @param request
      * @return
      */
-    public String getCurrentUserName(HttpServletRequest request){
+    public AuthUser getCurrentUserName(HttpServletRequest request){
         String token = request.getHeader("token");
         String authedUserStr = stringRedisTemplate.opsForValue().get(authCachePrefix + token);
 
         AuthUser authUser = JSON.parseObject(authedUserStr, AuthUser.class);
 
         if(!CheckParam.isNull(authUser)){
-            return authUser.getUserName();
+            return authUser;
         }
-        return "王浩";
+        authUser = new AuthUser();
+        authUser.setUserId(1l);
+        authUser.setUserName("王浩");
+        return authUser;
     }
 
 }

@@ -13,12 +13,15 @@ import java.util.Date;
  * @create 2017-12-03 下午3:47
  **/
 @Data
-@Table(name = "trouble_recode")
+@Table(name = "trouble_record")
 @Entity
 public class TroubleRecord extends BaseEntity implements Serializable{
 
     @Column(name = "device_id")
     private Long deviceId;
+
+    @Column(name = "order_no")
+    private String orderNo;
 
     @Column(name = "trouble_level")
     private Integer troubleLevel;
@@ -52,4 +55,7 @@ public class TroubleRecord extends BaseEntity implements Serializable{
 
     @Column(name = "create_user")
     private String createUser;
+
+    @Column(name = "create_user_id")
+    private Long createUserId;
 }

@@ -28,7 +28,7 @@ public enum DeviceStatusEnum {
         return name;
     }
 
-    public static DeviceStatusEnum getByCode(String code) {
+    public static DeviceStatusEnum getByCode(Integer code) {
         for (DeviceStatusEnum v : DeviceStatusEnum.values()) {
             if (!CheckParam.isNull(code)) {
                 return v;

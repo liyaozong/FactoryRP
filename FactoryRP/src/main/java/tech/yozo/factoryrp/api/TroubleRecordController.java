@@ -1,6 +1,7 @@
 package tech.yozo.factoryrp.api;
 
 import tech.yozo.factoryrp.config.auth.UserAuthService;
+import tech.yozo.factoryrp.page.Pagination;
 import tech.yozo.factoryrp.service.TroubleRecordService;
 import tech.yozo.factoryrp.vo.base.ApiResponse;
 import tech.yozo.factoryrp.vo.req.AddTroubleRecordReq;
@@ -10,6 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import tech.yozo.factoryrp.vo.req.TroubleListReq;
+import tech.yozo.factoryrp.vo.resp.auth.AuthUser;
+import tech.yozo.factoryrp.vo.resp.device.trouble.SimpleTroubleRecordVo;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -31,8 +35,14 @@ public class TroubleRecordController extends BaseController{
     @ApiOperation(value = "故障报修/故障提出接口--WEB/Mobile",notes = "故障报修/故障提出接口--WEB/Mobile",httpMethod = "POST")
     public ApiResponse addTroubleRecord(@RequestBody AddTroubleRecordReq param, HttpServletRequest request){
         Long corporateIdentify =userAuthService.getCurrentUserCorporateIdentify(request);
-        String userName = userAuthService.getCurrentUserName(request);
-        troubleRecordService.addTroubleRecord(param,corporateIdentify,userName);
+        AuthUser user = userAuthService.getCurrentUserName(request);
+        troubleRecordService.addTroubleRecord(param,corporateIdentify,user);
         return apiResponse();
+    }
+
+    @RequestMapping("list")
+    @ApiOperation(value = "设备对应的故障列表--WEB",notes = "设备对应的故障列表--WEB",httpMethod = "POST")
+    public ApiResponse<Pagination<SimpleTroubleRecordVo>> list(@RequestBody TroubleListReq param){
+        return apiResponse(troubleRecordService.findByPage(param));
     }
 }
