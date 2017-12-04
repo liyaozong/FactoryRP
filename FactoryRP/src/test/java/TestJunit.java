@@ -1,7 +1,7 @@
 /*
-import cn.tech.yozo.factoryrp.WebApplication;
-import cn.tech.yozo.factoryrp.entity.Role;
-import cn.tech.yozo.factoryrp.repository.RoleRepository;
+import WebApplication;
+import Role;
+import RoleRepository;
 import com.alibaba.fastjson.JSON;
 import org.junit.Test;
 import org.junit.runner.RunWith;

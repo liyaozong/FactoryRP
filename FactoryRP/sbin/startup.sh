@@ -8,7 +8,7 @@
 Project_HOME=$(echo `pwd` | sed 's/\/sbin//')
 
 LOG_DIR=$Project_HOME/logs
-APPLICATION_MAIN=cn.tech.yozo.factoryrp.WebApplication
+APPLICATION_MAIN=tech.yozo.factoryrp.WebApplication
 CLASSPATH=$Project_HOME/classes
 
 

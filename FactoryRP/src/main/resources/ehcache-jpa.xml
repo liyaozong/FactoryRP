@@ -8,7 +8,7 @@
     <diskStore path="user.dir/cache"/>
     <transactionManagerLookup class="net.sf.ehcache.transaction.manager.DefaultTransactionManagerLookup"
                               properties="jndiName=java:/TransactionManager" propertySeparator=";"/>
-    <cacheManagerEventListenerFactory class="cn.tech.yozo.factoryrp.config.ehcache.CustomerCacheManagerEventListenerFactory" properties=""/>
+    <cacheManagerEventListenerFactory class="tech.yozo.factoryrp.config.ehcache.CustomerCacheManagerEventListenerFactory" properties=""/>
 
     <defaultCache
             maxEntriesLocalHeap="0"
@@ -28,18 +28,18 @@
            memoryStoreEvictionPolicy="LFU"
            transactionalMode="off">
         <persistence strategy="localTempSwap"/>
-        <cacheEventListenerFactory class="cn.tech.yozo.factoryrp.config.ehcache.CustomerCacheEventListenerFactory" />
+        <cacheEventListenerFactory class="tech.yozo.factoryrp.config.ehcache.CustomerCacheEventListenerFactory" />
     </cache>
 
     <cache name="org.hibernate.cache.internal.StandardQueryCache"
            maxEntriesLocalHeap="5" eternal="false" timeToLiveSeconds="120">
         <persistence strategy="localTempSwap" />
-        <cacheEventListenerFactory class="cn.tech.yozo.factoryrp.config.ehcache.CustomerCacheEventListenerFactory" />
+        <cacheEventListenerFactory class="tech.yozo.factoryrp.config.ehcache.CustomerCacheEventListenerFactory" />
     </cache>
 
     <cache name="org.hibernate.cache.spi.UpdateTimestampsCache"
            maxEntriesLocalHeap="5000" eternal="true">
         <persistence strategy="localTempSwap" />
-        <cacheEventListenerFactory class="cn.tech.yozo.factoryrp.config.ehcache.CustomerCacheEventListenerFactory" />
+        <cacheEventListenerFactory class="tech.yozo.factoryrp.config.ehcache.CustomerCacheEventListenerFactory" />
     </cache>
 </ehcache>

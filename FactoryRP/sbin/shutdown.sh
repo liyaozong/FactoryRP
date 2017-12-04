@@ -7,7 +7,7 @@
 #利用pwd命令获取当前工程目录，实际获取到的是该shell脚本的目录。再利用sed命令将/bin替换为空
 Project_HOME=$(echo `pwd` | sed 's/\/sbin//')
 
-APPLICATION_MAIN=cn.tech.yozo.factoryrp.WebApplication
+APPLICATION_MAIN=tech.yozo.factoryrp.WebApplication
 
 
 #-------------------------------------------------------------------------------------------------------------
