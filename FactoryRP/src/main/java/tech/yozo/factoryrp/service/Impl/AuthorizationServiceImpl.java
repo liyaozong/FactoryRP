@@ -219,6 +219,8 @@ public class AuthorizationServiceImpl implements AuthorizationService {
         menuRole.setCorporateIdentify(menuRoleReq.getCorporateIdentify());
         menuRole.setRemark(menuRoleReq.getRemark());
 
+        menuRoleRepository.save(menuRole);
+
         MenuRoleResp menuRoleResp = new MenuRoleResp();
 
         menuRoleResp.setId(menuRole.getId());

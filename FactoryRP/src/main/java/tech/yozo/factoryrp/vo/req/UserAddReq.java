@@ -24,7 +24,6 @@ public class UserAddReq extends ApiCorporateIdentifyRequest implements Serializa
      * 企业标识符
      */
     @ApiModelProperty(value = "企业标识符",required = true,notes = "企业标识符",example = "321321321321")
-    @NotEmpty(message = "企业标识符不能为空")
     private Long corporateIdentify;
 
     /**
