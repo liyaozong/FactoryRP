@@ -6,7 +6,15 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
+import android.widget.Toast;
 import tech.yozo.factoryrp.R;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 维修所需的备件页
@@ -24,6 +32,7 @@ public class RepairPartsFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
+    private ListView mRepairPartsView;
 
     public RepairPartsFragment() {
         // Required empty public constructor
@@ -60,7 +69,33 @@ public class RepairPartsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_repair_info, container, false);
+        View view = inflater.inflate(R.layout.fragment_repair_parts, container, false);
+        //TODO
+        SimpleAdapter adapter = new SimpleAdapter(getContext(), getData(), R.layout.item_info_list,
+                new String[]{"name","value"},
+                new int[]{R.id.tv_name,R.id.tv_value});
+        mRepairPartsView = (ListView) view.findViewById(R.id.lv_repair_parts);
+        mRepairPartsView.setAdapter(adapter);
+        return view;
     }
 
+    public void onAddWorkload(View view) {
+        Toast.makeText(getContext(), "开始处理这个工单", Toast.LENGTH_SHORT).show();
+    }
+
+    private List<Map<String, Object>> getData() {
+        List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("name", "继电器：");
+        map.put("value", "1个");
+        list.add(map);
+
+        map = new HashMap<String, Object>();
+        map.put("name", "电磁阀底座：");
+        map.put("value", "1个");
+        list.add(map);
+
+        return list;
+    }
 }

@@ -6,7 +6,15 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
+import android.widget.Toast;
 import tech.yozo.factoryrp.R;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 维修意见页
@@ -24,6 +32,7 @@ public class RepairAdviceFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
+    private ListView mRepairAdviceView;
 
     public RepairAdviceFragment() {
         // Required empty public constructor
@@ -60,7 +69,48 @@ public class RepairAdviceFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_repair_info, container, false);
+        View view = inflater.inflate(R.layout.fragment_repair_advice, container, false);
+        //TODO
+        SimpleAdapter adapter = new SimpleAdapter(getContext(), getData(), R.layout.item_info_list,
+                new String[]{"name","value"},
+                new int[]{R.id.tv_name,R.id.tv_value});
+        mRepairAdviceView = (ListView) view.findViewById(R.id.lv_repair_advice_info);
+        mRepairAdviceView.setAdapter(adapter);
+        return view;
     }
 
+    public void onStartRepair(View view) {
+        Toast.makeText(getContext(), "开始处理这个工单", Toast.LENGTH_SHORT).show();
+    }
+
+    private List<Map<String, Object>> getData() {
+        List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("name", "维修班组：");
+        map.put("value", "电气班");
+        list.add(map);
+
+        map = new HashMap<String, Object>();
+        map.put("name", "维修人员：");
+        map.put("value", "工程师A");
+        list.add(map);
+
+        map = new HashMap<String, Object>();
+        map.put("name", "维修状态：");
+        map.put("value", "正在维修");
+        list.add(map);
+
+        map = new HashMap<String, Object>();
+        map.put("name", "故障原因：");
+        map.put("value", "线头松动");
+        list.add(map);
+
+        map = new HashMap<String, Object>();
+        map.put("name", "维修级别：");
+        map.put("value", "突发性故障");
+        list.add(map);
+
+        return list;
+    }
 }
