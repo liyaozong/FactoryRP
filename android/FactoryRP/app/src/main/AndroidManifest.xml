@@ -48,11 +48,15 @@
         </activity>
         <activity
                 android:name=".ui.DeviceAddActivity"
-                android:label="@string/action_add_device">
+                android:label="@string/action_add_device"
+                android:windowSoftInputMode="adjustUnspecified|stateHidden">
         </activity>
         <activity
                 android:name=".ui.ReportFaultActivity"
-                android:label="@string/action_ask_repair">
+                android:label="@string/action_ask_repair"
+                android:windowSoftInputMode="adjustUnspecified|stateHidden">
+        </activity>
+        <activity android:name=".ui.DeviceListActivity">
         </activity>
     </application>
 

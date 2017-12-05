@@ -25,6 +25,11 @@
     <string name="action_add_repair">填写工单</string>
     <string name="action_ask_parts">申请备件</string>
 
+    <string name="action_i_repair_it">我来修！</string>
+    <string name="action_start_repair">开始维修</string>
+    <string name="action_repair_add_workload">添加人员工时</string>
+    <string name="action_repair_add_parts">添加所需的配件</string>
+
     <string name="title_scan_device">扫描设备条码</string>
     <string name="title_device_info">设备信息</string>
     <string name="title_device_detail">设备详情</string>
@@ -39,10 +44,32 @@
     <string name="title_repair_workload">工作量</string>
     <string name="title_repair_parts">更换配件</string>
 
+    <string name="title_parts_info">备件信息</string>
+
     <string name="text_repair_wait_audit">待审核</string>
     <string name="text_repair_wait_exec">待执行</string>
     <string name="text_repair_executing">执行中</string>
     <string name="text_repair_wait_verify">待验收</string>
 
-    <string name="title_parts_info">备件信息</string>
+    <string name="text_device_name">设备名称：</string>
+    <string name="text_device_code">设备编号：</string>
+    <string name="text_device_type">设备型号：</string>
+    <string name="text_device_category">设备类别：</string>
+    <string name="text_device_identify">设备标识：</string>
+    <string name="text_device_using_dept">使用部门：</string>
+    <string name="text_device_manufacturer">生产厂商：</string>
+    <string name="text_device_provider">供应商：</string>
+    <string name="text_device_fault_time">发生时间：</string>
+    <string name="text_device_fault_level">故障等级：</string>
+    <string name="text_device_fault_type">故障类别：</string>
+    <string name="text_device_repair_group">维修班组：</string>
+    <string name="text_device_using_status">设备状态：</string>
+    <string name="text_device_operator">设备操作人：</string>
+    <string name="text_device_operator_phone">操作人电话：</string>
+    <string name="text_device_using_place">设备位置：</string>
+    <string name="text_device_repair_submitter">报修人：</string>
+    <string name="text_device_fault_desc">故障描述：</string>
+    <string name="text_device_desc">备注：</string>
+
+    <string name="image_count_hint">只能添加3张照片。</string>
 </resources>
