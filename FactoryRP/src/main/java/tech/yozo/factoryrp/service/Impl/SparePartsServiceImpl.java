@@ -119,6 +119,18 @@ public class SparePartsServiceImpl implements SparePartsService {
 
 
     /**
+     * 根据备件id删除备件
+     * @param id
+     */
+    public void deleteSparePartsById(Long id){
+
+        sparePartsRepository.delete(id);
+
+        // TODO 需要删除关联关系
+
+    }
+
+    /**
      * 新增备件
      * @param sparePartsReq
      * @return

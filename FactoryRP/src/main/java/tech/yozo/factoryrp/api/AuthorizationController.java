@@ -103,20 +103,16 @@ public class AuthorizationController extends BaseController{
 
     /**
      * 根据企业角色标识查询企业的所有用户
-     * @param requestSeqNo
      * @param corporateIdentify
      * @return
      */
     @ApiOperation(value = "根据企业角色标识查询企业的所有用户",notes = "根据企业角色标识查询企业的所有用户",httpMethod = "GET")
-    @GetMapping("/queryAllUserByCorporateIdentify/{requestSeqNo}")
+    @GetMapping("/queryAllUserByCorporateIdentify")
     @ApiImplicitParams({
             @ApiImplicitParam(dataType = "Long" ,name = "corporateIdentify", paramType = "query" ,
                     value = "企业唯一标识",required = true,defaultValue = "3123881"),
-            @ApiImplicitParam(dataType = "Long" ,name = "requestSeqNo", paramType = "path" ,
-                    value = "请求流水号",required = true,defaultValue = "12345678")
     })
-    public ApiResponse<RoleMenuQueryResp> queryAllUserByCorporateIdentify(@PathVariable("requestSeqNo") String requestSeqNo,
-                                                                            @RequestParam(value="corporateIdentify",required = true,defaultValue = "1")
+    public ApiResponse<RoleMenuQueryResp> queryAllUserByCorporateIdentify(@RequestParam(value="corporateIdentify",required = true,defaultValue = "1")
                                                                                     Long corporateIdentify){
 
         return apiResponse(authorizationService.queryAllUserByCorporateIdentify(corporateIdentify));

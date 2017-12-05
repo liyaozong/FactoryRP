@@ -1,5 +1,7 @@
 package tech.yozo.factoryrp.api;
 
+import io.swagger.annotations.ApiImplicitParams;
+import org.springframework.web.bind.annotation.*;
 import tech.yozo.factoryrp.entity.SpareParts;
 import tech.yozo.factoryrp.service.SparePartsService;
 import tech.yozo.factoryrp.vo.base.ApiResponse;
@@ -9,10 +11,6 @@ import tech.yozo.factoryrp.vo.resp.sparepars.SparePartsResp;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
@@ -56,6 +54,22 @@ public class SparePartsController extends BaseController{
             value = "根据条件分页查询",required = true)
     public ApiResponse<SpareParts> findByPage(@Valid @RequestBody SparePartsQueryReq sparePartsQueryReq){
         return apiResponse(sparePartsService.findByPage(sparePartsQueryReq));
+    }
+
+
+    /**
+     * 根据备件id删除备件
+     * @param id
+     */
+    @ApiOperation(value = "根据备件id删除备件",notes = "根据备件id删除备件",httpMethod = "GET")
+    @GetMapping("/deleteSparePartsById")
+    @ApiImplicitParams({
+            @ApiImplicitParam(dataType = "Long" ,name = "id", paramType = "query" ,
+                    value = "id",required = true,defaultValue = "1"),
+    })
+    public ApiResponse deleteSparePartsById(@RequestParam(value="id",required = true,defaultValue = "1") Long id){
+        sparePartsService.deleteSparePartsById(id);
+        return apiResponse();
     }
 
 }
