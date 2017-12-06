@@ -22,4 +22,19 @@ public interface DeviceSparesTypeRepository extends BaseRepository<DeviceSparesT
      */
     List<DeviceSparesType> findByCorporateIdentify(Long corporateIdentify);
 
+    /**
+     * 根据父级菜单id进行查询
+     * @param parentId
+     * @return
+     */
+    List<DeviceSparesType> findByparentId(Long parentId);
+
+    /**
+     * 根据父级菜单id以及企业唯一标识进行查询
+     * @param parentId
+     * @param corporateIdentify
+     * @return
+     */
+    List<DeviceSparesType> findByParentIdAndCorporateIdentify(Long parentId,Long corporateIdentify);
+
 }

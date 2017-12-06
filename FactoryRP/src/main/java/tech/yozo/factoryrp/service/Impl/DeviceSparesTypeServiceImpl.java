@@ -27,6 +27,76 @@ public class DeviceSparesTypeServiceImpl implements DeviceSparesTypeService {
 
 
     /**
+     * 调整设备备件显示顺序
+     * @param operateType 操作类型 1是上移动，2是下移
+     * @param id
+     * @return
+     */
+    public DeviceSparesTypeResp updateShowOrder(Integer operateType,Long id){
+
+        DeviceSparesType deviceSparesType = deviceSparesTypeRepository.findOne(id);
+
+        if(!CheckParam.isNull(deviceSparesType)){
+
+            //上移的操作
+            if(1 == operateType){
+                deviceSparesType.setShowOrder(deviceSparesType.getShowOrder() + 1);
+            }else if(2 == operateType){
+                deviceSparesType.setShowOrder(deviceSparesType.getShowOrder() - 1);
+            }
+
+            deviceSparesTypeRepository.save(deviceSparesType);
+        }
+
+        return null;
+    }
+
+    /**
+     * 调整上级备件类型
+     * @param id 需要被调整的备件类型id
+     * @param parentId 需要调整成为的上级备件类型
+     * @return
+     */
+    public DeviceSparesTypeResp updateUpLevel(Long id, Long parentId){
+        DeviceSparesType deviceSparesType = deviceSparesTypeRepository.findOne(id);
+
+        if(!CheckParam.isNull(deviceSparesType)){
+            deviceSparesType.setParentId(parentId);
+
+            deviceSparesTypeRepository.save(deviceSparesType);
+
+            DeviceSparesTypeResp deviceSparesTypeResp = new DeviceSparesTypeResp();
+            deviceSparesTypeResp.setId(deviceSparesType.getId());
+            deviceSparesTypeResp.setName(deviceSparesType.getName());
+            deviceSparesTypeResp.setParentId(deviceSparesType.getParentId());
+            deviceSparesTypeResp.setStatusFlag(deviceSparesType.getStatusFlag());
+            deviceSparesTypeResp.setShowOrder(deviceSparesType.getShowOrder());
+
+            return deviceSparesTypeResp;
+        }
+
+            return null;
+
+    }
+
+    /**
+     * 删除备件类型
+     * 如果这个id是父id，必须删除所有子项以及本身
+     * @param id
+     * @param corporateIdentify
+     */
+    public void deleteDeviceSparesType(Long id,Long corporateIdentify){
+
+        List<DeviceSparesType> deviceSparesTypeList = deviceSparesTypeRepository.findByParentIdAndCorporateIdentify(id,corporateIdentify);
+
+        if(!CheckParam.isNull(deviceSparesTypeList) && !deviceSparesTypeList.isEmpty()){
+            deviceSparesTypeRepository.deleteInBatch(deviceSparesTypeList);
+        }
+
+        deviceSparesTypeRepository.delete(id);
+    }
+
+    /**
      * 新增备件类型 根据operateType来区分操作
      * 功能有 添加同级(operateType为1) 添加下级(operateType为2) 修改备件名称(operateType为3)
      * @param deviceSparesSaveReq

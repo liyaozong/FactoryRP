@@ -16,6 +16,30 @@ public interface DeviceSparesTypeService {
 
 
     /**
+     * 调整设备备件显示顺序
+     * @param operateType 操作类型 1是上移动，2是下移
+     * @param id
+     * @return
+     */
+    DeviceSparesTypeResp updateShowOrder(Integer operateType,Long id);
+
+    /**
+     * 调整上级备件类型
+     * @param id 需要被调整的备件类型id
+     * @param parentId 需要调整成为的上级备件类型
+     * @return
+     */
+    DeviceSparesTypeResp updateUpLevel(Long id, Long parentId);
+
+    /**
+     * 删除备件类型
+     * 如果这个id是父id，必须删除所有子项以及本身
+     * @param id
+     * @param corporateIdentify
+     */
+    void deleteDeviceSparesType(Long id,Long corporateIdentify);
+
+    /**
      * 查询所有备件类型
      * @return
      */
