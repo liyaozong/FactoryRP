@@ -2,6 +2,7 @@ package tech.yozo.factoryrp.service;
 
 import tech.yozo.factoryrp.entity.DeviceInfo;
 import tech.yozo.factoryrp.page.Pagination;
+import tech.yozo.factoryrp.vo.req.AddDeviceReq;
 import tech.yozo.factoryrp.vo.req.DeviceInfoReq;
 import tech.yozo.factoryrp.vo.resp.device.info.FullDeviceInfoResp;
 import tech.yozo.factoryrp.vo.resp.device.info.SimpleDeviceInfoResp;
@@ -22,7 +23,7 @@ public interface DeviceInfoService {
      * @param param
      * @return
      */
-    public DeviceInfo save(DeviceInfo param);
+    public DeviceInfo save(AddDeviceReq param,Long corporateIdentify);
 
     /**
      * 根据主键查询

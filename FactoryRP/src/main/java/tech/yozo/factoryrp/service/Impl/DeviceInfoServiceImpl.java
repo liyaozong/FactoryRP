@@ -8,6 +8,7 @@ import tech.yozo.factoryrp.page.Pagination;
 import tech.yozo.factoryrp.repository.DeviceInfoRepository;
 import tech.yozo.factoryrp.service.*;
 import tech.yozo.factoryrp.utils.CheckParam;
+import tech.yozo.factoryrp.vo.req.AddDeviceReq;
 import tech.yozo.factoryrp.vo.req.DeviceInfoReq;
 import tech.yozo.factoryrp.vo.resp.device.info.FullDeviceInfoResp;
 import tech.yozo.factoryrp.vo.resp.device.info.SimpleDeviceInfoResp;
@@ -106,11 +107,19 @@ public class DeviceInfoServiceImpl implements DeviceInfoService {
     }
 
     @Override
-    public DeviceInfo save(DeviceInfo param) {
+    public DeviceInfo save(AddDeviceReq param, Long corporateIdentify) {
+        DeviceInfo info = new DeviceInfo();
         if (null!=param.getId()&&0!=param.getId()){
-            param.setUpdateTime(new Date());
+            info = deviceInfoRepository.findOne(param.getId());
+            if (!CheckParam.isNull(info)){
+                BeanUtils.copyProperties(param,info);
+                info.setUpdateTime(new Date());
+            }
+        }else {
+            BeanUtils.copyProperties(param,info);
         }
-        return deviceInfoRepository.save(param);
+        info.setCorporateIdentify(corporateIdentify);
+        return deviceInfoRepository.save(info);
     }
 
     @Override

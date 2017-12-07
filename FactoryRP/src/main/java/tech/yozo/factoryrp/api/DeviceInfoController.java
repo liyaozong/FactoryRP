@@ -8,6 +8,7 @@ import tech.yozo.factoryrp.page.Pagination;
 import tech.yozo.factoryrp.service.DeviceInfoService;
 import tech.yozo.factoryrp.utils.CheckParam;
 import tech.yozo.factoryrp.vo.base.ApiResponse;
+import tech.yozo.factoryrp.vo.req.AddDeviceReq;
 import tech.yozo.factoryrp.vo.req.DeviceInfoReq;
 import tech.yozo.factoryrp.vo.resp.device.info.FullDeviceInfoResp;
 import tech.yozo.factoryrp.vo.resp.device.info.SimpleDeviceInfoResp;
@@ -41,10 +42,9 @@ public class DeviceInfoController extends BaseController{
 
     @ApiOperation(value = "新增或修改设备信息--WEB/Mobile",notes = "新增或修改设备信息--WEB/Mobile",httpMethod = "POST")
     @RequestMapping("save")
-    public ApiResponse<DeviceInfo> updateContactCompany(@RequestBody DeviceInfo param, HttpServletRequest request){
+    public ApiResponse<DeviceInfo> updateContactCompany(@RequestBody AddDeviceReq param, HttpServletRequest request){
         Long corporateIdentify = userAuthService.getCurrentUserCorporateIdentify(request);
-        param.setCorporateIdentify(corporateIdentify);
-        return apiResponse(deviceInfoService.save(param));
+        return apiResponse(deviceInfoService.save(param,corporateIdentify));
     }
 
     @ApiOperation(value = "查询单个设备信息--WEB/Mobile",notes = "查询单个设备信息--WEB/Mobile",httpMethod = "GET")
