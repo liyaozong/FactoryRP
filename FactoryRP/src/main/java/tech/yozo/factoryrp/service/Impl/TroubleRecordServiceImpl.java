@@ -6,6 +6,7 @@ import tech.yozo.factoryrp.enums.TroubleStatusEnum;
 import tech.yozo.factoryrp.page.Pagination;
 import tech.yozo.factoryrp.repository.TroubleRecordRepository;
 import tech.yozo.factoryrp.service.TroubleRecordService;
+import tech.yozo.factoryrp.utils.CheckParam;
 import tech.yozo.factoryrp.vo.req.AddTroubleRecordReq;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,5 +85,13 @@ public class TroubleRecordServiceImpl implements TroubleRecordService {
             res.setList(list);
         }
         return res;
+    }
+
+    @Override
+    public void batchDelete(List<Long> ids) {
+        List<TroubleRecord> oldList = troubleRecordRepository.findAll(ids);
+        if (!CheckParam.isNull(oldList)){
+            troubleRecordRepository.deleteInBatch(oldList);
+        }
     }
 }

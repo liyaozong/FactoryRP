@@ -6,6 +6,8 @@ import tech.yozo.factoryrp.vo.req.TroubleListReq;
 import tech.yozo.factoryrp.vo.resp.auth.AuthUser;
 import tech.yozo.factoryrp.vo.resp.device.trouble.SimpleTroubleRecordVo;
 
+import java.util.List;
+
 /**
  * @author chenxiang
  * @create 2017-12-03 下午10:58
@@ -26,4 +28,10 @@ public interface TroubleRecordService {
      * @return
      */
     public Pagination<SimpleTroubleRecordVo> findByPage(TroubleListReq param);
+
+    /**
+     * 批量删除故障信息
+     * @param ids
+     */
+    public void batchDelete(List<Long> ids);
 }

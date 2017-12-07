@@ -62,7 +62,7 @@ public class DeviceInfoController extends BaseController{
     }
 
     /**
-     * 批量删除关联信息
+     * 批量删除设备信息
      * @param ids
      */
     @RequestMapping("batchDelete")
