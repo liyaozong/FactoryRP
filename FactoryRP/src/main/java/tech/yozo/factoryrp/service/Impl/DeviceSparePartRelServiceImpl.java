@@ -1,5 +1,6 @@
 package tech.yozo.factoryrp.service.Impl;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -239,6 +240,50 @@ public class DeviceSparePartRelServiceImpl implements DeviceSparePartRelService 
         List<DeviceSparePartRel> list = deviceSparePartRelRepository.findAll(ids);
         if (!CheckParam.isNull(list)){
             deviceSparePartRelRepository.deleteInBatch(list);
+        }
+    }
+
+    @Override
+    public void deleteRelInfoByDeviceId(List<Long> deviceIds,Long corporateIdentify) {
+        List<DeviceSparePartRel> old = deviceSparePartRelRepository.findAll(new Specification<DeviceSparePartRel>() {
+            @Override
+            public Predicate toPredicate(Root<DeviceSparePartRel> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
+                List<Predicate> listCon = new ArrayList<>();
+                CriteriaBuilder.In<Long> in = criteriaBuilder.in(root.get("deviceId"));
+                deviceIds.forEach(i->{
+                    in.value(i);
+                });
+                listCon.add(in);
+                listCon.add(criteriaBuilder.equal(root.get("corporateIdentify").as(Long.class),corporateIdentify));
+                Predicate[] predicates = new Predicate[listCon.size()];
+                predicates = listCon.toArray(predicates);
+                return criteriaBuilder.and(predicates);
+            }
+        });
+        if (!CheckParam.isNull(old)){
+            deviceSparePartRelRepository.deleteInBatch(old);
+        }
+    }
+
+    @Override
+    public void deleteRelInfoBySpareId(List<Long> spareIds,Long corporateIdentify) {
+        List<DeviceSparePartRel> old = deviceSparePartRelRepository.findAll(new Specification<DeviceSparePartRel>() {
+            @Override
+            public Predicate toPredicate(Root<DeviceSparePartRel> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
+                List<Predicate> listCon = new ArrayList<>();
+                CriteriaBuilder.In<Long> in = criteriaBuilder.in(root.get("sparePartId"));
+                spareIds.forEach(i->{
+                    in.value(i);
+                });
+                listCon.add(in);
+                listCon.add(criteriaBuilder.equal(root.get("corporateIdentify").as(Long.class),corporateIdentify));
+                Predicate[] predicates = new Predicate[listCon.size()];
+                predicates = listCon.toArray(predicates);
+                return criteriaBuilder.and(predicates);
+            }
+        });
+        if (!CheckParam.isNull(old)){
+            deviceSparePartRelRepository.deleteInBatch(old);
         }
     }
 }

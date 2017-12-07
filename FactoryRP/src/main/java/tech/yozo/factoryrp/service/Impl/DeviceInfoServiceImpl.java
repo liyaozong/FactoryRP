@@ -6,10 +6,7 @@ import tech.yozo.factoryrp.entity.DeviceInfo;
 import tech.yozo.factoryrp.entity.DeviceType;
 import tech.yozo.factoryrp.page.Pagination;
 import tech.yozo.factoryrp.repository.DeviceInfoRepository;
-import tech.yozo.factoryrp.service.ContactCompanyService;
-import tech.yozo.factoryrp.service.DepartmentService;
-import tech.yozo.factoryrp.service.DeviceInfoService;
-import tech.yozo.factoryrp.service.DeviceTypeService;
+import tech.yozo.factoryrp.service.*;
 import tech.yozo.factoryrp.utils.CheckParam;
 import tech.yozo.factoryrp.vo.req.DeviceInfoReq;
 import tech.yozo.factoryrp.vo.resp.device.info.FullDeviceInfoResp;
@@ -42,6 +39,9 @@ public class DeviceInfoServiceImpl implements DeviceInfoService {
 
     @Autowired
     private DeviceTypeService deviceTypeService;
+
+    @Autowired
+    private DeviceSparePartRelService deviceSparePartRelService;
 
     @Override
     public Pagination<FullDeviceInfoResp> findByPage(DeviceInfoReq param, Long corporateIdentify) {
@@ -146,6 +146,15 @@ public class DeviceInfoServiceImpl implements DeviceInfoService {
         List<DeviceInfo> listDevice = deviceInfoRepository.findAll(ids);
         List<FullDeviceInfoResp> reList = convertDeviceInfo(corporateIdentify, listDevice);
         return reList;
+    }
+
+    @Override
+    public void deleteRelInfoByIds(List<Long> ids,Long corporateIdentify) {
+        List<DeviceInfo> listDevice = deviceInfoRepository.findAll(ids);
+        if (!CheckParam.isNull(listDevice)){
+            deviceInfoRepository.deleteInBatch(listDevice);
+            deviceSparePartRelService.deleteRelInfoByDeviceId(ids,corporateIdentify);
+        }
     }
 
     /**

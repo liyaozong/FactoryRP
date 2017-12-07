@@ -20,7 +20,7 @@ public interface SparePartsService {
      * 根据备件id删除备件
      * @param id
      */
-    void deleteSparePartsById(Long id);
+    void deleteSparePartsById(Long id,Long corporateIdentify);
 
     /**
      * 根据条件分页查询

@@ -1,9 +1,12 @@
 package tech.yozo.factoryrp.api;
 
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import tech.yozo.factoryrp.config.auth.UserAuthService;
 import tech.yozo.factoryrp.entity.DeviceInfo;
 import tech.yozo.factoryrp.page.Pagination;
 import tech.yozo.factoryrp.service.DeviceInfoService;
+import tech.yozo.factoryrp.utils.CheckParam;
 import tech.yozo.factoryrp.vo.base.ApiResponse;
 import tech.yozo.factoryrp.vo.req.DeviceInfoReq;
 import tech.yozo.factoryrp.vo.resp.device.info.FullDeviceInfoResp;
@@ -16,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("api/deviceInfo")
@@ -54,5 +59,28 @@ public class DeviceInfoController extends BaseController{
     public ApiResponse<Pagination<SimpleDeviceInfoResp>> listSimpleInfo(@RequestBody DeviceInfoReq param, HttpServletRequest request){
         Long corporateIdentify = userAuthService.getCurrentUserCorporateIdentify(request);
         return apiResponse(deviceInfoService.findSimpleInfoByPage(param,corporateIdentify));
+    }
+
+    /**
+     * 批量删除关联信息
+     * @param ids
+     */
+    @RequestMapping("batchDelete")
+    @ApiOperation(value = "批量删除设备信息--WEB",notes = "批量删除设备信息--WEB",httpMethod = "GET")
+    @ApiImplicitParams(@ApiImplicitParam(paramType = "query",dataType = "String",name = "ids",
+            value = "需要删除的主键，多个主键用逗号分割",required = true,defaultValue = "1,2"))
+    public ApiResponse deleteRelInfoByIds(String ids,HttpServletRequest request){
+        Long corporateIdentify = userAuthService.getCurrentUserCorporateIdentify(request);
+        List<Long> idList = new ArrayList<>();
+        if (!CheckParam.isNull(ids)){
+            String[] idArray =ids.split(",");
+            if (idArray.length>0){
+                for(String id : idArray){
+                    idList.add(Long.parseLong(id));
+                }
+            }
+        }
+        deviceInfoService.deleteRelInfoByIds(idList,corporateIdentify);
+        return apiResponse();
     }
 }

@@ -4,6 +4,7 @@ import tech.yozo.factoryrp.entity.SpareParts;
 import tech.yozo.factoryrp.exception.BussinessException;
 import tech.yozo.factoryrp.page.Pagination;
 import tech.yozo.factoryrp.repository.SparePartsRepository;
+import tech.yozo.factoryrp.service.DeviceSparePartRelService;
 import tech.yozo.factoryrp.service.SparePartsService;
 import tech.yozo.factoryrp.utils.CheckParam;
 import tech.yozo.factoryrp.utils.ErrorCode;
@@ -36,6 +37,9 @@ public class SparePartsServiceImpl implements SparePartsService {
 
     @Resource
     private SparePartsRepository sparePartsRepository;
+
+    @Resource
+    private DeviceSparePartRelService deviceSparePartRelService;
 
     /**
      * 根据条件分页查询
@@ -122,12 +126,14 @@ public class SparePartsServiceImpl implements SparePartsService {
      * 根据备件id删除备件
      * @param id
      */
-    public void deleteSparePartsById(Long id){
+    public void deleteSparePartsById(Long id,Long corporateIdentify){
 
         sparePartsRepository.delete(id);
 
         // TODO 需要删除关联关系
-
+        List<Long> spareIds = new ArrayList<>();
+        spareIds.add(id);
+        deviceSparePartRelService.deleteRelInfoBySpareId(spareIds,corporateIdentify);
     }
 
     /**

@@ -46,4 +46,16 @@ public interface DeviceSparePartRelService {
      * @param ids
      */
     public void deleteRelInfoByIds(List<Long> ids);
+
+    /**
+     * 根据设备主键删除关联信息
+     * @param deviceIds
+     */
+    public void deleteRelInfoByDeviceId(List<Long> deviceIds,Long corporateIdentify);
+
+    /**
+     * 根据备件主键删除关联信息
+     * @param spareIds
+     */
+    public void deleteRelInfoBySpareId(List<Long> spareIds,Long corporateIdentify);
 }

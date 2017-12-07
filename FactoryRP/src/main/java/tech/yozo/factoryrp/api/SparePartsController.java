@@ -1,7 +1,9 @@
 package tech.yozo.factoryrp.api;
 
 import io.swagger.annotations.ApiImplicitParams;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import tech.yozo.factoryrp.config.auth.UserAuthService;
 import tech.yozo.factoryrp.entity.SpareParts;
 import tech.yozo.factoryrp.service.SparePartsService;
 import tech.yozo.factoryrp.vo.base.ApiResponse;
@@ -13,6 +15,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 /**
@@ -28,7 +31,8 @@ public class SparePartsController extends BaseController{
 
     @Resource
     private SparePartsService sparePartsService;
-
+    @Autowired
+    private UserAuthService userAuthService;
 
     /**
      * 新增备件
@@ -67,8 +71,10 @@ public class SparePartsController extends BaseController{
             @ApiImplicitParam(dataType = "Long" ,name = "id", paramType = "query" ,
                     value = "id",required = true,defaultValue = "1"),
     })
-    public ApiResponse deleteSparePartsById(@RequestParam(value="id",required = true,defaultValue = "1") Long id){
-        sparePartsService.deleteSparePartsById(id);
+    public ApiResponse deleteSparePartsById(@RequestParam(value="id",required = true,defaultValue = "1") Long id
+            ,HttpServletRequest request){
+        Long corporateIdentify = userAuthService.getCurrentUserCorporateIdentify(request);
+        sparePartsService.deleteSparePartsById(id,corporateIdentify);
         return apiResponse();
     }
 

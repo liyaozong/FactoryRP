@@ -44,4 +44,10 @@ public interface DeviceInfoService {
      * @return
      */
     public List<FullDeviceInfoResp> findByIds(List<Long> ids,Long corporateIdentify);
+
+    /**
+     * 批量删除
+     * @param ids
+     */
+    public void deleteRelInfoByIds(List<Long> ids,Long corporateIdentify);
 }
