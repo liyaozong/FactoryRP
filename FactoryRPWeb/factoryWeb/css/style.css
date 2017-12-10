@@ -81,6 +81,7 @@ h2{font-weight:normal;}
 .leftmenu dd span{float:left;margin:4px 8px 0 12px;height: 15px;}
 .leftmenu dd .menuson{display:none;}
 .leftmenu dd:first-child .menuson{display:block;}
+.leftmenu .deviceManage .menuson{display:block;}
 .menuson {line-height:30px; font-weight:normal; }
 .menuson li{cursor:pointer;}
 .menuson li.active{position:relative; background:url(../images/libg.png) repeat-x; line-height:30px; color:#fff;}
@@ -157,8 +158,8 @@ h2{font-weight:normal;}
 /*default*/
 .mainbox{padding:8px;position:relative;}
 .mainleft{padding-right:298px;}
-.leftinfo{border:#d3dbde solid 1px; height:290px;}
-.mainright{width:298px;position:absolute; top:8px; right:8px;}
+.leftinfo{border:#d3dbde solid 1px; height:250px;}
+.mainright{width:298px;position:absolute; top:268px; right:8px;}
 .dflist{border:#d3dbde solid 1px; width:288px; height:290px; float:right;}
 .dflist1{border:#d3dbde solid 1px; width:288px; height:238px; float:right; margin-top:8px;}
 .listtitle{background:url(../images/tbg.png) repeat-x; height:36px; line-height:36px; border-bottom:solid 1px #d3dbde; text-indent:14px; font-weight:bold; font-size:14px;}

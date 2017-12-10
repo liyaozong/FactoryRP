@@ -1,8 +1,18 @@
 /**
- * Created by caolongping on 2016/5/18.
+ * Created by jayvenLee on 2017/11/11.
  */
 authorizationApp.controller('departmentManageController',function ($scope,$cookies,$http,$filter,UrlService, $resource, $location, $state,departmentManageService) {
-
+    if($location.path()=='/main/deviceManage'){
+        console.log($("#menuLeft .leftmenu .deviceManage"));
+        $("#menuLeft .leftmenu .deviceManage").removeClass('hide');
+        $("#menuLeft .leftmenu .deviceManage").siblings().addClass('hide');
+    }else{
+        $('.leftmenu dd').eq(1).find('.menuson').css('display','block');
+        $('.leftmenu dd').eq(1).siblings().find('.menuson').css('display','none');
+        $('.leftmenu dd').eq(1).find('.menuson').children().eq(0).addClass('active');
+        $("#menuLeft .leftmenu .deviceManage").addClass('hide');
+        $("#menuLeft .leftmenu .deviceManage").siblings().removeClass('hide');
+    }
 //    $scope.WebURL=UrlService.getUrl('authorization');
 //    $scope.corporateIdentify=$cookies.get('corporateIdentify');
     $scope.corporateIdentify='32132132132213';

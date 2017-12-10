@@ -1,5 +1,5 @@
 /**
- * Created by caolongping on 2016/5/18.
+ * Created by jayvenLee on 2017/11/11.
  */
 consumerToBankApp.controller('consumerYoungToBankListController',function ($scope,$http,$filter,$cookies, UrlService,$resource, $location, $state, consumerYoungToBankListService, ToBankOrderDetailService) {
     var data =localStorage.getItem('dataYoungLoan')

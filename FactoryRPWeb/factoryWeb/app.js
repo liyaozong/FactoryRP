@@ -87,6 +87,7 @@ var myApp = angular.module('myApp', [
                 tabShow:false,
                 url: "/main",
                 templateUrl: "views/comm/home.html",
+//                templateUrl: "views/factory/index.html",
                 controller: 'HomeController'
             })
             .state("main.home", {
@@ -94,6 +95,7 @@ var myApp = angular.module('myApp', [
                 tabShow:true,
                 url: "/home",
                 templateUrl: "views/comm/homePage.html",
+//                templateUrl: "views/factory/index.html",
                 controller: 'HomeController'
             })
     })

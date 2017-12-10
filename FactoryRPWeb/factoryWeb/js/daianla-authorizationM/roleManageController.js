@@ -1,5 +1,5 @@
 /**
- * Created by caolongping on 2016/5/18.
+ * Created by jayvenLee on 2017/11/11.
  */
 authorizationApp.controller('roleManageController',function ($scope,$filter, $resource, $location,UrlService, $state,roleManageService,AuthorizationService,$http) {
 

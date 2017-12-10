@@ -1,5 +1,5 @@
 /**
- * Created by caolongping on 2016/5/18.
+ * Created by jayvenLee on 2017/11/11.
  */
 consumerToBankApp.controller('needSendToCCBankOrderListController',function ($scope,$http,$filter,$cookies, UrlService,$resource, $location, $state, needSendToCCBankListService, ToBankOrderDetailService,ToBankLoanOrderDetailService) {
     $scope.WebURL=UrlService.getUrl('manageAudit');

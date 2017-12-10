@@ -1,5 +1,5 @@
 /**
- * Created by caolongping on 2016/5/18.
+ * Created by jayvenLee on 2017/11/11.
  */
 //var app = angular.module('myApp', ['tm.pagination','ngResource']);
 consumerToBankApp.controller('consumerToBankLoanOrderDetailController',function ($scope,$cookies,$stateParams,againstCheatReportService,consumerAuditDataCheckService,$resource, $location, $state, UrlService, ToBankLoanOrderDetailService,$http,$filter) {

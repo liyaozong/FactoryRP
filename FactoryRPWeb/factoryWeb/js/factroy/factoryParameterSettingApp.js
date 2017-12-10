@@ -31,4 +31,34 @@ var factoryParameterSettingApp = angular.module('myApp.factoryParameterSetting',
                 templateUrl: "views/factory/repairGroup.html",
                 controller: 'contactCompanySettingController'
             })
+    })
+	.config(function ($stateProvider, $urlRouterProvider) {
+        $stateProvider
+            .state("main.deviceManage", {
+                url: "/deviceManage",
+                showName:"设备管理",
+                params: {'needAll': null},
+                templateUrl: "views/factory/deviceManage.html",
+                controller: 'deviceManageController'
+            })
+    })
+    .config(function ($stateProvider, $urlRouterProvider) {
+        $stateProvider
+            .state("main.sparePartsManage", {
+                url: "/sparePartsManage",
+                showName:"备件仓库-配件台账",
+                params: {'needAll': null},
+                templateUrl: "views/factory/deviceManage.html",
+                controller: 'sparePartsManageController'
+            })
+    })
+    .config(function ($stateProvider, $urlRouterProvider) {
+        $stateProvider
+            .state("main.modelToolsManage", {
+                url: "/modelToolsManage",
+                showName:"工装模具-工装工具总账",
+                params: {'needAll': null},
+                templateUrl: "views/factory/deviceManage.html",
+                controller: 'modelToolsManageController'
+            })
     });

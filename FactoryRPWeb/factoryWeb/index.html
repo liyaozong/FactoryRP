@@ -13,6 +13,7 @@
 </head>
 
 <div ui-view></div>
+
 <script type="text/javascript" src="js/comm/jquery.min.js"></script>
 <script type="text/javascript" src="bower_components/angular/bootstrap.min.js"></script>
 
@@ -115,5 +116,24 @@
 <script type="text/javascript" src="js/factroy/factoryParameterSettingService.js"></script>
 <script type="text/javascript" src="js/factroy/contactCompanySettingController.js"></script>
 <!--参数设置 end-->
+<!--设备管理 start-->
+<script type="text/javascript" src="js/factroy/deviceManageController.js"></script>
+<!--设备管理 end-->
+<!--备件仓库 start-->
+<script type="text/javascript" src="js/factroy/sparePartsManageController.js"></script>
+<!--备件仓库 end-->
+<!--工装模具 start-->
+<script type="text/javascript" src="js/factroy/modelToolsManageController.js"></script>
+<!--工装模具 end-->
+<script>
+    if(location.href.split("#")[1]=='/main/deviceManage'){
+        console.log($("#menuLeft .leftmenu .deviceManage"));
+        $("#menuLeft .leftmenu .deviceManage").removeClass('hide');
+        $("#menuLeft .leftmenu .deviceManage").siblings().addClass('hide');
+    }else{
+        $("#menuLeft .leftmenu .deviceManage").addClass('hide');
+        $("#menuLeft .leftmenu .deviceManage").siblings().removeClass('hide');
+    }
+</script>
 </body>
 </html>

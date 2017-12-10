@@ -1,5 +1,5 @@
 /**
- * Created by caolongping on 2016/5/18.
+ * Created by jayvenLee on 2017/11/11.
  */
 authorizationApp.controller('repairOrderModelController',function ($scope,$http,UrlService,$filter, $resource, $location, $state,repairOrderModelService) {
 //配置分页基本参数

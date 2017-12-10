@@ -1,5 +1,5 @@
 /**
- * Created by caolongping on 2016/5/18.
+ * Created by jayvenLee on 2017/11/11.
  */
 consumerToBankApp.controller('needSendToBankLoanOrderListController',function ($scope,$http,$filter,$cookies, UrlService,UpgradeAllDealWithService,$resource, $location, $state, needSendToBankLoanListService, ToBankLoanOrderDetailService) {
     var data =localStorage.getItem('dataNeedSendToBank')

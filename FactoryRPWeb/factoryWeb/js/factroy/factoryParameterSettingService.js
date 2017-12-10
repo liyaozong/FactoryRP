@@ -83,12 +83,52 @@ factoryParameterSettingApp.factory('factoryParameterSettingService', function($r
         });
     };
     /*批量删除维修工段/班组 end*/
+
+    /*分页查询设备信息列表 start*/
+    var _deviceListInfo = function(Param,successFunc){
+        var deviceListInfos = $resource(UrlService.getUrl('factoryServe') + 'deviceInfo/list');
+        deviceListInfos.save(Param,function (data) {
+            if (successFunc) {
+                successFunc(data);
+            }
+        }, function (err) {
+
+        });
+    };
+    /*分页查询设备信息列表 end*/
+    /*新增或者修改设备信息 start*/
+    var _saveDeviceInfo = function(Param,successFunc){
+        var saveDeviceInfos = $resource(UrlService.getUrl('factoryServe') + 'deviceInfo/save');
+        saveDeviceInfos.save(Param,function (data) {
+            if (successFunc) {
+                successFunc(data);
+            }
+        }, function (err) {
+
+        });
+    };
+    /*新增或者修改设备信息 end*/
+    /*批量删除设备信息 start*/
+    var _batchDeleteDeviceInfo = function(Param,successFunc){
+        var batchDeleteDeviceInfos = $resource(UrlService.getUrl('factoryServe') + 'deviceInfo/batchDelete');
+        batchDeleteDeviceInfos.get(Param,function (data) {
+            if (successFunc) {
+                successFunc(data);
+            }
+        }, function (err) {
+
+        });
+    };
+    /*批量删除设备信息 end*/
     return {
         saveContactCompany:_saveContactCompany,
         deleteContactCompany:_deleteContactCompany,
         addRepairGroup:_addRepairGroup,
         queryRepairGroupList:_queryRepairGroupList,
         deleteRepairGroup:_deleteRepairGroup,
+        deviceListInfo:_deviceListInfo,
+        saveDeviceInfo:_saveDeviceInfo,
+        batchDeleteDeviceInfo:_batchDeleteDeviceInfo,
         queryOrder: function(queryParam, successFunc) {
             queryOrder(queryParam, successFunc);
 

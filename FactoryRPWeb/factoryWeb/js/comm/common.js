@@ -42,19 +42,26 @@ $(function(){
         }
     });
     //完整菜单效果2
-    /*$(".a_list").each(function(l){
-     $(this).click(function(){
-     var len = $('.a_list').length;
-     for(var i=0;i<len;i++){
-     if(i == l){
-     $('.menu_list').eq(i).slideToggle(100);
-     }else
-     {
-     $('.menu_list').eq(i).slideUp(100);
-     }
-     }
-     })
-     })*/
+    //顶部导航切换
+    $(".nav li a").click(function(){
+        $(".nav li a.selected").removeClass("selected");
+        $(this).addClass("selected");
+    });
+    //导航切换
+    $(".menuson li").click(function(){
+        $(".menuson li.active").removeClass("active");
+        $(this).addClass("active");
+    });
+
+    $('.title').click(function(){
+        var $ul = $(this).next('ul');
+        $('dd').find('ul').slideUp();
+        if($ul.is(':visible')){
+            $(this).next('ul').slideUp();
+        }else{
+            $(this).next('ul').slideDown();
+        }
+    });
 })
 
 //点击显示隐藏完成菜单和简洁菜单

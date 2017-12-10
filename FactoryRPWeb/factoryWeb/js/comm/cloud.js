@@ -1,7 +1,5 @@
 
 // Cloud Float...
-    var aa;
-    var bb;
     var $main = $cloud = mainwidth = null;
     var offset1 = 450;
 	var offset2 = 0;
@@ -11,7 +9,7 @@
     $(document).ready(
         function () {
             $main = $("#mainBody");
-			$body = $("#body");
+			$body = $("body");
             $cloud1 = $("#cloud1");
 			$cloud2 = $("#cloud2");
 			
@@ -21,7 +19,7 @@
     );
 
     /// 飘动
-    aa=setInterval(function flutter() {
+    var aa=setInterval(function flutter() {
         if (offset1 >= mainwidth) {
             offset1 =  -580;
         }
@@ -36,9 +34,9 @@
 		
 		$cloud2.css("background-position", offset2 + "px 460px")
     }, 70);
-	
-	
-	bb=setInterval(function bg() {
+
+
+var bb=setInterval(function bg() {
         if (offsetbg >= mainwidth) {
             offsetbg =  -580;
         }

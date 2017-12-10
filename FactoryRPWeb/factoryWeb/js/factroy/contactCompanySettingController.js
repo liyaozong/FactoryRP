@@ -1,5 +1,5 @@
 /**
- * Created by caolongping on 2016/5/18.
+ * Created by jayvenLee on 2017/11/11.
  */
 factoryParameterSettingApp.controller('contactCompanySettingController',function ($scope,UrlService,$http,$filter,$cookies,$resource, $location, $state, factoryParameterSettingService) {
     $scope.WebURL=UrlService.getUrl('factoryServe');

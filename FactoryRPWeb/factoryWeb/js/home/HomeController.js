@@ -1,7 +1,22 @@
 /**
  * Created by SHYL on 2016/6/13.
  */
-myApp.controller("HomeController", function($rootScope,UrlService,$cookies,$state, $scope, $resource, $timeout, $http,$location,$log,AuthorizationService,userManagementService) {
+myApp.controller("HomeController", function($rootScope,UrlService,$cookies,$state, $scope, $resource, $timeout, $http,$location,$log,AuthorizationService,functionManageService,userManagementService) {
+    if($location.path()=='/main/deviceManage'){
+        console.log($("#menuLeft .leftmenu .deviceManage"));
+        $("#menuLeft .leftmenu .deviceManage").removeClass('hide');
+        $("#menuLeft .leftmenu .deviceManage").siblings().addClass('hide');
+    }else{
+        $('.leftmenu dd').eq(0).find('.menuson').css('display','block');
+        $('.leftmenu dd').eq(0).siblings().find('.menuson').css('display','none');
+        $('.leftmenu dd').eq(0).find('.menuson').children().eq(0).addClass('active');
+        $("#menuLeft .leftmenu .deviceManage").addClass('hide');
+        $("#menuLeft .leftmenu .deviceManage").siblings().removeClass('hide');
+        $("#menuLeft .leftmenu .sparePartsManage").addClass('hide');
+        $("#menuLeft .leftmenu .sparePartsManage").siblings().removeClass('hide');
+        $("#menuLeft .leftmenu .modelToolsManage").addClass('hide');
+        $("#menuLeft .leftmenu .modelToolsManage").siblings().removeClass('hide');
+    }
     $("body").css({
         'background-color':'#fff',
         'background-image':'none',
@@ -14,19 +29,19 @@ myApp.controller("HomeController", function($rootScope,UrlService,$cookies,$stat
     $rootScope.isLogin = AuthorizationService.isLogined();
     $scope.alertMsg ='';
     $scope.curFooter = "items";
-
-    /*老版权限系统相关权限 start*/
-//    $scope.WebURL=UrlService.getUrl('authorization');
-//    $scope.menuPerssions = AuthorizationService.getMenuPerssions();
-//    $scope.groupPerssions = AuthorizationService.getGroupPerssions();
-//    $scope.buttonPerssions = AuthorizationService.getButtonPerssions();
-    /*老版权限系统相关权限 end*/
-
-    /*新版权限系统相关权限 start*/
-    $scope.WebURL=UrlService.getUrl('authorizationNew');
-    $scope.userPhones=$cookies.get('username');
-    $scope.menuPerssions=[];
-//    $scope.menuPerssions = AuthorizationService.getMenuNewPerssions();
+    $scope.menuPerssions=[{
+       menuName:'用户管理',
+       parentId:'',
+       id:1
+    },{
+        menuName:'用户/用户组',
+        parentId:'1',
+        id:1
+    }];
+    /*菜单列表 start*/
+    $scope.menuPerssions = functionManageService.getOrderList();
+    console.log($scope.menuPerssions);
+    /*菜单列表 end*/
     $scope.userPersonInfo= userManagementService.queryUserDetail($scope.userPhones,  function(data){
         if(data.status==0){
             if(data.obj!=null){
@@ -50,12 +65,8 @@ myApp.controller("HomeController", function($rootScope,UrlService,$cookies,$stat
     }, function(err){
         console.log(err)
     });
-//    $scope.groupPerssions = AuthorizationService.getGroupNewPerssions();
-//    $scope.buttonPerssions = AuthorizationService.getButtonNewPerssions();
     /*新版权限系统相关权限 end*/
-
     $scope.userNick = AuthorizationService.getUsernick();
-
     /*菜单显示隐藏 start*/
     $scope.showMenu=function(res,groupPerssion){
         if(groupPerssion.MenuShow){

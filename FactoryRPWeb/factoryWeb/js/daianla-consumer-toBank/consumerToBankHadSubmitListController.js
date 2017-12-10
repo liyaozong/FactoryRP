@@ -1,5 +1,5 @@
 /**
- * Created by caolongping on 2016/5/18.
+ * Created by jayvenLee on 2017/11/11.
  */
 consumerToBankApp.controller('ToBankHadSubmitListController',function ($scope,UrlService,$http,$filter,$cookies, UpgradeAllDealWithService,$resource, $location, $state, ToBankHadSubmitListService, ToBankOrderDetailService) {
     $scope.WebURL=UrlService.getUrl('consumerNormal');
