@@ -90,6 +90,19 @@ public class TroubleRecordController extends BaseController{
         return apiResponse(troubleRecordService.findWorkOrderByPage(req,corporateIdentify, TroubleStatusEnum.REPAIRING.getCode(),user));
     }
 
+    /**
+     * 查询当前登录人的待验证的工单
+     * @param request
+     * @return
+     */
+    @RequestMapping("waitValidateList")
+    @ApiOperation(value = "查询当前登录人的待验证的故障列表--Mobile",notes = "查询当前登录人的待验证的故障列表--Mobile",httpMethod = "POST")
+    public ApiResponse waitValidateList(HttpServletRequest request,@RequestBody WorkOrderListReq req){
+        Long corporateIdentify =userAuthService.getCurrentUserCorporateIdentify(request);
+        AuthUser user = userAuthService.getCurrentUser(request);
+        return apiResponse(troubleRecordService.findWorkOrderByPage(req,corporateIdentify, TroubleStatusEnum.REPAIRED.getCode(),user));
+    }
+
     @RequestMapping("countWorkOrderList")
     @ApiOperation(value = "首页展示各类工单数量--Mobile",notes = "首页展示各类工单数量--Mobile",httpMethod = "POST")
     public ApiResponse countWorkOrderList(HttpServletRequest request){

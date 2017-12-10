@@ -63,4 +63,7 @@ public class TroubleRecord extends BaseEntity implements Serializable{
 
     @Column(name = "repair_user_name")
     private String repairUserName;
+
+    @Column(name = "validate_user_id")
+    private Long validateUserId;
 }

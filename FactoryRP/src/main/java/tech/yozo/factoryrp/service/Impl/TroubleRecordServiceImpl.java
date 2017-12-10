@@ -122,8 +122,10 @@ public class TroubleRecordServiceImpl implements TroubleRecordService {
         }
         Pageable p = new PageRequest(currentPage, itemsPerPage,new Sort(Sort.Direction.DESC,"createTime"));
         Page<TroubleRecord> page = null;
-        if (null!=user){
+        if (null!=user && status == TroubleStatusEnum.REPAIRING.getCode()){
             page = troubleRecordRepository.findByStatusAndRepairUserId(status,user.getUserId(),p);
+        }else if ((null!=user && status == TroubleStatusEnum.REPAIRING.getCode())){
+            page = troubleRecordRepository.findByStatusAndValidateUserId(status,user.getUserId(),p);
         }else {
             page= troubleRecordRepository.findByStatusAndCorporateIdentify(status,corporateIdentify,p);
         }
