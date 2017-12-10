@@ -150,11 +150,6 @@ public class DeviceListFragment extends BaseFragment {
         client.post(null, HttpClient.DEVICE_LIST, param, requestDeviceListResponse);
     }
 
-    @Override
-    protected void buildUI() {
-
-    }
-
     private JsonHttpResponseHandler requestDeviceListResponse = new JsonHttpResponseHandler() {
         @Override
         public void onSuccess(int statusCode, Header[] headers, JSONObject response) {

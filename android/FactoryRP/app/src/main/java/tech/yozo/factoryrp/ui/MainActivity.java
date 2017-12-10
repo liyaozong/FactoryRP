@@ -19,6 +19,7 @@ import tech.yozo.factoryrp.ui.fragment.PartsListFragment;
 import tech.yozo.factoryrp.ui.fragment.PersonFragment;
 import tech.yozo.factoryrp.ui.fragment.WorkBenchFragment;
 import tech.yozo.factoryrp.utils.BottomNavigationViewHelper;
+import tech.yozo.factoryrp.utils.HttpClient;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -160,6 +161,14 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(this, RepairRecordListActivity.class);
                 intent.putExtra(RepairRecordListActivity.RECORD_CATEGORY, view.getId());
                 startActivity(intent);
+                break;
+            }
+            case R.id.button_logout: {
+                Intent intent = new Intent(this, LoginActivity.class);
+                startActivity(intent);
+                HttpClient client = HttpClient.getInstance();
+                client.setAuthUser(null);
+                finish();
                 break;
             }
             default:

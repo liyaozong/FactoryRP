@@ -9,7 +9,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
+import com.alibaba.fastjson.JSON;
+import com.loopj.android.http.JsonHttpResponseHandler;
+import cz.msebera.android.httpclient.Header;
+import org.json.JSONException;
+import org.json.JSONObject;
 import tech.yozo.factoryrp.R;
+import tech.yozo.factoryrp.utils.ErrorCode;
+import tech.yozo.factoryrp.utils.HttpClient;
+import tech.yozo.factoryrp.vo.resp.device.trouble.WorkOrderCountVo;
 
 
 /**
@@ -38,10 +47,7 @@ public class WorkBenchFragment extends BaseFragment {
     private TextView mTextViewExecating;
     private TextView mTextViewWaitToVerify;
 
-    private int mWaitToAudit;
-    private int mWaitToExec;
-    private int mExecating;
-    private int mWaitToVerify;
+    private WorkOrderCountVo mTroubleCount;
 
     private ListView mMainTainTaskList;
     private ListView mCheckTaskList;
@@ -92,23 +98,24 @@ public class WorkBenchFragment extends BaseFragment {
         mMainTainTaskList.setEmptyView(view.findViewById(R.id.noNewMaintainTask));
         mCheckTaskList = (ListView) view.findViewById(R.id.listview_check_task);
         mCheckTaskList.setEmptyView(view.findViewById(R.id.noNewCheckTask));
+        refreshTroubleCount();
         return view;
     }
 
     @Override
     protected void loadData() {
-        mWaitToAudit = 1;
-        mWaitToExec = 2;
-        mExecating = 5;
-        mWaitToVerify = 3;
+        HttpClient client = HttpClient.getInstance();
+        client.get(getContext(), HttpClient.TROUBLE_COUNT, null, getTroubleCountResponse);
     }
 
-    @Override
-    protected void buildUI() {
-        mTextViewWaitToAudit.setText(String.format("%d", mWaitToAudit));
-        mTextViewWaitToExec.setText(String.format("%d", mWaitToExec));
-        mTextViewExecating.setText(String.format("%d", mExecating));
-        mTextViewWaitToVerify.setText(String.format("%d", mWaitToVerify));
+    private void refreshTroubleCount() {
+        if(mTroubleCount != null) {
+            mTextViewWaitToAudit.setText(String.format("%d", mTroubleCount.getWaitAuditNum()));
+            mTextViewWaitToExec.setText(String.format("%d", mTroubleCount.getWaitRepairNum()));
+            mTextViewExecating.setText(String.format("%d", mTroubleCount.getRepairingNum()));
+            //TODO
+            mTextViewWaitToVerify.setText(String.format("%d", mTroubleCount.getAllMyOrderNum()));
+        }
     }
 
 // TODO: Rename method, update argument and hook method into UI event
@@ -149,4 +156,26 @@ public class WorkBenchFragment extends BaseFragment {
         // TODO: Update argument type and name
         void onWorkBenchFragmentInteraction(Uri uri);
     }
+
+    private JsonHttpResponseHandler getTroubleCountResponse = new JsonHttpResponseHandler() {
+        @Override
+        public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+            try {
+                if (ErrorCode.SUCCESS.getCode().equals(response.getString("errorCode"))) {
+                    mTroubleCount = JSON.parseObject(response.getString("data"), WorkOrderCountVo.class);
+                    refreshTroubleCount();
+                } else {
+                    Toast.makeText(getContext(), R.string.failure_save, Toast.LENGTH_SHORT).show();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Toast.makeText(getContext(), R.string.exception_message, Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        @Override
+        public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+            Toast.makeText(getContext(), R.string.failure_request, Toast.LENGTH_SHORT).show();
+        }
+    };
 }

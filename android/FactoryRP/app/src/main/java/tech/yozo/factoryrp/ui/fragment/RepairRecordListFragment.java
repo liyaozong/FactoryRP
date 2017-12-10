@@ -21,9 +21,10 @@ import tech.yozo.factoryrp.ui.RepairDetailActivity;
 import tech.yozo.factoryrp.utils.ErrorCode;
 import tech.yozo.factoryrp.utils.HttpClient;
 import tech.yozo.factoryrp.vo.req.TroubleListReq;
-import tech.yozo.factoryrp.vo.resp.device.trouble.SimpleTroubleRecordVo;
+import tech.yozo.factoryrp.vo.resp.device.trouble.WaitAuditWorkOrderVo;
 
 import java.nio.charset.Charset;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 
@@ -40,13 +41,15 @@ public class RepairRecordListFragment extends BaseFragment {
     private static final String ARG_PARAM2 = "param2";
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
+    private int mParam1;
     private String mParam2;
 
     private ListView mRepairRecordListView;
-    private List<SimpleTroubleRecordVo> troubles;
+    private List<WaitAuditWorkOrderVo> troubles;
 
     private RepairRecordListAdapter mRepairRecordListAdapter;
+
+    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日");
 
     public RepairRecordListFragment() {
         // Required empty public constructor
@@ -61,10 +64,10 @@ public class RepairRecordListFragment extends BaseFragment {
      * @return A new instance of fragment RepairRecordListFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static RepairRecordListFragment newInstance(String param1, String param2) {
+    public static RepairRecordListFragment newInstance(int param1, String param2) {
         RepairRecordListFragment fragment = new RepairRecordListFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
+        args.putInt(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
@@ -74,7 +77,7 @@ public class RepairRecordListFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
+            mParam1 = getArguments().getInt(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
@@ -111,20 +114,32 @@ public class RepairRecordListFragment extends BaseFragment {
         req.setCurrentPage(0);
         req.setItemsPerPage(10);
         StringEntity param = new StringEntity(JSON.toJSONString(req), Charset.forName("UTF-8"));
-        client.post(null, HttpClient.FAULT_LIST, param, requestFaultListResponse);
+
+        switch (mParam1) {
+            case R.id.textView_waitto_audit:
+                client.post(getContext(), HttpClient.TROUBLE_WAIT_AUDIT, param, getTroubleListResponse);
+                break;
+            case R.id.textView_waitto_exec:
+                client.post(getContext(), HttpClient.TROUBLE_WAIT_REPAIR, param, getTroubleListResponse);
+                break;
+            case R.id.textView_executing:
+                client.post(getContext(), HttpClient.TROUBLE_REPAIRING, param, getTroubleListResponse);
+                break;
+            case R.id.textView_waitto_verify:
+                client.post(getContext(), HttpClient.TROUBLE_WAIT_VALIDATE, param, getTroubleListResponse);
+                break;
+            default:
+                break;
+        }
+        client.post(getContext(), HttpClient.TROUBLE_WAIT_AUDIT, param, getTroubleListResponse);
     }
 
-    @Override
-    protected void buildUI() {
-
-    }
-
-    private JsonHttpResponseHandler requestFaultListResponse = new JsonHttpResponseHandler() {
+    private JsonHttpResponseHandler getTroubleListResponse = new JsonHttpResponseHandler() {
         @Override
         public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
             try {
                 if (ErrorCode.SUCCESS.getCode().equals(response.getString("errorCode"))) {
-                    troubles = JSONArray.parseArray(response.getJSONObject("data").getString("list"), SimpleTroubleRecordVo.class);
+                    troubles = JSONArray.parseArray(response.getJSONObject("data").getString("list"), WaitAuditWorkOrderVo.class);
                     mRepairRecordListAdapter.notifyDataSetChanged();
                 } else {
                     Toast.makeText(getContext(), R.string.failure_get, Toast.LENGTH_SHORT).show();
@@ -197,12 +212,12 @@ public class RepairRecordListFragment extends BaseFragment {
                 holder = (ViewHolder)convertView.getTag();
             }
             //TODO
-            holder.name.setText("TODO");
-            holder.code.setText("TODO");
-            holder.time.setText(troubles.get(i).getHappenTime().toString());
-            holder.repair_no.setText(String.valueOf(troubles.get(i).getRepairRecordId()));
+            holder.name.setText(troubles.get(i).getName());
+            holder.code.setText(troubles.get(i).getCode());
+            holder.time.setText(sdf.format(troubles.get(i).getHappenTime()));
+            holder.repair_no.setText(String.valueOf(troubles.get(i).getOrderNo()));
             holder.fault_level.setText(troubles.get(i).getTroubleLevel());
-            holder.repair_worker.setText(troubles.get(i).getRepairGroupName());
+            holder.repair_worker.setText(troubles.get(i).getRepairUser());
             holder.repair_status.setText(troubles.get(i).getStatus());
 
             return convertView;

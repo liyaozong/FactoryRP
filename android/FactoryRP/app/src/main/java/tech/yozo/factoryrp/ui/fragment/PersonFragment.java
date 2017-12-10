@@ -6,7 +6,9 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import tech.yozo.factoryrp.R;
+import tech.yozo.factoryrp.utils.HttpClient;
 
 
 /**
@@ -15,7 +17,7 @@ import tech.yozo.factoryrp.R;
  * Use the {@link PersonFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class PersonFragment extends Fragment {
+public class PersonFragment extends BaseFragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -25,6 +27,7 @@ public class PersonFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
+    private TextView mPersonNameView;
 
     public PersonFragment() {
         // Required empty public constructor
@@ -61,7 +64,14 @@ public class PersonFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_person, container, false);
+        View view = inflater.inflate(R.layout.fragment_person, container, false);
+        mPersonNameView = (TextView) view.findViewById(R.id.tv_person_name);
+        return view;
     }
 
+    @Override
+    protected void loadData() {
+        HttpClient client = HttpClient.getInstance();
+        mPersonNameView.setText(client.getAuthUser().getUserName());
+    }
 }

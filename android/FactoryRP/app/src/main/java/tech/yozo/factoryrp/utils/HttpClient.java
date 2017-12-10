@@ -25,7 +25,12 @@ public class HttpClient {
 
     public static final String PARTS_LIST = "api/spareParts/findByPage";
 
-    public static final String FAULT_LIST = "troubleRecord/list";
+    public static final String TROUBLE_LIST = "troubleRecord/list";
+    public static final String TROUBLE_COUNT = "troubleRecord/countWorkOrderList";
+    public static final String TROUBLE_WAIT_AUDIT = "troubleRecord/waitAuditList";
+    public static final String TROUBLE_WAIT_REPAIR = "troubleRecord/waitRepairList";
+    public static final String TROUBLE_REPAIRING = "troubleRecord/repairingList";
+    public static final String TROUBLE_WAIT_VALIDATE = "troubleRecord/waitValidateList";
 
     private AsyncHttpClient client;
     private List<Header> headers = new ArrayList<>();
@@ -58,9 +63,11 @@ public class HttpClient {
     }
 
     public void setAuthUser(AuthUser auth) {
-        authUser = auth;
         headers.clear();
-        headers.add(new BasicHeader("Content-Type", "application/json"));
-        headers.add(new BasicHeader("token", auth.getToken()));
+        if(auth != null) {
+            authUser = auth;
+            headers.add(new BasicHeader("Content-Type", "application/json"));
+            headers.add(new BasicHeader("token", auth.getToken()));
+        }
     }
 }

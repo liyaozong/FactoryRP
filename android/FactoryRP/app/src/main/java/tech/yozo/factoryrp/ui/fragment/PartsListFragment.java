@@ -113,11 +113,6 @@ public class PartsListFragment extends BaseFragment {
         client.post(null, HttpClient.PARTS_LIST, param, requestPartsListResponse);
     }
 
-    @Override
-    protected void buildUI() {
-
-    }
-
     private JsonHttpResponseHandler requestPartsListResponse = new JsonHttpResponseHandler() {
         @Override
         public void onSuccess(int statusCode, Header[] headers, JSONObject response) {

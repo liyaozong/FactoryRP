@@ -224,13 +224,16 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/textView32" android:layout_alignBaseline="@+id/et_device_desc"
                     android:layout_alignBottom="@+id/et_device_desc" android:layout_alignStart="@+id/textView17"/>
+
             <EditText
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:layout_below="@+id/imageView16" android:layout_alignEnd="@+id/spinner_device_dept"
-                    android:id="@+id/et_buy_date" android:layout_marginTop="2dp"
-                    android:layout_alignStart="@+id/et_device_code" android:inputType="none"/>
+                    android:layout_below="@+id/imageView16"
+                    android:layout_alignEnd="@+id/spinner_device_dept"
+                    android:id="@+id/et_buy_date"
+                    android:layout_marginTop="2dp"
+                    android:layout_alignStart="@+id/et_device_code"/>
             <TextView
                     android:text="@string/text_device_buy_date"
                     android:layout_width="wrap_content"

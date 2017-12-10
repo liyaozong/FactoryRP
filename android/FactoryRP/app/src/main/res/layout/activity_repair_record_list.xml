@@ -6,7 +6,11 @@
         android:layout_height="match_parent"
         tools:context="tech.yozo.factoryrp.ui.RepairRecordListActivity">
 
-    <fragment android:layout_width="match_parent" android:layout_height="match_parent"
-              android:name="tech.yozo.factoryrp.ui.fragment.RepairRecordListFragment"
-              android:id="@+id/fragment_repair_record_list"/>
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/ll_list_fragment">
+    </LinearLayout>
+
 </FrameLayout>

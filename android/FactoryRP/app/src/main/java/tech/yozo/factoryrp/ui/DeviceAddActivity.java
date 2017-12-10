@@ -1,7 +1,6 @@
 package tech.yozo.factoryrp.ui;
 
 import android.app.DatePickerDialog;
-import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -28,7 +27,6 @@ import tech.yozo.factoryrp.utils.HttpClient;
 import tech.yozo.factoryrp.vo.req.AddDeviceReq;
 
 import java.nio.charset.Charset;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -64,7 +62,7 @@ public class DeviceAddActivity extends AppCompatActivity implements DatePickerDi
     EditText etBuyDate;
 
     private DatePickerDialog dateDialog;
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd ");
+    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,16 +107,6 @@ public class DeviceAddActivity extends AppCompatActivity implements DatePickerDi
             deviceCode = "DEV" + System.currentTimeMillis();
         }
 
-        Date buyDate = null;
-        try {
-            buyDate = sdf.parse(etBuyDate.getText().toString());
-        } catch (ParseException e) {
-            e.printStackTrace();
-            etBuyDate.setError(getString(R.string.error_field_required));
-            focusView = etBuyDate;
-            cancel = true;
-        }
-
         if (cancel) {
             focusView.requestFocus();
         } else {
@@ -134,16 +122,16 @@ public class DeviceAddActivity extends AppCompatActivity implements DatePickerDi
             newDevice.setUseDept((long) spinnerDeviceDept.getSelectedItemPosition());
             newDevice.setInstallationAddress(etDevicePlace.getText().toString());
             newDevice.setOperator(etDeviceOperator.getText().toString());
-            newDevice.setBuyDate(buyDate);
+            newDevice.setBuyDate((Date) etBuyDate.getTag());
 //            newDevice.setManufacturer(etDeviceManufacturer.getText().toString());
 //            newDevice.setSupplier(etDeviceProvider.getText().toString());
             newDevice.setRemark(etDeviceDesc.getText().toString());
             StringEntity param = new StringEntity(JSON.toJSONString(newDevice), Charset.forName("UTF-8"));
-            client.post(null, HttpClient.DEVICE_SAVE, param, requestDeviceSaveResponse);
+            client.post(null, HttpClient.DEVICE_SAVE, param, saveDeviceResponse);
         }
     }
 
-    private JsonHttpResponseHandler requestDeviceSaveResponse = new JsonHttpResponseHandler() {
+    private JsonHttpResponseHandler saveDeviceResponse = new JsonHttpResponseHandler() {
         @Override
         public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
             Log.d("INFO", response.toString());
@@ -198,6 +186,9 @@ public class DeviceAddActivity extends AppCompatActivity implements DatePickerDi
 
     @Override
     public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-        etBuyDate.setText(new StringBuffer().append(year).append("-").append(month + 1).append("-").append(day));
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(year, month, day);
+        etBuyDate.setTag(calendar.getTime());
+        etBuyDate.setText(sdf.format(calendar.getTime()));
     }
 }

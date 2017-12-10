@@ -19,6 +19,7 @@ import tech.yozo.factoryrp.R;
 import tech.yozo.factoryrp.utils.HttpClient;
 import tech.yozo.factoryrp.vo.resp.device.info.FullDeviceInfoResp;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -43,6 +44,7 @@ public class DeviceInfoFragment extends BaseFragment {
 
     private List<Map<String, Object>> data = new ArrayList<>();;
     private SimpleAdapter adapter;
+    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日");
 
     public DeviceInfoFragment() {
         // Required empty public constructor
@@ -95,12 +97,6 @@ public class DeviceInfoFragment extends BaseFragment {
         HttpClient client = HttpClient.getInstance();
         client.get(getActivity(), HttpClient.DEVICE_GET, params, requestDeviceDetailResponse);
     }
-
-    @Override
-    protected void buildUI() {
-
-    }
-
 
     private JsonHttpResponseHandler requestDeviceDetailResponse = new JsonHttpResponseHandler() {
         @Override
@@ -181,7 +177,7 @@ public class DeviceInfoFragment extends BaseFragment {
 
         map = new HashMap<>();
         map.put("name", "购买时间");
-        map.put("value", device.getBuyDate());
+        map.put("value", sdf.format(device.getBuyDate()));
         data.add(map);
     }
 }
