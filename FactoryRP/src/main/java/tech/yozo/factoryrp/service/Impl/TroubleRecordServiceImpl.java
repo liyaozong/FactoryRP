@@ -1,5 +1,7 @@
 package tech.yozo.factoryrp.service.Impl;
 
+import org.springframework.data.domain.Sort;
+import tech.yozo.factoryrp.entity.DeviceInfo;
 import tech.yozo.factoryrp.entity.TroubleRecord;
 import tech.yozo.factoryrp.enums.TroubleLevelEnum;
 import tech.yozo.factoryrp.enums.TroubleStatusEnum;
@@ -16,8 +18,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import tech.yozo.factoryrp.vo.req.TroubleListReq;
+import tech.yozo.factoryrp.vo.req.WorkOrderListReq;
 import tech.yozo.factoryrp.vo.resp.auth.AuthUser;
 import tech.yozo.factoryrp.vo.resp.device.trouble.SimpleTroubleRecordVo;
+import tech.yozo.factoryrp.vo.resp.device.trouble.SimpleWorkOrderVo;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -42,10 +46,13 @@ public class TroubleRecordServiceImpl implements TroubleRecordService {
     public void addTroubleRecord(AddTroubleRecordReq param,Long corporateIdentify,AuthUser user) {
         TroubleRecord troubleRecord = new TroubleRecord();
         BeanUtils.copyProperties(param,troubleRecord);
+        DeviceInfo d = new DeviceInfo();
+        d.setId(param.getDeviceId());
+        troubleRecord.setDeviceInfo(d);
         troubleRecord.setCorporateIdentify(corporateIdentify);
         troubleRecord.setCreateUser(user.getUserName());
         troubleRecord.setCreateUserId(user.getUserId());
-        troubleRecord.setStatus(TroubleStatusEnum.NEED_REPAIR.getCode());
+        troubleRecord.setStatus(TroubleStatusEnum.WAIT_AUDIT.getCode());
         troubleRecord.setOrderNo("WX"+new Date().getTime());
         troubleRecordRepository.save(troubleRecord);
     }
@@ -69,7 +76,9 @@ public class TroubleRecordServiceImpl implements TroubleRecordService {
             public Predicate toPredicate(Root<TroubleRecord> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
                 List<Predicate> conList = new ArrayList<>();
                 criteriaQuery.orderBy(criteriaBuilder.desc(root.get("createTime")));
-                return criteriaBuilder.equal(root.get("deviceId").as(Long.class),param.getDeviceId());
+                DeviceInfo d = new DeviceInfo();
+                d.setId(param.getDeviceId());
+                return criteriaBuilder.equal(root.get("deviceInfo").as(DeviceInfo.class),d);
             }
         },p);
         Pagination<SimpleTroubleRecordVo> res = new Pagination(currentPage+1,itemsPerPage,page.getTotalElements());
@@ -93,5 +102,41 @@ public class TroubleRecordServiceImpl implements TroubleRecordService {
         if (!CheckParam.isNull(oldList)){
             troubleRecordRepository.deleteInBatch(oldList);
         }
+    }
+
+    @Override
+    public Pagination<SimpleWorkOrderVo> findWorkOrderByPage(WorkOrderListReq param,Long corporateIdentify,Integer status) {
+
+        Integer currentPage = param.getCurrentPage();
+        Integer itemsPerPage = param.getItemsPerPage();
+        if(null==currentPage){
+            currentPage=0;
+        }
+        if (null==itemsPerPage){
+            itemsPerPage=10;
+        }
+        if (currentPage > 0) {
+            currentPage-=1;
+        }
+        Pageable p = new PageRequest(currentPage, itemsPerPage,new Sort(Sort.Direction.DESC,"createTime"));
+        Page<TroubleRecord> page = troubleRecordRepository.findByStatus(status,p);
+        Pagination<SimpleWorkOrderVo> res = new Pagination(currentPage+1,itemsPerPage,page.getTotalElements());
+        if (page.hasContent()){
+            List<SimpleWorkOrderVo> list = new ArrayList<>();
+            page.getContent().forEach(troubleRecord -> {
+                SimpleWorkOrderVo v = new SimpleWorkOrderVo();
+                v.setId(troubleRecord.getId());
+                v.setName(troubleRecord.getDeviceInfo().getName());
+                v.setSpecification(troubleRecord.getDeviceInfo().getSpecification());
+                v.setCode(troubleRecord.getDeviceInfo().getCode());
+                v.setHappenTime(troubleRecord.getHappenTime());
+                v.setOrderNo(troubleRecord.getOrderNo());
+                v.setTroubleLevel(TroubleLevelEnum.getByCode(troubleRecord.getTroubleLevel()).getName());
+                v.setStatus(TroubleStatusEnum.getByCode(troubleRecord.getStatus()).getName());
+                list.add(v);
+            });
+            res.setList(list);
+        }
+        return res;
     }
 }

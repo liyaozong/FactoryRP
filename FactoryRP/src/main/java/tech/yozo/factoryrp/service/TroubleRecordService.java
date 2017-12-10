@@ -3,8 +3,10 @@ package tech.yozo.factoryrp.service;
 import tech.yozo.factoryrp.page.Pagination;
 import tech.yozo.factoryrp.vo.req.AddTroubleRecordReq;
 import tech.yozo.factoryrp.vo.req.TroubleListReq;
+import tech.yozo.factoryrp.vo.req.WorkOrderListReq;
 import tech.yozo.factoryrp.vo.resp.auth.AuthUser;
 import tech.yozo.factoryrp.vo.resp.device.trouble.SimpleTroubleRecordVo;
+import tech.yozo.factoryrp.vo.resp.device.trouble.SimpleWorkOrderVo;
 
 import java.util.List;
 
@@ -34,4 +36,10 @@ public interface TroubleRecordService {
      * @param ids
      */
     public void batchDelete(List<Long> ids);
+
+    /**
+     * 查询待审核待工单
+     * @return
+     */
+    public Pagination<SimpleWorkOrderVo> findWorkOrderByPage(WorkOrderListReq req,Long corporateIdentify,Integer status);
 }

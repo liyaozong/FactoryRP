@@ -2,9 +2,7 @@ package tech.yozo.factoryrp.entity;
 
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -16,9 +14,6 @@ import java.util.Date;
 @Table(name = "trouble_record")
 @Entity
 public class TroubleRecord extends BaseEntity implements Serializable{
-
-    @Column(name = "device_id")
-    private Long deviceId;
 
     @Column(name = "order_no")
     private String orderNo;
@@ -58,4 +53,8 @@ public class TroubleRecord extends BaseEntity implements Serializable{
 
     @Column(name = "create_user_id")
     private Long createUserId;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "device_id")
+    private DeviceInfo deviceInfo;
 }

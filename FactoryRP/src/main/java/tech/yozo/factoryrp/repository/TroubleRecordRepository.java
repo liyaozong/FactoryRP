@@ -1,5 +1,8 @@
 package tech.yozo.factoryrp.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Query;
 import tech.yozo.factoryrp.entity.TroubleRecord;
 import org.springframework.stereotype.Repository;
 
@@ -9,4 +12,12 @@ import org.springframework.stereotype.Repository;
  **/
 @Repository
 public interface TroubleRecordRepository extends BaseRepository<TroubleRecord,Long>{
+
+    /**
+     * 按照故障状态分页查询
+     * @param status
+     * @param pageable
+     * @return
+     */
+    public Page<TroubleRecord> findByStatus(Integer status, Pageable pageable);
 }
