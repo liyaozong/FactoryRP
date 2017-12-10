@@ -8,14 +8,22 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.BaseAdapter;
-import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.*;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.loopj.android.http.JsonHttpResponseHandler;
+import cz.msebera.android.httpclient.Header;
+import cz.msebera.android.httpclient.entity.StringEntity;
+import org.json.JSONException;
+import org.json.JSONObject;
 import tech.yozo.factoryrp.R;
 import tech.yozo.factoryrp.ui.RepairDetailActivity;
-import tech.yozo.factoryrp.vo.DeviceInfo;
+import tech.yozo.factoryrp.utils.ErrorCode;
+import tech.yozo.factoryrp.utils.HttpClient;
+import tech.yozo.factoryrp.vo.req.TroubleListReq;
+import tech.yozo.factoryrp.vo.resp.device.trouble.SimpleTroubleRecordVo;
 
+import java.nio.charset.Charset;
 import java.util.List;
 
 
@@ -25,7 +33,7 @@ import java.util.List;
  * Use the {@link RepairRecordListFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class RepairRecordListFragment extends Fragment {
+public class RepairRecordListFragment extends BaseFragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -36,8 +44,7 @@ public class RepairRecordListFragment extends Fragment {
     private String mParam2;
 
     private ListView mRepairRecordListView;
-
-    private List<DeviceInfo> mRepairRecordList;
+    private List<SimpleTroubleRecordVo> troubles;
 
     private RepairRecordListAdapter mRepairRecordListAdapter;
 
@@ -96,6 +103,44 @@ public class RepairRecordListFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
     }
 
+    @Override
+    protected void loadData() {
+        HttpClient client = HttpClient.getInstance();
+        //TODO
+        TroubleListReq req = new TroubleListReq();
+        req.setCurrentPage(0);
+        req.setItemsPerPage(10);
+        StringEntity param = new StringEntity(JSON.toJSONString(req), Charset.forName("UTF-8"));
+        client.post(null, HttpClient.FAULT_LIST, param, requestFaultListResponse);
+    }
+
+    @Override
+    protected void buildUI() {
+
+    }
+
+    private JsonHttpResponseHandler requestFaultListResponse = new JsonHttpResponseHandler() {
+        @Override
+        public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+            try {
+                if (ErrorCode.SUCCESS.getCode().equals(response.getString("errorCode"))) {
+                    troubles = JSONArray.parseArray(response.getJSONObject("data").getString("list"), SimpleTroubleRecordVo.class);
+                    mRepairRecordListAdapter.notifyDataSetChanged();
+                } else {
+                    Toast.makeText(getContext(), R.string.failure_get, Toast.LENGTH_SHORT).show();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Toast.makeText(getContext(), R.string.exception_message, Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        @Override
+        public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+            Toast.makeText(getContext(), R.string.failure_request, Toast.LENGTH_SHORT).show();
+        }
+    };
+
     private static class ViewHolder
     {
         TextView name;
@@ -117,10 +162,10 @@ public class RepairRecordListFragment extends Fragment {
 
         @Override
         public int getCount() {
-            if(mRepairRecordList != null) {
-                return mRepairRecordList.size();
+            if(troubles != null) {
+                return troubles.size();
             }
-            return 10;
+            return 0;
         }
 
         @Override
@@ -151,13 +196,14 @@ public class RepairRecordListFragment extends Fragment {
             else {
                 holder = (ViewHolder)convertView.getTag();
             }
-            holder.name.setText("测试name");
-            holder.code.setText("测试code");
-            holder.time.setText("测试time");
-            holder.repair_no.setText("测试单号");
-            holder.fault_level.setText("带兵运行");
-            holder.repair_worker.setText("测试人员");
-            holder.repair_status.setText("维修中");
+            //TODO
+            holder.name.setText("TODO");
+            holder.code.setText("TODO");
+            holder.time.setText(troubles.get(i).getHappenTime().toString());
+            holder.repair_no.setText(String.valueOf(troubles.get(i).getRepairRecordId()));
+            holder.fault_level.setText(troubles.get(i).getTroubleLevel());
+            holder.repair_worker.setText(troubles.get(i).getRepairGroupName());
+            holder.repair_status.setText(troubles.get(i).getStatus());
 
             return convertView;
         }

@@ -23,7 +23,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" android:id="@+id/button_add_repair" android:layout_weight="1"
                 android:drawableTop="@drawable/selector_repair_order"
-                android:background="@android:color/background_light" android:onClick="onButtonPressed"/>
+                android:background="@android:color/background_light" android:onClick="onButtonPressed"
+                android:enabled="false"/>
 
         <Button
                 android:text="@string/action_ask_parts"

@@ -2,7 +2,6 @@ package tech.yozo.factoryrp.ui;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -60,7 +59,7 @@ public class ReportFaultActivity extends AppCompatActivity {
                             mImagesView.addView(view);
                         }
                     } else {
-                        Toast.makeText(this, R.string.image_count_hint, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, R.string.hint_image_count, Toast.LENGTH_SHORT).show();
                     }
                 case REQUEST_CODE_SCAN:
                     if (data != null) {

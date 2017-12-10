@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import cz.msebera.android.httpclient.Header;
@@ -17,9 +18,11 @@ import cz.msebera.android.httpclient.entity.StringEntity;
 import org.json.JSONException;
 import org.json.JSONObject;
 import tech.yozo.factoryrp.R;
-import tech.yozo.factoryrp.vo.DeviceInfo;
 import tech.yozo.factoryrp.ui.DeviceDetailActivity;
+import tech.yozo.factoryrp.utils.ErrorCode;
 import tech.yozo.factoryrp.utils.HttpClient;
+import tech.yozo.factoryrp.vo.req.DeviceInfoReq;
+import tech.yozo.factoryrp.vo.resp.device.info.SimpleDeviceInfoResp;
 
 import java.nio.charset.Charset;
 import java.util.List;
@@ -36,7 +39,7 @@ import java.util.List;
  */
 public class DeviceListFragment extends BaseFragment {
 
-    private List<DeviceInfo> devices;
+    private List<SimpleDeviceInfoResp> devices;
 
     private ListView mListView;
     private DeviceListAdapter mListAdapter;
@@ -99,7 +102,7 @@ public class DeviceListFragment extends BaseFragment {
             public void onItemClick(AdapterView<?> arg0, View arg1, int count,
                                     long arg3) {
                 Intent intent = new Intent(getActivity(), DeviceDetailActivity.class);
-                intent.putExtra(DeviceDetailActivity.DEVICE_OBJECT, devices.get(count));
+                intent.putExtra(DeviceDetailActivity.DEVICE_ID, devices.get(count).getId());
                 startActivity(intent);
             }
         });
@@ -139,10 +142,12 @@ public class DeviceListFragment extends BaseFragment {
     @Override
     protected void loadData() {
         HttpClient client = HttpClient.getInstance();
-        JSONObject object = new JSONObject();
-        StringEntity param = new StringEntity(object.toString(), Charset.forName("UTF-8"));
-        client.setHeaderParam("Content-Type", "application/json");
-        client.post(null, HttpClient.DEVICE_LIST, client.getHeaders(), param, "application/json", requestDeviceListResponse);
+        //TODO
+        DeviceInfoReq req = new DeviceInfoReq();
+        req.setCurrentPage(0);
+        req.setItemsPerPage(100);
+        StringEntity param = new StringEntity(JSON.toJSONString(req), Charset.forName("UTF-8"));
+        client.post(null, HttpClient.DEVICE_LIST, param, requestDeviceListResponse);
     }
 
     @Override
@@ -154,20 +159,21 @@ public class DeviceListFragment extends BaseFragment {
         @Override
         public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
             try {
-                if(response.has("data")) {
-                    devices = JSONArray.parseArray(response.getJSONObject("data").getString("list"), DeviceInfo.class);
+                if (ErrorCode.SUCCESS.getCode().equals(response.getString("errorCode"))) {
+                    devices = JSONArray.parseArray(response.getJSONObject("data").getString("list"), SimpleDeviceInfoResp.class);
                     mListAdapter.notifyDataSetChanged();
                 } else {
-                    //TODO
+                    Toast.makeText(getContext(), R.string.failure_get, Toast.LENGTH_SHORT).show();
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
+                Toast.makeText(getContext(), R.string.exception_message, Toast.LENGTH_SHORT).show();
             }
         }
 
         @Override
         public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-            Log.d("ERROR", errorResponse.toString());
+            Toast.makeText(getContext(), R.string.failure_request, Toast.LENGTH_SHORT).show();
         }
     };
 
@@ -227,8 +233,8 @@ public class DeviceListFragment extends BaseFragment {
             if(convertView == null) {
                 holder = new ViewHolder();
                 convertView = mInflater.inflate(R.layout.item_device_list, null);
-                holder.name = (TextView)convertView.findViewById(R.id.tv_device_name);
-                holder.code = (TextView)convertView.findViewById(R.id.tv_device_code);
+                holder.name = (TextView) convertView.findViewById(R.id.tv_device_name);
+                holder.code = (TextView) convertView.findViewById(R.id.tv_device_code);
                 holder.type = (TextView) convertView.findViewById(R.id.tv_device_type);
                 holder.dept = (TextView) convertView.findViewById(R.id.tv_device_dept);
                 holder.place = (TextView) convertView.findViewById(R.id.tv_device_place);

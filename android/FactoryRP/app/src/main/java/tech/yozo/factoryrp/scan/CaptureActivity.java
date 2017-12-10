@@ -35,7 +35,7 @@ public class CaptureActivity extends AppCompatActivity implements SurfaceHolder.
     private static final long DEFAULT_INTENT_RESULT_DURATION_MS = 1500L;
     private static final long BULK_MODE_SCAN_DELAY_MS = 1000L;
 
-    private static final String[] ZXING_URLS = { "http://zxing.appspot.com/scan_bar", "zxing://scan_bar/" };
+    private static final String[] ZXING_URLS = { "http://zxing.appspot.com/device_bar_scan", "zxing://device_bar_scan/" };
 
     private static final int HISTORY_REQUEST_CODE = 0x0000bacc;
 

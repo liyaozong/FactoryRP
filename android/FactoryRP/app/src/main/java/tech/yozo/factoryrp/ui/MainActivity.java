@@ -14,7 +14,6 @@ import android.content.Intent;
 import android.view.View;
 import tech.yozo.factoryrp.R;
 import tech.yozo.factoryrp.scan.CaptureActivity;
-import tech.yozo.factoryrp.scan.Intents;
 import tech.yozo.factoryrp.ui.fragment.DeviceListFragment;
 import tech.yozo.factoryrp.ui.fragment.PartsListFragment;
 import tech.yozo.factoryrp.ui.fragment.PersonFragment;
@@ -110,14 +109,14 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.scan_bar, menu);
+        getMenuInflater().inflate(R.menu.device_bar_scan, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.scan_code:
+            case R.id.scan_device_code:
                 startActivityForResult(new Intent(this, CaptureActivity.class), SCAN_CODE);
                 return true;
         }

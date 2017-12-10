@@ -10,15 +10,13 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import tech.yozo.factoryrp.R;
-import tech.yozo.factoryrp.vo.DeviceInfo;
 import tech.yozo.factoryrp.ui.fragment.*;
 import tech.yozo.factoryrp.utils.BottomNavigationViewHelper;
-import tech.yozo.factoryrp.utils.Constant;
 
 public class DeviceDetailActivity extends AppCompatActivity {
-    public static final String DEVICE_OBJECT = "device_object";
+    public static final String DEVICE_ID = "device_id";
 
-    private DeviceInfo mDevice;
+    private Long mDeviceId;
 
     private ViewPager mViewPageContianer;
     private BottomNavigationView mNavigation;
@@ -46,8 +44,8 @@ public class DeviceDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_device_detail);
 
         Intent intent = getIntent();
-        if(intent.hasExtra(DEVICE_OBJECT)) {
-            mDevice = (DeviceInfo) intent.getSerializableExtra(DEVICE_OBJECT);
+        if(intent.hasExtra(DEVICE_ID)) {
+            mDeviceId = (Long) intent.getSerializableExtra(DEVICE_ID);
         }
 
         mNavigation = (BottomNavigationView) findViewById(R.id.navigation_device);
@@ -86,11 +84,11 @@ public class DeviceDetailActivity extends AppCompatActivity {
             Bundle bundle = new Bundle();
             switch(bottomNavigationItems[position]) {
                 case R.id.navigation_device_info:
-                    bundle.putSerializable("param1", mDevice);
+                    bundle.putLong("param1", mDeviceId);
                     break;
                 case R.id.navigation_device_parts_list:
-                    bundle.putInt("param1", Constant.IS_DEVICE);
-                    bundle.putString("param2", mDevice.getCode());
+                    //TODO
+                    bundle.putLong("param1", mDeviceId);
                     break;
                 default:
                     break;

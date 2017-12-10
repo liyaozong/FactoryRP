@@ -5,17 +5,27 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.BaseAdapter;
-import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.*;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.loopj.android.http.JsonHttpResponseHandler;
+import cz.msebera.android.httpclient.Header;
+import cz.msebera.android.httpclient.entity.StringEntity;
+import org.json.JSONException;
+import org.json.JSONObject;
 import tech.yozo.factoryrp.R;
-import tech.yozo.factoryrp.vo.DeviceInfo;
 import tech.yozo.factoryrp.ui.PartsDetailActivity;
+import tech.yozo.factoryrp.utils.ErrorCode;
+import tech.yozo.factoryrp.utils.HttpClient;
+import tech.yozo.factoryrp.vo.req.SparePartsQueryReq;
+import tech.yozo.factoryrp.vo.resp.device.info.SimpleDeviceInfoResp;
+import tech.yozo.factoryrp.vo.resp.sparepars.SparePartsResp;
 
+import java.nio.charset.Charset;
 import java.util.List;
 
 
@@ -32,12 +42,11 @@ public class PartsListFragment extends BaseFragment {
     private static final String ARG_PARAM2 = "param2";
 
     // TODO: Rename and change types of parameters
-    private int mParam1;
+    private Long mParam1;
     private String mParam2;
 
     private ListView mPartsListView;
-    //TODO
-    private List<DeviceInfo> parts;
+    private List<SparePartsResp> parts;
 
     private PartsListAdapter mListAdapter;
 
@@ -54,10 +63,10 @@ public class PartsListFragment extends BaseFragment {
      * @return A new instance of fragment PartsListFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static PartsListFragment newInstance(String param1, String param2) {
+    public static PartsListFragment newInstance(Long param1, String param2) {
         PartsListFragment fragment = new PartsListFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
+        args.putLong(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
@@ -67,7 +76,7 @@ public class PartsListFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getInt(ARG_PARAM1);
+            mParam1 = getArguments().getLong(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
@@ -95,7 +104,13 @@ public class PartsListFragment extends BaseFragment {
 
     @Override
     protected void loadData() {
-
+        HttpClient client = HttpClient.getInstance();
+        //TODO
+        SparePartsQueryReq req = new SparePartsQueryReq();
+        req.setCurrentPage(0);
+        req.setItemsPerPage(100);
+        StringEntity param = new StringEntity(JSON.toJSONString(req), Charset.forName("UTF-8"));
+        client.post(null, HttpClient.PARTS_LIST, param, requestPartsListResponse);
     }
 
     @Override
@@ -103,12 +118,34 @@ public class PartsListFragment extends BaseFragment {
 
     }
 
+    private JsonHttpResponseHandler requestPartsListResponse = new JsonHttpResponseHandler() {
+        @Override
+        public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+            try {
+                if (ErrorCode.SUCCESS.getCode().equals(response.getString("errorCode"))) {
+                    parts = JSONArray.parseArray(response.getJSONObject("data").getString("list"), SparePartsResp.class);
+                    mListAdapter.notifyDataSetChanged();
+                } else {
+                    Toast.makeText(getContext(), R.string.failure_get, Toast.LENGTH_SHORT).show();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Toast.makeText(getContext(), R.string.exception_message, Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        @Override
+        public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+            Toast.makeText(getContext(), R.string.failure_request, Toast.LENGTH_SHORT).show();
+        }
+    };
+
     private static class ViewHolder
     {
         TextView name;
         TextView code;
         TextView type;
-        TextView place;
+        TextView stock;
     }
 
     private class PartsListAdapter extends BaseAdapter {
@@ -121,11 +158,10 @@ public class PartsListFragment extends BaseFragment {
 
         @Override
         public int getCount() {
-            if(parts != null) {
+            if (parts != null) {
                 return parts.size();
             }
-            //TODO
-            return 10;
+            return 0;
         }
 
         @Override
@@ -144,19 +180,20 @@ public class PartsListFragment extends BaseFragment {
             if(convertView == null) {
                 holder = new ViewHolder();
                 convertView = mInflater.inflate(R.layout.item_parts_list, null);
-                holder.name = (TextView)convertView.findViewById(R.id.tv_parts_name);
-                holder.code = (TextView)convertView.findViewById(R.id.tv_parts_no);
+                holder.name = (TextView) convertView.findViewById(R.id.tv_parts_name);
+                holder.code = (TextView) convertView.findViewById(R.id.tv_parts_no);
                 holder.type = (TextView) convertView.findViewById(R.id.tv_parts_type);
-                holder.place = (TextView) convertView.findViewById(R.id.tv_parts_stock);
+                holder.stock = (TextView) convertView.findViewById(R.id.tv_parts_stock);
                 convertView.setTag(holder);
             }
             else {
                 holder = (ViewHolder)convertView.getTag();
             }
-            holder.name.setText("test");
-            holder.code.setText("MK1272543");
-            holder.type.setText("machine");
-            holder.place.setText("134个");
+            //TODO
+            holder.name.setText(parts.get(i).getName());
+            holder.code.setText(parts.get(i).getCode());
+            holder.type.setText(parts.get(i).getSpecificationsAndodels());
+            holder.stock.setText("4个");
 
             return convertView;
         }

@@ -3,9 +3,6 @@ package tech.yozo.factoryrp.ui;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
-import android.content.pm.PackageManager;
-import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 //import android.app.LoaderManager.LoaderCallbacks;
 
@@ -14,7 +11,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.content.Intent;
 //import android.database.Cursor;
 //import android.net.Uri;
-import android.os.AsyncTask;
 
 import android.os.Build;
 import android.os.Bundle;
@@ -27,7 +23,7 @@ import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
 //import android.widget.ArrayAdapter;
 import android.widget.*;
-import com.loopj.android.http.AsyncHttpClient;
+import com.alibaba.fastjson.JSON;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
@@ -35,11 +31,12 @@ import cz.msebera.android.httpclient.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
 import tech.yozo.factoryrp.R;
+import tech.yozo.factoryrp.utils.ErrorCode;
 import tech.yozo.factoryrp.utils.HttpClient;
+import tech.yozo.factoryrp.vo.resp.auth.AuthUser;
 //import java.util.ArrayList;
 //import java.util.List;
 
-import static android.Manifest.permission.READ_CONTACTS;
 
 /**
  * A login screen that offers login via user/password.
@@ -132,7 +129,7 @@ public class LoginActivity extends AppCompatActivity {
             params.add("username", user);
             params.add("password", password);
             HttpClient client = HttpClient.getInstance();
-            client.get(this, HttpClient.LOGININ, null, params, userLoginResponse);
+            client.get(this, HttpClient.LOGIN, params, userLoginResponse);
         }
     }
 
@@ -186,17 +183,21 @@ public class LoginActivity extends AppCompatActivity {
     private TextHttpResponseHandler userLoginResponse = new JsonHttpResponseHandler() {
         @Override
         public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-            Log.d("INFO", response.toString());
             showProgress(false);
             HttpClient client = HttpClient.getInstance();
             try {
-                if("000000".equals(response.getString("errorCode"))) { //登录成功
-                    client.setHeaderParam("token", response.getJSONObject("data").getString("token"));
+                if (ErrorCode.SUCCESS.getCode().equals(response.getString("errorCode"))) {
+                    AuthUser auth = JSON.parseObject(response.getString("data"), AuthUser.class);
+                    client.setAuthUser(auth);
                     finish();
                     startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                } else {
-                    mPasswordView.setError(getString(R.string.error_incorrect_password));
+                } else if (ErrorCode.LOGIN_FAILED.getCode().equals(response.getString("errorCode"))) {
+                    mPasswordView.setError(ErrorCode.LOGIN_FAILED.getMessage());
                     mPasswordView.requestFocus();
+                } else if (ErrorCode.PARAM_ERROR.getCode().equals(response.getString("errorCode"))) {
+                    Toast.makeText(LoginActivity.this, ErrorCode.PARAM_ERROR.getMessage(), Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(LoginActivity.this, R.string.failure_login, Toast.LENGTH_SHORT).show();
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -207,8 +208,7 @@ public class LoginActivity extends AppCompatActivity {
         @Override
         public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
             showProgress(false);
-            mPasswordView.setError(getString(R.string.error_incorrect_password));
-            mPasswordView.requestFocus();
+            Toast.makeText(LoginActivity.this, R.string.failure_request, Toast.LENGTH_SHORT).show();
         }
 
         @Override
