@@ -5,10 +5,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import tech.yozo.factoryrp.config.auth.UserAuthService;
 import tech.yozo.factoryrp.entity.SpareParts;
+import tech.yozo.factoryrp.page.Pagination;
 import tech.yozo.factoryrp.service.SparePartsService;
 import tech.yozo.factoryrp.vo.base.ApiResponse;
 import tech.yozo.factoryrp.vo.req.SparePartsAddReq;
 import tech.yozo.factoryrp.vo.req.SparePartsQueryReq;
+import tech.yozo.factoryrp.vo.resp.sparepars.DeviceSparesMobileResp;
 import tech.yozo.factoryrp.vo.resp.sparepars.SparePartsResp;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -48,11 +50,11 @@ public class SparePartsController extends BaseController{
     }
 
     /**
-     * 新增备件
+     * 查询备件
      * @param sparePartsQueryReq
      * @return
      */
-    @ApiOperation(value = "根据条件分页查询备件",notes = "根据条件分页查询备件",httpMethod = "POST")
+    @ApiOperation(value = "根据条件分页查询备件-WEB",notes = "根据条件分页查询备件",httpMethod = "POST")
     @PostMapping("/findByPage")
     @ApiImplicitParam(dataType = "SparePartsQueryReq" ,name = "sparePartsQueryReq", paramType = "VO" ,
             value = "根据条件分页查询",required = true)
@@ -60,6 +62,19 @@ public class SparePartsController extends BaseController{
         return apiResponse(sparePartsService.findByPage(sparePartsQueryReq));
     }
 
+
+    /**
+     * 手机端查询备件信息
+     * @param sparePartsQueryReq
+     * @return
+     */
+    @ApiOperation(value = "手机端查询备件信息-MOBILE",notes = "手机端查询备件信息-MOBILE",httpMethod = "POST")
+    @PostMapping("/queryMobileDeviceSpares")
+    @ApiImplicitParam(dataType = "SparePartsQueryReq" ,name = "sparePartsQueryReq", paramType = "VO" ,
+            value = "手机端查询备件信息",required = true)
+    public ApiResponse<Pagination<DeviceSparesMobileResp>> queryMobileDeviceSparesMobileResp(SparePartsQueryReq sparePartsQueryReq){
+        return apiResponse(sparePartsService.queryMobileDeviceSpares(sparePartsQueryReq));
+    }
 
     /**
      * 根据备件id删除备件

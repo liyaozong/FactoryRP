@@ -1,7 +1,9 @@
 package tech.yozo.factoryrp.service;
 
 import tech.yozo.factoryrp.entity.DeviceSparesType;
+import tech.yozo.factoryrp.vo.req.DeviceInfoReq;
 import tech.yozo.factoryrp.vo.req.DeviceSparesSaveReq;
+import tech.yozo.factoryrp.vo.resp.sparepars.DeviceSparesMobileResp;
 import tech.yozo.factoryrp.vo.resp.sparepars.DeviceSparesTypeResp;
 
 import java.util.List;

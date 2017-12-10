@@ -2,8 +2,10 @@ package tech.yozo.factoryrp.service;
 
 import tech.yozo.factoryrp.entity.SpareParts;
 import tech.yozo.factoryrp.page.Pagination;
+import tech.yozo.factoryrp.vo.req.DeviceInfoReq;
 import tech.yozo.factoryrp.vo.req.SparePartsAddReq;
 import tech.yozo.factoryrp.vo.req.SparePartsQueryReq;
+import tech.yozo.factoryrp.vo.resp.sparepars.DeviceSparesMobileResp;
 import tech.yozo.factoryrp.vo.resp.sparepars.SparePartsResp;
 
 import java.util.List;
@@ -23,7 +25,14 @@ public interface SparePartsService {
     void deleteSparePartsById(Long id,Long corporateIdentify);
 
     /**
-     * 根据条件分页查询
+     * 根据条件分页查询 mobile
+     * @param sparePartsQueryReq
+     * @return
+     */
+    Pagination<SpareParts> queryByPage(SparePartsQueryReq sparePartsQueryReq);
+
+    /**
+     * 根据条件分页查询 WEB
      * @param sparePartsQueryReq
      * @return
      */
@@ -43,4 +52,13 @@ public interface SparePartsService {
      * @return
      */
     List<SparePartsResp> findByIds(List<Long> ids);
+
+
+
+    /**
+     * 手机端查询备件信息
+     * @param sparePartsQueryReq
+     * @return
+     */
+    Pagination<DeviceSparesMobileResp> queryMobileDeviceSpares(SparePartsQueryReq sparePartsQueryReq);
 }

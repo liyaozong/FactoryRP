@@ -68,7 +68,7 @@ public class SparePartsResp implements Serializable {
     @ApiModelProperty(value = "库存上限",notes ="库存上限" )
     private Integer inventoryUpperLimit;
 
-    @ApiModelProperty(value = "自定义字段1",notes ="自定义字段1" )
+    /*@ApiModelProperty(value = "自定义字段1",notes ="自定义字段1" )
     private String extendFieldOne;
 
     @ApiModelProperty(value = "自定义字段2",notes ="自定义字段2" )
@@ -94,7 +94,7 @@ public class SparePartsResp implements Serializable {
     private Date extendDateFieldOne;
 
     @ApiModelProperty(value = "自定义日期2",notes ="自定义日期2" )
-    private Date extendDateFieldTwo;
+    private Date extendDateFieldTwo;*/
 
 
 }

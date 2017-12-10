@@ -19,7 +19,6 @@ import java.util.Date;
 @Data
 public class SpareParts extends BaseEntity implements Serializable {
 
-
     private static final long serialVersionUID = 7678699052167645691L;
 
     @ApiModelProperty(value = "关联设备Id",notes ="关联设备Id" )
@@ -82,11 +81,9 @@ public class SpareParts extends BaseEntity implements Serializable {
     @Column(name = "suppliers",length = 20)
     private Long suppliers;
 
-
     @ApiModelProperty(value = "库存上限",notes ="库存上限" )
     @Column(name = "inventory_upper_limit",length = 10)
     private Integer inventoryUpperLimit;
-
 
     @ApiModelProperty(value = "自定义字段1",notes ="自定义字段1" )
     @Column(name = "extend_field_one")
@@ -115,7 +112,6 @@ public class SpareParts extends BaseEntity implements Serializable {
     @ApiModelProperty(value = "自定义字段7",notes ="自定义字段7" )
     @Column(name = "extend_field_seven")
     private String extendFieldSeven;
-
 
     @ApiModelProperty(value = "自定义日期1",notes ="自定义日期1" )
     @Column(name = "extend_date_field_one")
