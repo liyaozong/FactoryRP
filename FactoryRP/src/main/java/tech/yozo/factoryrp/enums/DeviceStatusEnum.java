@@ -30,7 +30,7 @@ public enum DeviceStatusEnum {
 
     public static DeviceStatusEnum getByCode(Integer code) {
         for (DeviceStatusEnum v : DeviceStatusEnum.values()) {
-            if (!CheckParam.isNull(code)) {
+            if (!CheckParam.isNull(code) && v.getCode() == code) {
                 return v;
             }
         }

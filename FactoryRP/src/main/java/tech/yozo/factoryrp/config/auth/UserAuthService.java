@@ -92,7 +92,7 @@ public class UserAuthService {
      * @param request
      * @return
      */
-    public AuthUser getCurrentUserName(HttpServletRequest request){
+    public AuthUser getCurrentUser(HttpServletRequest request){
         String token = request.getHeader("token");
         String authedUserStr = stringRedisTemplate.opsForValue().get(authCachePrefix + token);
 

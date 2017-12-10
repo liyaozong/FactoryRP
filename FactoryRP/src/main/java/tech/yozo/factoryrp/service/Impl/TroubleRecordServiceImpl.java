@@ -1,5 +1,6 @@
 package tech.yozo.factoryrp.service.Impl;
 
+import com.alibaba.druid.util.StringUtils;
 import org.springframework.data.domain.Sort;
 import tech.yozo.factoryrp.entity.DeviceInfo;
 import tech.yozo.factoryrp.entity.TroubleRecord;
@@ -21,7 +22,8 @@ import tech.yozo.factoryrp.vo.req.TroubleListReq;
 import tech.yozo.factoryrp.vo.req.WorkOrderListReq;
 import tech.yozo.factoryrp.vo.resp.auth.AuthUser;
 import tech.yozo.factoryrp.vo.resp.device.trouble.SimpleTroubleRecordVo;
-import tech.yozo.factoryrp.vo.resp.device.trouble.SimpleWorkOrderVo;
+import tech.yozo.factoryrp.vo.resp.device.trouble.WaitAuditWorkOrderVo;
+import tech.yozo.factoryrp.vo.resp.device.trouble.WorkOrderCountVo;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -105,7 +107,7 @@ public class TroubleRecordServiceImpl implements TroubleRecordService {
     }
 
     @Override
-    public Pagination<SimpleWorkOrderVo> findWorkOrderByPage(WorkOrderListReq param,Long corporateIdentify,Integer status) {
+    public Pagination<WaitAuditWorkOrderVo> findWorkOrderByPage(WorkOrderListReq param, Long corporateIdentify, Integer status,AuthUser user) {
 
         Integer currentPage = param.getCurrentPage();
         Integer itemsPerPage = param.getItemsPerPage();
@@ -119,12 +121,17 @@ public class TroubleRecordServiceImpl implements TroubleRecordService {
             currentPage-=1;
         }
         Pageable p = new PageRequest(currentPage, itemsPerPage,new Sort(Sort.Direction.DESC,"createTime"));
-        Page<TroubleRecord> page = troubleRecordRepository.findByStatus(status,p);
-        Pagination<SimpleWorkOrderVo> res = new Pagination(currentPage+1,itemsPerPage,page.getTotalElements());
+        Page<TroubleRecord> page = null;
+        if (null!=user){
+            page = troubleRecordRepository.findByStatusAndRepairUserId(status,user.getUserId(),p);
+        }else {
+            page= troubleRecordRepository.findByStatusAndCorporateIdentify(status,corporateIdentify,p);
+        }
+        Pagination<WaitAuditWorkOrderVo> res = new Pagination(currentPage+1,itemsPerPage,page.getTotalElements());
         if (page.hasContent()){
-            List<SimpleWorkOrderVo> list = new ArrayList<>();
+            List<WaitAuditWorkOrderVo> list = new ArrayList<>();
             page.getContent().forEach(troubleRecord -> {
-                SimpleWorkOrderVo v = new SimpleWorkOrderVo();
+                WaitAuditWorkOrderVo v = new WaitAuditWorkOrderVo();
                 v.setId(troubleRecord.getId());
                 v.setName(troubleRecord.getDeviceInfo().getName());
                 v.setSpecification(troubleRecord.getDeviceInfo().getSpecification());
@@ -133,10 +140,52 @@ public class TroubleRecordServiceImpl implements TroubleRecordService {
                 v.setOrderNo(troubleRecord.getOrderNo());
                 v.setTroubleLevel(TroubleLevelEnum.getByCode(troubleRecord.getTroubleLevel()).getName());
                 v.setStatus(TroubleStatusEnum.getByCode(troubleRecord.getStatus()).getName());
+                v.setRepairUser(troubleRecord.getRepairUserName());
                 list.add(v);
             });
             res.setList(list);
         }
         return res;
+    }
+
+    @Override
+    public WorkOrderCountVo getCount(Long corporateIdentify, AuthUser user) {
+        Long waitAudtiCount = troubleRecordRepository.count(new Specification<TroubleRecord>() {
+            @Override
+            public Predicate toPredicate(Root<TroubleRecord> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
+                List<Predicate> listCon = new ArrayList<>();
+                listCon.add(criteriaBuilder.equal(root.get("status").as(Long.class),TroubleStatusEnum.WAIT_AUDIT.getCode()));
+                listCon.add(criteriaBuilder.equal(root.get("corporateIdentify").as(Long.class),corporateIdentify));
+                Predicate[] predicates = new Predicate[listCon.size()];
+                predicates = listCon.toArray(predicates);
+                return criteriaBuilder.and(predicates);
+            }
+        });
+        Long waitRepairCount = troubleRecordRepository.count(new Specification<TroubleRecord>() {
+            @Override
+            public Predicate toPredicate(Root<TroubleRecord> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
+                List<Predicate> listCon = new ArrayList<>();
+                listCon.add(criteriaBuilder.equal(root.get("status").as(Long.class),TroubleStatusEnum.NEED_REPAIR.getCode()));
+                listCon.add(criteriaBuilder.equal(root.get("corporateIdentify").as(Long.class),corporateIdentify));
+                Predicate[] predicates = new Predicate[listCon.size()];
+                predicates = listCon.toArray(predicates);
+                return criteriaBuilder.and(predicates);            }
+        });
+        Long repairingCount = troubleRecordRepository.count(new Specification<TroubleRecord>() {
+            @Override
+            public Predicate toPredicate(Root<TroubleRecord> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
+                List<Predicate> listCon = new ArrayList<>();
+                listCon.add(criteriaBuilder.equal(root.get("status").as(Long.class),TroubleStatusEnum.REPAIRING.getCode()));
+                listCon.add(criteriaBuilder.equal(root.get("repairUserId").as(Long.class),user.getUserId()));
+                Predicate[] predicates = new Predicate[listCon.size()];
+                predicates = listCon.toArray(predicates);
+                return criteriaBuilder.and(predicates);            }
+        });
+        WorkOrderCountVo vo = new WorkOrderCountVo();
+        vo.setAllMyOrderNum(waitAudtiCount+waitRepairCount+repairingCount);
+        vo.setRepairingNum(repairingCount);
+        vo.setWaitAuditNum(waitAudtiCount);
+        vo.setWaitRepairNum(waitRepairCount);
+        return vo;
     }
 }

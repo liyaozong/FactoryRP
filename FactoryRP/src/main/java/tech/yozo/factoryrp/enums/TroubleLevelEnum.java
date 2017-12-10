@@ -30,7 +30,7 @@ public enum TroubleLevelEnum {
 
     public static TroubleLevelEnum getByCode(Integer code) {
         for (TroubleLevelEnum v : TroubleLevelEnum.values()) {
-            if (!CheckParam.isNull(code)) {
+            if (!CheckParam.isNull(code) && v.getCode() == code) {
                 return v;
             }
         }

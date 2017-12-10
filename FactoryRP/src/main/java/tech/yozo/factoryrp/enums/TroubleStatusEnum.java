@@ -9,7 +9,7 @@ import tech.yozo.factoryrp.utils.CheckParam;
  **/
 public enum TroubleStatusEnum {
     WAIT_AUDIT(0,"待审核"),
-    NEED_REPAIR(1,"需要立刻维修"),
+    NEED_REPAIR(1,"等待维修"),
     REPAIRING(2,"维修中"),
     REPAIRED(3,"结束待验证"),
     VALIDATED(4,"验证完成");
@@ -32,7 +32,7 @@ public enum TroubleStatusEnum {
 
     public static TroubleStatusEnum getByCode(Integer code) {
         for (TroubleStatusEnum v : TroubleStatusEnum.values()) {
-            if (!CheckParam.isNull(code)) {
+            if (!CheckParam.isNull(code) && v.getCode()==code) {
                 return v;
             }
         }

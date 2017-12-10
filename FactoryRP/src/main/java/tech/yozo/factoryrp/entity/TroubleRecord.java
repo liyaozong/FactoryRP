@@ -57,4 +57,10 @@ public class TroubleRecord extends BaseEntity implements Serializable{
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "device_id")
     private DeviceInfo deviceInfo;
+
+    @Column(name = "repair_user_id")
+    private Long repairUserId;
+
+    @Column(name = "repair_user_name")
+    private String repairUserName;
 }

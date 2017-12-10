@@ -19,5 +19,7 @@ public interface TroubleRecordRepository extends BaseRepository<TroubleRecord,Lo
      * @param pageable
      * @return
      */
-    public Page<TroubleRecord> findByStatus(Integer status, Pageable pageable);
+    public Page<TroubleRecord> findByStatusAndCorporateIdentify(Integer status,Long corporateIdentify,Pageable pageable);
+
+    public Page<TroubleRecord> findByStatusAndRepairUserId(Integer status,Long repairUserId, Pageable pageable);
 }

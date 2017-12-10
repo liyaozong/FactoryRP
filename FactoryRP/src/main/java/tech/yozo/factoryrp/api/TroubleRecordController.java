@@ -42,7 +42,7 @@ public class TroubleRecordController extends BaseController{
     @ApiOperation(value = "故障报修/故障提出接口--WEB/Mobile",notes = "故障报修/故障提出接口--WEB/Mobile",httpMethod = "POST")
     public ApiResponse addTroubleRecord(@RequestBody AddTroubleRecordReq param, HttpServletRequest request){
         Long corporateIdentify =userAuthService.getCurrentUserCorporateIdentify(request);
-        AuthUser user = userAuthService.getCurrentUserName(request);
+        AuthUser user = userAuthService.getCurrentUser(request);
         troubleRecordService.addTroubleRecord(param,corporateIdentify,user);
         return apiResponse();
     }
@@ -62,7 +62,40 @@ public class TroubleRecordController extends BaseController{
     @ApiOperation(value = "查询待审核的故障列表--Mobile",notes = "查询待审核的故障列表--Mobile",httpMethod = "POST")
     public ApiResponse waitAudtiList(HttpServletRequest request,@RequestBody WorkOrderListReq req){
         Long corporateIdentify =userAuthService.getCurrentUserCorporateIdentify(request);
-        return apiResponse(troubleRecordService.findWorkOrderByPage(req,corporateIdentify, TroubleStatusEnum.WAIT_AUDIT.getCode()));
+        return apiResponse(troubleRecordService.findWorkOrderByPage(req,corporateIdentify, TroubleStatusEnum.WAIT_AUDIT.getCode(),null));
+    }
+
+    /**
+     * 查询当前企业所有的等待维修的工单
+     * @param request
+     * @return
+     */
+    @RequestMapping("waitRepairList")
+    @ApiOperation(value = "查询待维修的故障列表--Mobile",notes = "查询待维修的故障列表--Mobile",httpMethod = "POST")
+    public ApiResponse waitRepairList(HttpServletRequest request,@RequestBody WorkOrderListReq req){
+        Long corporateIdentify =userAuthService.getCurrentUserCorporateIdentify(request);
+        return apiResponse(troubleRecordService.findWorkOrderByPage(req,corporateIdentify, TroubleStatusEnum.NEED_REPAIR.getCode(),null));
+    }
+
+    /**
+     * 查询当前登录人的维修中的工单
+     * @param request
+     * @return
+     */
+    @RequestMapping("repairingList")
+    @ApiOperation(value = "查询当前登录人的维修中的故障列表--Mobile",notes = "查询当前登录人的维修中的故障列表--Mobile",httpMethod = "POST")
+    public ApiResponse repairingList(HttpServletRequest request,@RequestBody WorkOrderListReq req){
+        Long corporateIdentify =userAuthService.getCurrentUserCorporateIdentify(request);
+        AuthUser user = userAuthService.getCurrentUser(request);
+        return apiResponse(troubleRecordService.findWorkOrderByPage(req,corporateIdentify, TroubleStatusEnum.REPAIRING.getCode(),user));
+    }
+
+    @RequestMapping("countWorkOrderList")
+    @ApiOperation(value = "首页展示各类工单数量--Mobile",notes = "首页展示各类工单数量--Mobile",httpMethod = "POST")
+    public ApiResponse countWorkOrderList(HttpServletRequest request){
+        Long corporateIdentify =userAuthService.getCurrentUserCorporateIdentify(request);
+        AuthUser user = userAuthService.getCurrentUser(request);
+        return apiResponse(troubleRecordService.getCount(corporateIdentify,user));
     }
 
     /**

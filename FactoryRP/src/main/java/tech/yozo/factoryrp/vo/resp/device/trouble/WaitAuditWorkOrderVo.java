@@ -13,7 +13,7 @@ import java.util.Date;
  * @create 2017-12-10 下午3:39
  **/
 @Data
-public class SimpleWorkOrderVo implements Serializable{
+public class WaitAuditWorkOrderVo implements Serializable{
 
     @ApiModelProperty(value = "故障记录主键")
     private Long id;
@@ -38,4 +38,7 @@ public class SimpleWorkOrderVo implements Serializable{
 
     @ApiModelProperty(value = "故障级别")
     private String troubleLevel;
+
+    @ApiModelProperty(value = "指派维修人员/接单人")
+    private String repairUser;
 }
