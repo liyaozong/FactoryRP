@@ -183,11 +183,23 @@ public class TroubleRecordServiceImpl implements TroubleRecordService {
                 predicates = listCon.toArray(predicates);
                 return criteriaBuilder.and(predicates);            }
         });
+
+        Long waitValidateCount = troubleRecordRepository.count(new Specification<TroubleRecord>() {
+            @Override
+            public Predicate toPredicate(Root<TroubleRecord> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
+                List<Predicate> listCon = new ArrayList<>();
+                listCon.add(criteriaBuilder.equal(root.get("status").as(Long.class),TroubleStatusEnum.REPAIRED.getCode()));
+                listCon.add(criteriaBuilder.equal(root.get("validateUserId").as(Long.class),user.getUserId()));
+                Predicate[] predicates = new Predicate[listCon.size()];
+                predicates = listCon.toArray(predicates);
+                return criteriaBuilder.and(predicates);            }
+        });
         WorkOrderCountVo vo = new WorkOrderCountVo();
         vo.setAllMyOrderNum(waitAudtiCount+waitRepairCount+repairingCount);
         vo.setRepairingNum(repairingCount);
         vo.setWaitAuditNum(waitAudtiCount);
         vo.setWaitRepairNum(waitRepairCount);
+        vo.setWaitValidateNum(waitValidateCount);
         return vo;
     }
 }

@@ -23,4 +23,7 @@ public class WorkOrderCountVo implements Serializable{
 
     @ApiModelProperty(value = "执行中工单数量")
     private Long repairingNum;
+
+    @ApiModelProperty(value = "待验证工单数量")
+    private Long waitValidateNum;
 }
