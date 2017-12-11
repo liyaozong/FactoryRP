@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
+import tech.yozo.factoryrp.config.auth.UserAuthService;
 import tech.yozo.factoryrp.service.AuthorizationService;
 import tech.yozo.factoryrp.utils.AuthWebUtil;
 import tech.yozo.factoryrp.vo.base.ApiResponse;
@@ -34,6 +35,11 @@ public class AuthorizationController extends BaseController{
     @Resource
     private AuthorizationService authorizationService;
 
+
+    @Resource
+    private UserAuthService userAuthService;
+
+
     /*@Value("${spring.redis.host}")
     private String host;
 
@@ -45,21 +51,13 @@ public class AuthorizationController extends BaseController{
     private StringRedisTemplate stringRedisTemplate;*/
     /**
      * 根据企业标识查询所有角色
-     * @param corporateIdentify
      * @return
      */
     @ApiOperation(value = "根据企业标识查询所有角色",notes = "根据企业标识查询所有角色",httpMethod = "GET")
-    @GetMapping("/queryRolesByCorporateIdentify/{requestSeqNo}")
-    @ApiImplicitParams({
-            @ApiImplicitParam(dataType = "String" ,name = "corporateIdentify", paramType = "query" ,
-                    value = "企业唯一标识",required = true,defaultValue = "111"),
-            @ApiImplicitParam(dataType = "String" ,name = "requestSeqNo", paramType = "path" ,
-                    value = "请求流水号",required = true,defaultValue = "12345678")
-    })
-    public ApiResponse<List<RoleResp>> queryRolesByorporateIdentify(@PathVariable("requestSeqNo") String requestSeqNo,
-                                                                    @RequestParam(value="corporateIdentify",required = true,defaultValue = "1")
-                                                                            String corporateIdentify){
-        List<RoleResp> roleResps = authorizationService.queryRolesByorporateIdentify(corporateIdentify);
+    @GetMapping("/queryRoles")
+    public ApiResponse<List<RoleResp>> queryRolesByorporateIdentify(@PathVariable("requestSeqNo") String requestSeqNo,HttpServletRequest request){
+        Long corporateIdentify = userAuthService.getCurrentUserCorporateIdentify(request);
+        List<RoleResp> roleResps = authorizationService.queryRolesByCorporateIdentify(corporateIdentify);
         return apiResponse(roleResps);
     }
 
@@ -73,48 +71,37 @@ public class AuthorizationController extends BaseController{
     @PostMapping("/addRole")
     @ApiImplicitParam(dataType = "RoleReq" ,name = "roleReq", paramType = "VO" ,
             value = "企业新增相关信息",required = true)
-    public ApiResponse<RoleResp> addRole(@Valid @RequestBody RoleReq roleReq){
-        return apiResponse(authorizationService.addRole(roleReq));
+    public ApiResponse<RoleResp> addRole(@Valid @RequestBody RoleReq roleReq,HttpServletRequest request){
+        Long corporateIdentify = userAuthService.getCurrentUserCorporateIdentify(request);
+        return apiResponse(authorizationService.addRole(roleReq,corporateIdentify));
     }
 
     /**
      * 根据企业标识查询所有角色
-     * @param corporateIdentify
      * @return
      */
-    @ApiOperation(value = "根据企业标识和角色id查询角色具备的菜单",notes = "根据企业标识和角色id查询角色具备的菜单",httpMethod = "GET")
-    @GetMapping("/queryByRoleIdAndCorporateIdentify/{requestSeqNo}")
+    @ApiOperation(value = "根据角色id查询角色具备的菜单",notes = "根据角色id查询角色具备的菜单",httpMethod = "GET")
+    @GetMapping("/queryByRoleId")
     @ApiImplicitParams({
-            @ApiImplicitParam(dataType = "Long" ,name = "corporateIdentify", paramType = "query" ,
-                    value = "企业唯一标识",required = true,defaultValue = "3123881"),
             @ApiImplicitParam(dataType = "Long" ,name = "roleId", paramType = "query" ,
                     value = "角色id",required = true,defaultValue = "3"),
-            @ApiImplicitParam(dataType = "Long" ,name = "requestSeqNo", paramType = "path" ,
-                    value = "请求流水号",required = true,defaultValue = "12345678")
     })
     public ApiResponse<RoleMenuQueryResp> queryByRoleIdAndCorporateIdentify(@PathVariable("requestSeqNo") String requestSeqNo,
-                                                                            @RequestParam(value="corporateIdentify",required = true,defaultValue = "1")
-                                                                            Long corporateIdentify, @RequestParam(value="roleId",required = true,defaultValue = "1")
-                                                                                      Long roleId){
-
+                                                                            @RequestParam(value="roleId",required = true,defaultValue = "1")
+                                                                                      Long roleId,HttpServletRequest request){
+        Long corporateIdentify = userAuthService.getCurrentUserCorporateIdentify(request);
         return apiResponse(authorizationService.queryByRoleIdAndCorporateIdentify(roleId,corporateIdentify));
     }
 
 
     /**
-     * 根据企业角色标识查询企业的所有用户
-     * @param corporateIdentify
+     * 查询企业所有用户
      * @return
      */
-    @ApiOperation(value = "根据企业角色标识查询企业的所有用户",notes = "根据企业角色标识查询企业的所有用户",httpMethod = "GET")
-    @GetMapping("/queryAllUserByCorporateIdentify")
-    @ApiImplicitParams({
-            @ApiImplicitParam(dataType = "Long" ,name = "corporateIdentify", paramType = "query" ,
-                    value = "企业唯一标识",required = true,defaultValue = "3123881"),
-    })
-    public ApiResponse<RoleMenuQueryResp> queryAllUserByCorporateIdentify(@RequestParam(value="corporateIdentify",required = true,defaultValue = "1")
-                                                                                    Long corporateIdentify){
-
+    @ApiOperation(value = "查询企业所有用户",notes = "查询企业所有用户",httpMethod = "GET")
+    @GetMapping("/queryCorporateAllUser")
+    public ApiResponse<RoleMenuQueryResp> queryAllUserByCorporateIdentify(HttpServletRequest request){
+        Long corporateIdentify = userAuthService.getCurrentUserCorporateIdentify(request);
         return apiResponse(authorizationService.queryAllUserByCorporateIdentify(corporateIdentify));
     }
 
@@ -128,8 +115,9 @@ public class AuthorizationController extends BaseController{
     @PostMapping("/addMenu")
     @ApiImplicitParam(dataType = "MenuReq" ,name = "menuReq", paramType = "VO" ,
             value = "新增菜单",required = true)
-    public ApiResponse<MenuResp> addMenu(@Valid @RequestBody MenuReq menuReq){
-        return apiResponse(authorizationService.addMenu(menuReq));
+    public ApiResponse<MenuResp> addMenu(@Valid @RequestBody MenuReq menuReq,HttpServletRequest request){
+        Long corporateIdentify = userAuthService.getCurrentUserCorporateIdentify(request);
+        return apiResponse(authorizationService.addMenu(menuReq,corporateIdentify));
     }
 
 
@@ -142,8 +130,9 @@ public class AuthorizationController extends BaseController{
     @PostMapping("/addMenuRole")
     @ApiImplicitParam(dataType = "MenuRoleReq" ,name = "menuRoleReq", paramType = "VO" ,
             value = "为角色新增能访问的菜单",required = true)
-    public ApiResponse<MenuResp> addMenuRole(@Valid @RequestBody MenuRoleReq menuRoleReq){
-        return apiResponse(authorizationService.addMenuRole(menuRoleReq));
+    public ApiResponse<MenuResp> addMenuRole(@Valid @RequestBody MenuRoleReq menuRoleReq,HttpServletRequest request){
+        Long corporateIdentify = userAuthService.getCurrentUserCorporateIdentify(request);
+        return apiResponse(authorizationService.addMenuRole(menuRoleReq,corporateIdentify));
     }
 
     /**
@@ -155,8 +144,9 @@ public class AuthorizationController extends BaseController{
     @PostMapping("/addUser")
     @ApiImplicitParam(dataType = "UserAddReq" ,name = "userAddReq", paramType = "VO" ,
             value = "企业新增用户",required = true)
-    public ApiResponse<MenuResp> addUser(@Valid @RequestBody UserAddReq userAddReq){
-        return apiResponse(authorizationService.addUser(userAddReq));
+    public ApiResponse<MenuResp> addUser(@Valid @RequestBody UserAddReq userAddReq,HttpServletRequest request){
+        Long corporateIdentify = userAuthService.getCurrentUserCorporateIdentify(request);
+        return apiResponse(authorizationService.addUser(userAddReq,corporateIdentify));
     }
 
     /**
@@ -168,21 +158,19 @@ public class AuthorizationController extends BaseController{
     @PostMapping("/addUserRole")
     @ApiImplicitParam(dataType = "UserRoleReq" ,name = "userRoleReq", paramType = "VO" ,
             value = "为用户添加角色",required = true)
-    public ApiResponse<MenuResp> addUserRole(@Valid @RequestBody UserRoleReq userRoleReq){
-        return apiResponse(authorizationService.addUserRole(userRoleReq));
+    public ApiResponse<MenuResp> addUserRole(@Valid @RequestBody UserRoleReq userRoleReq,HttpServletRequest request){
+        Long corporateIdentify = userAuthService.getCurrentUserCorporateIdentify(request);
+        return apiResponse(authorizationService.addUserRole(userRoleReq,corporateIdentify));
     }
 
     /**
-     * 根据企业唯一标识查询菜单
-     * @param corporateIdentify
+     * 查询企业菜单
      * @return
      */
-    @ApiOperation(value = "根据企业唯一标识查询菜单",notes = "根据企业唯一标识查询菜单",httpMethod = "GET")
-    @GetMapping("/queryMenuByCorporateIdentify")
-    @ApiImplicitParam(dataType = "Long" ,name = "corporateIdentify", paramType = "query" ,
-            value = "根据企业唯一标识查询菜单",required = true,defaultValue = "1")
-    public ApiResponse<List<MenuResp>> queryMenuByCorporateIdentify(@RequestParam(value="corporateIdentify",required = true,defaultValue = "1")
-                                                                                Long corporateIdentify){
+    @ApiOperation(value = "查询企业菜单",notes = "查询企业菜单",httpMethod = "GET")
+    @GetMapping("/queryCorporateMenu")
+    public ApiResponse<List<MenuResp>> queryMenuByCorporateIdentify(HttpServletRequest request){
+        Long corporateIdentify = userAuthService.getCurrentUserCorporateIdentify(request);
         return apiResponse(authorizationService.queryMenuByCorporateIdentify(corporateIdentify));
     }
 

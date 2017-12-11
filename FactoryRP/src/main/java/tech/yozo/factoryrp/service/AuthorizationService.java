@@ -45,9 +45,10 @@ public interface AuthorizationService {
     /**
      * 为用户添加角色
      * @param userRoleReq
+     * @param corporateIdentify
      * @return
      */
-    UserRoleResp addUserRole(UserRoleReq userRoleReq);
+    UserRoleResp addUserRole(UserRoleReq userRoleReq,Long corporateIdentify);
 
     /**
      * 根据企业唯一标识查询菜单
@@ -68,38 +69,42 @@ public interface AuthorizationService {
     /**
      * 为角色新增能访问的菜单
      * @param menuRoleReq
+     * @param corporateIdentify
      * @return
      */
-    MenuRoleResp addMenuRole(MenuRoleReq menuRoleReq);
+    MenuRoleResp addMenuRole(MenuRoleReq menuRoleReq,Long corporateIdentify);
 
     /**
      * 根据企业标识码查询企业所有的角色
      * @param corporateIdentify
      * @return
      */
-    List<RoleResp> queryRolesByorporateIdentify(String corporateIdentify);
+    List<RoleResp> queryRolesByCorporateIdentify(Long corporateIdentify);
 
 
     /**
      * 新增角色
      * @param roleReq
+     * @param corporateIdentify
      * @return
      */
-    RoleResp addRole(RoleReq roleReq);
+    RoleResp addRole(RoleReq roleReq, Long corporateIdentify);
 
     /**
      * 新增菜单
      * @param menuReq
+     * @param corporateIdentify
      * @return
      */
-    MenuResp addMenu(MenuReq menuReq);
+    MenuResp addMenu(MenuReq menuReq,Long corporateIdentify);
 
 
     /**
      * 企业新增用户
      * @param userAddReq
+     * @param corporateIdentify
      * @return
      */
-    UserAddResp addUser(UserAddReq userAddReq);
+    UserAddResp addUser(UserAddReq userAddReq,Long corporateIdentify);
 
 }

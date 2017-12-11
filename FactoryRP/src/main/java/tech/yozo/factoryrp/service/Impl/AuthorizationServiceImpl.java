@@ -100,12 +100,13 @@ public class AuthorizationServiceImpl implements AuthorizationService {
     /**
      * 为用户添加角色
      * @param userRoleReq
+     * @param corporateIdentify
      * @return
      */
-    public UserRoleResp addUserRole(UserRoleReq userRoleReq){
+    public UserRoleResp addUserRole(UserRoleReq userRoleReq,Long corporateIdentify){
 
         UserRole userRole = userRoleRepository.findByUserIdAndRoleIdAndCorporateIdentify(userRoleReq.getUserId(),
-                userRoleReq.getRoleId(), userRoleReq.getCorporateIdentify());
+                userRoleReq.getRoleId(), corporateIdentify);
 
         if(!CheckParam.isNull(userRole)){
             throw new BussinessException(ErrorCode.USERROLE__REPETED_ERROR.getCode(),ErrorCode.USERROLE__REPETED_ERROR.getMessage());
@@ -114,7 +115,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
         userRole = new UserRole();
 
         userRole.setRoleId(userRoleReq.getRoleId());
-        userRole.setCorporateIdentify(userRoleReq.getCorporateIdentify());
+        userRole.setCorporateIdentify(corporateIdentify);
         userRole.setUserId(userRoleReq.getUserId());
 
         userRoleRepository.save(userRole);
@@ -202,11 +203,12 @@ public class AuthorizationServiceImpl implements AuthorizationService {
     /**
      * 为角色新增能访问的菜单
      * @param menuRoleReq
+     * @param corporateIdentify
      * @return
      */
-    public MenuRoleResp addMenuRole(MenuRoleReq menuRoleReq){
+    public MenuRoleResp addMenuRole(MenuRoleReq menuRoleReq,Long corporateIdentify){
 
-        MenuRole menuRole = menuRoleRepository.findByRoleIdAndMenuIdAndCorporateIdentify(menuRoleReq.getRoleId(), menuRoleReq.getMenuId(),menuRoleReq.getCorporateIdentify());
+        MenuRole menuRole = menuRoleRepository.findByRoleIdAndMenuIdAndCorporateIdentify(menuRoleReq.getRoleId(), menuRoleReq.getMenuId(),corporateIdentify);
 
         if(!CheckParam.isNull(menuRole)){
             throw new BussinessException(ErrorCode.MENUROLE__REPETED_ERROR.getCode(),ErrorCode.MENUROLE__REPETED_ERROR.getMessage());
@@ -216,7 +218,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 
         menuRole.setMenuId(menuRoleReq.getMenuId());
         menuRole.setRoleId(menuRoleReq.getRoleId());
-        menuRole.setCorporateIdentify(menuRoleReq.getCorporateIdentify());
+        menuRole.setCorporateIdentify(corporateIdentify);
         menuRole.setRemark(menuRoleReq.getRemark());
 
         menuRoleRepository.save(menuRole);
@@ -236,11 +238,12 @@ public class AuthorizationServiceImpl implements AuthorizationService {
     /**
      * 新增菜单
      * @param menuReq
+     * @param corporateIdentify
      * @return
      */
-    public MenuResp addMenu(MenuReq menuReq){
+    public MenuResp addMenu(MenuReq menuReq,Long corporateIdentify){
         Menu menu = menuRepository.findByNameAndUrlAndCorporateIdentify(menuReq.getName(),
-                menuReq.getUrl(),menuReq.getCorporateIdentify());
+                menuReq.getUrl(),corporateIdentify);
 
         if(!CheckParam.isNull(menu)){
             throw new BussinessException(ErrorCode.MENU__REPETED_ERROR.getCode(),ErrorCode.MENU__REPETED_ERROR.getMessage());
@@ -251,7 +254,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
         menu.setName(menuReq.getName());
         menu.setParentId(menuReq.getParentId());
         menu.setRemark(menuReq.getRemark());
-        menu.setCorporateIdentify(menuReq.getCorporateIdentify());
+        menu.setCorporateIdentify(corporateIdentify);
         menu.setOrderNumber(menuReq.getOrderNumber());
         menu.setUrl(menuReq.getUrl());
 
@@ -271,8 +274,8 @@ public class AuthorizationServiceImpl implements AuthorizationService {
      * @param roleReq
      * @return
      */
-    public RoleResp addRole(RoleReq roleReq){
-        Role role = roleRepository.findByRoleCodeAndCorporateIdentify(roleReq.getRoleCode(),roleReq.getCorporateIdentify());
+    public RoleResp addRole(RoleReq roleReq, Long corporateIdentify){
+        Role role = roleRepository.findByRoleCodeAndCorporateIdentify(roleReq.getRoleCode(),corporateIdentify);
 
         if(!CheckParam.isNull(role)){
             throw new BussinessException(ErrorCode.ROLE__REPETED_ERROR.getCode(),ErrorCode.ROLE__REPETED_ERROR.getMessage());
@@ -282,7 +285,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
         role.setRoleCode(roleReq.getRoleCode());
         role.setRoleName(roleReq.getRoleName());
         role.setEnableStatus(roleReq.getEnableStatus());
-        role.setCorporateIdentify(roleReq.getCorporateIdentify());
+        role.setCorporateIdentify(corporateIdentify);
         role.setRoleDescription(roleReq.getRoleDescription());
 
         roleRepository.save(role);
@@ -293,7 +296,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
         roleResp.setRoleName(role.getRoleName());
         roleResp.setRoleCode(role.getRoleCode());
         roleResp.setEnableStatus(roleReq.getEnableStatus());
-        roleResp.setCorporateIdentify(roleReq.getCorporateIdentify());
+        roleResp.setCorporateIdentify(corporateIdentify);
 
         return roleResp;
     }
@@ -306,9 +309,9 @@ public class AuthorizationServiceImpl implements AuthorizationService {
      * @param corporateIdentify
      * @return
      */
-    public List<RoleResp> queryRolesByorporateIdentify(String corporateIdentify){
+    public List<RoleResp> queryRolesByCorporateIdentify(Long corporateIdentify){
 
-        List<Role> roleList = roleRepository.findByCorporateIdentify(Long.parseLong(corporateIdentify));
+        List<Role> roleList = roleRepository.findByCorporateIdentify(corporateIdentify);
 
         if(!CheckParam.isNull(roleList)){
             List<RoleResp> roleResps = new ArrayList<>();
@@ -332,9 +335,10 @@ public class AuthorizationServiceImpl implements AuthorizationService {
     /**
      * 企业新增用户
      * @param userAddReq
+     * @param corporateIdentify
      * @return
      */
-    public UserAddResp addUser(UserAddReq userAddReq){
+    public UserAddResp addUser(UserAddReq userAddReq,Long corporateIdentify){
 
         Corporate corporate = corporateRepository.findByCorporateIdentify(userAddReq.getCorporateIdentify());
 

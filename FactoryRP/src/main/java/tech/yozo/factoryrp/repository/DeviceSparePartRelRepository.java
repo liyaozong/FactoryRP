@@ -18,7 +18,7 @@ public interface DeviceSparePartRelRepository extends BaseRepository<DeviceSpare
      * @param corporateIdentify
      * @return
      */
-    public List<DeviceSparePartRel> findByDeviceIdAndCorporateIdentify(Long deviceId,Long corporateIdentify);
+    List<DeviceSparePartRel> findByDeviceIdAndCorporateIdentify(Long deviceId,Long corporateIdentify);
 
     /**
      * 根据备件ID和企业标识查询关联关系
@@ -26,5 +26,5 @@ public interface DeviceSparePartRelRepository extends BaseRepository<DeviceSpare
      * @param corporateIdentify
      * @return
      */
-    public List<DeviceSparePartRel> findBySparePartIdAndCorporateIdentify(Long sparePartId,Long corporateIdentify);
+    List<DeviceSparePartRel> findBySparePartIdAndCorporateIdentify(Long sparePartId,Long corporateIdentify);
 }
