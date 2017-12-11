@@ -52,4 +52,11 @@ public interface TroubleRecordService {
      * @return
      */
     public WorkOrderCountVo getCount(Long corporateIdentify,AuthUser user);
+
+    /**
+     * 抢单
+     * @param id
+     * @param user
+     */
+    public void obtainOrder(Long id,AuthUser user);
 }

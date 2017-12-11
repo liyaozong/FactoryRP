@@ -2,6 +2,7 @@ package tech.yozo.factoryrp.api;
 
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
+import org.springframework.web.bind.annotation.GetMapping;
 import tech.yozo.factoryrp.config.auth.UserAuthService;
 import tech.yozo.factoryrp.enums.TroubleStatusEnum;
 import tech.yozo.factoryrp.page.Pagination;
@@ -109,6 +110,14 @@ public class TroubleRecordController extends BaseController{
         Long corporateIdentify =userAuthService.getCurrentUserCorporateIdentify(request);
         AuthUser user = userAuthService.getCurrentUser(request);
         return apiResponse(troubleRecordService.getCount(corporateIdentify,user));
+    }
+
+    @GetMapping("obtainOrder")
+    @ApiOperation(value = "抢单--Mobile",notes = "抢单--Mobile",httpMethod = "GET")
+    public ApiResponse obtainOrder(HttpServletRequest request,Long id){
+        AuthUser user = userAuthService.getCurrentUser(request);
+        troubleRecordService.obtainOrder(id,user);
+        return apiResponse();
     }
 
     /**

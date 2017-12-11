@@ -1,11 +1,11 @@
 package tech.yozo.factoryrp.service.Impl;
 
-import com.alibaba.druid.util.StringUtils;
 import org.springframework.data.domain.Sort;
 import tech.yozo.factoryrp.entity.DeviceInfo;
 import tech.yozo.factoryrp.entity.TroubleRecord;
 import tech.yozo.factoryrp.enums.TroubleLevelEnum;
 import tech.yozo.factoryrp.enums.TroubleStatusEnum;
+import tech.yozo.factoryrp.exception.BussinessException;
 import tech.yozo.factoryrp.page.Pagination;
 import tech.yozo.factoryrp.repository.TroubleRecordRepository;
 import tech.yozo.factoryrp.service.TroubleRecordService;
@@ -201,5 +201,20 @@ public class TroubleRecordServiceImpl implements TroubleRecordService {
         vo.setWaitRepairNum(waitRepairCount);
         vo.setWaitValidateNum(waitValidateCount);
         return vo;
+    }
+
+    @Override
+    public void obtainOrder(Long id, AuthUser user) {
+        TroubleRecord old = troubleRecordRepository.findOne(id);
+        if (null!=old && old.getStatus() == TroubleStatusEnum.NEED_REPAIR.getCode()
+                && (null ==old.getRepairUserId() || 0 ==old.getRepairUserId())){
+            old.setRepairUserId(user.getUserId());
+            old.setRepairUserName(user.getUserName());
+            old.setUpdateTime(new Date());
+            troubleRecordRepository.save(old);
+        }else{
+            BussinessException biz = new BussinessException("10000","工单不存在");
+            throw biz;
+        }
     }
 }
