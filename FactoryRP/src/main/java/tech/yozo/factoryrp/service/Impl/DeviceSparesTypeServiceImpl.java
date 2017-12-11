@@ -3,6 +3,7 @@ package tech.yozo.factoryrp.service.Impl;
 import org.springframework.stereotype.Service;
 import tech.yozo.factoryrp.entity.DeviceSparesType;
 import tech.yozo.factoryrp.repository.DeviceSparesTypeRepository;
+import tech.yozo.factoryrp.service.DeviceSparePartRelService;
 import tech.yozo.factoryrp.service.DeviceSparesTypeService;
 import tech.yozo.factoryrp.utils.CheckParam;
 import tech.yozo.factoryrp.vo.req.DeviceSparesSaveReq;
@@ -24,6 +25,9 @@ public class DeviceSparesTypeServiceImpl implements DeviceSparesTypeService {
 
     @Resource
     private DeviceSparesTypeRepository deviceSparesTypeRepository;
+
+    @Resource
+    private DeviceSparePartRelService deviceSparePartRelService;
 
 
     /**
@@ -156,5 +160,8 @@ public class DeviceSparesTypeServiceImpl implements DeviceSparesTypeService {
         }
             return null;
     }
+
+
+
 
 }

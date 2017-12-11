@@ -53,12 +53,19 @@ public interface SparePartsService {
      */
     List<SparePartsResp> findByIds(List<Long> ids);
 
-
-
     /**
      * 手机端查询备件信息
      * @param sparePartsQueryReq
      * @return
      */
     Pagination<DeviceSparesMobileResp> queryMobileDeviceSpares(SparePartsQueryReq sparePartsQueryReq);
+
+    /**
+     * 批量删除备件信息
+     * 先删除备件信息
+     * 再删除备件信息和设备信息的关联信息
+     * @param ids
+     * @param corporateIdentify
+     */
+    void deleteSparePartsByIds(List<Long> ids,Long corporateIdentify);
 }

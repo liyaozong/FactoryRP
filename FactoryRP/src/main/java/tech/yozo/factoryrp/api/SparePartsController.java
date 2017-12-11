@@ -7,6 +7,7 @@ import tech.yozo.factoryrp.config.auth.UserAuthService;
 import tech.yozo.factoryrp.entity.SpareParts;
 import tech.yozo.factoryrp.page.Pagination;
 import tech.yozo.factoryrp.service.SparePartsService;
+import tech.yozo.factoryrp.utils.CheckParam;
 import tech.yozo.factoryrp.vo.base.ApiResponse;
 import tech.yozo.factoryrp.vo.req.SparePartsAddReq;
 import tech.yozo.factoryrp.vo.req.SparePartsQueryReq;
@@ -19,6 +20,9 @@ import io.swagger.annotations.ApiOperation;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * @author created by Singer email:313402703@qq.com
@@ -90,6 +94,29 @@ public class SparePartsController extends BaseController{
             ,HttpServletRequest request){
         Long corporateIdentify = userAuthService.getCurrentUserCorporateIdentify(request);
         sparePartsService.deleteSparePartsById(id,corporateIdentify);
+        return apiResponse();
+    }
+
+    /**
+     * 批量删除备件信息
+     * @param ids
+     */
+    @RequestMapping("/deleteSparePartsByIds")
+    @ApiOperation(value = "批量删除备件信息--WEB",notes = "批量删除备件信息--WEB",httpMethod = "GET")
+    @ApiImplicitParams(@ApiImplicitParam(paramType = "query",dataType = "String",name = "ids",
+            value = "需要删除的主键，多个主键用逗号分割",required = true,defaultValue = "1,2"))
+    public ApiResponse deleteSparePartsByIds(String ids,HttpServletRequest request){
+        Long corporateIdentify = userAuthService.getCurrentUserCorporateIdentify(request);
+        List<Long> idList = new ArrayList<>();
+        if (!CheckParam.isNull(ids)){
+            String[] idArray =ids.split(",");
+            if (idArray.length>0){
+                Stream.of(idArray).forEach(s1 -> {
+                        idList.add(Long.parseLong(s1));
+                });
+            }
+        }
+        sparePartsService.deleteSparePartsByIds(idList,corporateIdentify);
         return apiResponse();
     }
 

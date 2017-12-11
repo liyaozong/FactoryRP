@@ -3,6 +3,7 @@ package tech.yozo.factoryrp.api;
 import tech.yozo.factoryrp.config.auth.UserAuthService;
 import tech.yozo.factoryrp.entity.DeviceType;
 import tech.yozo.factoryrp.service.DeviceTypeService;
+import tech.yozo.factoryrp.utils.CheckParam;
 import tech.yozo.factoryrp.vo.base.ApiResponse;
 import tech.yozo.factoryrp.vo.req.SaveDeviceTypeReq;
 import io.swagger.annotations.Api;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -80,4 +82,8 @@ public class DeviceTypeController extends BaseController{
         deviceTypeService.updateUpLevel(id,parentId);
         return apiResponse();
     }
+
+
+
+
 }

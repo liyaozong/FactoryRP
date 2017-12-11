@@ -272,7 +272,7 @@ public class DeviceSparePartRelServiceImpl implements DeviceSparePartRelService 
             public Predicate toPredicate(Root<DeviceSparePartRel> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
                 List<Predicate> listCon = new ArrayList<>();
                 CriteriaBuilder.In<Long> in = criteriaBuilder.in(root.get("sparePartId"));
-                spareIds.forEach(i->{
+                spareIds.stream().forEach(i->{
                     in.value(i);
                 });
                 listCon.add(in);

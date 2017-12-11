@@ -1,8 +1,10 @@
 package tech.yozo.factoryrp.service.Impl;
 
+import tech.yozo.factoryrp.entity.DeviceSparesType;
 import tech.yozo.factoryrp.entity.SpareParts;
 import tech.yozo.factoryrp.exception.BussinessException;
 import tech.yozo.factoryrp.page.Pagination;
+import tech.yozo.factoryrp.repository.DeviceSparesTypeRepository;
 import tech.yozo.factoryrp.repository.SparePartsRepository;
 import tech.yozo.factoryrp.service.DeviceSparePartRelService;
 import tech.yozo.factoryrp.service.SparePartsService;
@@ -41,7 +43,8 @@ public class SparePartsServiceImpl implements SparePartsService {
     private SparePartsRepository sparePartsRepository;
 
     @Resource
-    private DeviceSparePartRelService deviceSparePartRelService;
+    private DeviceSparePartRelService eviceSparePartRelService;
+
 
     /**
      * 根据条件分页查询 mobile
@@ -141,11 +144,9 @@ public class SparePartsServiceImpl implements SparePartsService {
     public void deleteSparePartsById(Long id,Long corporateIdentify){
 
         sparePartsRepository.delete(id);
-
-        // TODO 需要删除关联关系
         List<Long> spareIds = new ArrayList<>();
         spareIds.add(id);
-        deviceSparePartRelService.deleteRelInfoBySpareId(spareIds,corporateIdentify);
+        eviceSparePartRelService.deleteRelInfoBySpareId(spareIds,corporateIdentify);
     }
 
     /**
@@ -256,60 +257,57 @@ public class SparePartsServiceImpl implements SparePartsService {
         }
 
         Pageable p = new PageRequest(sparePartsQueryReq.getCurrentPage(), sparePartsQueryReq.getItemsPerPage());
-        Page<SpareParts> page = sparePartsRepository.findAll(new Specification<SpareParts>() {
-            @Override
-            public Predicate toPredicate(Root<SpareParts> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
-                List<Predicate> listCon = new ArrayList<>();
-                if (!StringUtils.isEmpty(sparePartsQueryReq.getCode())){ //备件编号
-                    listCon.add(criteriaBuilder.equal(root.get("code").as(String.class),sparePartsQueryReq.getCode()));
-                }
-                if (!StringUtils.isEmpty(sparePartsQueryReq.getName())){ //备件名称
-                    listCon.add(criteriaBuilder.like(root.get("name").as(String.class),"%"+sparePartsQueryReq.getName()+"%"));
-                }
-                if (!CheckParam.isNull(null!=sparePartsQueryReq.getManufacturer())){ //生产厂商
-                    listCon.add(criteriaBuilder.equal(root.get("manufacturer").as(String.class),sparePartsQueryReq.getManufacturer()));
-                }
-                if (!CheckParam.isNull(sparePartsQueryReq.getSuppliers())){ //供应商
-                    listCon.add(criteriaBuilder.equal(root.get("suppliers").as(Long.class),sparePartsQueryReq.getSuppliers()));
-                }
-                if (!CheckParam.isNull(sparePartsQueryReq.getSparePartType())){ //备件类型
-                    listCon.add(criteriaBuilder.equal(root.get("sparePartType").as(Long.class),sparePartsQueryReq.getSparePartType()));
-                }
-                if (!CheckParam.isNull(sparePartsQueryReq.getMeasuringUnit())){ //计量单位
-                    listCon.add(criteriaBuilder.equal(root.get("measuringUnit").as(Long.class),sparePartsQueryReq.getMeasuringUnit()));
-                }
-                if (!CheckParam.isNull(sparePartsQueryReq.getInventoryFloor())){ //库存下限
-                    listCon.add(criteriaBuilder.equal(root.get("inventoryFloor").as(Integer.class),sparePartsQueryReq.getInventoryFloor()));
-                }
-                if (!CheckParam.isNull(sparePartsQueryReq.getMaterialProperties())){ //物料属性
-                    listCon.add(criteriaBuilder.equal(root.get("materialProperties").as(String.class),sparePartsQueryReq.getMaterialProperties()));
-                }
-                if (!CheckParam.isNull(sparePartsQueryReq.getConversionRatio())){ //换算比例
-                    listCon.add(criteriaBuilder.equal(root.get("conversionRatio").as(Double.class),sparePartsQueryReq.getConversionRatio()));
-                }
-                if (!CheckParam.isNull(sparePartsQueryReq.getBarCode())){ //条形码
-                    listCon.add(criteriaBuilder.equal(root.get("barCode").as(String.class),sparePartsQueryReq.getBarCode()));
-                }
-                if (!CheckParam.isNull(sparePartsQueryReq.getReplacementCycle())){ //更换周期
-                    listCon.add(criteriaBuilder.equal(root.get("replacementCycle").as(Integer.class),sparePartsQueryReq.getReplacementCycle()));
-                }
-                if (!CheckParam.isNull(sparePartsQueryReq.getInventoryUpperLimit())){ //库存上限
-                    listCon.add(criteriaBuilder.equal(root.get("inventoryUpperLimit").as(Integer.class),sparePartsQueryReq.getInventoryUpperLimit()));
-                }
-                if (!CheckParam.isNull(sparePartsQueryReq.getUnitConversion())){ //换算单位
-                    listCon.add(criteriaBuilder.equal(root.get("unitConversion").as(Long.class),sparePartsQueryReq.getUnitConversion()));
-                }
-                if (!CheckParam.isNull(sparePartsQueryReq.getReferencePrice())){ //参考价
-                    listCon.add(criteriaBuilder.equal(root.get("referencePrice").as(Long.class),sparePartsQueryReq.getReferencePrice()));
-                }
-                if (!CheckParam.isNull(sparePartsQueryReq.getSpecificationsAndodels())){ //规格型号
-                    listCon.add(criteriaBuilder.equal(root.get("specificationsAndodels").as(String.class),sparePartsQueryReq.getSpecificationsAndodels()));
-                }
-                criteriaQuery.orderBy(criteriaBuilder.desc(root.get("createTime")));
-                Predicate[] predicates = new Predicate[listCon.size()];
-                predicates = listCon.toArray(predicates);
-                return criteriaBuilder.and(predicates);
+        Page<SpareParts> page = sparePartsRepository.findAll((root, criteriaQuery, criteriaBuilder) -> {
+            List<Predicate> listCon = new ArrayList<>();
+            if (!StringUtils.isEmpty(sparePartsQueryReq.getCode())){ //备件编号
+                listCon.add(criteriaBuilder.equal(root.get("code").as(String.class),sparePartsQueryReq.getCode()));
             }
+            if (!StringUtils.isEmpty(sparePartsQueryReq.getName())){ //备件名称
+                listCon.add(criteriaBuilder.like(root.get("name").as(String.class),"%"+sparePartsQueryReq.getName()+"%"));
+            }
+            if (!CheckParam.isNull(null!=sparePartsQueryReq.getManufacturer())){ //生产厂商
+                listCon.add(criteriaBuilder.equal(root.get("manufacturer").as(String.class),sparePartsQueryReq.getManufacturer()));
+            }
+            if (!CheckParam.isNull(sparePartsQueryReq.getSuppliers())){ //供应商
+                listCon.add(criteriaBuilder.equal(root.get("suppliers").as(Long.class),sparePartsQueryReq.getSuppliers()));
+            }
+            if (!CheckParam.isNull(sparePartsQueryReq.getSparePartType())){ //备件类型
+                listCon.add(criteriaBuilder.equal(root.get("sparePartType").as(Long.class),sparePartsQueryReq.getSparePartType()));
+            }
+            if (!CheckParam.isNull(sparePartsQueryReq.getMeasuringUnit())){ //计量单位
+                listCon.add(criteriaBuilder.equal(root.get("measuringUnit").as(Long.class),sparePartsQueryReq.getMeasuringUnit()));
+            }
+            if (!CheckParam.isNull(sparePartsQueryReq.getInventoryFloor())){ //库存下限
+                listCon.add(criteriaBuilder.equal(root.get("inventoryFloor").as(Integer.class),sparePartsQueryReq.getInventoryFloor()));
+            }
+            if (!CheckParam.isNull(sparePartsQueryReq.getMaterialProperties())){ //物料属性
+                listCon.add(criteriaBuilder.equal(root.get("materialProperties").as(String.class),sparePartsQueryReq.getMaterialProperties()));
+            }
+            if (!CheckParam.isNull(sparePartsQueryReq.getConversionRatio())){ //换算比例
+                listCon.add(criteriaBuilder.equal(root.get("conversionRatio").as(Double.class),sparePartsQueryReq.getConversionRatio()));
+            }
+            if (!CheckParam.isNull(sparePartsQueryReq.getBarCode())){ //条形码
+                listCon.add(criteriaBuilder.equal(root.get("barCode").as(String.class),sparePartsQueryReq.getBarCode()));
+            }
+            if (!CheckParam.isNull(sparePartsQueryReq.getReplacementCycle())){ //更换周期
+                listCon.add(criteriaBuilder.equal(root.get("replacementCycle").as(Integer.class),sparePartsQueryReq.getReplacementCycle()));
+            }
+            if (!CheckParam.isNull(sparePartsQueryReq.getInventoryUpperLimit())){ //库存上限
+                listCon.add(criteriaBuilder.equal(root.get("inventoryUpperLimit").as(Integer.class),sparePartsQueryReq.getInventoryUpperLimit()));
+            }
+            if (!CheckParam.isNull(sparePartsQueryReq.getUnitConversion())){ //换算单位
+                listCon.add(criteriaBuilder.equal(root.get("unitConversion").as(Long.class),sparePartsQueryReq.getUnitConversion()));
+            }
+            if (!CheckParam.isNull(sparePartsQueryReq.getReferencePrice())){ //参考价
+                listCon.add(criteriaBuilder.equal(root.get("referencePrice").as(Long.class),sparePartsQueryReq.getReferencePrice()));
+            }
+            if (!CheckParam.isNull(sparePartsQueryReq.getSpecificationsAndodels())){ //规格型号
+                listCon.add(criteriaBuilder.equal(root.get("specificationsAndodels").as(String.class),sparePartsQueryReq.getSpecificationsAndodels()));
+            }
+            criteriaQuery.orderBy(criteriaBuilder.desc(root.get("createTime")));
+            Predicate[] predicates = new Predicate[listCon.size()];
+            predicates = listCon.toArray(predicates);
+            return criteriaBuilder.and(predicates);
         },p);
 
         Pagination<DeviceSparesMobileResp> res = new Pagination<>();
@@ -336,8 +334,26 @@ public class SparePartsServiceImpl implements SparePartsService {
         res.setItemsPerPage(sparePartsQueryReq.getItemsPerPage());
         res.setTotalCount(Integer.valueOf(String.valueOf(page.getTotalElements())));
 
-
         return res;
     }
+
+    /**
+     * 批量删除备件信息
+     * 先删除备件信息
+     * 再删除备件信息和设备信息的关联信息
+     * @param ids
+     * @param corporateIdentify
+     */
+    public void deleteSparePartsByIds(List<Long> ids,Long corporateIdentify){
+
+        List<SpareParts> deviceSparesTypeList = sparePartsRepository.findAll(ids);
+
+        if(!CheckParam.isNull(deviceSparesTypeList) && !deviceSparesTypeList.isEmpty()){
+            sparePartsRepository.deleteInBatch(deviceSparesTypeList);
+            eviceSparePartRelService.deleteRelInfoByDeviceId(ids,corporateIdentify);
+        }
+
+    }
+
 
 }

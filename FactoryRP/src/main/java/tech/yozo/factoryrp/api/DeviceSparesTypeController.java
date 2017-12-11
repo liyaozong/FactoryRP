@@ -62,6 +62,8 @@ public class DeviceSparesTypeController extends BaseController {
     }
 
 
+
+
     /**
      * 新增备件类型 根据operateType来区分操作
      * 功能有 添加同级(operateType为1) 添加下级(operateType为2) 修改备件名称(operateType为3)
