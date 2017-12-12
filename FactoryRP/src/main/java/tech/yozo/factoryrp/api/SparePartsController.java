@@ -76,7 +76,7 @@ public class SparePartsController extends BaseController{
     @PostMapping("/queryMobileDeviceSpares")
     @ApiImplicitParam(dataType = "SparePartsQueryReq" ,name = "sparePartsQueryReq", paramType = "VO" ,
             value = "手机端查询备件信息",required = true)
-    public ApiResponse<Pagination<DeviceSparesMobileResp>> queryMobileDeviceSparesMobileResp(SparePartsQueryReq sparePartsQueryReq){
+    public ApiResponse<Pagination<DeviceSparesMobileResp>> queryMobileDeviceSparesMobileResp(@Valid @RequestBody SparePartsQueryReq sparePartsQueryReq){
         return apiResponse(sparePartsService.queryMobileDeviceSpares(sparePartsQueryReq));
     }
 
