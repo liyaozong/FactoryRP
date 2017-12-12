@@ -213,7 +213,43 @@ public class TroubleRecordServiceImpl implements TroubleRecordService {
             old.setUpdateTime(new Date());
             troubleRecordRepository.save(old);
         }else{
-            BussinessException biz = new BussinessException("10000","工单不存在");
+            BussinessException biz = new BussinessException("10000","工单不存在或状态不正确");
+            throw biz;
+        }
+    }
+
+    @Override
+    public void cancelOrder(Long id, AuthUser user) {
+        TroubleRecord old = troubleRecordRepository.findOne(id);
+        if (null!=old && old.getStatus() == TroubleStatusEnum.NEED_REPAIR.getCode()){
+            if (old.getRepairUserId() != user.getUserId()){
+                BussinessException biz = new BussinessException("10001","不是本人工单，无权限操作");
+                throw biz;
+            }
+            old.setRepairUserId(null);
+            old.setRepairUserName(null);
+            old.setUpdateTime(new Date());
+            troubleRecordRepository.save(old);
+        }else{
+            BussinessException biz = new BussinessException("10000","工单不存在或状态不正确");
+            throw biz;
+        }
+    }
+
+    @Override
+    public void startRepair(Long id, AuthUser user) {
+        TroubleRecord old = troubleRecordRepository.findOne(id);
+        if (null!=old && old.getStatus() == TroubleStatusEnum.NEED_REPAIR.getCode()){
+            if (old.getRepairUserId() != user.getUserId()){
+                BussinessException biz = new BussinessException("10001","不是本人工单，无权限操作");
+                throw biz;
+            }
+            old.setStatus(TroubleStatusEnum.REPAIRING.getCode());
+            old.setUpdateTime(new Date());
+            troubleRecordRepository.save(old);
+            //TODO 创建维修单
+        }else{
+            BussinessException biz = new BussinessException("10000","工单不存在或状态不正确");
             throw biz;
         }
     }

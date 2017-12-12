@@ -59,4 +59,17 @@ public interface TroubleRecordService {
      * @param user
      */
     public void obtainOrder(Long id,AuthUser user);
+
+    /**
+     * 撤销工单
+     * @param id
+     * @param user
+     */
+    public void cancelOrder(Long id,AuthUser user);
+
+    /**
+     * 开始维修
+     * @param id
+     */
+    public void startRepair(Long id, AuthUser user);
 }

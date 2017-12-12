@@ -120,6 +120,22 @@ public class TroubleRecordController extends BaseController{
         return apiResponse();
     }
 
+    @GetMapping("cancelOrder")
+    @ApiOperation(value = "撤单--Mobile",notes = "撤单--Mobile",httpMethod = "GET")
+    public ApiResponse cancelOrder(HttpServletRequest request,Long id){
+        AuthUser user = userAuthService.getCurrentUser(request);
+        troubleRecordService.cancelOrder(id,user);
+        return apiResponse();
+    }
+
+    @GetMapping("startRepair")
+    @ApiOperation(value = "开始维修--Mobile",notes = "开始维修--Mobile",httpMethod = "GET")
+    public ApiResponse startRepair(HttpServletRequest request,Long id){
+        AuthUser user = userAuthService.getCurrentUser(request);
+        troubleRecordService.startRepair(id,user);
+        return apiResponse();
+    }
+
     /**
      * 批量删除故障信息
      * @param ids
