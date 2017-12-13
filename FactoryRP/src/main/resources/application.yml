@@ -6,12 +6,12 @@ server:
 spring:
   active: dev
   datasource:
-      #url: jdbc:mysql://47.96.28.88:3306/factoryrp?useUnicode=true&characterEncoding=utf-8&useSSL=false
-      url: jdbc:mysql://localhost:3306/factoryrp?useUnicode=true&characterEncoding=utf-8&useSSL=false
-      #username: developer
-      #password: hIRxhU2Qm5j1XlpFXGz8aiS6dKFGFiYFMQJMh2x8d1w
-      username: root
-      password: 123456
+      url: jdbc:mysql://47.96.28.88:3306/factoryrp?useUnicode=true&characterEncoding=utf-8&useSSL=false
+      #url: jdbc:mysql://localhost:3306/factoryrp?useUnicode=true&characterEncoding=utf-8&useSSL=false
+      username: developer
+      password: hIRxhU2Qm5j1XlpFXGz8aiS6dKFGFiYFMQJMh2x8d1w
+      #username: root
+      #password: 123456
       driver-class-name: com.mysql.jdbc.Driver
       platform: mysql
       type: com.alibaba.druid.pool.DruidDataSource
@@ -54,8 +54,8 @@ spring:
           region:
             factory_class: org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory # 指定缓存provider
         hbm2ddl:
-          #auto: none
-          auto: update
+          auto: none
+          #auto: update
       javax:
         persistence:
           sharedCache:
