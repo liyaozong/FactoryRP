@@ -12,17 +12,18 @@ import tech.yozo.factoryrp.utils.CheckParam;
  */
 public enum DeviceParamDicEnum {
 
-    MEASUREUNIT(1,"计量单位");
+    SPARE_PARTS_MEASURING_UNIT("measuring_unit","计量单位"),
+    SPARE_PARTS_MATERIAL_PROPERTIES("material_properties","物料属性");
 
-    private Integer code;
+    private String code;
     private String name;
 
-    DeviceParamDicEnum(Integer code, String name) {
+    DeviceParamDicEnum(String code, String name) {
         this.code = code;
         this.name = name;
     }
 
-    public Integer getCode() {
+    public String getCode() {
         return code;
     }
 
@@ -30,7 +31,7 @@ public enum DeviceParamDicEnum {
         return name;
     }
 
-    public static DeviceParamDicEnum getByCode(Integer code) {
+    public static DeviceParamDicEnum getByCode(String code) {
         for (DeviceParamDicEnum v : DeviceParamDicEnum.values()) {
             if (!CheckParam.isNull(code) && v.getCode() == code) {
                 return v;

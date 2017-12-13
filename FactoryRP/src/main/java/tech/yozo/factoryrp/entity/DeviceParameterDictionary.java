@@ -36,4 +36,12 @@ public class DeviceParameterDictionary extends BaseEntity implements Serializabl
     @Column(name = "name",length = 20)
     private String name;
 
+
+    /**
+     * 对应枚举的类型
+     */
+    @Column(name = "type",length = 20)
+    private Integer type;
+
+
 }
