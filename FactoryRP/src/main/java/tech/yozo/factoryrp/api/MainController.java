@@ -1,8 +1,10 @@
 package tech.yozo.factoryrp.api;
 
+import tech.yozo.factoryrp.enums.DeviceParamDicEnum;
 import tech.yozo.factoryrp.utils.ErrorCode;
 import tech.yozo.factoryrp.utils.UUIDSequenceWorker;
 import tech.yozo.factoryrp.vo.base.ApiResponse;
+import tech.yozo.factoryrp.vo.resp.DeviceParamDicEnumResp;
 import tech.yozo.factoryrp.vo.resp.ErrorCodeResp;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -41,5 +43,23 @@ public class MainController extends BaseController{
         return apiResponse;
     }
 
+
+    /**
+     * 测试API
+     * @ApiImplicitParam 接口参数说明
+     * @ApiOperation 接口说明
+     * @return
+     */
+    @ApiOperation(value = "查看所有设备字典code",notes = "查看所有设备字典code",httpMethod = "GET")
+    @RequestMapping(value = "/viewDeviceDicCode",method = RequestMethod.GET)
+    @ResponseBody
+    public ApiResponse<List<DeviceParamDicEnumResp>> viewDeviceDicCode(){
+        ApiResponse<List<DeviceParamDicEnumResp>> apiResponse = new ApiResponse<>();
+        apiResponse.setErrorCode(ErrorCode.SUCCESS.getCode());
+        apiResponse.setErrorMessage(ErrorCode.SUCCESS.getCode());
+        apiResponse.setData(DeviceParamDicEnum.getAllCodesAndName());
+        apiResponse.setRequestSeqNo(UUIDSequenceWorker.uniqueSequenceId().toString());
+        return apiResponse;
+    }
 
 }

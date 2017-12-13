@@ -1,6 +1,13 @@
 package tech.yozo.factoryrp.enums;
 
 import tech.yozo.factoryrp.utils.CheckParam;
+import tech.yozo.factoryrp.utils.ErrorCode;
+import tech.yozo.factoryrp.vo.resp.DeviceParamDicEnumResp;
+import tech.yozo.factoryrp.vo.resp.ErrorCodeResp;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  *
@@ -49,6 +56,25 @@ public enum DeviceParamDicEnum {
             }
         }
         return null;
+    }
+
+    /**
+     * 拿到所有的错误码和描述
+     * @return
+     */
+    public static List<DeviceParamDicEnumResp> getAllCodesAndName(){
+        List<DeviceParamDicEnumResp> list = new ArrayList<>();
+        Arrays.stream(DeviceParamDicEnum.values()).forEach(e1 -> {
+            DeviceParamDicEnumResp errorCodeResp = new DeviceParamDicEnumResp();
+
+            errorCodeResp.setCode(e1.getCode());
+            errorCodeResp.setName(e1.getName());
+
+            list.add(errorCodeResp);
+        });
+
+
+        return list;
     }
 
 }
