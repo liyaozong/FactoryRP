@@ -1,6 +1,6 @@
 package tech.yozo.factoryrp.api;
 
-import tech.yozo.factoryrp.enums.DeviceParamDicEnum;
+import tech.yozo.factoryrp.enums.device.DeviceParamDicEnum;
 import tech.yozo.factoryrp.utils.ErrorCode;
 import tech.yozo.factoryrp.utils.UUIDSequenceWorker;
 import tech.yozo.factoryrp.vo.base.ApiResponse;

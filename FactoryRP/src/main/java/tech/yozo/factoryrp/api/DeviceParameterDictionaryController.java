@@ -9,6 +9,7 @@ import tech.yozo.factoryrp.config.auth.UserAuthService;
 import tech.yozo.factoryrp.entity.DeviceParameterDictionary;
 import tech.yozo.factoryrp.service.DeviceParameterDictionaryService;
 import tech.yozo.factoryrp.vo.base.ApiResponse;
+import tech.yozo.factoryrp.vo.req.DeviceParameterDicBatchAddReq;
 import tech.yozo.factoryrp.vo.req.DeviceParameterDicReq;
 
 import javax.annotation.Resource;
@@ -33,6 +34,21 @@ public class DeviceParameterDictionaryController extends BaseController {
     @Resource
     private UserAuthService userAuthService;
 
+
+    /**
+     * 设备基础参数批量添加
+     * @param deviceParameterDicBatchAddReq
+     * @param request
+     */
+    @PostMapping("/batchAddDeviceParameterDic")
+    @ApiOperation(value = "设备基础参数批量添加",notes = "设备基础参数批量添加",httpMethod = "POST")
+    @ApiImplicitParam(dataType = "DeviceParameterDicBatchAddReq" ,name = "deviceParameterDicBatchAddReq", paramType = "VO" ,
+            value = "设备基础参数批量添加",required = true)
+    public ApiResponse batchAddDeviceParameterDic(@Valid @RequestBody DeviceParameterDicBatchAddReq deviceParameterDicBatchAddReq,  HttpServletRequest request){
+        Long corporateIdentify = userAuthService.getCurrentUserCorporateIdentify(request);
+        deviceParameterDictionaryService.batchAddDeviceParameterDic(deviceParameterDicBatchAddReq,corporateIdentify);
+        return apiResponse();
+    }
 
     /**
      * 保存设备基本参数

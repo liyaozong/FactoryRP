@@ -1,5 +1,7 @@
 package tech.yozo.factoryrp.repository;
 
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import tech.yozo.factoryrp.entity.DeviceParameterDictionary;
 
@@ -49,5 +51,13 @@ public interface DeviceParameterDictionaryRepository extends BaseRepository<Devi
      */
     DeviceParameterDictionary findByCodeAndNameAndCorporateIdentify(String code,String name,Long corporateIdentify);
 
+
+    /**
+     * 查询最大的type值
+     * @param code
+     * @return
+     */
+    @Query(value = "select COALESCE(max(dic.type),0) from DeviceParameterDictionary dic where dic.code = :code and dic.corporateIdentify = :corporateIdentify")
+    Integer findMaxTypeByCodeAndCorporateIdentify(@Param("code") String code,@Param("corporateIdentify") Long corporateIdentify);
 
 }

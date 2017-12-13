@@ -12,7 +12,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
  * @description
  */
 //@EnableWebMvc
-@Configuration
+//@Configuration
 //@EnableAutoConfiguration
 public class WebAuthConfigurer extends WebMvcConfigurerAdapter {
 

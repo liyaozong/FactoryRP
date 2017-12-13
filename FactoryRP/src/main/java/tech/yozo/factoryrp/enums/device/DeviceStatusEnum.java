@@ -1,4 +1,4 @@
-package tech.yozo.factoryrp.enums;
+package tech.yozo.factoryrp.enums.device;
 
 import tech.yozo.factoryrp.utils.CheckParam;
 

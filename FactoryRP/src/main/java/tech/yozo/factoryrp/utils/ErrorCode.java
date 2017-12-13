@@ -28,7 +28,8 @@ public enum ErrorCode {
     CORPORATE__NOTEXIST_ERROR("0000010","企业信息不存在"),
     CORPORATE_USER__REPET_ERROR("0000011","当前企业已经存在此用户"),
     CORPORATE_SPAREPARTS__REPET_ERROR("0000012","备件已经存在"),
-    CORPORATE_DEVICEPARAM__REPET_ERROR("0000013","设备参数已经存在");
+    CORPORATE_DEVICEPARAM__REPET_ERROR("0000013","设备参数已经存在"),
+    DEVICEPARAMDIC_CODE_NOTEXIST_ERROR("0000014","设备参数枚举值错误");
 
 
     private String code;

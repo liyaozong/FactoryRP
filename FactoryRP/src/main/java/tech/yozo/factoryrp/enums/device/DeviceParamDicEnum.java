@@ -1,9 +1,7 @@
-package tech.yozo.factoryrp.enums;
+package tech.yozo.factoryrp.enums.device;
 
 import tech.yozo.factoryrp.utils.CheckParam;
-import tech.yozo.factoryrp.utils.ErrorCode;
 import tech.yozo.factoryrp.vo.resp.DeviceParamDicEnumResp;
-import tech.yozo.factoryrp.vo.resp.ErrorCodeResp;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -40,7 +38,7 @@ public enum DeviceParamDicEnum {
 
     public static DeviceParamDicEnum getByCode(String code) {
         for (DeviceParamDicEnum v : DeviceParamDicEnum.values()) {
-            if (!CheckParam.isNull(code) && v.getCode() == code) {
+            if (!CheckParam.isNull(code) && v.getCode().equals(code)) {
                 return v;
             }
         }
@@ -56,6 +54,17 @@ public enum DeviceParamDicEnum {
             }
         }
         return null;
+    }
+
+
+    /**
+     * 判断是code是否存在
+     * @param code
+     * @return
+     */
+    public static Boolean verifyIsExist(String code){
+        boolean b = CheckParam.isNull(getByCode(code));
+        return !CheckParam.isNull(getByCode(code));
     }
 
     /**

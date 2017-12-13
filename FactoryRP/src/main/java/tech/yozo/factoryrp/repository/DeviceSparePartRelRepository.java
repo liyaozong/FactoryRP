@@ -1,5 +1,7 @@
 package tech.yozo.factoryrp.repository;
 
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import tech.yozo.factoryrp.entity.DeviceSparePartRel;
 import org.springframework.stereotype.Repository;
 
@@ -27,4 +29,7 @@ public interface DeviceSparePartRelRepository extends BaseRepository<DeviceSpare
      * @return
      */
     List<DeviceSparePartRel> findBySparePartIdAndCorporateIdentify(Long sparePartId,Long corporateIdentify);
+
+
+
 }

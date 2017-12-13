@@ -1,6 +1,7 @@
 package tech.yozo.factoryrp.service;
 
 import tech.yozo.factoryrp.entity.DeviceParameterDictionary;
+import tech.yozo.factoryrp.vo.req.DeviceParameterDicBatchAddReq;
 import tech.yozo.factoryrp.vo.req.DeviceParameterDicReq;
 
 import java.util.List;
@@ -13,6 +14,12 @@ import java.util.List;
  */
 public interface DeviceParameterDictionaryService {
 
+    /**
+     * 设备基础参数批量添加
+     * @param deviceParameterDicBatchAddReq
+     * @param corporateIdentify
+     */
+    void batchAddDeviceParameterDic(DeviceParameterDicBatchAddReq deviceParameterDicBatchAddReq, Long corporateIdentify);
 
     /**
      * 添加设备字典
