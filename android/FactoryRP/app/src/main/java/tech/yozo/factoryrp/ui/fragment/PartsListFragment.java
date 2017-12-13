@@ -42,8 +42,8 @@ public class PartsListFragment extends BaseFragment {
     private static final String ARG_PARAM2 = "param2";
 
     // TODO: Rename and change types of parameters
-    private Long mParam1;
-    private String mParam2;
+    private int mParam1;
+    private long mParam2;
 
     private ListView mPartsListView;
     private List<SparePartsResp> parts;
@@ -76,8 +76,8 @@ public class PartsListFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getLong(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            mParam1 = getArguments().getInt(ARG_PARAM1);
+            mParam2 = getArguments().getLong(ARG_PARAM2);
         }
     }
 

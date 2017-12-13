@@ -16,14 +16,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" android:id="@+id/button_ask_repair" android:layout_weight="1"
                 android:drawableTop="@drawable/selector_ask_repair"
-                android:background="@android:color/background_light" android:onClick="onButtonPressed"/>
+                android:background="@android:color/background_light"/>
 
         <Button
                 android:text="@string/action_add_repair"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" android:id="@+id/button_add_repair" android:layout_weight="1"
                 android:drawableTop="@drawable/selector_repair_order"
-                android:background="@android:color/background_light" android:onClick="onButtonPressed"
+                android:background="@android:color/background_light"
                 android:enabled="false"/>
 
         <Button
@@ -31,14 +31,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" android:id="@+id/button_ask_parts" android:layout_weight="1"
                 android:drawableTop="@drawable/selector_ask_parts"
-                android:background="@android:color/background_light" android:onClick="onButtonPressed"
+                android:background="@android:color/background_light"
                 android:enabled="false"/>
         <Button
                 android:text="@string/action_add_device"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" android:id="@+id/button_add_device" android:layout_weight="1"
                 android:drawableTop="@drawable/selector_add_device"
-                android:background="@android:color/background_light" android:onClick="onButtonPressed"/>
+                android:background="@android:color/background_light"/>
 
     </LinearLayout>
 
@@ -75,49 +75,49 @@
                         <TextView
                                 android:text="@string/text_repair_wait_audit"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content" android:id="@+id/button_waitto_audit"
+                                android:layout_height="wrap_content" android:id="@+id/tv_0"
                                 android:padding="6dp" android:textSize="16sp"/>
                         <TextView
                                 android:layout_width="80dp"
                                 android:layout_height="wrap_content" android:id="@+id/textView_waitto_audit"
                                 android:text="0"
                                 android:textColor="@android:color/holo_blue_dark" android:textSize="26sp"
-                                android:paddingLeft="6dp" android:textStyle="bold" android:onClick="onButtonPressed"/>
+                                android:paddingLeft="6dp" android:textStyle="bold"/>
                         <TextView
                                 android:text="@string/text_repair_wait_exec"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content" android:id="@+id/button2" android:padding="6dp"
+                                android:layout_height="wrap_content" android:id="@+id/tv_1" android:padding="6dp"
                                 android:textSize="16sp"/>
                         <TextView
                                 android:text="0"
                                 android:layout_width="80dp"
                                 android:layout_height="wrap_content" android:id="@+id/textView_waitto_exec"
                                 android:textColor="@android:color/holo_blue_dark" android:textSize="26sp"
-                                android:paddingLeft="6dp" android:textStyle="bold" android:onClick="onButtonPressed"/>
+                                android:paddingLeft="6dp" android:textStyle="bold"/>
                     </TableRow>
                     <TableRow android:layout_width="match_parent" android:layout_height="match_parent">
                         <TextView
                                 android:text="@string/text_repair_executing"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content" android:id="@+id/button4" android:padding="6dp"
+                                android:layout_height="wrap_content" android:id="@+id/tv_2" android:padding="6dp"
                                 android:textSize="16sp"/>
                         <TextView
                                 android:text="0"
                                 android:layout_width="80dp"
                                 android:layout_height="wrap_content" android:id="@+id/textView_executing"
                                 android:textColor="@android:color/holo_blue_dark" android:textSize="26sp"
-                                android:paddingLeft="6dp" android:textStyle="bold" android:onClick="onButtonPressed"/>
+                                android:paddingLeft="6dp" android:textStyle="bold"/>
                         <TextView
                                 android:text="@string/text_repair_wait_verify"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content" android:id="@+id/button3" android:padding="6dp"
+                                android:layout_height="wrap_content" android:id="@+id/tv_3" android:padding="6dp"
                                 android:textSize="16sp"/>
                         <TextView
                                 android:text="0"
                                 android:layout_width="80dp"
                                 android:layout_height="wrap_content" android:id="@+id/textView_waitto_verify"
                                 android:textColor="@android:color/holo_blue_dark" android:textSize="26sp"
-                                android:paddingLeft="6dp" android:textStyle="bold" android:onClick="onButtonPressed"/>
+                                android:paddingLeft="6dp" android:textStyle="bold"/>
                     </TableRow>
                 </TableLayout>
             </LinearLayout>

@@ -1,21 +1,30 @@
 package tech.yozo.factoryrp.ui.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.Unbinder;
 import com.alibaba.fastjson.JSON;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import cz.msebera.android.httpclient.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
 import tech.yozo.factoryrp.R;
+import tech.yozo.factoryrp.ui.DeviceAddActivity;
+import tech.yozo.factoryrp.ui.RepairRecordListActivity;
+import tech.yozo.factoryrp.ui.ReportFaultActivity;
 import tech.yozo.factoryrp.utils.ErrorCode;
 import tech.yozo.factoryrp.utils.HttpClient;
 import tech.yozo.factoryrp.vo.resp.device.trouble.WorkOrderCountVo;
@@ -25,7 +34,7 @@ import tech.yozo.factoryrp.vo.resp.device.trouble.WorkOrderCountVo;
  * 用户主页
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link WorkBenchFragment.OnFragmentInteractionListener} interface
+ * {@link OnFragmentInteractionListener} interface
  * to handle interaction events.
  * Use the {@link WorkBenchFragment#newInstance} factory method to
  * create an instance of this fragment.
@@ -36,21 +45,39 @@ public class WorkBenchFragment extends BaseFragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
+    @BindView(R.id.button_ask_repair)
+    Button buttonAskRepair;
+    @BindView(R.id.button_add_repair)
+    Button buttonAddRepair;
+    @BindView(R.id.button_ask_parts)
+    Button buttonAskParts;
+    @BindView(R.id.button_add_device)
+    Button buttonAddDevice;
+    @BindView(R.id.textView_waitto_audit)
+    TextView textViewWaittoAudit;
+    @BindView(R.id.textView_waitto_exec)
+    TextView textViewWaittoExec;
+    @BindView(R.id.textView_executing)
+    TextView textViewExecuting;
+    @BindView(R.id.textView_waitto_verify)
+    TextView textViewWaittoVerify;
+    @BindView(R.id.listview_maintain_task)
+    ListView listviewMaintainTask;
+    @BindView(R.id.listview_check_task)
+    ListView listviewCheckTask;
+    @BindView(R.id.noNewMaintainTask)
+    TextView noNewMaintainTask;
+    @BindView(R.id.noNewCheckTask)
+    TextView noNewCheckTask;
+    Unbinder unbinder;
+
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
 
-    private TextView mTextViewWaitToAudit;
-    private TextView mTextViewWaitToExec;
-    private TextView mTextViewExecating;
-    private TextView mTextViewWaitToVerify;
-
     private WorkOrderCountVo mTroubleCount;
-
-    private ListView mMainTainTaskList;
-    private ListView mCheckTaskList;
 
 
     public WorkBenchFragment() {
@@ -89,15 +116,9 @@ public class WorkBenchFragment extends BaseFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_workbench, container, false);
-        mTextViewWaitToAudit = (TextView) view.findViewById(R.id.textView_waitto_audit);
-        mTextViewWaitToExec = (TextView) view.findViewById(R.id.textView_waitto_exec);
-        mTextViewExecating = (TextView) view.findViewById(R.id.textView_executing);
-        mTextViewWaitToVerify = (TextView) view.findViewById(R.id.textView_waitto_verify);
-
-        mMainTainTaskList = (ListView) view.findViewById(R.id.listview_maintain_task);
-        mMainTainTaskList.setEmptyView(view.findViewById(R.id.noNewMaintainTask));
-        mCheckTaskList = (ListView) view.findViewById(R.id.listview_check_task);
-        mCheckTaskList.setEmptyView(view.findViewById(R.id.noNewCheckTask));
+        unbinder = ButterKnife.bind(this, view);
+        listviewMaintainTask.setEmptyView(noNewMaintainTask);
+        listviewCheckTask.setEmptyView(noNewCheckTask);
         refreshTroubleCount();
         return view;
     }
@@ -109,20 +130,12 @@ public class WorkBenchFragment extends BaseFragment {
     }
 
     private void refreshTroubleCount() {
-        if(mTroubleCount != null) {
-            mTextViewWaitToAudit.setText(String.format("%d", mTroubleCount.getWaitAuditNum()));
-            mTextViewWaitToExec.setText(String.format("%d", mTroubleCount.getWaitRepairNum()));
-            mTextViewExecating.setText(String.format("%d", mTroubleCount.getRepairingNum()));
-            //TODO
-            mTextViewWaitToVerify.setText(String.format("%d", mTroubleCount.getAllMyOrderNum()));
+        if (mTroubleCount != null) {
+            textViewWaittoAudit.setText(String.valueOf(mTroubleCount.getWaitAuditNum()));
+            textViewWaittoExec.setText(String.valueOf(mTroubleCount.getWaitRepairNum()));
+            textViewExecuting.setText(String.valueOf(mTroubleCount.getRepairingNum()));
+            textViewWaittoVerify.setText(String.valueOf(mTroubleCount.getWaitValidateNum()));
         }
-    }
-
-// TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-//        if (mListener != null) {
-//            mListener.onWorkBenchFragmentInteraction(uri);
-//        }
     }
 
     @Override
@@ -140,6 +153,42 @@ public class WorkBenchFragment extends BaseFragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+    }
+
+    @OnClick({R.id.button_ask_repair, R.id.button_add_repair, R.id.button_ask_parts, R.id.button_add_device, R.id.textView_waitto_audit, R.id.textView_waitto_exec, R.id.textView_executing, R.id.textView_waitto_verify})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.button_ask_repair: {
+                Intent intent = new Intent(getContext(), ReportFaultActivity.class);
+                startActivity(intent);
+                break;
+            }
+            case R.id.button_add_repair:
+                //TODO
+                break;
+            case R.id.button_ask_parts:
+                break;
+            case R.id.button_add_device: {
+                Intent intent = new Intent(getContext(), DeviceAddActivity.class);
+                startActivity(intent);
+                break;
+            }
+            case R.id.textView_waitto_audit:
+            case R.id.textView_waitto_exec:
+            case R.id.textView_executing:
+            case R.id.textView_waitto_verify: {
+                Intent intent = new Intent(getContext(), RepairRecordListActivity.class);
+                intent.putExtra(RepairRecordListActivity.RECORD_CATEGORY, view.getId());
+                startActivity(intent);
+                break;
+            }
+        }
     }
 
     /**

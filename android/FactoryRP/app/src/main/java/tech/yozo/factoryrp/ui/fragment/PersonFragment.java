@@ -1,13 +1,20 @@
 package tech.yozo.factoryrp.ui.fragment;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.Unbinder;
 import tech.yozo.factoryrp.R;
+import tech.yozo.factoryrp.ui.LoginActivity;
 import tech.yozo.factoryrp.utils.HttpClient;
 
 
@@ -22,12 +29,15 @@ public class PersonFragment extends BaseFragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    @BindView(R.id.button_logout)
+    Button buttonLogout;
+    @BindView(R.id.tv_person_name)
+    TextView tvPersonName;
+    Unbinder unbinder;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
-    private TextView mPersonNameView;
 
     public PersonFragment() {
         // Required empty public constructor
@@ -65,13 +75,31 @@ public class PersonFragment extends BaseFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_person, container, false);
-        mPersonNameView = (TextView) view.findViewById(R.id.tv_person_name);
+        unbinder = ButterKnife.bind(this, view);
         return view;
     }
 
     @Override
     protected void loadData() {
         HttpClient client = HttpClient.getInstance();
-        mPersonNameView.setText(client.getAuthUser().getUserName());
+        tvPersonName.setText(client.getAuthUser().getUserName());
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+    }
+
+    @OnClick(R.id.button_logout)
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.button_logout:
+                Intent intent = new Intent(getContext(), LoginActivity.class);
+                startActivity(intent);
+                HttpClient client = HttpClient.getInstance();
+                client.setAuthUser(null);
+                getActivity().finish();
+        }
     }
 }

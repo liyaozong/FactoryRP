@@ -18,6 +18,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import tech.yozo.factoryrp.R;
 import tech.yozo.factoryrp.ui.RepairDetailActivity;
+import tech.yozo.factoryrp.utils.Constant;
 import tech.yozo.factoryrp.utils.ErrorCode;
 import tech.yozo.factoryrp.utils.HttpClient;
 import tech.yozo.factoryrp.vo.req.TroubleListReq;
@@ -35,14 +36,11 @@ import java.util.List;
  * create an instance of this fragment.
  */
 public class RepairRecordListFragment extends BaseFragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private int mParam1;
-    private String mParam2;
+    private int param1;
+    private long param2;
 
     private ListView mRepairRecordListView;
     private List<WaitAuditWorkOrderVo> troubles;
@@ -64,11 +62,11 @@ public class RepairRecordListFragment extends BaseFragment {
      * @return A new instance of fragment RepairRecordListFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static RepairRecordListFragment newInstance(int param1, String param2) {
+    public static RepairRecordListFragment newInstance(int param1, long param2) {
         RepairRecordListFragment fragment = new RepairRecordListFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putLong(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -77,8 +75,8 @@ public class RepairRecordListFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getInt(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            param1 = getArguments().getInt(ARG_PARAM1);
+            param2 = getArguments().getLong(ARG_PARAM2);
         }
     }
 
@@ -113,25 +111,32 @@ public class RepairRecordListFragment extends BaseFragment {
         TroubleListReq req = new TroubleListReq();
         req.setCurrentPage(0);
         req.setItemsPerPage(10);
-        StringEntity param = new StringEntity(JSON.toJSONString(req), Charset.forName("UTF-8"));
 
-        switch (mParam1) {
-            case R.id.textView_waitto_audit:
-                client.post(getContext(), HttpClient.TROUBLE_WAIT_AUDIT, param, getTroubleListResponse);
+        String url = null;
+        switch (param1) {
+            case Constant.FOR_WAIT_AUDIT:
+                url = HttpClient.TROUBLE_WAIT_AUDIT;
                 break;
-            case R.id.textView_waitto_exec:
-                client.post(getContext(), HttpClient.TROUBLE_WAIT_REPAIR, param, getTroubleListResponse);
+            case Constant.FOR_WAIT_REPAIR:
+                url = HttpClient.TROUBLE_WAIT_REPAIR;
                 break;
-            case R.id.textView_executing:
-                client.post(getContext(), HttpClient.TROUBLE_REPAIRING, param, getTroubleListResponse);
+            case Constant.FOR_REPAIRING:
+                url = HttpClient.TROUBLE_REPAIRING;
                 break;
-            case R.id.textView_waitto_verify:
-                client.post(getContext(), HttpClient.TROUBLE_WAIT_VALIDATE, param, getTroubleListResponse);
+            case Constant.FOR_WAIT_VERIFY:
+                url = HttpClient.TROUBLE_WAIT_VALIDATE;
+                break;
+            case Constant.FOR_PERSON:
+                break;
+            case Constant.FOR_DEVICE:
+                url = HttpClient.TROUBLE_LIST;
+                req.setDeviceId(param2);
                 break;
             default:
                 break;
         }
-        client.post(getContext(), HttpClient.TROUBLE_WAIT_AUDIT, param, getTroubleListResponse);
+        StringEntity param = new StringEntity(JSON.toJSONString(req), Charset.forName("UTF-8"));
+        client.post(getContext(), url, param, getTroubleListResponse);
     }
 
     private JsonHttpResponseHandler getTroubleListResponse = new JsonHttpResponseHandler() {
