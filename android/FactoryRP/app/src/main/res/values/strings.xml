@@ -55,10 +55,10 @@
 
     <string name="title_parts_info">备件信息</string>
 
-    <string name="text_repair_wait_audit">待审核</string>
-    <string name="text_repair_wait_exec">待执行</string>
-    <string name="text_repair_executing">执行中</string>
-    <string name="text_repair_wait_verify">待验收</string>
+    <string name="text_repair_wait_audit">待审核工单</string>
+    <string name="text_repair_wait_exec">待执行工单</string>
+    <string name="text_repair_executing">执行中工单</string>
+    <string name="text_repair_wait_verify">待验收工单</string>
 
     <string name="text_device_name">设备名称：</string>
     <string name="text_device_code">设备编号：</string>

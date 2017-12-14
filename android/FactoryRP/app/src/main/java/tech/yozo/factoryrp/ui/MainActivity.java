@@ -138,42 +138,4 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
-
-    public void onButtonPressed(View view) {
-        switch(view.getId()){
-            case R.id.button_add_device: {
-                Intent intent = new Intent(this, DeviceAddActivity.class);
-                startActivity(intent);
-                break;
-            }
-            case R.id.button_add_repair:
-            case R.id.button_ask_parts:
-                break;
-            case R.id.button_ask_repair: {
-                Intent intent = new Intent(this, ReportFaultActivity.class);
-                startActivity(intent);
-                break;
-            }
-            case R.id.textView_waitto_audit:
-            case R.id.textView_waitto_exec:
-            case R.id.textView_executing:
-            case R.id.textView_waitto_verify: {
-                Intent intent = new Intent(this, RepairRecordListActivity.class);
-                intent.putExtra(RepairRecordListActivity.RECORD_CATEGORY, view.getId());
-                startActivity(intent);
-                break;
-            }
-            case R.id.button_logout: {
-                Intent intent = new Intent(this, LoginActivity.class);
-                startActivity(intent);
-                HttpClient client = HttpClient.getInstance();
-                client.setAuthUser(null);
-                finish();
-                break;
-            }
-            default:
-                break;
-        }
-
-    }
 }

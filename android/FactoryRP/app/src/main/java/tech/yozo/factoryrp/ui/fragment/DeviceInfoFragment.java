@@ -39,8 +39,8 @@ public class DeviceInfoFragment extends BaseFragment {
     private static final String ARG_PARAM2 = "param2";
 
     // TODO: Rename and change types of parameters
-    private Long mParam1;
-    private String mParam2;
+    private int mParam1;
+    private long mParam2;
 
     private List<Map<String, Object>> data = new ArrayList<>();;
     private SimpleAdapter adapter;
@@ -72,8 +72,8 @@ public class DeviceInfoFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getLong(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            mParam1 = getArguments().getInt(ARG_PARAM1);
+            mParam2 = getArguments().getLong(ARG_PARAM2);
         }
     }
 
@@ -93,7 +93,7 @@ public class DeviceInfoFragment extends BaseFragment {
     @Override
     protected void loadData() {
         RequestParams params = new RequestParams();
-        params.put("id", mParam1);
+        params.put("id", mParam2);
         HttpClient client = HttpClient.getInstance();
         client.get(getActivity(), HttpClient.DEVICE_GET, params, requestDeviceDetailResponse);
     }
