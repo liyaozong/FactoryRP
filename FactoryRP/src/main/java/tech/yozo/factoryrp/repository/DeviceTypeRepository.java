@@ -1,5 +1,6 @@
 package tech.yozo.factoryrp.repository;
 
+import tech.yozo.factoryrp.entity.DeviceTroubleType;
 import tech.yozo.factoryrp.entity.DeviceType;
 import org.springframework.stereotype.Repository;
 
@@ -13,12 +14,31 @@ public interface DeviceTypeRepository extends BaseRepository<DeviceType,Long>{
      * @param statusFlag
      * @return
      */
-    public List<DeviceType> findByCorporateIdentifyAndStatusFlag(Long corporateIdentify, Integer statusFlag);
+    List<DeviceType> findByCorporateIdentifyAndStatusFlag(Long corporateIdentify, Integer statusFlag);
 
     /**
      * 根据上级ID查询
      * @param parentId
      * @return
      */
-    public List<DeviceType> findByParentId(Long parentId);
+    List<DeviceType> findByParentId(Long parentId);
+
+
+    /**
+     * 根据父级菜单id以及企业唯一标识进行查询
+     * @param parentId
+     * @param corporateIdentify
+     * @return
+     */
+    List<DeviceType> findByParentIdAndCorporateIdentify(Long parentId, Long corporateIdentify);
+
+
+    /**
+     * 根据父级菜单id，名称和企业唯一标识进行查询
+     * @param parentId
+     * @param corporateIdentify
+     * @return
+     */
+    DeviceType findByParentIdAndCorporateIdentifyAndName(Long parentId, Long corporateIdentify,String name);
+
 }

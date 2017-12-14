@@ -17,9 +17,15 @@ import java.util.List;
  */
 public enum DeviceParamDicEnum {
 
-    SPARE_PARTS_MEASURING_UNIT("measuring_unit","计量单位"),
-    SPARE_PARTS_MATERIAL_PROPERTIES("material_properties","物料属性");
-
+    DEVICE_PARAMMEASURING_UNIT("device_measuring_unit","设备计量单位"),
+    DEVICE_PARAM_USESTATUS("device_use_status","设备使用状况"),
+    DEVICE_PARAM_TROUBLE_REASON("device_trouble_reason","设备故障原因"),
+    DEVICE_PARAM_TROUBLE_LEVEL("device_trouble_level","设备故障等级"),
+    DEVICE_PARAM_REPAIR_LEVEL("device_repair_level","设备故障等级"),
+    DEVICE_PARAM_MAINTENANCE_LEVEL("device_maintenance_level","设备保养级别"),
+    DEVICE_PARAM_DEVICE_FLAG("device_device_flag","设备标识"),
+    DEVICE_PARAM_BAD_REVIEW_REASON("device_bad_review_reason","设备差评理由"),
+    DEVICE_PARAMMATERIAL_PROPERTIES("device_material_properties","设备物料属性");
     private String code;
     private String name;
 

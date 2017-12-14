@@ -26,7 +26,7 @@ public class DeviceParameterDictionary extends BaseEntity implements Serializabl
     /**
      * 设备参数code，区分不同种类的设备参数 code值可以相同
      */
-    @Column(name = "code",length = 20)
+    @Column(name = "code",length = 50)
     private String code;
 
 

@@ -18,7 +18,7 @@ import java.io.Serializable;
 public class DeviceSparesTypeResp implements Serializable {
 
 
-    @ApiModelProperty(value = "备件id",notes ="备件id")
+    @ApiModelProperty(value = "备件类型id",notes ="备件类型id")
     private Long id;
 
     @ApiModelProperty(value = "备件名称",notes ="备件名称")

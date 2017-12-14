@@ -2,6 +2,7 @@ package tech.yozo.factoryrp.repository;
 
 import org.springframework.stereotype.Repository;
 import tech.yozo.factoryrp.entity.DeviceSparesType;
+import tech.yozo.factoryrp.entity.DeviceTroubleType;
 
 import java.util.List;
 
@@ -36,5 +37,14 @@ public interface DeviceSparesTypeRepository extends BaseRepository<DeviceSparesT
      * @return
      */
     List<DeviceSparesType> findByParentIdAndCorporateIdentify(Long parentId,Long corporateIdentify);
+
+
+    /**
+     * 根据父级菜单id，名称和企业唯一标识进行查询
+     * @param parentId
+     * @param corporateIdentify
+     * @return
+     */
+    DeviceSparesType findByParentIdAndCorporateIdentifyAndName(Long parentId, Long corporateIdentify, String name);
 
 }

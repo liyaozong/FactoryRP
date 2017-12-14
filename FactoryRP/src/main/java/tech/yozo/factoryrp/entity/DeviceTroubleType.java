@@ -9,14 +9,19 @@ import javax.persistence.Table;
 import java.io.Serializable;
 
 /**
- * 设备类型信息
+ * 设备故障类型
+ * @author created by Singer email:313402703@qq.com
+ * @time 2017/12/14
+ * @description
  */
-@Table(name = "device_type")
+@Table(name = "device_trouble_type")
 @Entity
 @Data
-public class DeviceType extends BaseEntity implements Serializable{
+public class DeviceTroubleType extends BaseEntity implements Serializable {
 
-    @ApiModelProperty(value = "设备类型名称",notes ="设备类型名称" )
+    private static final long serialVersionUID = 6552606371987637493L;
+
+    @ApiModelProperty(value = "设备故障类型名称",notes ="设备故障类型名称")
     @Column(name = "name",length = 50)
     private String name;
 
@@ -31,4 +36,6 @@ public class DeviceType extends BaseEntity implements Serializable{
     @ApiModelProperty(value = "是否有效",notes ="是否有效" )
     @Column(name="status_flag",length = 20)
     private Integer statusFlag;
+
+
 }

@@ -2,10 +2,12 @@ package tech.yozo.factoryrp.service.Impl;
 
 import org.springframework.stereotype.Service;
 import tech.yozo.factoryrp.entity.DeviceSparesType;
+import tech.yozo.factoryrp.exception.BussinessException;
 import tech.yozo.factoryrp.repository.DeviceSparesTypeRepository;
 import tech.yozo.factoryrp.service.DeviceSparePartRelService;
 import tech.yozo.factoryrp.service.DeviceSparesTypeService;
 import tech.yozo.factoryrp.utils.CheckParam;
+import tech.yozo.factoryrp.utils.ErrorCode;
 import tech.yozo.factoryrp.vo.req.DeviceSparesSaveReq;
 import tech.yozo.factoryrp.vo.resp.sparepars.DeviceSparesTypeResp;
 
@@ -50,6 +52,15 @@ public class DeviceSparesTypeServiceImpl implements DeviceSparesTypeService {
             }
 
             deviceSparesTypeRepository.save(deviceSparesType);
+
+            DeviceSparesTypeResp deviceSparesTypeResp = new DeviceSparesTypeResp();
+            deviceSparesTypeResp.setId(deviceSparesType.getId());
+            deviceSparesTypeResp.setShowOrder(deviceSparesType.getShowOrder());
+            deviceSparesTypeResp.setStatusFlag(deviceSparesType.getStatusFlag());
+            deviceSparesTypeResp.setParentId(deviceSparesType.getParentId());
+            deviceSparesTypeResp.setName(deviceSparesType.getName());
+
+            return deviceSparesTypeResp;
         }
 
         return null;
@@ -110,22 +121,43 @@ public class DeviceSparesTypeServiceImpl implements DeviceSparesTypeService {
      */
     public DeviceSparesType saveDeviceSparesType(DeviceSparesSaveReq deviceSparesSaveReq,Integer operateType,Long corporateIdentify){
         DeviceSparesType deviceSparesType = new DeviceSparesType();
-        deviceSparesSaveReq.setCorporateIdentify(corporateIdentify);
-        deviceSparesSaveReq.setStatusFlag(1);
-
+        deviceSparesType.setCorporateIdentify(corporateIdentify);
+        deviceSparesType.setStatusFlag(1);
+        deviceSparesType.setName(deviceSparesSaveReq.getName());
+        if(!CheckParam.isNull(deviceSparesSaveReq.getShowOrder())){
+            deviceSparesType.setShowOrder(deviceSparesSaveReq.getShowOrder());
+        }else{
+            deviceSparesType.setShowOrder(999);
+        }
         if (1==operateType){
+
+            //注意判断重复
+            DeviceSparesType sameLevelDeviceSparesType = deviceSparesTypeRepository.findByParentIdAndCorporateIdentifyAndName(deviceSparesSaveReq.getParentId(),
+                    corporateIdentify,deviceSparesSaveReq.getName());
+
+            if(!CheckParam.isNull(sameLevelDeviceSparesType)){
+                throw new BussinessException(ErrorCode.SYSTEM_DIC_PARAM_REPET_ERROR.getCode(),ErrorCode.SYSTEM_DIC_PARAM_REPET_ERROR.getMessage());
+            }
+
             //添加同级
             deviceSparesType.setParentId(deviceSparesSaveReq.getParentId());
         }
         if (2==operateType){
+
+            //注意判断重复
+            DeviceSparesType lowerLevelDeviceSparesType = deviceSparesTypeRepository.findByParentIdAndCorporateIdentifyAndName(deviceSparesSaveReq.getId(),
+                    corporateIdentify,deviceSparesSaveReq.getName());
+
+            if(!CheckParam.isNull(lowerLevelDeviceSparesType)){
+                throw new BussinessException(ErrorCode.SYSTEM_DIC_PARAM_REPET_ERROR.getCode(),ErrorCode.SYSTEM_DIC_PARAM_REPET_ERROR.getMessage());
+            }
+
             //添加下级
             deviceSparesType.setParentId(deviceSparesSaveReq.getId());
         }
         if (3==operateType){
             //修改
             deviceSparesType = deviceSparesTypeRepository.findOne(deviceSparesSaveReq.getId());
-            deviceSparesType.setName(deviceSparesSaveReq.getName());
-
 
         }
 

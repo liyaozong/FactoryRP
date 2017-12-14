@@ -9,7 +9,7 @@ import tech.yozo.factoryrp.utils.CheckParam;
 public enum TroubleLevelEnum {
 
     HIGH(1,"紧急"),
-    NORMAL(2,""),
+    NORMAL(2,"一般"),
     OTHER(3,"其它");
 
     private Integer code;
