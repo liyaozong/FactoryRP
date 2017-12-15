@@ -25,31 +25,31 @@ myApp.controller("LoginController", function($rootScope,UrlService,$cookies,$sta
     /*新版权限系统相关权限 start*/
     $scope.WebURL=UrlService.getUrl('authorizationNew');
     $scope.userPhones=$cookies.get('username');
-    $scope.menuPerssions=[];
+//    $scope.menuPerssions=[];
 //    $scope.menuPerssions = AuthorizationService.getMenuNewPerssions();
-    $scope.userPersonInfo= userManagementService.queryUserDetail($scope.userPhones,  function(data){
-        if(data.status==0){
-            if(data.obj!=null){
-                //TODO-业务逻辑
-                /*获取当前员工 拥有的菜单权限 start*/
-//                $scope.menuPerssions = data.obj.permissions;
-                if(data.obj.permissions!=null&&data.obj.permissions!=''&&data.obj.permissions!=undefined){
-                    data.obj.permissions.forEach(function(item){
-                        if(item!=null&&item!=''&&item!=undefined){
-                            $scope.menuPerssions.push(item);
-                        }
-                    })
-                }
-                /*获取当前员工 拥有的菜单权限 end*/
-            }else{
-                console.log(data.message);
-            }
-        }else{
-            console.log(data.message);
-        }
-    }, function(err){
-        console.log(err)
-    });
+//    $scope.userPersonInfo= userManagementService.queryUserDetail($scope.userPhones,  function(data){
+//        if(data.status==0){
+//            if(data.obj!=null){
+//                //TODO-业务逻辑
+//                /*获取当前员工 拥有的菜单权限 start*/
+////                $scope.menuPerssions = data.obj.permissions;
+//                if(data.obj.permissions!=null&&data.obj.permissions!=''&&data.obj.permissions!=undefined){
+//                    data.obj.permissions.forEach(function(item){
+//                        if(item!=null&&item!=''&&item!=undefined){
+//                            $scope.menuPerssions.push(item);
+//                        }
+//                    })
+//                }
+//                /*获取当前员工 拥有的菜单权限 end*/
+//            }else{
+//                console.log(data.message);
+//            }
+//        }else{
+//            console.log(data.message);
+//        }
+//    }, function(err){
+//        console.log(err)
+//    });
 //    $scope.groupPerssions = AuthorizationService.getGroupNewPerssions();
 //    $scope.buttonPerssions = AuthorizationService.getButtonNewPerssions();
     /*新版权限系统相关权限 end*/

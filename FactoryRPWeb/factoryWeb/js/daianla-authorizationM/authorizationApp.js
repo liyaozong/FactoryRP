@@ -2,42 +2,56 @@
  * Created by Administrator on 2016/5/25.
  */
 var authorizationApp = angular.module('myApp.authorizationManagement', [ 'ui.router','tm.pagination','ngResource'])
-
-.config(function ($stateProvider, $urlRouterProvider) {
+/*服务端接口地址*/
+.constant('FF_API', {
+    base: '/',      //工程路径
+    baseTpl: 'views/'                       //模板路径
+})
+.config(function ($stateProvider, $urlRouterProvider ,FF_API) {
     $stateProvider
+        .state("main.functionManage", {
+            showName:"菜单管理",
+            tabShow:true,
+            url: "/functionManage",
+            views:{
+                'content@main':{
+                    templateUrl:FF_API.baseTpl+'daianla-authorizationManagement/functionManage.html',
+                    controller:'functionManageController'
+                }
+            }
+        })
+        .state("main.roleManage", {
+            showName:"角色管理",
+            tabShow:true,
+            url: "/roleManage",
+            views:{
+                'content@main':{
+                    templateUrl:FF_API.baseTpl+'daianla-authorizationManagement/roleManage.html',
+                    controller:'roleManageController'
+                }
+            }
+        })
+        .state("main.departmentManage", {
+            showName:"部门管理",
+            tabShow:true,
+            url: "/departmentManage",
+            views:{
+                'content@main':{
+                    templateUrl:FF_API.baseTpl+'daianla-authorizationManagement/departmentManage.html',
+                    controller:'departmentManageController'
+                }
+            }
+        })
         .state("main.userManagement", {
-            url: "/userManagement",
             showName:"用户管理",
-            templateUrl: "views/daianla-authorizationManagement/userManage.html",
-            controller: 'userManagementController'
-            })
-    })
-    .config(function ($stateProvider, $urlRouterProvider) {
-        $stateProvider
-            .state("main.roleManage", {
-                url: "/roleManage",
-                showName:"角色管理",
-                templateUrl: "views/daianla-authorizationManagement/roleManage.html",
-                controller: 'roleManageController'
-            })
-    })
-
-    .config(function ($stateProvider, $urlRouterProvider) {
-        $stateProvider
-            .state("main.functionManage", {
-                url: "/functionManage",
-                showName:"菜单管理",
-                templateUrl: "views/daianla-authorizationManagement/functionManage.html",
-                controller: 'functionManageController'
-            })
-    })
-    .config(function ($stateProvider, $urlRouterProvider) {
-        $stateProvider
-            .state("main.departmentManage", {
-                url: "/departmentManage",
-                showName:"部门管理",
-                templateUrl: "views/daianla-authorizationManagement/departmentManage.html",
-                controller: 'departmentManageController'
-            })
+            tabShow:true,
+            url: "/userManagement",
+            views:{
+                'content@main':{
+                    templateUrl:FF_API.baseTpl+'daianla-authorizationManagement/userManage.html',
+                    controller:'userManagementController'
+                }
+            }
+        })
     })
     ;

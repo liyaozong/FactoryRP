@@ -85,11 +85,11 @@ var myApp = angular.module('myApp', [
                 controller: 'LoginController'
             })
             .state("main", {
-                resolve: {
-                    menuPerssionss: function (AuthorizationService) {
-                        return AuthorizationService.getMenuNewsPerssions();
-                    }
-                },
+//                resolve: {
+//                    menuPerssionss: function (AuthorizationService) {
+//                        return AuthorizationService.getMenuNewsPerssions();
+//                    }
+//                },
                 showName:"首页",
                 tabShow:false,
                 url: "/main",
@@ -140,6 +140,7 @@ var myApp = angular.module('myApp', [
                     }
                 }
             })
+
     })
 .config(['$resourceProvider', function ($resourceProvider) {
       $resourceProvider.defaults.actions = {

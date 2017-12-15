@@ -97,31 +97,31 @@ myApp.factory('AuthorizationService', function($resource,$state, $log, $cookies,
     }
     /*新菜单权限 end*/
     /*新菜单权限 start*/
-    var _getMenuNewsPerssions = function(id,successFunc, failFunc){
-        var Query = $resource(UrlService.getUrl('authorizationNew') + 'employee/15982498650');
-
-        return Query.get({}, function(data){
-            if(data.obj.permissions != null && data.status == '0'){
-//                console.log(data);
-                menuPerssionss.length = 0;
-                data.obj.permissions.forEach(function(item){
-                    menuPerssionss.push(item);
-                });
-            }else{
-//                    alert(data.message);
-//                popupDiv('SaveSuccess');
-//                $(".Message").html(data.message);
-                $state.go("login");
-            }
-            if(successFunc){
-                successFunc(data);
-            }
-        }, function(err){
-            if(failFunc){
-                failFunc(err);
-            }
-        });
-    }
+//    var _getMenuNewsPerssions = function(id,successFunc, failFunc){
+//        var Query = $resource(UrlService.getUrl('authorizationNew') + 'employee/15982498650');
+//
+//        return Query.get({}, function(data){
+//            if(data.obj.permissions != null && data.status == '0'){
+////                console.log(data);
+//                menuPerssionss.length = 0;
+//                data.obj.permissions.forEach(function(item){
+//                    menuPerssionss.push(item);
+//                });
+//            }else{
+////                    alert(data.message);
+////                popupDiv('SaveSuccess');
+////                $(".Message").html(data.message);
+//                $state.go("login");
+//            }
+//            if(successFunc){
+//                successFunc(data);
+//            }
+//        }, function(err){
+//            if(failFunc){
+//                failFunc(err);
+//            }
+//        });
+//    }
     /*新菜单权限 end*/
     /*新分组权限 start*/
     var _getGroupNewPerssions = function(successFunc, failFunc){
@@ -288,7 +288,7 @@ myApp.factory('AuthorizationService', function($resource,$state, $log, $cookies,
         getGroupPerssions:_getGroupPerssions,
         getButtonNewPerssions:_getButtonNewPerssions,
         getMenuNewPerssions:_getMenuNewPerssions,
-        getMenuNewsPerssions:_getMenuNewsPerssions,
+//        getMenuNewsPerssions:_getMenuNewsPerssions,
         getGroupNewPerssions:_getGroupNewPerssions,
         getUsernick:_getUsernick,
         checkPerssions:_checkPerssions

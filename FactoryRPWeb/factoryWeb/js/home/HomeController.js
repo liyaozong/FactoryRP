@@ -24,8 +24,8 @@ myApp.controller("HomeController", function($rootScope,UrlService,$cookies,$stat
         'background-position':'center top',
         'overflow':'hidden'
     });
-    clearInterval(aa);
-    clearInterval(bb);
+//    clearInterval(aa);
+//    clearInterval(bb);
     $rootScope.isLogin = AuthorizationService.isLogined();
     $scope.onCloseState = function(state){
         if(!$rootScope.allStates){
