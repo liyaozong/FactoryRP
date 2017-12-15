@@ -8,7 +8,6 @@ var myApp = angular.module('myApp', [
     'myApp.Common',
     'angularFileUpload',
     'myApp.authorizationManagement',//权限管理
-    'myApp.consumerToBank',//消费贷银行对接
     'myApp.factoryParameterSetting'//参数设置
 ])
 .run(['$rootScope', '$window', '$location', '$log','$injector', function ($rootScope, $window, $location, $log, $injector) {

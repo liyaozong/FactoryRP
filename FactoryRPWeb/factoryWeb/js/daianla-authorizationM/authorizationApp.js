@@ -26,7 +26,7 @@ var authorizationApp = angular.module('myApp.authorizationManagement', [ 'ui.rou
         $stateProvider
             .state("main.functionManage", {
                 url: "/functionManage",
-                showName:"功能点管理",
+                showName:"菜单管理",
                 templateUrl: "views/daianla-authorizationManagement/functionManage.html",
                 controller: 'functionManageController'
             })
@@ -40,40 +40,4 @@ var authorizationApp = angular.module('myApp.authorizationManagement', [ 'ui.rou
                 controller: 'departmentManageController'
             })
     })
-    .config(function ($stateProvider, $urlRouterProvider) {
-        $stateProvider
-            .state("main.areaManagel", {
-                url: "/areaManagel",
-                showName:"区域管理",
-                templateUrl: "views/daianla-authorizationManagement/areaManagel.html",
-                controller: 'areaManagelController'
-            })
-    })
-    .config(function ($stateProvider, $urlRouterProvider) {
-        $stateProvider
-            .state("main.appCheckSet", {
-                url: "/appCheckSet",
-                showName:"app数据关键词设置",
-                templateUrl: "views/daianla-authorizationManagement/appCheck.html",
-                controller: 'appSetController'
-            })
-    })
-
-    .config(function ($stateProvider, $urlRouterProvider) {
-        $stateProvider
-            .state("main.teamManage", {
-                url: "/teamManage",
-                showName:"小组管理",
-                templateUrl: "views/daianla-authorizationManagement/teamManage.html",
-                controller: 'teamManageController'
-            })
-    })
-    .config(function ($stateProvider, $urlRouterProvider) {
-        $stateProvider
-            .state("main.repairOrderModel", {
-                url: "/repairOrderModel",
-                showName:"工单模板",
-                templateUrl: "views/daianla-authorizationManagement/repairOrderModelManage.html",
-                controller: 'repairOrderModelController'
-            })
-    });
+    ;

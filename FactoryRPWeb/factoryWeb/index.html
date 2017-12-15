@@ -49,7 +49,6 @@
 <!--引入 css js问件时加随机数   防止浏览器缓存end-->
 <script src="app.js"></script>
 <!--<script src="js/home/HttpIntercepters.js"></script>-->
-<script src="js/comm/inderService.js"></script>
 <script type="text/javascript" src="js/home/AuthorizationService.js"></script>
 <script type="text/javascript" src="js/home/HomeController.js"></script>
 <script type="text/javascript" src="js/home/LoginController.js"></script>
@@ -66,50 +65,7 @@
 <script type="text/javascript" src="js/daianla-authorizationM/functionManageService.js"></script>
 <script type="text/javascript" src="js/daianla-authorizationM/departmentManageController.js"></script>
 <script type="text/javascript" src="js/daianla-authorizationM/departmentManageService.js"></script>
-<script type="text/javascript" src="js/daianla-authorizationM/areaManagelController.js"></script>
-<script type="text/javascript" src="js/daianla-authorizationM/areaManagelService.js"></script>
-<script type="text/javascript" src="js/daianla-authorizationM/appSetService.js"></script>
-<script type="text/javascript" src="js/daianla-authorizationM/appSetController.js"></script>
-<script type="text/javascript" src="js/daianla-authorizationM/teamManageController.js"></script>
-<script type="text/javascript" src="js/daianla-authorizationM/teamManageService.js"></script>
-<script type="text/javascript" src="js/daianla-authorizationM/repairOrderModelController.js"></script>
-<script type="text/javascript" src="js/daianla-authorizationM/repairOrderModelService.js"></script>
 <!--权限管理 end-->
-
-
-
-<!--消费贷 银行对接 start-->
-<script type="text/javascript" src="js/daianla-consumer-toBank/consumerToBankApp.js"></script>
-<script type="text/javascript" src="js/daianla-consumer-toBank/consumerToBankHadSubmitListController.js"></script>
-<script type="text/javascript" src="js/daianla-consumer-toBank/consumerToBankHadSubmitListService.js"></script>
-<script type="text/javascript" src="js/daianla-consumer-toBank/consumerToBankOrderDetailController.js"></script>
-<script type="text/javascript" src="js/daianla-consumer-toBank/consumerToBankOrderDetailService.js"></script>
-<script type="text/javascript" src="js/daianla-consumer-toBank/consumerToBankLoanOrderDetailController.js"></script>
-<script type="text/javascript" src="js/daianla-consumer-toBank/consumerToBankLoanOrderDetailService.js"></script>
-<script type="text/javascript" src="js/daianla-consumer-toBank/QueryConsumerToBankAllOrderController.js"></script>
-<script type="text/javascript" src="js/daianla-consumer-toBank/QueryConsumerToBankAllOrderService.js"></script>
-<script type="text/javascript" src="js/daianla-consumer-toBank/consumerHadSendToBankListController.js"></script>
-<script type="text/javascript" src="js/daianla-consumer-toBank/consumerHadSendToBankListService.js"></script>
-<script type="text/javascript" src="js/daianla-consumer-toBank/consumerNeedSendToBankListController.js"></script>
-<script type="text/javascript" src="js/daianla-consumer-toBank/consumerNeedSendToBankListService.js"></script>
-<script type="text/javascript" src="js/daianla-consumer-toBank/consumerNeedSendToBankLoanListController.js"></script>
-<script type="text/javascript" src="js/daianla-consumer-toBank/consumerNeedSendToBankLoanListService.js"></script>
-<script type="text/javascript" src="js/daianla-consumer-toBank/consumerSendFailToBankListController.js"></script>
-<script type="text/javascript" src="js/daianla-consumer-toBank/consumerSendFailToBankListService.js"></script>
-<script type="text/javascript" src="js/daianla-consumer-toBank/consumerYoungToBankListService.js"></script>
-<script type="text/javascript" src="js/daianla-consumer-toBank/consumerYoungToBankListController.js"></script>
-<script type="text/javascript" src="js/daianla-consumer-toBank/consumerPublicLoanController.js"></script>
-<script type="text/javascript" src="js/daianla-consumer-toBank/consumerPublicLoanService.js"></script>
-<script type="text/javascript" src="js/daianla-consumer-toBank/YouLaFastLoanOrderListController.js"></script>
-<script type="text/javascript" src="js/daianla-consumer-toBank/YouLaFastLoanOrderListService.js"></script>
-<script type="text/javascript" src="js/daianla-consumer-toBank/consumerNeedSendToCCBankListController.js"></script>
-<script type="text/javascript" src="js/daianla-consumer-toBank/consumerNeedSendToCCBankListService.js"></script>
-<script type="text/javascript" src="js/daianla-consumer-toBank/commitmentOrderController.js"></script>
-<script type="text/javascript" src="js/daianla-consumer-toBank/commitmentOrderService.js"></script>
-<script type="text/javascript" src="js/daianla-consumer-toBank/commitmentOrderDetailController.js"></script>
-<script type="text/javascript" src="js/daianla-consumer-toBank/commitmentOrderDetailService.js"></script>
-<!--消费贷 银行对接 end-->
-
 <!--参数设置 start-->
 <script type="text/javascript" src="js/factroy/factoryParameterSettingApp.js"></script>
 <script type="text/javascript" src="js/factroy/factoryParameterSettingController.js"></script>
@@ -125,15 +81,5 @@
 <!--工装模具 start-->
 <script type="text/javascript" src="js/factroy/modelToolsManageController.js"></script>
 <!--工装模具 end-->
-<script>
-    if(location.href.split("#")[1]=='/main/deviceManage'){
-        console.log($("#menuLeft .leftmenu .deviceManage"));
-        $("#menuLeft .leftmenu .deviceManage").removeClass('hide');
-        $("#menuLeft .leftmenu .deviceManage").siblings().addClass('hide');
-    }else{
-        $("#menuLeft .leftmenu .deviceManage").addClass('hide');
-        $("#menuLeft .leftmenu .deviceManage").siblings().removeClass('hide');
-    }
-</script>
 </body>
 </html>

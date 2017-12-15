@@ -63,51 +63,6 @@ $(function(){
         }
     });
 })
-
-//点击显示隐藏完成菜单和简洁菜单
-//$(function(){
-//    $(".menu-oc").click(function(){
-//        $(".leftmenu1").animate({left:"-292px"})	;
-//        $(".leftmenu2").animate({left:"0px"})
-//        $(".rightcon").css("margin-left","52px")
-//    })
-//    $(".menu-oc1").click(function(){
-//        $(".leftmenu1").animate({left:"0px"})	;
-//        $(".leftmenu2").animate({left:"-192px"});
-//        $(".rightcon").css("margin-left","240px");
-//    })
-//})
-
-//简洁菜单点击效果
-/*
- $(function(){
- $(".j_menu_list").hide();
- $(".j_a_list").click(function(){
- var len = $('.j_a_list').length;
- var index = $(".j_a_list").index(this);
- for(var i=0;i<len;i++){
- if(i == index){
- $('.j_menu_list').eq(i).slideToggle(300);
- }else{
- $('.j_menu_list').eq(i).slideUp(300);
- }
- }
- });
- $(".j_menu_list>span>i").click(function(){
- $(".j_menu_list").slideUp(300)
- })
- })*/
-//简洁菜单移动效果
-//$(function(){
-//    $(".j_menu_list").hide();
-//    $(".j_a_list").hover(function(){
-//        $(".leftmenu2 ul li").hover(function(){
-//            $(this).find('.j_menu_list').show();
-//        },function(){
-//            $(this).find('.j_menu_list').hide();
-//        });
-//    })
-//})
 /****************************************************弹出警告提示框******************************************************************************************************************/
 function popuWarning(msg){
     $("body").append(
@@ -131,7 +86,6 @@ function popuWarning(msg){
     div_obj.css("top",scrollTop+(minheight-popupHeight)/2);
     div_obj.css("left",(windowWidth-popupWidth)/2);
 }
-
 //待自定义回调的警告弹出框
 function popuWarningCall(msg,callback){
     $("body").append(
