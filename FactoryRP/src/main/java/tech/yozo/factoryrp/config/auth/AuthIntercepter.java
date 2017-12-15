@@ -65,7 +65,7 @@ public class AuthIntercepter implements HandlerInterceptor {
            logger.info(">>>>>>>>>>>>>>>>>>>>>>>>>>用户开始登陆<<<<<<<<<<<<<<<<<<"+requestURI);
 
 
-           //临时的处理逻辑
+           //临时的处理逻辑，直接返回用户权限给前端
            String username = request.getParameter("username");
            String password = request.getParameter("password");
            User user = authorizationService.findByUserName(username);
@@ -79,6 +79,7 @@ public class AuthIntercepter implements HandlerInterceptor {
            user.getRoleList().forEach(u1 ->{
                u1.getMenuList().forEach(m1 ->{
                    AuthUserMenu authUserMenu = new AuthUserMenu();
+                   authUserMenu.setId(m1.getId());
                    authUserMenu.setParentId(m1.getParentId());
                    authUserMenu.setName(m1.getName());
                    authUserMenu.setUrl(m1.getUrl());
@@ -207,6 +208,7 @@ public class AuthIntercepter implements HandlerInterceptor {
             user.getRoleList().forEach(u1 ->{
                 u1.getMenuList().forEach(m1 ->{
                     AuthUserMenu authUserMenu = new AuthUserMenu();
+                    authUserMenu.setId(m1.getId());
                     authUserMenu.setParentId(m1.getParentId());
                     authUserMenu.setName(m1.getName());
                     authUserMenu.setUrl(m1.getUrl());
