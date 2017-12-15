@@ -10,6 +10,14 @@ var myApp = angular.module('myApp', [
     'myApp.authorizationManagement',//权限管理
     'myApp.factoryParameterSetting'//参数设置
 ])
+/*服务端接口地址*/
+    .constant('FF_API', {
+        base: '/',      //工程路径
+        baseTpl: 'views/'                       //模板路径
+
+
+
+    })
 .run(['$rootScope', '$window', '$location', '$log','$injector', function ($rootScope, $window, $location, $log, $injector) {
 
         $rootScope.$on('$stateNotFound',
@@ -67,7 +75,7 @@ var myApp = angular.module('myApp', [
   $urlRouterProvider.when("", "/main/home");
   $urlRouterProvider.otherwise("/main/home");
 })
-.config(function ($stateProvider, $urlRouterProvider) {
+.config(function ($stateProvider, $urlRouterProvider,FF_API) {
         $stateProvider
             .state("login", {
                 url: "/login",
@@ -85,17 +93,52 @@ var myApp = angular.module('myApp', [
                 showName:"首页",
                 tabShow:false,
                 url: "/main",
-                templateUrl: "views/comm/home.html",
+                views: {
+                    '': {
+                        templateUrl: FF_API.baseTpl+"tpls/main.html",
+                        controller: 'HomeController'
+                    },
+                    'topMenu@main':{
+                        templateUrl:FF_API.baseTpl+'tpls/topMenu.html'
+                    },
+                    'leftMenu@main':{
+                        templateUrl:FF_API.baseTpl+'tpls/leftMenu.html'
+                    },
+                    'mainBody@main':{
+                        templateUrl:FF_API.baseTpl+'tpls/content.html'
+
+                    }
+                }
+                // templateUrl: "views/comm/home.html",
 //                templateUrl: "views/factory/index.html",
-                controller: 'HomeController'
+//                 controller: 'HomeController'
             })
             .state("main.home", {
                 showName:"首页",
                 tabShow:true,
                 url: "/home",
-                templateUrl: "views/comm/homePage.html",
+                views:{
+                    'content@main':{
+                        templateUrl:'views/comm/homePage.html',
+                        controller:'HomeController'
+                    }
+                }
+                // templateUrl: "views/comm/homePage.html",
 //                templateUrl: "views/factory/index.html",
-                controller: 'HomeController'
+//                 controller: 'HomeController'
+            })
+            //用户管理
+                //用户／用户组
+            .state("main.userManagements",{
+                showName:"用户管理",
+                tabShow:true,
+                url:"/userManagements",
+                views:{
+                    'content@main':{
+                        templateUrl:FF_API.baseTpl+'tpls/userManagement.html',
+                        controller:'userManagementCtrl'
+                    }
+                }
             })
     })
 .config(['$resourceProvider', function ($resourceProvider) {
@@ -165,3 +208,4 @@ var myApp = angular.module('myApp', [
         }
     };
 }]);
+

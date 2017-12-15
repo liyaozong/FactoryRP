@@ -1,0 +1,40 @@
+<style>
+    .isbrush{
+        display: none;
+    }
+</style>
+<div id="bg1"></div>
+<!--top 导航 start-->
+<div style="height: 88px;background:url(images/topbg.gif) repeat-x;">
+    <div class="topleft">
+        <a href="#/main/home" ui-sref="main.home"><img src="images/logo.png" title="系统首页" /></a>
+    </div>
+
+    <ul class="nav">
+        <li><a href="#/main/home" ui-sref="main.home" class="selected"><img src="images/icon01.png" title="首页" /><h2>首页</h2></a></li>
+        <li><a href="#/main/deviceManage" ui-sref="main.deviceManage"><img src="images/icon02.png" title="设备管理" /><h2>设备管理</h2></a></li>
+        <li><a href="#/main/sparePartsManage"  ui-sref="main.sparePartsManage"><img src="images/icon03.png" title="备件仓库" /><h2>备件仓库</h2></a></li>
+        <li><a href="#/main/modelToolsManage"  ui-sref="main.modelToolsManage"><img src="images/icon04.png" title="工装模具" /><h2>工装模具</h2></a></li>
+        <li><a href="#/main/userManagements" ui-sref="main.userManagements"><img src="images/icon05.png" title="用户管理" /><h2>用户管理</h2></a></li>
+        <li><a href="#/main/departmentManage"  ui-sref="main.departmentManage"><img src="images/icon06.png" title="参数设置" /><h2>参数设置</h2></a></li>
+        <li><a href="tab.html"  target="rightFrame"><img src="images/icon01.png" title="点巡检" /><h2>点巡检</h2></a></li>
+        <li><a href="tab.html"  target="rightFrame"><img src="images/icon02.png" title="导入" /><h2>导入</h2></a></li>
+        <li><a href="tab.html"  target="rightFrame"><img src="images/icon03.png" title="导入" /><h2>查看提醒</h2></a></li>
+    </ul>
+
+    <div class="topright">
+        <ul>
+            <li><span><img src="images/help.png" title="帮助"  class="helpimg"/></span><a href="#">帮助</a></li>
+            <li><a href="#">关于</a></li>
+            <li><a ng-click="exitSystem()" href="#/login" ui-sref="login">退出</a></li>
+        </ul>
+
+        <div class="user">
+            <span>admin</span>
+            <i>消息</i>
+            <b>5</b>
+        </div>
+
+    </div>
+</div>
+<!--top 导航 end-->

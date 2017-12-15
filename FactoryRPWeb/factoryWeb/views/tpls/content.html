@@ -1,0 +1,31 @@
+<!--right 内容栏 start-->
+<div style="position: absolute;overflow-x: scroll;left: 187px;width: 90%;height: auto;">
+    <div style="overflow-y: scroll;width:100%" ui-view="content">
+
+    </div>
+</div>
+<!--right 内容栏 end-->
+<script type="text/javascript">
+    $(function(){
+        //顶部导航切换
+        $(".nav li a").click(function(){
+            $(".nav li a.selected").removeClass("selected");
+            $(this).addClass("selected");
+        });
+        //导航切换
+        $(".menuson li").click(function(){
+            $(".menuson li.active").removeClass("active");
+            $(this).addClass("active");
+        });
+
+        $('.title').click(function(){
+            var $ul = $(this).next('ul');
+            $('dd').find('ul').slideUp();
+            if($ul.is(':visible')){
+                $(this).next('ul').slideUp();
+            }else{
+                $(this).next('ul').slideDown();
+            }
+        });
+    });
+</script>

@@ -248,6 +248,7 @@ myApp.controller("LoginController", function($rootScope,UrlService,$cookies,$sta
 
 
     $scope.loginToFactory=function(){
+        console.log('123456');
         if($("#username").val()==''||$("#username").val()==null||$("#username").val()==undefined){
             $("#username").focus();
         }else if($("#password").val()==''||$("#password").val()==null||$("#password").val()==undefined){
@@ -255,8 +256,8 @@ myApp.controller("LoginController", function($rootScope,UrlService,$cookies,$sta
         }else if($("#requestSeqNo").val()==''||$("#requestSeqNo").val()==null||$("#requestSeqNo").val()==undefined){
             $("#requestSeqNo").focus();
         }else{
-            $("#loginButton").attr('disabled','disabled');
-            $("#loginButton").val('登录中......');
+            // $("#loginButton").attr('disabled','disabled');
+            // $("#loginButton").val('登录中......');
             /*******登录加密 start*******/
             //  var loginMd=$("#passWord").val();
 //            hash = faultylabs.MD5($scope.password);
@@ -270,12 +271,15 @@ myApp.controller("LoginController", function($rootScope,UrlService,$cookies,$sta
                 requestSeqNo:$("#requestSeqNo").val()
             };
             var par={params:pa};
+            console.log(par,'-----');
             $http.get(UrlService.getUrl('authorizationNew')+'login',par).success(function(data){
+                console.log(data,'123');
                 if(data != null && data.status == '0' && (data.errorCode == '000000' && data.errorMessage=="成功")){
                     $scope.userNick = data.obj.employee.phone;
                     $("body").css('background-color','#fff');
                     $("body").removeAttr('id');
 //                    $state.go('main.home',{'userName':$scope.userNick});
+                    console.log('登陆成功');
                 }else{
 //                    alert(data.message);
                     $("#loginButton").removeAttr('disabled');
