@@ -7,7 +7,7 @@ authorizationApp.factory('functionManageService', function($resource, $log, UrlS
     var queryOrder = function(queryParam, successFunc){
 //        alert(1);
 //        var OrderInfo = $resource(UrlService.getUrl('authorization') + 'employee/queryPermissions');
-        var OrderInfo = $resource(UrlService.getUrl('authorizationNew') + 'queryMenuByCorporateIdentify');
+        var OrderInfo = $resource(UrlService.getUrl('authorizationNew') + 'queryCorporateMenu');
         OrderInfo.get(queryParam, function(data){
 //            alert(data);
             allOrderList.length = 0;

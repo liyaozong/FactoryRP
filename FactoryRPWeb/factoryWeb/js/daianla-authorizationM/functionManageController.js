@@ -21,8 +21,8 @@ authorizationApp.controller('functionManageController',function ($scope,$http,Ur
         $scope.Date=$filter('date')($scope.createdDate,'yyyy-MM-dd');;
 //        console.log($scope.Date);
         functionManageService.queryOrder({
-            keyword:$scope.QueryName,
-            corporateIdentify:$scope.corporateIdentify
+            keyword:$scope.QueryName
+//            corporateIdentify:$scope.corporateIdentify
 //            pageNo: $scope.paginationConf.currentPage,
 //            pageSize: $scope.paginationConf.itemsPerPage
         }, function(response){
