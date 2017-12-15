@@ -2,8 +2,8 @@
 /**
  * http服务在封装
  */
-app.factory('AppHttp',['$http', '$timeout',"$rootScope","CC_API",
-    function($http, $timeout,$rootScope,ngDialog,CC_API) {
+myApp.factory('AppHttp',['$http', '$timeout',"$rootScope",
+    function($http, $timeout,$rootScope) {
         return function(opt) {
             // if(opt.data)
             // {
