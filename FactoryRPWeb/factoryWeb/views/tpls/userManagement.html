@@ -20,10 +20,10 @@
         <div class="tools">
             <ul class="toolbar">
                 <li>
-                    <input type="text" id="1" placeholder="请输入往来单位名称" ng-model="QueryName"/>
+                    <input type="text" id="1" placeholder="请输入用户姓名" ng-model="QueryName"/>
                     <span><img style="width: 24px;" src="images/ico06.png" /></span>
                 </li>
-                <li ng-click="addContactCompany()"><span><img src="images/t01.png" /></span>添加</li>
+                <li ng-click="addUser()"><span><img src="images/t01.png" /></span>添加</li>
                 <!--<li class="click"><span><img src="images/t02.png" /></span>修改</li>-->
                 <!--<li><span><img src="images/t03.png" /></span>删除</li>-->
                 <!--<li><span><img src="images/t04.png" /></span>统计</li>-->
@@ -50,7 +50,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="userList in userLists">
+                <tr ng-repeat="userList in userLists | filter:QueryName | orderBy:userList.userId">
                     <td ng-bind="userList.userId"></td>
                     <td ng-bind="userList.userName"></td>
                     <td>
@@ -72,20 +72,20 @@
                         </a>
                     </td>
                     <td>
-                        <a href="javascript:void(0)" class="resBtn deleteBtn" ng-click="">
+                        <a href="javascript:void(0)" class="resBtn deleteBtn" ng-click="deleteUserBalance(userList.userId)">
                             <img src="image/comm/resBtnDelete.png" alt="删除"/>
                             <b class="title">删除</b>
                         </a>
                     </td>
                 </tr>
                 </tbody>
-                <tfoot>
-                <tr>
-                    <td style="text-align: center" colspan="14">
-                        <tm-pagination conf="paginationConf"></tm-pagination>
-                    </td>
-                </tr>
-                </tfoot>
+                <!--<tfoot>-->
+                <!--<tr>-->
+                    <!--<td style="text-align: center" colspan="14">-->
+                        <!--<tm-pagination conf="paginationConf"></tm-pagination>-->
+                    <!--</td>-->
+                <!--</tr>-->
+                <!--</tfoot>-->
             </table>
         </div>
         <div class="tip">
@@ -104,91 +104,39 @@
             </div>
         </div>
     </div>
-    <!--新增 往来单位 start-->
-    <!--<div class="ImportantNote addContactBalance">-->
-        <!--<div class="headline">-->
-            <!--<span>添加往来单位</span>-->
-            <!--<img onClick="hideDiv('addContactBalance')" class="companyCloseImg" src="image/comm/diffClosed.png" width="22" height="22">-->
-        <!--</div>-->
-        <!--<div style="padding: 20px 40px 20px 0;" class="businessAuth">-->
-            <!--<p style="margin-bottom: 20px;">-->
-                <!--<label for="name" style="width:auto;">-->
-                    <!--<span style="width: 100px;text-align: right">单位名称:</span>-->
-                    <!--<input id="name" ng-model="name" type="text" placeholder="请输入单位名称"/>-->
-                <!--</label>-->
-                <!--<label for="name1" style="width:auto;opacity: 0">-->
-                    <!--<span style="width: 100px;text-align: right">单位名称:</span>-->
-                    <!--<input id="name1" ng-model="name1" type="text" placeholder="请输入单位名称"/>-->
-                <!--</label>-->
-            <!--</p>-->
-            <!--<p style="margin-bottom: 20px;">-->
-                <!--<label for="code" style="width:auto;">-->
-                    <!--<span style="width: 100px;text-align: right">单位编码:</span>-->
-                    <!--<input id="code" ng-model="code" type="text" placeholder="请输入单位编码"/>-->
-                <!--</label>-->
-                <!--<label for="contactName" style="width:auto;">-->
-                    <!--<span style="width: 100px;text-align: right">默认联系人:</span>-->
-                    <!--<input id="contactName" ng-model="contactName" type="text" placeholder="请输入默认联系人"/>-->
-                <!--</label>-->
-            <!--</p>-->
-            <!--<p style="margin-bottom: 20px;">-->
-                <!--<label for="contactPhone" style="width:auto;">-->
-                    <!--<span style="width: 100px;text-align: right">联系电话:</span>-->
-                    <!--<input id="contactPhone" ng-model="contactPhone" type="text" placeholder="请输入联系电话"/>-->
-                <!--</label>-->
-                <!--<label for="fax" style="width:auto;">-->
-                    <!--<span style="width: 100px;text-align: right">传真:</span>-->
-                    <!--<input id="fax" ng-model="fax" type="text" placeholder="请输入传真"/>-->
-                <!--</label>-->
-            <!--</p>-->
-            <!--<p style="margin-bottom: 20px;">-->
-                <!--<label for="taxNumber" style="width:auto;">-->
-                    <!--<span style="width: 100px;text-align: right">税号:</span>-->
-                    <!--<input id="taxNumber" ng-model="taxNumber" type="text" placeholder="请输入税号"/>-->
-                <!--</label>-->
-                <!--<label for="email" style="width:auto;">-->
-                    <!--<span style="width: 100px;text-align: right">电子邮箱:</span>-->
-                    <!--<input id="email" ng-model="email" type="text" placeholder="请输入电子邮箱"/>-->
-                <!--</label>-->
-            <!--</p>-->
-            <!--<p style="margin-bottom: 20px;">-->
-                <!--<label for="address" style="width:auto;">-->
-                    <!--<span style="width: 100px;text-align: right">地址:</span>-->
-                    <!--<input id="address" ng-model="address" type="text" placeholder="请输入地址"/>-->
-                <!--</label>-->
-                <!--<label for="zipCode" style="width:auto;">-->
-                    <!--<span style="width: 100px;text-align: right">邮编:</span>-->
-                    <!--<input id="zipCode" ng-model="zipCode" type="text" placeholder="请输入邮编"/>-->
-                <!--</label>-->
-            <!--</p>-->
-            <!--<p style="margin-bottom: 20px;">-->
-                <!--<label for="bankName" style="width:auto;">-->
-                    <!--<span style="width: 100px;text-align: right">开户银行:</span>-->
-                    <!--<input id="bankName" ng-model="bankName" type="text" placeholder="请输入开户银行"/>-->
-                <!--</label>-->
-                <!--<label for="bankNumber" style="width:auto;">-->
-                    <!--<span style="width: 100px;text-align: right">账户:</span>-->
-                    <!--<input id="bankNumber" ng-model="bankNumber" type="text" placeholder="请输入账户"/>-->
-                <!--</label>-->
-            <!--</p>-->
-            <!--<p style="margin-bottom: 20px;">-->
-                <!--<label for="webSite" style="width:auto;">-->
-                    <!--<span style="width: 100px;text-align: right">网址:</span>-->
-                    <!--<input style="width: 417px;" id="webSite" ng-model="webSite" type="text" placeholder="请输入网址"/>-->
-                <!--</label>-->
-            <!--</p>-->
-            <!--<p style="margin-bottom: 20px;">-->
-                <!--<label for="remark" style="width:auto;">-->
-                    <!--<span style="width: 100px;text-align: right">备注:</span>-->
-                    <!--<textarea style="width: 417px;height: 80px;" id="remark" ng-model="remark" placeholder="请输入备注"></textarea>-->
-                <!--</label>-->
-            <!--</p>-->
-            <!--<div class="submitBtn1" style="text-align: center;padding-left: 40px;">-->
-                <!--<button type="button" ng-click="addContactSure()" value="" class="btn">保存</button>-->
-                <!--<button type="button" value="" class="btn" onClick="hideDiv('addContactBalance')">取消</button>-->
-            <!--</div>-->
-        <!--</div>-->
-    <!--</div>-->
+    <!--新增 企业用户 start-->
+    <div class="ImportantNote addUserPop">
+        <div class="headline">
+            <span>添加用户</span>
+            <img onClick="hideDiv('addUserPop')" class="companyCloseImg" src="image/comm/diffClosed.png" width="22" height="22">
+        </div>
+        <div style="padding: 20px 40px 20px 0;" class="businessAuth">
+            <p style="margin-bottom: 20px;">
+                <label for="code" style="width:auto;">
+                    <span style="width: 100px;text-align: right">用户姓名:</span>
+                    <input id="code" ng-model="userName" type="text" placeholder="请输入用户姓名"/>
+                </label>
+                <label for="email" style="width:auto;">
+                    <span style="width: 100px;text-align: right">企业标识符:</span>
+                    <input id="email" ng-model="corporateIdentify" type="text" placeholder="企业标识符"/>
+                </label>
+            </p>
+            <p style="margin-bottom: 20px;">
+                <label for="contactPhone" style="width:auto;">
+                    <span style="width: 100px;text-align: right">密码:</span>
+                    <input id="contactPhone" ng-model="password" type="text" placeholder="用户密码"/>
+                </label>
+                <label for="fax" style="width:auto;opacity: 0">
+                    <span style="width: 100px;text-align: right">传真:</span>
+                    <input id="fax" ng-model="fax" type="text" placeholder="请输入传真"/>
+                </label>
+            </p>
+            <div class="submitBtn1" style="text-align: center;padding-left: 40px;">
+                <button type="button" ng-click="addUsersSure()" value="" class="btn">保存</button>
+                <button type="button" value="" class="btn" onClick="hideDiv('addUserPop')">取消</button>
+            </div>
+        </div>
+    </div>
     <!--新增 往来单位 end-->
 
     <!--编辑 往来单位 start-->
@@ -278,33 +226,33 @@
     <!--</div>-->
     <!--编辑 往来单位 end-->
     <!--保存成功start-->
-    <!--<div class="ImportantNote SaveSuccess">-->
-        <!--<div class="headline">-->
-            <!--<span>重要提示</span>-->
-            <!--<img ng-click="reload()" onClick="hideDiv('SaveSuccess')" class="companyCloseImg" src="image/comm/diffClosed.png" width="22" height="22">-->
-        <!--</div>-->
-        <!--<div class="businessAuth">-->
-            <!--<p><img src="image/comm/attentionPlease.png" alt="注意："/><span class="Message"></span></p>-->
-            <!--<div class="submitBtn1" style="text-align: right;">-->
-                <!--<input ng-click="reload()" onClick="hideDiv('SaveSuccess')" type="button" value="确定" class="btn">-->
-            <!--</div>-->
-        <!--</div>-->
-    <!--</div>-->
+    <div class="ImportantNote SaveSuccess">
+        <div class="headline">
+            <span>重要提示</span>
+            <img ng-click="reload()" onClick="hideDiv('SaveSuccess')" class="companyCloseImg" src="image/comm/diffClosed.png" width="22" height="22">
+        </div>
+        <div class="businessAuth">
+            <p><img src="image/comm/attentionPlease.png" alt="注意："/><span class="Message"></span></p>
+            <div class="submitBtn1" style="text-align: right;">
+                <input ng-click="reload()" onClick="hideDiv('SaveSuccess')" type="button" value="确定" class="btn">
+            </div>
+        </div>
+    </div>
     <!--保存成功end-->
     <!--单个删除弹出框start-->
-    <!--<div class="ImportantNote deleteContactCompany">-->
-        <!--<div class="headline">-->
-            <!--<span>删除往来单位</span>-->
-            <!--<img onClick="hideDiv('deleteContactCompany')" class="companyCloseImg" src="image/comm/diffClosed.png" width="22" height="22">-->
-        <!--</div>-->
-        <!--<div class="businessAuth">-->
-            <!--<p><img src="image/comm/attentionPlease.png" alt="注意："/>确认删除 <span style="color: #ff0000;">{{companyName}}</span> 该单位？</p>-->
-            <!--<div class="submitBtn1" style="text-align: center;">-->
-                <!--<input type="button" value="删除"  class="btn" ng-click="deleteContactCompanySure()"/>-->
-                <!--<input type="button" value="取消" class="btn" onClick="hideDiv('deleteContactCompany')">-->
-            <!--</div>-->
-        <!--</div>-->
-    <!--</div>-->
+    <div class="ImportantNote deleteUser">
+        <div class="headline">
+            <span>删除企业用户</span>
+            <img onClick="hideDiv('deleteUser')" class="companyCloseImg" src="image/comm/diffClosed.png" width="22" height="22">
+        </div>
+        <div class="businessAuth">
+            <p><img src="image/comm/attentionPlease.png" alt="注意："/>确认删除 <span style="color: #ff0000;">{{companyName}}</span> 该用户？</p>
+            <div class="submitBtn1" style="text-align: center;">
+                <input type="button" value="删除"  class="btn" ng-click="deleteUserSure()"/>
+                <input type="button" value="取消" class="btn" onClick="hideDiv('deleteUser')">
+            </div>
+        </div>
+    </div>
     <!--单个删除弹出框end-->
     <script type="text/javascript">
         $(document).ready(function(){

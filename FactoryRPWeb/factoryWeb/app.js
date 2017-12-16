@@ -14,7 +14,9 @@ var myApp = angular.module('myApp', [
     .constant('FF_API', {
         base: 'http://47.96.28.88:9550',      //工程路径
         baseTpl: 'views/'                 ,      //模板路径
-        queryCorporateAllUserPath:'/api/authorization/queryCorporateAllUser'   //查询所有企业用户
+        queryCorporateAllUserPath:'/api/authorization/queryCorporateAllUser' ,  //查询所有企业用户
+        addUserPath:'/api/authorization/addUser',   //添加企业用户
+        deleteUserPath:''   //删除某个用户
 
 
     })
@@ -130,6 +132,8 @@ var myApp = angular.module('myApp', [
             //用户管理
                 //用户／用户组
             .state("main.userManagements",{
+                showName:"用户管理",
+                tabShow:true,
                 url:"/userManagements",
                 views:{
                     'content@main':{
