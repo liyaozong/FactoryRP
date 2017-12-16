@@ -72,12 +72,12 @@
             <!--<li><span><img src="images/t05.png" /></span>设置</li>-->
         <!--</ul>-->
     </div>
-    <div class="tableListDiv data-container jurisdiction">
+    <div style="max-height: 400px;overflow: auto;" class="tableListDiv data-container jurisdiction">
         <table>
             <thead>
             <tr>
                 <th style="min-width: 30px;">序号</th>
-                <th>设备编号</th>
+                <!--<th>设备编号</th>-->
                 <th>设备名称</th>
                 <th>使用部门</th>
                 <th>规格型号</th>
@@ -98,14 +98,14 @@
             <tbody>
             <tr ng-repeat="orderDetail in deviceListInfos">
                 <td class="firstTd">{{$index+1}}</td>
-                <td>{{orderDetail.code||'--'}}</td>
+                <!--<td>{{orderDetail.code||'--'}}</td>-->
                 <td>{{orderDetail.name||'--'}}</td>
                 <td>{{orderDetail.useDept||'--'}}</td>
                 <td>{{orderDetail.specification||'--'}}</td>
                 <td>{{orderDetail.installationAddress||'--'}}</td>
                 <td>{{orderDetail.operator||'--'}}</td>
                 <td>{{orderDetail.useStatus||'--'}}</td>
-                <td>{{orderDetail.buyDate||'--'}}</td>
+                <td>{{orderDetail.buyDate|date:'yyyy-MM-dd'||'--'}}</td>
                 <td>{{orderDetail.head||'--'}}</td>
                 <td>{{orderDetail.deviceType||'--'}}</td>
                 <td>{{orderDetail.supplier||'--'}}</td>
