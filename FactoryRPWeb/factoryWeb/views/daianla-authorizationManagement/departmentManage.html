@@ -76,9 +76,11 @@
             <li>创建时间</li>
             <li>操作</li>
         </ul>
-        <ul ng-show="order.parentId=='-1'" ng-repeat="order in orderList">
+
+        <!--<div depart-ment-manage=""></div>-->
+        <ul ng-if="order.parentId=='-1'" ng-repeat="order in orderList">
             <li>
-                <a ng-click="showSub(order,$event)" style="font-size: 21px" href="javascript:void (0)">+</a>
+                <a ng-click="showSub(order.id,$event)" style="font-size: 21px" href="javascript:void (0)">+</a>
                 {{$index+1}}
                 <input data-id="{{order}}" name="mainId" ng-model="mainId" type="radio" value="{{order.parentId}}"/>
             </li>
@@ -86,39 +88,38 @@
             <li>{{order.code||'--'}}</li>
             <li>{{order.createTime||'--'}}</li>
             <li>
-                <a href="javascript:void(0)" class="resBtn editBtn" ng-click="updateDepartMent(order)">
+                <a href="javascript:void(0)" class="resBtn editBtn" ng-click="updateDepartMent(order.parentId,order.name,order.code,order.id)">
                     <img src="image/comm/resBtnEdit.png" alt="编辑"/>
                     <b class="title">编辑</b>
                 </a>
-                <a href="javascript:void(0)" class="resBtn deleteBtn" ng-click="deleteDepart(order)">
+                <a href="javascript:void(0)" class="resBtn deleteBtn" ng-click="deleteDepart(order.id)">
                     <img src="image/comm/resBtnDelete.png" alt="删除"/>
                     <b class="title">删除</b>
                 </a>
             </li>
-            <div class="hide subContainer">
-                <ul ng-repeat="subDetail in subList">
-                    <li>
-                        <a ng-click="showSub(subDetail,$event)" style="font-size: 21px" href="javascript:void (0)">+</a>
-                        {{$index+1}}
-                        <input data-id="{{subDetail}}" name="mainId" ng-model="mainId" type="radio" value="{{subDetail.parentId}}"/>
-                    </li>
-                    <li>{{subDetail.name||'--'}}</li>
-                    <li>{{subDetail.code||'--'}}</li>
-                    <li>{{subDetail.createTime||'--'}}</li>
-                    <li>
-                        <a href="javascript:void(0)" class="resBtn editBtn" ng-click="updateDepartMent(subDetail)">
-                            <img src="image/comm/resBtnEdit.png" alt="编辑"/>
-                            <b class="title">编辑</b>
-                        </a>
-                        <a href="javascript:void(0)" class="resBtn deleteBtn" ng-click="deleteDepart(subDetail)">
-                            <img src="image/comm/resBtnDelete.png" alt="删除"/>
-                            <b class="title">删除</b>
-                        </a>
-                    </li>
-                </ul>
-            </div>
+            <!--<div class="hide subContainer">-->
+                <!--<ul ng-repeat="subDetail in subList">-->
+                    <!--<li>-->
+                        <!--<a ng-click="showSub(subDetail,$event)" style="font-size: 21px" href="javascript:void (0)">+</a>-->
+                        <!--{{$index+1}}-->
+                        <!--<input data-id="{{subDetail}}" name="mainId" ng-model="mainId" type="radio" value="{{subDetail.parentId}}"/>-->
+                    <!--</li>-->
+                    <!--<li>{{subDetail.name||'&#45;&#45;'}}</li>-->
+                    <!--<li>{{subDetail.code||'&#45;&#45;'}}</li>-->
+                    <!--<li>{{subDetail.createTime||'&#45;&#45;'}}</li>-->
+                    <!--<li>-->
+                        <!--<a href="javascript:void(0)" class="resBtn editBtn" ng-click="updateDepartMent(subDetail)">-->
+                            <!--<img src="image/comm/resBtnEdit.png" alt="编辑"/>-->
+                            <!--<b class="title">编辑</b>-->
+                        <!--</a>-->
+                        <!--<a href="javascript:void(0)" class="resBtn deleteBtn" ng-click="deleteDepart(subDetail)">-->
+                            <!--<img src="image/comm/resBtnDelete.png" alt="删除"/>-->
+                            <!--<b class="title">删除</b>-->
+                        <!--</a>-->
+                    <!--</li>-->
+                <!--</ul>-->
+            <!--</div>-->
         </ul>
-
         <table style="display: none">
             <thead>
             <tr>

@@ -1,9 +1,9 @@
 /**
  * Created by jayvenLee on 2017/11/11.
  */
-authorizationApp.controller('departmentManageController',function ($scope,$cookies,$http,$filter,UrlService, $resource, $location, $state,departmentManageService) {
+authorizationApp.controller('departmentManageController',function ($scope,$cookies,$http,$filter,UrlService, $resource, $location, $state,departmentManageService,$compile) {
     if($location.path()=='/main/deviceManage'){
-        console.log($("#menuLeft .leftmenu .deviceManage"));
+        // console.log($("#menuLeft .leftmenu .deviceManage"));
         $("#menuLeft .leftmenu .deviceManage").removeClass('hide');
         $("#menuLeft .leftmenu .deviceManage").siblings().addClass('hide');
     }else{
@@ -26,6 +26,7 @@ authorizationApp.controller('departmentManageController',function ($scope,$cooki
 //    console.log($scope.orderList);
     /*查询所有用户 start*/
     $scope.onQuery=function () {
+        console.log('++++++');
         departmentManageService.queryOrder({
             name:$scope.depName,
             corporateIdentify:$scope.corporateIdentify
@@ -46,32 +47,73 @@ authorizationApp.controller('departmentManageController',function ($scope,$cooki
 
     /*查子集 start*/
     $scope.showSub=function(res,$event){
+        console.log('showSub',res);
         $scope.subList=[];
-        $scope.orderList.forEach(function(item){
-            if(item.parentId==res.id){
+        var str='';
+        str+='<div class="hide subContainer">';
+        $scope.orderList.forEach(function(item,i){
+            if(item.parentId==res){
+                console.log(item);
                 $scope.subList.push(item);
+                str+='<ul>';
+                str+='<li>';
+                str+='<a ng-click="showSub('+item.id+',$event)" style="font-size: 21px" href="javascript:void (0)">+</a>';
+                str+=(i+1);
+                str+='<input data-id="'+item+'" name="mainId" ng-model="mainId" type="radio" value="'+item.parentId+'"/>';
+                str+='</li>';
+
+                str+='<li>'+item.name+'</li>';
+                str+='<li>'+item.code+'</li>';
+                str+='<li>'+item.createTime+'</li>';
+                str+='<li>';
+                str+='<a href="javascript:void(0)" class="resBtn editBtn" ng-click="updateDepartMent('+item.parentId+',\''+item.name+'\','+item.code+','+item.id+')">';
+                str+='<img src="image/comm/resBtnEdit.png" alt="编辑"/>';
+                str+='<b class="title">编辑</b>';
+                str+='</a>';
+                str+='<a href="javascript:void(0)" class="resBtn deleteBtn" ng-click="deleteDepart('+item.id+')">';
+                str+='<img src="image/comm/resBtnDelete.png" alt="删除"/>';
+                str+='<b class="title">删除</b>';
+                str+='</a>';
+                str+='</li>';
+
+                str+='</ul>';
             }
         });
-        console.log($scope.subList);
+        str+='</div>';
+        // console.log($scope.subList);
         if($scope.subList.length>0){
+            var html=$compile(str)($scope);
+            $($event.target).parent().parent().append(html);
+
             $($event.target).parent().parent().find('div').toggleClass('hide');
             $($event.target).parent().parent().siblings().find('subContainer').addClass('hide');
-            if($($event.target).parent().parent().find('div').hasClass('hide')){
-                $($event.target).html('+')
+            console.log($($event.target).attr('class'));
+            if($($event.target).attr('class')==undefined||$($event.target).attr('class')==''){
+                $($event.target).attr('class','subOpen');
+                $($event.target).html('-');
+
             }else{
-                $($event.target).html('-')
+                $($event.target).attr('class','');
+                $($event.target).html('+');
+                $($event.target).parent().parent().find('div').remove();
             }
+
+            // if($($event.target).parent().parent().find('div').hasClass('hide')){
+            //     $($event.target).html('+')
+            // }else{
+            //     $($event.target).html('-')
+            // }
         }
     };
     /*查子集 end*/
 
     /*修改部门信息 updateDepartMent start */
-    $scope.updateDepartMent=function(res){
+    $scope.updateDepartMent=function(parentId,name,code,id){
         popupDiv("editdepartMentBalance");
-        $scope.editDepartmentParent=res.parentId;
-        $scope.editNewSamDeptName=res.name;
-        $scope.editNewSamDeptCode=res.code;
-        $scope.id=res.id;
+        $scope.editDepartmentParent=parentId;
+        $scope.editNewSamDeptName=name;
+        $scope.editNewSamDeptCode=code;
+        $scope.id=id;
 
         /*保存修改后的部门信息 start departmentParentSubmit*/
         $scope.departmentParentSubmit=function(){
@@ -105,7 +147,7 @@ authorizationApp.controller('departmentManageController',function ($scope,$cooki
     /*新增 同级部门 start*/
     $scope.addSamDepartment=function(){
         popupDiv('departSamMentBalance');
-        console.log($(".tableListDiv ul li input[name='mainId']:checked").val());
+        // console.log($(".tableListDiv ul li input[name='mainId']:checked").val());
         if($scope.NewSamDepartmentParent==''||$scope.NewSamDepartmentParent==null||$scope.NewSamDepartmentParent==undefined){
             $scope.NewSamDepartmentParent='-1';
         }
@@ -170,7 +212,7 @@ authorizationApp.controller('departmentManageController',function ($scope,$cooki
         $scope.depNameNow=res.name;//当前部门
         $scope.deleteDeptNow=function(){
             var pa={
-                id:res.id
+                id:res
             };
             var par={params:pa};
             $http.get($scope.WebURL+'department/deleteDept',par).success(function(response){
