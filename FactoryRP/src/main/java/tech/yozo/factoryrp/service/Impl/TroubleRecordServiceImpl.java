@@ -5,6 +5,7 @@ import tech.yozo.factoryrp.entity.DeviceInfo;
 import tech.yozo.factoryrp.entity.DeviceTroubleType;
 import tech.yozo.factoryrp.entity.RepairRecord;
 import tech.yozo.factoryrp.entity.TroubleRecord;
+import tech.yozo.factoryrp.enums.RepairStatusEnum;
 import tech.yozo.factoryrp.enums.TroubleLevelEnum;
 import tech.yozo.factoryrp.enums.TroubleStatusEnum;
 import tech.yozo.factoryrp.exception.BussinessException;
@@ -14,7 +15,7 @@ import tech.yozo.factoryrp.repository.TroubleRecordRepository;
 import tech.yozo.factoryrp.service.TroubleRecordService;
 import tech.yozo.factoryrp.utils.CheckParam;
 import tech.yozo.factoryrp.utils.DateTimeUtil;
-import tech.yozo.factoryrp.vo.req.AddTroubleRecordReq;
+import tech.yozo.factoryrp.vo.req.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -22,9 +23,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-import tech.yozo.factoryrp.vo.req.StartRepairReq;
-import tech.yozo.factoryrp.vo.req.TroubleListReq;
-import tech.yozo.factoryrp.vo.req.WorkOrderListReq;
 import tech.yozo.factoryrp.vo.resp.auth.AuthUser;
 import tech.yozo.factoryrp.vo.resp.device.trouble.SimpleTroubleRecordVo;
 import tech.yozo.factoryrp.vo.resp.device.trouble.WaitAuditWorkOrderVo;
@@ -267,9 +265,11 @@ public class TroubleRecordServiceImpl implements TroubleRecordService {
                 repairRecord.setStartTime(DateTimeUtil.strToDate(param.getStartTime()));
             }
             repairRecord.setRepairStatus(param.getRepairStatus());
-            DeviceTroubleType dtt = new DeviceTroubleType();
-            dtt.setId(param.getTroubleTypeId());
-            repairRecord.setTroubleType(dtt);
+            if (null!=param.getTroubleTypeId()){
+                DeviceTroubleType dtt = new DeviceTroubleType();
+                dtt.setId(param.getTroubleTypeId());
+                repairRecord.setTroubleType(dtt);
+            }
             repairRecord.setTroubleReason(param.getTroubleReason());
             repairRecord.setRepairLevel(param.getRepairLevel());
             repairRecord.setRepairAmount(param.getRepairAmount());
@@ -279,6 +279,68 @@ public class TroubleRecordServiceImpl implements TroubleRecordService {
             repairRecord.setStopedHour(param.getStopedHour());
             repairRecord.setCostHour(param.getCostHour());
             repairRecordRepository.save(repairRecord);
+        }else{
+            BussinessException biz = new BussinessException("10000","工单不存在或状态不正确");
+            throw biz;
+        }
+    }
+
+    @Override
+    public void endRepair(EndRepairReq param, AuthUser user) {
+        TroubleRecord old = troubleRecordRepository.findOne(param.getTroubleRecordId());
+        if (null!=old && old.getStatus() == TroubleStatusEnum.REPAIRING.getCode()){
+            if (old.getRepairUserId() != user.getUserId()){
+                BussinessException biz = new BussinessException("10001","不是本人工单，无权限操作");
+                throw biz;
+            }
+            if (null!=param.getRepairGroupId() && old.getRepairGroupId() != param.getRepairGroupId()){
+                old.setRepairGroupId(param.getRepairGroupId());
+                old.setUpdateTime(new Date());
+                troubleRecordRepository.save(old);
+            }
+            //更新维修单
+            RepairRecord repairRecord = repairRecordRepository.findByTroubleRecordId(param.getTroubleRecordId());
+            if (null == repairRecord){
+                BussinessException biz = new BussinessException("10000","维修单不存在");
+                throw biz;
+            }
+            repairRecord.setRepairStatus(RepairStatusEnum.DONE.getCode());
+            if (null!=param.getTroubleTypeId()){
+                DeviceTroubleType dtt = new DeviceTroubleType();
+                dtt.setId(param.getTroubleTypeId());
+                repairRecord.setTroubleType(dtt);
+            }
+            repairRecord.setTroubleReason(param.getTroubleReason());
+            repairRecord.setRepairLevel(param.getRepairLevel());
+            repairRecord.setRepairAmount(param.getRepairAmount());
+            repairRecord.setWorkRemark(param.getWorkRemark());
+            repairRecord.setStoped(param.getStoped());
+            repairRecord.setStopedHour(param.getStopedHour());
+            repairRecord.setCostHour(param.getCostHour());
+            if (CheckParam.isNull(param.getEndTime())){
+                repairRecord.setEndTime(new Date());
+            }else {
+                repairRecord.setEndTime(DateTimeUtil.strToDate(param.getEndTime()));
+            }
+            repairRecord.setUpdateTime(new Date());
+            repairRecordRepository.save(repairRecord);
+        }else{
+            BussinessException biz = new BussinessException("10000","工单不存在或状态不正确");
+            throw biz;
+        }
+    }
+
+    @Override
+    public void submitRepair(Long id, AuthUser user) {
+        TroubleRecord old = troubleRecordRepository.findOne(id);
+        if (null!=old && old.getStatus() == TroubleStatusEnum.REPAIRING.getCode()){
+            if (old.getRepairUserId() != user.getUserId()){
+                BussinessException biz = new BussinessException("10001","不是本人工单，无权限操作");
+                throw biz;
+            }
+            old.setStatus(TroubleStatusEnum.REPAIRED.getCode());
+            old.setUpdateTime(new Date());
+            troubleRecordRepository.save(old);
         }else{
             BussinessException biz = new BussinessException("10000","工单不存在或状态不正确");
             throw biz;

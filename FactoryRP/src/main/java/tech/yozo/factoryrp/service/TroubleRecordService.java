@@ -1,10 +1,7 @@
 package tech.yozo.factoryrp.service;
 
 import tech.yozo.factoryrp.page.Pagination;
-import tech.yozo.factoryrp.vo.req.AddTroubleRecordReq;
-import tech.yozo.factoryrp.vo.req.StartRepairReq;
-import tech.yozo.factoryrp.vo.req.TroubleListReq;
-import tech.yozo.factoryrp.vo.req.WorkOrderListReq;
+import tech.yozo.factoryrp.vo.req.*;
 import tech.yozo.factoryrp.vo.resp.auth.AuthUser;
 import tech.yozo.factoryrp.vo.resp.device.trouble.SimpleTroubleRecordVo;
 import tech.yozo.factoryrp.vo.resp.device.trouble.WaitAuditWorkOrderVo;
@@ -72,4 +69,16 @@ public interface TroubleRecordService {
      * 开始维修
      */
     public void startRepair(StartRepairReq param, AuthUser user);
+
+    /**
+     * 完成维修
+     */
+    public void endRepair(EndRepairReq param, AuthUser user);
+
+    /**
+     * 完成维修并提交
+     * @param id
+     * @param user
+     */
+    public void submitRepair(Long id,AuthUser user);
 }

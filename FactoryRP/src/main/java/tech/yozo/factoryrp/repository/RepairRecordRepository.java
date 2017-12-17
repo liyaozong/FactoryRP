@@ -9,4 +9,6 @@ import tech.yozo.factoryrp.entity.RepairRecord;
  **/
 @Repository
 public interface RepairRecordRepository extends BaseRepository<RepairRecord,Long>{
+
+    public RepairRecord findByTroubleRecordId(Long troubleRecordId);
 }

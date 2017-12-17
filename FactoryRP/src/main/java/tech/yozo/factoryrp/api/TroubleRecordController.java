@@ -9,13 +9,10 @@ import tech.yozo.factoryrp.page.Pagination;
 import tech.yozo.factoryrp.service.TroubleRecordService;
 import tech.yozo.factoryrp.utils.CheckParam;
 import tech.yozo.factoryrp.vo.base.ApiResponse;
-import tech.yozo.factoryrp.vo.req.AddTroubleRecordReq;
+import tech.yozo.factoryrp.vo.req.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import tech.yozo.factoryrp.vo.req.StartRepairReq;
-import tech.yozo.factoryrp.vo.req.TroubleListReq;
-import tech.yozo.factoryrp.vo.req.WorkOrderListReq;
 import tech.yozo.factoryrp.vo.resp.auth.AuthUser;
 import tech.yozo.factoryrp.vo.resp.device.trouble.SimpleTroubleRecordVo;
 
@@ -134,6 +131,22 @@ public class TroubleRecordController extends BaseController{
         return apiResponse();
     }
 
+    @PostMapping("endRepair")
+    @ApiOperation(value = "完成维修--Mobile",notes = "完成维修--Mobile",httpMethod = "POST")
+    public ApiResponse endRepair(HttpServletRequest request,@RequestBody EndRepairReq param){
+        AuthUser user = userAuthService.getCurrentUser(request);
+        troubleRecordService.endRepair(param,user);
+        return apiResponse();
+    }
+
+    @GetMapping("submitRepair")
+    @ApiOperation(value = "完成维修并提交--Mobile",notes = "完成维修并提交--Mobile",httpMethod = "GET")
+    public ApiResponse submitRepair(HttpServletRequest request,Long id){
+        AuthUser user = userAuthService.getCurrentUser(request);
+        troubleRecordService.submitRepair(id,user);
+        return apiResponse();
+    }
+
     /**
      * 批量删除故障信息
      * @param ids
@@ -157,5 +170,5 @@ public class TroubleRecordController extends BaseController{
         return apiResponse();
     }
 
-    
+
 }
