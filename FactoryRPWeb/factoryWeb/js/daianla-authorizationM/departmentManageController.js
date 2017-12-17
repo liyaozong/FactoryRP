@@ -26,7 +26,7 @@ authorizationApp.controller('departmentManageController',function ($scope,$cooki
 //    console.log($scope.orderList);
     /*查询所有用户 start*/
     $scope.onQuery=function () {
-        console.log('++++++');
+        // console.log('++++++');
         departmentManageService.queryOrder({
             name:$scope.depName,
             corporateIdentify:$scope.corporateIdentify
@@ -47,13 +47,13 @@ authorizationApp.controller('departmentManageController',function ($scope,$cooki
 
     /*查子集 start*/
     $scope.showSub=function(res,$event){
-        console.log('showSub',res);
+        // console.log('showSub',res);
         $scope.subList=[];
         var str='';
         str+='<div class="hide subContainer">';
         $scope.orderList.forEach(function(item,i){
             if(item.parentId==res){
-                console.log(item);
+                // console.log(item);
                 $scope.subList.push(item);
                 str+='<ul>';
                 str+='<li>';
@@ -87,7 +87,7 @@ authorizationApp.controller('departmentManageController',function ($scope,$cooki
 
             $($event.target).parent().parent().find('div').toggleClass('hide');
             $($event.target).parent().parent().siblings().find('subContainer').addClass('hide');
-            console.log($($event.target).attr('class'));
+            // console.log($($event.target).attr('class'));
             if($($event.target).attr('class')==undefined||$($event.target).attr('class')==''){
                 $($event.target).attr('class','subOpen');
                 $($event.target).html('-');
@@ -126,7 +126,7 @@ authorizationApp.controller('departmentManageController',function ($scope,$cooki
                 $("#editNewSamDeptCode").focus();
             }else{
                 var pa={
-                    id:res.id,
+                    id:$scope.id,
                     code:$scope.editNewSamDeptCode,
                     corporateIdentify:$scope.corporateIdentify,
                     name:$scope.editNewSamDeptName,

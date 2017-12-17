@@ -1,0 +1,79 @@
+<div class="contentBody">
+    <!--<table cellspacing="0">-->
+        <!--<thead>-->
+        <!--<tr>-->
+            <!--<th class="emptyTd">&nbsp;</th>-->
+            <!--<th class="deviceName" id="hpTd">设备类型名称</th>-->
+            <!--&lt;!&ndash;<th>操作</th>&ndash;&gt;-->
+        <!--</tr>-->
+        <!--</thead>-->
+        <!--<tbody device-type-list="">-->
+
+        <!--</tbody>-->
+    <!--</table>-->
+    <div class="tableListDiv">
+        <ul class="tableUl">
+            <li class="emptyTd"></li>
+            <li class="deviceName">设备类型名称</li>
+            <li class="ccc"></li>
+        </ul>
+        <div device-type-list="">
+
+        </div>
+    </div>
+</div>
+
+<!--新增设备类型弹出框start-->
+<div class="ImportantNote deviceTypeBalance">
+    <div class="headline">
+        <span ng-bind="dtTitle"></span>
+        <img onClick="hideDiv('deviceTypeBalance')" class="companyCloseImg" src="image/comm/diffClosed.png" width="22" height="22">
+    </div>
+    <div class="businessAuth">
+        <!--<p style="margin-bottom: 10px">-->
+            <!--<label style="text-align: right;font-size: 14px;margin-right: 5px;">上级设备类型:</label>-->
+            <!--<select style="width: 200px;" ng-init="parentDT = deviceTypeList[index]" id="NewSamDepartmentParent" ng-model="parentDT" ng-options="NewDepartmentParent.parentId as NewDepartmentParent.name for NewDepartmentParent in deviceTypeList">-->
+            <!--<option value="">请选择上级设备类型</option>-->
+        <!--</select>-->
+        <!--</p>-->
+        <p style="margin-bottom: 10px"><label style="text-align: right;font-size: 14px;margin-right: 5px;">设备类型名称:</label><input placeholder="请输入设备类型名称" ng-model="name" id="NewSamDeptName" type="text" value="" style="width: 200px;"/></p>
+        <!--<p><label style="text-align: right;font-size: 14px;margin-right: 5px;">部门编码:</label><input placeholder="请输入部门编码" ng-model="NewSamDeptCode" id="NewSamDeptCode" type="text" value="" style="width: 200px;"/></p>-->
+        <div class="submitBtn1" style="text-align: center;">
+            <input type="button" ng-click="addSomeDPSure()" value="保存" class="btn">
+            <input type="button" value="取消" class="btn" onClick="hideDiv('deviceTypeBalance')">
+        </div>
+    </div>
+</div>
+<!--新增设备类型弹出框end-->
+
+<!--删除弹出框start-->
+<div class="ImportantNote deleteDP">
+    <div class="headline">
+        <span>删除部门</span>
+        <img onClick="hideDiv('deleteDP')" class="companyCloseImg" src="image/comm/diffClosed.png" width="22" height="22">
+    </div>
+    <div class="businessAuth">
+        <p>确认删除 <span style="color: red;" ng-bind="deleteName"></span> 此部门？</p>
+        <div class="submitBtn1" style="text-align: center;">
+            <input type="button" ng-click="deleteDPSure()" value="保存" class="btn">
+            <input type="button" value="取消" class="btn" onClick="hideDiv('deleteDP')">
+        </div>
+    </div>
+</div>
+
+<!--删除弹出框end-->
+
+<!--保存成功start-->
+<div class="ImportantNote SaveSuccess">
+    <div class="headline">
+        <span>重要提示</span>
+        <img ng-click="reload()" onClick="hideDiv('SaveSuccess')" class="companyCloseImg" src="image/comm/diffClosed.png" width="22" height="22">
+    </div>
+    <div class="businessAuth">
+        <p><img src="image/comm/attentionPlease.png" alt="注意："/><span class="Message"></span></p>
+        <div class="submitBtn1" style="text-align: right;">
+            <input ng-click="reload()" onClick="hideDiv('SaveSuccess')" type="button" value="确定" class="btn">
+        </div>
+    </div>
+</div>
+<!--保存成功end-->

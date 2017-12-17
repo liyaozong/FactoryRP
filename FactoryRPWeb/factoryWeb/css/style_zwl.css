@@ -5,3 +5,62 @@
 /*.ImportantNote textarea{*/
     /*resize: none;*/
 /*}*/
+
+
+.contentBody{
+    /*background-color: #00a2d4;*/
+    padding: 16px;
+}
+.contentBody .tableListDiv{
+    width: 100%;
+    border: 1px solid #e6e6e6;
+}
+.contentBody .tableListDiv ul{
+    width: 100%;
+    position: relative;
+    border-top: 1px solid #e6e6e6;
+    box-sizing: border-box;
+}
+.contentBody .tableListDiv .tableUl{
+    width: 100%;
+    border-top:none ;
+}
+.contentBody .tableListDiv li{
+    /*float: left;*/
+    /*width: 33%;*/
+    display: inline-block;
+    height: 32px;
+    line-height: 32px;
+}
+.contentBody .tableListDiv .emptyTd{
+    width: 32px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    text-align: center;z-index: 5;
+    line-height: 27px;
+}
+.contentBody .tableListDiv .deviceName{
+    position: relative;
+    padding-left: 32px;
+    padding-right: 300px;
+}
+
+.contentBody .tableListDiv .ccc{
+    position: absolute;
+    right: 0;
+    width: 300px;
+    top: 0;
+    z-index: 5;
+}
+
+.contentBody .tableListDiv .a_btn{
+    margin-right: 20px;
+    color: #00a4ac;
+}
+.contentBody .tableListDiv .a_btn:hover{
+    color: #f63007;
+}
+.contentBody .tableListDiv .emptyTd a{
+    font-size: 24px;
+}

@@ -16,7 +16,12 @@ var myApp = angular.module('myApp', [
         baseTpl: 'views/'                 ,      //模板路径
         queryCorporateAllUserPath:'/api/authorization/queryCorporateAllUser' ,  //查询所有企业用户
         addUserPath:'/api/authorization/addUser',   //添加企业用户
-        deleteUserPath:''   //删除某个用户
+        deleteUserPath:'' ,  //删除某个用户
+        deviceTypeListPath:'/api/deviceType/list' ,  //查询设备类型列表
+        addSameDeviceTypePath:'/api/deviceType/addSameDeviceType' ,  //添加同级设备类型
+        deleteDeviceTypePath:'/api/deviceType/deleteDeviceType' ,  //删除设备类型
+        updateDeviceTypePath:'/api/deviceType/updateDeviceType' ,  //修改设备类型
+        addSubDeviceTypePath:'/api/deviceType/addSubDeviceType'   //添加下级设备类型
 
 
     })
@@ -139,6 +144,16 @@ var myApp = angular.module('myApp', [
                     'content@main':{
                         templateUrl:FF_API.baseTpl+'tpls/userManagement.html',
                         controller:'userManagementCtrl'
+                    }
+                }
+            })
+
+            .state("main.deviceType",{
+                url:"/deviceType",
+                views:{
+                    'content@main':{
+                        templateUrl:FF_API.baseTpl+'tpls/deviceType.html',
+                        controller:'deviceTypeCtrl'
                     }
                 }
             })

@@ -8,6 +8,7 @@ var factoryParameterSettingApp = angular.module('myApp.factoryParameterSetting',
     })
     .config(function ($stateProvider, $urlRouterProvider,FF_API) {
         $stateProvider
+            //设备类型设置
             .state("main.parameterSetting", {
                 url: "/parameterSetting",
                 showName:"参数设置",
