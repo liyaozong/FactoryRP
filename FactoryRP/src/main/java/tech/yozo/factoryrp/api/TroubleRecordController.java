@@ -2,7 +2,7 @@ package tech.yozo.factoryrp.api;
 
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.*;
 import tech.yozo.factoryrp.config.auth.UserAuthService;
 import tech.yozo.factoryrp.enums.TroubleStatusEnum;
 import tech.yozo.factoryrp.page.Pagination;
@@ -13,9 +13,7 @@ import tech.yozo.factoryrp.vo.req.AddTroubleRecordReq;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import tech.yozo.factoryrp.vo.req.StartRepairReq;
 import tech.yozo.factoryrp.vo.req.TroubleListReq;
 import tech.yozo.factoryrp.vo.req.WorkOrderListReq;
 import tech.yozo.factoryrp.vo.resp.auth.AuthUser;
@@ -128,11 +126,11 @@ public class TroubleRecordController extends BaseController{
         return apiResponse();
     }
 
-    @GetMapping("startRepair")
-    @ApiOperation(value = "开始维修--Mobile",notes = "开始维修--Mobile",httpMethod = "GET")
-    public ApiResponse startRepair(HttpServletRequest request,Long id){
+    @PostMapping("startRepair")
+    @ApiOperation(value = "开始维修--Mobile",notes = "开始维修--Mobile",httpMethod = "POST")
+    public ApiResponse startRepair(HttpServletRequest request,@RequestBody StartRepairReq param){
         AuthUser user = userAuthService.getCurrentUser(request);
-        troubleRecordService.startRepair(id,user);
+        troubleRecordService.startRepair(param,user);
         return apiResponse();
     }
 
@@ -158,4 +156,6 @@ public class TroubleRecordController extends BaseController{
         troubleRecordService.batchDelete(idList);
         return apiResponse();
     }
+
+    
 }

@@ -2,14 +2,18 @@ package tech.yozo.factoryrp.service.Impl;
 
 import org.springframework.data.domain.Sort;
 import tech.yozo.factoryrp.entity.DeviceInfo;
+import tech.yozo.factoryrp.entity.DeviceTroubleType;
+import tech.yozo.factoryrp.entity.RepairRecord;
 import tech.yozo.factoryrp.entity.TroubleRecord;
 import tech.yozo.factoryrp.enums.TroubleLevelEnum;
 import tech.yozo.factoryrp.enums.TroubleStatusEnum;
 import tech.yozo.factoryrp.exception.BussinessException;
 import tech.yozo.factoryrp.page.Pagination;
+import tech.yozo.factoryrp.repository.RepairRecordRepository;
 import tech.yozo.factoryrp.repository.TroubleRecordRepository;
 import tech.yozo.factoryrp.service.TroubleRecordService;
 import tech.yozo.factoryrp.utils.CheckParam;
+import tech.yozo.factoryrp.utils.DateTimeUtil;
 import tech.yozo.factoryrp.vo.req.AddTroubleRecordReq;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +22,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import tech.yozo.factoryrp.vo.req.StartRepairReq;
 import tech.yozo.factoryrp.vo.req.TroubleListReq;
 import tech.yozo.factoryrp.vo.req.WorkOrderListReq;
 import tech.yozo.factoryrp.vo.resp.auth.AuthUser;
@@ -42,6 +47,8 @@ public class TroubleRecordServiceImpl implements TroubleRecordService {
 
     @Autowired
     private TroubleRecordRepository troubleRecordRepository;
+    @Autowired
+    private RepairRecordRepository repairRecordRepository;
 
 
     @Override
@@ -56,7 +63,7 @@ public class TroubleRecordServiceImpl implements TroubleRecordService {
         troubleRecord.setCreateUserId(user.getUserId());
         troubleRecord.setStatus(TroubleStatusEnum.WAIT_AUDIT.getCode());
         troubleRecord.setOrderNo("WX"+new Date().getTime());
-        troubleRecordRepository.save(troubleRecord);
+        troubleRecord = troubleRecordRepository.save(troubleRecord);
     }
 
     @Override
@@ -237,8 +244,8 @@ public class TroubleRecordServiceImpl implements TroubleRecordService {
     }
 
     @Override
-    public void startRepair(Long id, AuthUser user) {
-        TroubleRecord old = troubleRecordRepository.findOne(id);
+    public void startRepair(StartRepairReq param, AuthUser user) {
+        TroubleRecord old = troubleRecordRepository.findOne(param.getTroubleRecordId());
         if (null!=old && old.getStatus() == TroubleStatusEnum.NEED_REPAIR.getCode()){
             if (old.getRepairUserId() != user.getUserId()){
                 BussinessException biz = new BussinessException("10001","不是本人工单，无权限操作");
@@ -246,8 +253,32 @@ public class TroubleRecordServiceImpl implements TroubleRecordService {
             }
             old.setStatus(TroubleStatusEnum.REPAIRING.getCode());
             old.setUpdateTime(new Date());
+            if (null!=param.getRepairGroupId()){
+                old.setRepairGroupId(param.getRepairGroupId());
+            }
             troubleRecordRepository.save(old);
-            //TODO 创建维修单
+            //创建维修单
+            RepairRecord repairRecord = new RepairRecord();
+            repairRecord.setTroubleRecordId(old.getId());
+            repairRecord.setCorporateIdentify(old.getCorporateIdentify());
+            if (CheckParam.isNull(param.getStartTime())){
+                repairRecord.setStartTime(new Date());
+            }else {
+                repairRecord.setStartTime(DateTimeUtil.strToDate(param.getStartTime()));
+            }
+            repairRecord.setRepairStatus(param.getRepairStatus());
+            DeviceTroubleType dtt = new DeviceTroubleType();
+            dtt.setId(param.getTroubleTypeId());
+            repairRecord.setTroubleType(dtt);
+            repairRecord.setTroubleReason(param.getTroubleReason());
+            repairRecord.setRepairLevel(param.getRepairLevel());
+            repairRecord.setRepairAmount(param.getRepairAmount());
+            repairRecord.setWorkRemark(param.getWorkRemark());
+            repairRecord.setRepairType(1);
+            repairRecord.setStoped(param.getStoped());
+            repairRecord.setStopedHour(param.getStopedHour());
+            repairRecord.setCostHour(param.getCostHour());
+            repairRecordRepository.save(repairRecord);
         }else{
             BussinessException biz = new BussinessException("10000","工单不存在或状态不正确");
             throw biz;

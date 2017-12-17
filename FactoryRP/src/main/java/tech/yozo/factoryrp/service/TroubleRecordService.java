@@ -2,6 +2,7 @@ package tech.yozo.factoryrp.service;
 
 import tech.yozo.factoryrp.page.Pagination;
 import tech.yozo.factoryrp.vo.req.AddTroubleRecordReq;
+import tech.yozo.factoryrp.vo.req.StartRepairReq;
 import tech.yozo.factoryrp.vo.req.TroubleListReq;
 import tech.yozo.factoryrp.vo.req.WorkOrderListReq;
 import tech.yozo.factoryrp.vo.resp.auth.AuthUser;
@@ -69,7 +70,6 @@ public interface TroubleRecordService {
 
     /**
      * 开始维修
-     * @param id
      */
-    public void startRepair(Long id, AuthUser user);
+    public void startRepair(StartRepairReq param, AuthUser user);
 }

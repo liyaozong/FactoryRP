@@ -1,5 +1,6 @@
 package tech.yozo.factoryrp.entity;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -42,6 +43,7 @@ public class TroubleRecord extends BaseEntity implements Serializable{
     @Column(name = "remark")
     private String remark;
 
+    @JSONField(format="yyyy-MM-dd HH:mm:ss")
     @Column(name = "happen_time")
     private Date happenTime;
 
