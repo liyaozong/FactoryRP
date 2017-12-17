@@ -11,7 +11,7 @@ authorizationApp.factory('departmentManageService', function($resource, $log, Ur
             if(data.data!=''&&data.data!=null&&data.data!=undefined&&data.errorCode=='000000'){
                 data.data.forEach(function(item) {
                     allOrderList.push(item);
-                    console.log(allOrderList)
+//                    console.log(allOrderList)
                 });
             }
 

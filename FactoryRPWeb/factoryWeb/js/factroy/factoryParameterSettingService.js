@@ -20,7 +20,18 @@ factoryParameterSettingApp.factory('factoryParameterSettingService', function($r
 
         });
     };
+    /* 查看所有设备字典code start*/
+    var _viewDeviceDicCode = function(Param,successFunc){
+        var viewDeviceDicCodes = $resource(UrlService.getUrl('mainServe') + 'viewDeviceDicCode');
+        viewDeviceDicCodes.get(Param,function (data) {
+            if (successFunc) {
+                successFunc(data);
+            }
+        }, function (err) {
 
+        });
+    };
+    /* 查看所有设备字典code end*/
    /*新增或修改往来单位 start*/
     var _saveContactCompany = function(Param,successFunc){
         var saveContactCompanys = $resource(UrlService.getUrl('factoryServe') + 'contactCompany/save');
@@ -96,6 +107,18 @@ factoryParameterSettingApp.factory('factoryParameterSettingService', function($r
         });
     };
     /*分页查询设备信息列表 end*/
+    /*单个查询设备信息 编辑时候使用 start*/
+    var _queryOneDeviceListInfo = function(Param,successFunc){
+        var queryOneDeviceListInfo = $resource(UrlService.getUrl('factoryServe') + 'deviceInfo/get');
+        queryOneDeviceListInfo.get(Param,function (data) {
+            if (successFunc) {
+                successFunc(data);
+            }
+        }, function (err) {
+
+        });
+    };
+    /*单个查询设备信息 编辑时候使用 end*/
     /*新增或者修改设备信息 start*/
     var _saveDeviceInfo = function(Param,successFunc){
         var saveDeviceInfos = $resource(UrlService.getUrl('factoryServe') + 'deviceInfo/save');
@@ -120,6 +143,42 @@ factoryParameterSettingApp.factory('factoryParameterSettingService', function($r
         });
     };
     /*批量删除设备信息 end*/
+    /*查询所有生产厂商供应商 start*/
+    var _queryAllCompany = function(Param,successFunc){
+        var queryAllCompanys = $resource(UrlService.getUrl('factoryServe') + 'contactCompany/list');
+        queryAllCompanys.save(Param,function (data) {
+            if (successFunc) {
+                successFunc(data);
+            }
+        }, function (err) {
+
+        });
+    };
+    /*查询所有生产厂商供应商 end*/
+    /*根据code查询设备参数列表 start*/
+    var _queryDeviceDictionary = function(Param,successFunc){
+        var queryDeviceDictionarys = $resource(UrlService.getUrl('factoryServe') + 'deviceParameterDictionary/findByCode');
+        queryDeviceDictionarys.get(Param,function (data) {
+            if (successFunc) {
+                successFunc(data);
+            }
+        }, function (err) {
+
+        });
+    };
+    /*根据code查询设备参数列表 end*/
+    /*查询设备类型列表 start*/
+    var _queryDeviceTypeList = function(Param,successFunc){
+        var queryDeviceTypeLists = $resource(UrlService.getUrl('factoryServe') + 'deviceType/list');
+        queryDeviceTypeLists.get(Param,function (data) {
+            if (successFunc) {
+                successFunc(data);
+            }
+        }, function (err) {
+
+        });
+    };
+    /*查询设备类型列表 end*/
     return {
         saveContactCompany:_saveContactCompany,
         deleteContactCompany:_deleteContactCompany,
@@ -128,7 +187,12 @@ factoryParameterSettingApp.factory('factoryParameterSettingService', function($r
         deleteRepairGroup:_deleteRepairGroup,
         deviceListInfo:_deviceListInfo,
         saveDeviceInfo:_saveDeviceInfo,
+        queryAllCompany:_queryAllCompany,
         batchDeleteDeviceInfo:_batchDeleteDeviceInfo,
+        viewDeviceDicCode:_viewDeviceDicCode,
+        queryDeviceDictionary:_queryDeviceDictionary,
+        queryDeviceTypeList:_queryDeviceTypeList,
+        queryOneDeviceListInfo:_queryOneDeviceListInfo,
         queryOrder: function(queryParam, successFunc) {
             queryOrder(queryParam, successFunc);
 
