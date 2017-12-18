@@ -265,7 +265,7 @@ public class SparePartsServiceImpl implements SparePartsService {
             if (!StringUtils.isEmpty(sparePartsQueryReq.getName())){ //备件名称
                 listCon.add(criteriaBuilder.like(root.get("name").as(String.class),"%"+sparePartsQueryReq.getName()+"%"));
             }
-            if (!CheckParam.isNull(null!=sparePartsQueryReq.getManufacturer())){ //生产厂商
+            if (!CheckParam.isNull(sparePartsQueryReq.getManufacturer())){ //生产厂商
                 listCon.add(criteriaBuilder.equal(root.get("manufacturer").as(String.class),sparePartsQueryReq.getManufacturer()));
             }
             if (!CheckParam.isNull(sparePartsQueryReq.getSuppliers())){ //供应商
@@ -311,7 +311,7 @@ public class SparePartsServiceImpl implements SparePartsService {
         },p);
 
         Pagination<DeviceSparesMobileResp> res = new Pagination<>();
-        if (page.hasContent()){
+       if (page.hasContent()){
 
             List<SpareParts> sparePartsList = page.getContent();
 
