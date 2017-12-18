@@ -1,6 +1,6 @@
 //用户管理
 // 用户/用户组控制器
-myApp.controller('userManagementCtrl',['$filter','$rootScope','$location','$scope','queryCorporateAllUser','userManageMent',function($filter,$rootScope,$location,$scope,queryCorporateAllUser,userManageMent){
+myApp.controller('userManagementCtrl',['$filter','$rootScope','$location','$scope','$cookies','queryCorporateAllUser','userManageMent',function($filter,$rootScope,$location,$scope,$cookies,queryCorporateAllUser,userManageMent){
     // console.log('用户管理控制器');
     //查询与企业用户列表
     queryCorporateAllUser.getData().success(function(data){
@@ -47,4 +47,62 @@ myApp.controller('userManagementCtrl',['$filter','$rootScope','$location','$scop
             // $('.SaveSuccess .Message').html(data.errorMessage);
         }
     };
+
+    //为用户添加角色
+    $scope.addUserRole=function (id,name) {
+        // console.log(id,name);
+        $scope.addUserRoleName=name;
+        //每次进入获取角色列表
+        popupDiv('addUserRolePop');
+        var arr=[];
+        $scope.addUserRoleSure=function () {
+            $('.userRoleCheckBox:checked').each(function (i,n) {
+                // console.log(i,$(n).prop('id'));
+                arr.push($(n).prop('id'));
+
+            });
+            var roleIdStr=arr.join(',');
+            console.log(roleIdStr);
+            hideDiv('addUserRolePop');
+        }
+    };
+
+    var corporateIdentify=$cookies.get('corporateIdentify')?$cookies.get('corporateIdentify'):1;
+    // userManageMent.queryRoles(corporateIdentify).success(function (data) {
+    //     console.log(data,'data');
+    //
+    // })
+    var us_data={
+        "data": [
+            {
+                "corporateIdentify": 32132132132213,
+                "enableStatus": 1,
+                "roleCode": "1231",
+                "roleDescription": "角色1",
+                "roleId": "1",
+                "roleName": "管理员1"
+            },{
+                "corporateIdentify": 32132132132213,
+                "enableStatus": 2,
+                "roleCode": "1232",
+                "roleDescription": "角色2",
+                "roleId": "2",
+                "roleName": "管理员2"
+            },{
+                "corporateIdentify": 32132132132213,
+                "enableStatus": 1,
+                "roleCode": "1233",
+                "roleDescription": "角色3",
+                "roleId": "3",
+                "roleName": "管理员3"
+            }
+        ],
+        "errorCode": "000000",
+        "errorMessage": "登陆成功",
+        "requestSeqNo": "931189104492675072",
+        "responseTime": "yyyy-MM-dd HH:mm:ss格式，如2017-11-17 00:15:12"
+    };
+    $scope.userRoleLists=us_data.data;
+
+
 }]);

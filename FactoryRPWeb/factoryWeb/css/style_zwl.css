@@ -64,3 +64,48 @@
 .contentBody .tableListDiv .emptyTd a{
     font-size: 24px;
 }
+.checkBoxUl{
+    padding-left: 20px;
+    box-sizing: border-box;
+
+}
+.checkBoxUl li{
+    display: inline-block;
+    width: auto;
+    height: 30px;
+    line-height: 30px;
+    padding: 5px;
+    margin-right: 16px;
+}
+.checkBoxUl li input[type='checkbox']{
+    margin-right: 8px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

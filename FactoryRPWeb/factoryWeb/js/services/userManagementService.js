@@ -31,5 +31,24 @@ myApp.factory("queryCorporateAllUser",["AppHttp","FF_API",function(AppHttp,FF_AP
         });
     };
 
+    //为用户添加角色
+    userManageMent.addUserRole=function(data){
+        return AppHttp({
+            method: 'post',
+            url: FF_API.base + FF_API.addUserRolePath,
+            data:data
+        });
+    };
+
+    //根据企业标示查询角色
+    userManageMent.queryRoles=function(requestSeqNo){
+        return AppHttp({
+            method: 'get',
+            url: FF_API.base + FF_API.queryRolesPath+'?requestSeqNo='+requestSeqNo
+        });
+    };
+
+
+
     return userManageMent;
 }]);
