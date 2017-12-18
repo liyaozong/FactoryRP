@@ -14,6 +14,7 @@ import tech.yozo.factoryrp.vo.resp.auth.AuthUser;
 import tech.yozo.factoryrp.vo.resp.menu.MenuResp;
 import tech.yozo.factoryrp.vo.resp.role.RoleMenuQueryResp;
 import tech.yozo.factoryrp.vo.resp.role.RoleResp;
+import tech.yozo.factoryrp.vo.resp.user.UserRespWarpResp;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -100,7 +101,7 @@ public class AuthorizationController extends BaseController{
      */
     @ApiOperation(value = "查询企业所有用户",notes = "查询企业所有用户",httpMethod = "GET")
     @GetMapping("/queryCorporateAllUser")
-    public ApiResponse<RoleMenuQueryResp> queryAllUserByCorporateIdentify(HttpServletRequest request){
+    public ApiResponse<UserRespWarpResp> queryAllUserByCorporateIdentify(HttpServletRequest request){
         Long corporateIdentify = userAuthService.getCurrentUserCorporateIdentify(request);
         return apiResponse(authorizationService.queryAllUserByCorporateIdentify(corporateIdentify));
     }
@@ -199,7 +200,9 @@ public class AuthorizationController extends BaseController{
             @ApiImplicitParam(dataType = "String" ,name = "password", paramType = "query" ,
                     value = "用户密码",required = true,defaultValue = "123"),
             @ApiImplicitParam(dataType = "Long" ,name = "requestSeqNo", paramType = "path" ,
-                    value = "请求流水号",required = true,defaultValue = "12345678")
+                    value = "请求流水号",required = true,defaultValue = "12345678"),
+            @ApiImplicitParam(dataType = "String" ,name = "corporateCode", paramType = "query" ,
+                    value = "企业code",required = true,defaultValue = "AEC386")
     })
     @ApiOperation(value = "登陆接口",notes = "登陆接口",httpMethod = "GET")
     @GetMapping("/login")

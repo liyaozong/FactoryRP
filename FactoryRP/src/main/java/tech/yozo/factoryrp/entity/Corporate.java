@@ -52,4 +52,12 @@ public class Corporate extends BaseEntity implements Serializable {
     public void setEnableStatus(Integer enableStatus) {
         this.enableStatus = enableStatus;
     }
+
+    public String getCorporateCode() {
+        return corporateCode;
+    }
+
+    public void setCorporateCode(String corporateCode) {
+        this.corporateCode = corporateCode;
+    }
 }
