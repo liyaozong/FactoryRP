@@ -17,6 +17,7 @@ myApp.controller("HomeController", function($rootScope,UrlService,$cookies,$stat
         $("#menuLeft .leftmenu .modelToolsManage").addClass('hide');
         $("#menuLeft .leftmenu .modelToolsManage").siblings().removeClass('hide');
     }
+    $scope.username=$cookies.get('username');
     $("body").css({
         'background-color':'#fff',
         'background-image':'none',
