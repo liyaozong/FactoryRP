@@ -30,7 +30,7 @@ myApp.factory('HttpInterceptor', function($rootScope,$q,$window,$cookies,$inject
                 return config; 
             },
             response: function (response) {
-                if(response && response.data && response.data.errorCode == '000000' && response.data.errorMessage == '成功' && response.data.token!=null&& response.data.token!=''&& response.data.token!=undefined){
+                if(response && response.data && response.data.errorCode == '000000' && response.data.errorMessage == '成功' && response.data.data.token!=null&& response.data.data.token!=''&& response.data.data.token!=undefined){
                     $cookies.put('token', response.data.data.token);
                     $cookies.put('username', response.data.data.userName);//用户名
                     $cookies.put('corporateIdentify', response.data.data.corporateIdentify);//企业唯一标识
