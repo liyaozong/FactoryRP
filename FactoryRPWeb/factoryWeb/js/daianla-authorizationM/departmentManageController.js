@@ -44,7 +44,6 @@ authorizationApp.controller('departmentManageController',function ($scope,$cooki
         });
     };
     /*查询所有用户 end*/
-
     /*查子集 start*/
     $scope.showSub=function(res,$event){
         // console.log('showSub',res);
@@ -57,8 +56,7 @@ authorizationApp.controller('departmentManageController',function ($scope,$cooki
                 $scope.subList.push(item);
                 str+='<ul>';
                 str+='<li>';
-                str+='<a ng-click="showSub('+item.id+',$event)" style="font-size: 21px" href="javascript:void (0)">+</a>';
-                str+=(i+1);
+                str+='<a ng-click="showSub('+item.id+',$event)" style="font-size: 21px;margin-right:5px;" href="javascript:void (0)">+</a>';
                 str+='<input data-id="'+item+'" name="mainId" ng-model="mainId" type="radio" value="'+item.parentId+'"/>';
                 str+='</li>';
 

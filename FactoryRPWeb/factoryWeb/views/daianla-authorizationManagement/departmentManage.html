@@ -1,6 +1,6 @@
 <style>
     .tableListDiv ul li{
-        width: 19%;
+        width: 19.5%;
         height: 30px;
         line-height: 30px;
         float: left;
@@ -9,6 +9,12 @@
         border-bottom: 1px solid #e6e6e6;
         background: #fff;
     }
+    /*.tableListDiv ul li .subOpen{*/
+        /*font-size: 33px !important;*/
+        /*line-height: 27px;*/
+        /*height: 30px;*/
+        /*display: inline-block;*/
+    /*}*/
     .tableListDiv ul{
         display: block;
         min-height: 30px;
@@ -28,7 +34,7 @@
         background: #f6f6f6;
     }
     .tableListDiv .tableUl li{
-        width: 19%;
+        width: 19.5%;
         height: 30px;
         line-height: 30px;
         float: left;
@@ -81,7 +87,7 @@
         <ul ng-if="order.parentId=='-1'" ng-repeat="order in orderList">
             <li>
                 <a ng-click="showSub(order.id,$event)" style="font-size: 21px" href="javascript:void (0)">+</a>
-                {{$index+1}}
+                <!--{{$index+1}}-->
                 <input data-id="{{order}}" name="mainId" ng-model="mainId" type="radio" value="{{order.parentId}}"/>
             </li>
             <li>{{order.name||'--'}}</li>

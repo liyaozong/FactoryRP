@@ -30,7 +30,7 @@ myApp.factory('HttpInterceptor', function($rootScope,$q,$window,$cookies,$inject
                 return config; 
             },
             response: function (response) {
-                if(response && response.data && response.data.errorCode == '000000' && response.data.errorMessage == '成功' && response.data.data.token!=null&& response.data.data.token!=''&& response.data.data.token!=undefined){
+                if(response && response.data && response.data.errorCode == '000000' && ($cookies.get('token')==''||$cookies.get('token')==null||$cookies.get('token')==undefined)){
                     $cookies.put('token', response.data.data.token);
                     $cookies.put('username', response.data.data.userName);//用户名
                     $cookies.put('corporateIdentify', response.data.data.corporateIdentify);//企业唯一标识
@@ -66,6 +66,8 @@ myApp.factory('HttpInterceptor', function($rootScope,$q,$window,$cookies,$inject
                 } else if(response && response.data && response.data.status != '0' && response.data.message){
                     var rootScope = $injector.get('$rootScope');
                     rootScope.alertMsg = response.data.message;
+                }else{
+//                    console.log(1)
                 }
 
                 if($rootScope.loading > 1) {
