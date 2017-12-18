@@ -41,11 +41,11 @@ public abstract class BaseFragment extends Fragment {
                 loadData();
                 isLoaded = true;
             }
-//            buildUI();
+            buildUI();
         }
     }
 
     protected abstract void loadData();
 
-//    protected abstract void buildUI();
+    protected abstract void buildUI();
 }

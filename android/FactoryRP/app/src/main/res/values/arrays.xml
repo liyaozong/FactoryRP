@@ -6,7 +6,7 @@
         <item>焙烧车间</item>
         <item>组装车间</item>
     </string-array>
-    <string-array name="device_using_status">
+    <string-array name="device_status">
         <item>在用</item>
         <item>待检</item>
         <item>待修</item>
@@ -14,6 +14,11 @@
         <item>报废</item>
         <item>停用</item>
         <item>未验收入账</item>
+    </string-array>
+    <string-array name="device_using_status">
+        <item>停机维修</item>
+        <item>带病运行</item>
+        <item>其他</item>
     </string-array>
     <string-array name="device_defect_level">
         <item>紧急</item>

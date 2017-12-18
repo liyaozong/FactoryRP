@@ -60,7 +60,7 @@ public class AddDeviceReq implements Serializable{
     private String head;
 
 //    @ApiModelProperty(value = "使用状况",notes ="使用状况" )
-    private Integer useStatus;
+    private Long useStatus;
 
 //    @ApiModelProperty(value = "安装地点",notes ="安装地点" )
     private String installationAddress;

@@ -14,14 +14,17 @@
     <string name="error_invalid_password">密码长度不足</string>
     <string name="error_field_required">必填项</string>
 
-    <string name="exception_message">程序发生异常情况！！！请联系开发人员。</string>
-    <string name="failure_login">登录失败</string>
-    <string name="failure_save">保存失败</string>
     <string name="failure_get">获取内容失败</string>
-    <string name="failure_request">请求失败，请查看手机网络或服务器状态</string>
+    <string name="failure_login">登录失败</string>
+    <string name="failure_service">服务器返回错误</string>
+    <string name="failure_data_parse">数据解析错误</string>
+    <string name="failure_request">请求错误，请查看手机网络或服务器状态</string>
+    <string name="failure_camera_permission">没有授权，无法使用照相机</string>
 
     <string name="hint_image_count">只能添加3张照片。</string>
     <string name="hint_device_save_success">设备保存成功。</string>
+    <string name="hint_report_fault_success">故障上报成功。</string>
+    <string name="hint_select_a_device">请选择一个设备</string>
 
     <string name="title_home">首页</string>
     <string name="title_device">设备</string>
@@ -34,10 +37,15 @@
     <string name="action_ask_parts">申请备件</string>
     <string name="action_save_device">保存</string>
 
-    <string name="action_i_repair_it">我来修！</string>
+    <string name="action_i_repair_it">抢单，我来维修</string>
+    <string name="action_i_not_repair">撤单，我不修了</string>
     <string name="action_start_repair">开始维修</string>
+    <string name="action_finish_repair">完成维修</string>
     <string name="action_repair_add_workload">添加人员工时</string>
     <string name="action_repair_add_parts">添加所需的配件</string>
+
+    <string name="hint_catch_repair_success">抢单成功</string>
+    <string name="hint_finish_repair_success">抢单成功</string>
 
     <string name="title_scan_device">扫描设备条码</string>
     <string name="title_device_info">设备信息</string>
@@ -80,4 +88,9 @@
     <string name="text_device_repair_submitter">报修人：</string>
     <string name="text_device_fault_desc">故障描述：</string>
     <string name="text_device_desc">备注：</string>
+
+    <string name="loading_login">登录中</string>
+    <string name="loading_loading">加载中</string>
+    <string name="loading_save">保存中</string>
+    <string name="loading_report">故障上报中</string>
 </resources>

@@ -1,6 +1,7 @@
 package tech.yozo.factoryrp.ui.fragment;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -80,7 +81,18 @@ public class PersonFragment extends BaseFragment {
     }
 
     @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        loadData();
+    }
+
+    @Override
     protected void loadData() {
+
+    }
+
+    @Override
+    protected void buildUI() {
         HttpClient client = HttpClient.getInstance();
         tvPersonName.setText(client.getAuthUser().getUserName());
     }
