@@ -1,15 +1,13 @@
 package tech.yozo.factoryrp.service.Impl;
 
 import org.springframework.data.domain.Sort;
-import tech.yozo.factoryrp.entity.DeviceInfo;
-import tech.yozo.factoryrp.entity.DeviceTroubleType;
-import tech.yozo.factoryrp.entity.RepairRecord;
-import tech.yozo.factoryrp.entity.TroubleRecord;
+import tech.yozo.factoryrp.entity.*;
 import tech.yozo.factoryrp.enums.RepairStatusEnum;
 import tech.yozo.factoryrp.enums.TroubleLevelEnum;
 import tech.yozo.factoryrp.enums.TroubleStatusEnum;
 import tech.yozo.factoryrp.exception.BussinessException;
 import tech.yozo.factoryrp.page.Pagination;
+import tech.yozo.factoryrp.repository.DepartmentRepository;
 import tech.yozo.factoryrp.repository.RepairRecordRepository;
 import tech.yozo.factoryrp.repository.TroubleRecordRepository;
 import tech.yozo.factoryrp.service.TroubleRecordService;
@@ -24,17 +22,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import tech.yozo.factoryrp.vo.resp.auth.AuthUser;
-import tech.yozo.factoryrp.vo.resp.device.trouble.SimpleTroubleRecordVo;
-import tech.yozo.factoryrp.vo.resp.device.trouble.WaitAuditWorkOrderVo;
-import tech.yozo.factoryrp.vo.resp.device.trouble.WorkOrderCountVo;
+import tech.yozo.factoryrp.vo.resp.device.trouble.*;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * @author chenxiang
@@ -47,8 +42,8 @@ public class TroubleRecordServiceImpl implements TroubleRecordService {
     private TroubleRecordRepository troubleRecordRepository;
     @Autowired
     private RepairRecordRepository repairRecordRepository;
-
-
+    @Autowired
+    private DepartmentRepository departmentRepository;
     @Override
     public void addTroubleRecord(AddTroubleRecordReq param,Long corporateIdentify,AuthUser user) {
         TroubleRecord troubleRecord = new TroubleRecord();
@@ -345,5 +340,82 @@ public class TroubleRecordServiceImpl implements TroubleRecordService {
             BussinessException biz = new BussinessException("10000","工单不存在或状态不正确");
             throw biz;
         }
+    }
+
+    @Override
+    public WorkOrderDetailVo getDetail(Long id, AuthUser user) {
+        WorkOrderDetailVo vo = new WorkOrderDetailVo();
+        TroubleRecord old = troubleRecordRepository.findOne(id);
+        if (null!=old ){
+            vo.setTroubleRecordId(old.getId());
+            //设备信息
+            DeviceInfo deviceInfo = old.getDeviceInfo();
+            if (null!=deviceInfo){
+                vo.setDeviceName(deviceInfo.getName());
+                vo.setSpecification(deviceInfo.getSpecification());
+                vo.setDeviceCode(deviceInfo.getCode());
+                vo.setInstallationAddress(deviceInfo.getInstallationAddress());
+                Department department =  departmentRepository.findOne(deviceInfo.getUseDept());
+                if (null!=department){
+                    vo.setUseDept(department.getName());
+                }
+            }
+            //故障信息
+            vo.setHappenTime(old.getHappenTime());
+            vo.setOrderNo(old.getOrderNo());
+            vo.setDeviceUser(old.getDeviceUser());
+            vo.setPhone(old.getPhone());
+            vo.setCreateUser(old.getCreateUser());
+            vo.setRepairUserName(old.getRepairUserName());
+            vo.setRemark(old.getRemark());
+            vo.setRepairGroupId(old.getRepairGroupId());
+            //维修单信息
+           RepairRecord repairRecord = repairRecordRepository.findByTroubleRecordId(id);
+           if (null!=repairRecord){
+               vo.setRepairStatus(repairRecord.getRepairStatus());
+               DeviceTroubleType troubleType = repairRecord.getTroubleType();
+               if (null!=troubleType){
+                   vo.setTroubleType(troubleType.getName());
+               }
+               vo.setTroubleReason(repairRecord.getTroubleReason());
+               vo.setRepairLevel(repairRecord.getRepairLevel());
+               vo.setStoped(repairRecord.getStoped());
+               vo.setStopedHour(repairRecord.getStopedHour());
+               vo.setRepairAmount(repairRecord.getRepairAmount());
+               vo.setWorkRemark(repairRecord.getWorkRemark());
+               vo.setStartTime(DateTimeUtil.dateToStr(repairRecord.getStartTime(),""));
+               vo.setEndTime(DateTimeUtil.dateToStr(repairRecord.getEndTime(),""));
+               vo.setCostHour(repairRecord.getCostHour());
+
+               //工作量
+               List<WorkTimeVo> workTimes = new ArrayList<>();
+               //TODO  查询工时表，暂时写死
+               WorkTimeVo workTimeVo = new WorkTimeVo();
+               workTimeVo.setCostHour(repairRecord.getCostHour());
+               workTimeVo.setStartTime(vo.getStartTime());
+               workTimeVo.setEndTime(vo.getEndTime());
+               workTimeVo.setRepairUserName(vo.getRepairUserName());
+               workTimes.add(workTimeVo);
+               vo.setWorkTimes(workTimes);
+
+               //更换配件信息
+               List<UsedSparePartsVo> replaceSpares = new ArrayList<>();
+               //TODO 查询更换信息表，暂时写死
+               UsedSparePartsVo usedSparePartsVo = new UsedSparePartsVo();
+               usedSparePartsVo.setAmount(2);
+               usedSparePartsVo.setCode("TESTTEST001");
+               usedSparePartsVo.setInventoryUpperLimit(112);
+               usedSparePartsVo.setName("测试备件");
+               usedSparePartsVo.setOldOrderNum("900900900");
+               usedSparePartsVo.setNewOrderNum("888888888");
+               usedSparePartsVo.setSpecificationsAndodels("BEITAI001");
+               replaceSpares.add(usedSparePartsVo);
+               vo.setReplaceSpares(replaceSpares);
+           }
+        }else{
+            BussinessException biz = new BussinessException("10000","工单不存在");
+            throw biz;
+        }
+        return vo;
     }
 }
