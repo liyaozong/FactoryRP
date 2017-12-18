@@ -340,11 +340,11 @@ public class AuthorizationServiceImpl implements AuthorizationService {
      */
     public UserAddResp addUser(UserAddReq userAddReq,Long corporateIdentify){
 
-        Corporate corporate = corporateRepository.findByCorporateIdentify(userAddReq.getCorporateIdentify());
+       /* Corporate corporate = corporateRepository.findByCorporateIdentify(userAddReq.getCorporateIdentify());
 
         if(CheckParam.isNull(corporate)){
             throw new BussinessException(ErrorCode.CORPORATE__NOTEXIST_ERROR.getCode(),ErrorCode.CORPORATE__NOTEXIST_ERROR.getMessage());
-        }
+        }*/
 
         User userInCorporate = userRepository.findByUserNameAndCorporateIdentify(userAddReq.getUserName(), userAddReq.getCorporateIdentify());
 
