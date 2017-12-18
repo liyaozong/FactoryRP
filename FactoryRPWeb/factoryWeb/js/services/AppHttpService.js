@@ -2,16 +2,13 @@
 /**
  * http服务在封装
  */
-myApp.factory('AppHttp',['$http', '$timeout',"$rootScope",
-    function($http, $timeout,$rootScope) {
+myApp.factory('AppHttp',['$http', '$timeout',"$rootScope",'$cookies',
+    function($http, $timeout,$rootScope,$cookies) {
         return function(opt) {
-            // if(opt.data)
-            // {
-            //     opt.data.visitType='APP006';
-            // }else{
-            //     opt.data={};
-            //     opt.data.visitType='APP006';
-            // }
+            var token=$cookies.get('token')?$cookies.get('token'):'1';
+            // console.log($cookies.get('token'));
+            opt.headers={token:token};
+
             return $http(opt)
                 .success(function (data, status, headers, config) {
                     // if (data.code == '300' || data.code == '500') {
