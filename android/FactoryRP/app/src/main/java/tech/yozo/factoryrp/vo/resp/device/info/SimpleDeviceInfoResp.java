@@ -2,8 +2,10 @@ package tech.yozo.factoryrp.vo.resp.device.info;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 @Data
-public class SimpleDeviceInfoResp {
+public class SimpleDeviceInfoResp implements Serializable {
 
 //    @ApiModelProperty(value = "主键")
     private Long id;

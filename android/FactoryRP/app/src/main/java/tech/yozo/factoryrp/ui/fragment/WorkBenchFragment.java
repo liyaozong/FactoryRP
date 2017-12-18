@@ -25,6 +25,7 @@ import tech.yozo.factoryrp.R;
 import tech.yozo.factoryrp.ui.DeviceAddActivity;
 import tech.yozo.factoryrp.ui.RepairRecordListActivity;
 import tech.yozo.factoryrp.ui.ReportFaultActivity;
+import tech.yozo.factoryrp.utils.Constant;
 import tech.yozo.factoryrp.utils.ErrorCode;
 import tech.yozo.factoryrp.utils.HttpClient;
 import tech.yozo.factoryrp.vo.resp.device.trouble.WorkOrderCountVo;
@@ -33,9 +34,6 @@ import tech.yozo.factoryrp.vo.resp.device.trouble.WorkOrderCountVo;
 /**
  * 用户主页
  * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link OnFragmentInteractionListener} interface
- * to handle interaction events.
  * Use the {@link WorkBenchFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
@@ -72,10 +70,8 @@ public class WorkBenchFragment extends BaseFragment {
     Unbinder unbinder;
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
+    private int mParam1;
     private String mParam2;
-
-    private OnFragmentInteractionListener mListener;
 
     private WorkOrderCountVo mTroubleCount;
 
@@ -93,10 +89,10 @@ public class WorkBenchFragment extends BaseFragment {
      * @return A new instance of fragment WorkBenchFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static WorkBenchFragment newInstance(String param1, String param2) {
+    public static WorkBenchFragment newInstance(int param1, String param2) {
         WorkBenchFragment fragment = new WorkBenchFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
+        args.putInt(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
@@ -106,7 +102,7 @@ public class WorkBenchFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
+            mParam1 = getArguments().getInt(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
@@ -119,8 +115,13 @@ public class WorkBenchFragment extends BaseFragment {
         unbinder = ButterKnife.bind(this, view);
         listviewMaintainTask.setEmptyView(noNewMaintainTask);
         listviewCheckTask.setEmptyView(noNewCheckTask);
-        refreshTroubleCount();
         return view;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 
     @Override
@@ -129,36 +130,9 @@ public class WorkBenchFragment extends BaseFragment {
         client.get(getContext(), HttpClient.TROUBLE_COUNT, null, getTroubleCountResponse);
     }
 
-    private void refreshTroubleCount() {
-        if (mTroubleCount != null) {
-            textViewWaittoAudit.setText(String.valueOf(mTroubleCount.getWaitAuditNum()));
-            textViewWaittoExec.setText(String.valueOf(mTroubleCount.getWaitRepairNum()));
-            textViewExecuting.setText(String.valueOf(mTroubleCount.getRepairingNum()));
-            textViewWaittoVerify.setText(String.valueOf(mTroubleCount.getWaitValidateNum()));
-        }
-    }
-
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-//        if (context instanceof OnFragmentInteractionListener) {
-//            mListener = (OnFragmentInteractionListener) context;
-//        } else {
-//            throw new RuntimeException(context.toString()
-//                    + " must implement OnFragmentInteractionListener");
-//        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
+    protected void buildUI() {
+        refreshTroubleCount();
     }
 
     @OnClick({R.id.button_ask_repair, R.id.button_add_repair, R.id.button_ask_parts, R.id.button_add_device, R.id.textView_waitto_audit, R.id.textView_waitto_exec, R.id.textView_executing, R.id.textView_waitto_verify})
@@ -179,31 +153,31 @@ public class WorkBenchFragment extends BaseFragment {
                 startActivity(intent);
                 break;
             }
-            case R.id.textView_waitto_audit:
-            case R.id.textView_waitto_exec:
-            case R.id.textView_executing:
+            case R.id.textView_waitto_audit: {
+                Intent intent = new Intent(getContext(), RepairRecordListActivity.class);
+                intent.putExtra(RepairRecordListActivity.RECORD_CATEGORY, Constant.FOR_WAIT_AUDIT);
+                startActivity(intent);
+                break;
+            }
+            case R.id.textView_waitto_exec: {
+                Intent intent = new Intent(getContext(), RepairRecordListActivity.class);
+                intent.putExtra(RepairRecordListActivity.RECORD_CATEGORY, Constant.FOR_WAIT_REPAIR);
+                startActivity(intent);
+                break;
+            }
+            case R.id.textView_executing: {
+                Intent intent = new Intent(getContext(), RepairRecordListActivity.class);
+                intent.putExtra(RepairRecordListActivity.RECORD_CATEGORY, Constant.FOR_REPAIRING);
+                startActivity(intent);
+                break;
+            }
             case R.id.textView_waitto_verify: {
                 Intent intent = new Intent(getContext(), RepairRecordListActivity.class);
-                intent.putExtra(RepairRecordListActivity.RECORD_CATEGORY, view.getId());
+                intent.putExtra(RepairRecordListActivity.RECORD_CATEGORY, Constant.FOR_WAIT_VERIFY);
                 startActivity(intent);
                 break;
             }
         }
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onWorkBenchFragmentInteraction(Uri uri);
     }
 
     private JsonHttpResponseHandler getTroubleCountResponse = new JsonHttpResponseHandler() {
@@ -214,11 +188,11 @@ public class WorkBenchFragment extends BaseFragment {
                     mTroubleCount = JSON.parseObject(response.getString("data"), WorkOrderCountVo.class);
                     refreshTroubleCount();
                 } else {
-                    Toast.makeText(getContext(), R.string.failure_save, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), R.string.failure_service, Toast.LENGTH_SHORT).show();
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
-                Toast.makeText(getContext(), R.string.exception_message, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), R.string.failure_data_parse, Toast.LENGTH_SHORT).show();
             }
         }
 
@@ -227,4 +201,33 @@ public class WorkBenchFragment extends BaseFragment {
             Toast.makeText(getContext(), R.string.failure_request, Toast.LENGTH_SHORT).show();
         }
     };
+
+    private void refreshTroubleCount() {
+        if (mTroubleCount != null) {
+            textViewWaittoAudit.setText(String.valueOf(mTroubleCount.getWaitAuditNum()));
+            if(mTroubleCount.getWaitAuditNum() <= 0) {
+                textViewWaittoAudit.setEnabled(false);
+            } else {
+                textViewWaittoAudit.setEnabled(true);
+            }
+            textViewWaittoExec.setText(String.valueOf(mTroubleCount.getWaitRepairNum()));
+            if(mTroubleCount.getWaitRepairNum() <= 0) {
+                textViewWaittoExec.setEnabled(false);
+            } else {
+                textViewWaittoExec.setEnabled(true);
+            }
+            textViewExecuting.setText(String.valueOf(mTroubleCount.getRepairingNum()));
+            if(mTroubleCount.getRepairingNum() <= 0) {
+                textViewExecuting.setEnabled(false);
+            } else {
+                textViewExecuting.setEnabled(true);
+            }
+            textViewWaittoVerify.setText(String.valueOf(mTroubleCount.getWaitValidateNum()));
+            if(mTroubleCount.getWaitValidateNum() <= 0) {
+                textViewWaittoVerify.setEnabled(false);
+            } else {
+                textViewWaittoVerify.setEnabled(true);
+            }
+        }
+    }
 }

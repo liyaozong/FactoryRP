@@ -1,5 +1,6 @@
 package tech.yozo.factoryrp.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -14,9 +15,11 @@ import tech.yozo.factoryrp.ui.fragment.RepairInfoFragment;
 import tech.yozo.factoryrp.ui.fragment.RepairPartsFragment;
 import tech.yozo.factoryrp.ui.fragment.RepairWorkloadFragment;
 import tech.yozo.factoryrp.utils.BottomNavigationViewHelper;
+import tech.yozo.factoryrp.utils.Constant;
 
 public class RepairDetailActivity extends AppCompatActivity {
-    public static final String DEVICE_CODE = "device_code";
+    public static final String TROUBLE_ID = "trouble_id";
+
     private ViewPager mViewPageContianer;
     private BottomNavigationView mNavigation;
 
@@ -57,7 +60,14 @@ public class RepairDetailActivity extends AppCompatActivity {
             = new FragmentPagerAdapter(getSupportFragmentManager()) {
         @Override
         public Fragment getItem(int position) {
-            return Fragment.instantiate(RepairDetailActivity.this, fragments[position]);
+            Bundle bundle = new Bundle();
+
+            Intent intent = getIntent();
+            if(intent.hasExtra(TROUBLE_ID)) {
+                bundle.putInt("param1", Constant.FOR_WORK_ORDER_ID);
+                bundle.putString("param2", intent.getStringExtra(TROUBLE_ID));
+            }
+            return Fragment.instantiate(RepairDetailActivity.this, fragments[position], bundle);
         }
 
         @Override

@@ -1,6 +1,7 @@
 package tech.yozo.factoryrp.ui.fragment;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.Toast;
 import com.alibaba.fastjson.JSON;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -16,8 +18,11 @@ import cz.msebera.android.httpclient.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
 import tech.yozo.factoryrp.R;
+import tech.yozo.factoryrp.utils.Constant;
+import tech.yozo.factoryrp.utils.ErrorCode;
 import tech.yozo.factoryrp.utils.HttpClient;
 import tech.yozo.factoryrp.vo.resp.device.info.FullDeviceInfoResp;
+import tech.yozo.factoryrp.vo.resp.device.info.SimpleDeviceInfoResp;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -40,9 +45,9 @@ public class DeviceInfoFragment extends BaseFragment {
 
     // TODO: Rename and change types of parameters
     private int mParam1;
-    private long mParam2;
+    private String mParam2;
 
-    private List<Map<String, Object>> data = new ArrayList<>();;
+    private List<Map<String, Object>> data = new ArrayList<>();
     private SimpleAdapter adapter;
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日");
 
@@ -59,10 +64,10 @@ public class DeviceInfoFragment extends BaseFragment {
      * @return A new instance of fragment DeviceInfoFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static DeviceInfoFragment newInstance(Long param1, String param2) {
+    public static DeviceInfoFragment newInstance(int param1, String param2) {
         DeviceInfoFragment fragment = new DeviceInfoFragment();
         Bundle args = new Bundle();
-        args.putLong(ARG_PARAM1, param1);
+        args.putInt(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
@@ -73,7 +78,7 @@ public class DeviceInfoFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mParam1 = getArguments().getInt(ARG_PARAM1);
-            mParam2 = getArguments().getLong(ARG_PARAM2);
+            mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 
@@ -92,10 +97,57 @@ public class DeviceInfoFragment extends BaseFragment {
 
     @Override
     protected void loadData() {
-        RequestParams params = new RequestParams();
-        params.put("id", mParam2);
         HttpClient client = HttpClient.getInstance();
-        client.get(getActivity(), HttpClient.DEVICE_GET, params, requestDeviceDetailResponse);
+
+        boolean exist = false;
+        switch (mParam1) {
+            case Constant.FOR_DEVICE_ID: {
+                for (FullDeviceInfoResp device : client.getFullDeviceInfoRespList()) {
+                    if (device.getId().equals(mParam2)) {
+                        getData(device);
+                        exist = true;
+                        break;
+                    }
+                }
+                if(!exist) {
+                    RequestParams params = new RequestParams();
+                    params.put("id", mParam2);
+                    client.get(getActivity(), HttpClient.DEVICE_GET, params, requestDeviceDetailResponse);
+                }
+                break;
+            }
+            case Constant.FOR_DEVICE_CODE: {
+                for (FullDeviceInfoResp device : client.getFullDeviceInfoRespList()) {
+                    if (device.getCode().contentEquals(mParam2)) {
+                        getData(device);
+                        exist = true;
+                        break;
+                    }
+                }
+                if(!exist) {
+                    if(client.getSimpleDeviceList() != null) {
+                        for(SimpleDeviceInfoResp device : client.getSimpleDeviceList()) {
+                            if(device.getCode().contentEquals(mParam2)) {
+                                RequestParams params = new RequestParams();
+                                params.put("id", device.getId());
+                                client.get(getActivity(), HttpClient.DEVICE_GET, params, requestDeviceDetailResponse);
+                                break;
+                            }
+                        }
+                    } else {
+                        //TODO
+                    }
+                }
+                break;
+            }
+            default:
+                break;
+        }
+    }
+
+    @Override
+    protected void buildUI() {
+
     }
 
     private JsonHttpResponseHandler requestDeviceDetailResponse = new JsonHttpResponseHandler() {
@@ -104,18 +156,25 @@ public class DeviceInfoFragment extends BaseFragment {
             Log.d("INFO", response.toString());
             if(response.has("data")) {
                 try {
-                    FullDeviceInfoResp device = JSON.parseObject(response.getString("data"), FullDeviceInfoResp.class);
-                    getData(device);
-                    adapter.notifyDataSetChanged();
+                    if (ErrorCode.SUCCESS.getCode().equals(response.getString("errorCode"))) {
+                        FullDeviceInfoResp device = JSON.parseObject(response.getString("data"), FullDeviceInfoResp.class);
+                        HttpClient client = HttpClient.getInstance();
+                        client.getFullDeviceInfoRespList().add(device);
+                        getData(device);
+                        adapter.notifyDataSetChanged();
+                    } else {
+                        Toast.makeText(getContext(), R.string.failure_get, Toast.LENGTH_SHORT).show();
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    Toast.makeText(getContext(), R.string.failure_data_parse, Toast.LENGTH_SHORT).show();
                 }
             }
         }
 
         @Override
         public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-            Log.d("ERROR", errorResponse.toString());
+            Toast.makeText(getContext(), R.string.failure_request, Toast.LENGTH_SHORT).show();
         }
     };
 
@@ -177,7 +236,11 @@ public class DeviceInfoFragment extends BaseFragment {
 
         map = new HashMap<>();
         map.put("name", "购买时间");
-        map.put("value", sdf.format(device.getBuyDate()));
+        if(device.getBuyDate() != null) {
+            map.put("value", sdf.format(device.getBuyDate()));
+        } else {
+            map.put("value", "");
+        }
         data.add(map);
     }
 }

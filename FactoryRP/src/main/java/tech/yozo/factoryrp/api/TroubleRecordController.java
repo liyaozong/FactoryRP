@@ -15,6 +15,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import tech.yozo.factoryrp.vo.resp.auth.AuthUser;
 import tech.yozo.factoryrp.vo.resp.device.trouble.SimpleTroubleRecordVo;
+import tech.yozo.factoryrp.vo.resp.device.trouble.WorkOrderDetailVo;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -109,6 +110,8 @@ public class TroubleRecordController extends BaseController{
 
     @GetMapping("obtainOrder")
     @ApiOperation(value = "抢单--Mobile",notes = "抢单--Mobile",httpMethod = "GET")
+    @ApiImplicitParams(@ApiImplicitParam(paramType = "query",dataType = "String",name = "id",
+            value = "故障主键",required = true))
     public ApiResponse obtainOrder(HttpServletRequest request,Long id){
         AuthUser user = userAuthService.getCurrentUser(request);
         troubleRecordService.obtainOrder(id,user);
@@ -117,6 +120,8 @@ public class TroubleRecordController extends BaseController{
 
     @GetMapping("cancelOrder")
     @ApiOperation(value = "撤单--Mobile",notes = "撤单--Mobile",httpMethod = "GET")
+    @ApiImplicitParams(@ApiImplicitParam(paramType = "query",dataType = "String",name = "id",
+            value = "故障主键",required = true))
     public ApiResponse cancelOrder(HttpServletRequest request,Long id){
         AuthUser user = userAuthService.getCurrentUser(request);
         troubleRecordService.cancelOrder(id,user);
@@ -141,9 +146,19 @@ public class TroubleRecordController extends BaseController{
 
     @GetMapping("submitRepair")
     @ApiOperation(value = "完成维修并提交--Mobile",notes = "完成维修并提交--Mobile",httpMethod = "GET")
+    @ApiImplicitParams(@ApiImplicitParam(paramType = "query",dataType = "String",name = "id",
+            value = "故障主键",required = true))
     public ApiResponse submitRepair(HttpServletRequest request,Long id){
         AuthUser user = userAuthService.getCurrentUser(request);
         troubleRecordService.submitRepair(id,user);
+        return apiResponse();
+    }
+
+    @PostMapping("validate")
+    @ApiOperation(value = "验证工单--Mobile",notes = "验证工单--Mobile",httpMethod = "POST")
+    public ApiResponse validate(HttpServletRequest request,@RequestBody ValidateRepairReq param){
+        AuthUser user = userAuthService.getCurrentUser(request);
+        troubleRecordService.validate(param,user);
         return apiResponse();
     }
 
@@ -170,5 +185,14 @@ public class TroubleRecordController extends BaseController{
         return apiResponse();
     }
 
+    @GetMapping("get")
+    @ApiOperation(value = "查询工单详情(包括故障信息、处理意见、工作量、更换的配件)--Mobile",notes = "查询工单详情(包括故障信息、处理意见、工作量、更换的配件)--Mobile",httpMethod = "GET")
+    @ApiImplicitParams(@ApiImplicitParam(paramType = "query",dataType = "String",name = "id",
+            value = "故障主键",required = true))
+    public ApiResponse<WorkOrderDetailVo> getDetail(HttpServletRequest request, Long id){
+        AuthUser user = userAuthService.getCurrentUser(request);
+        WorkOrderDetailVo vo=troubleRecordService.getDetail(id,user);
+        return apiResponse(vo);
+    }
 
 }

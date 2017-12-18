@@ -19,10 +19,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import tech.yozo.factoryrp.R;
 import tech.yozo.factoryrp.ui.PartsDetailActivity;
+import tech.yozo.factoryrp.utils.Constant;
 import tech.yozo.factoryrp.utils.ErrorCode;
 import tech.yozo.factoryrp.utils.HttpClient;
 import tech.yozo.factoryrp.vo.req.SparePartsQueryReq;
-import tech.yozo.factoryrp.vo.resp.device.info.SimpleDeviceInfoResp;
 import tech.yozo.factoryrp.vo.resp.sparepars.SparePartsResp;
 
 import java.nio.charset.Charset;
@@ -43,7 +43,7 @@ public class PartsListFragment extends BaseFragment {
 
     // TODO: Rename and change types of parameters
     private int mParam1;
-    private long mParam2;
+    private String mParam2;
 
     private ListView mPartsListView;
     private List<SparePartsResp> parts;
@@ -63,10 +63,10 @@ public class PartsListFragment extends BaseFragment {
      * @return A new instance of fragment PartsListFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static PartsListFragment newInstance(Long param1, String param2) {
+    public static PartsListFragment newInstance(int param1, String param2) {
         PartsListFragment fragment = new PartsListFragment();
         Bundle args = new Bundle();
-        args.putLong(ARG_PARAM1, param1);
+        args.putInt(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
@@ -77,7 +77,7 @@ public class PartsListFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mParam1 = getArguments().getInt(ARG_PARAM1);
-            mParam2 = getArguments().getLong(ARG_PARAM2);
+            mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 
@@ -95,7 +95,7 @@ public class PartsListFragment extends BaseFragment {
             public void onItemClick(AdapterView<?> arg0, View arg1, int count,
                                     long arg3) {
                 Intent intent = new Intent(getActivity(), PartsDetailActivity.class);
-                intent.putExtra(PartsDetailActivity.PARTS_ID, 181421423);
+                intent.putExtra(PartsDetailActivity.PARTS_ID, parts.get(count).getId());
                 startActivity(intent);
             }
         });
@@ -105,27 +105,48 @@ public class PartsListFragment extends BaseFragment {
     @Override
     protected void loadData() {
         HttpClient client = HttpClient.getInstance();
-        //TODO
-        SparePartsQueryReq req = new SparePartsQueryReq();
-        req.setCurrentPage(0);
-        req.setItemsPerPage(100);
-        StringEntity param = new StringEntity(JSON.toJSONString(req), Charset.forName("UTF-8"));
-        client.post(null, HttpClient.PARTS_LIST, param, requestPartsListResponse);
+        if(client.getSparePartsRespList() != null) {
+            parts = client.getSparePartsRespList();
+        } else {
+            //TODO
+            SparePartsQueryReq req = new SparePartsQueryReq();
+            switch (mParam1) {
+                case Constant.FOR_BROWE_MODE:
+                case Constant.FOR_DEVICE_ID:
+                case Constant.FOR_PERSON_ID:
+                case Constant.FOR_WORK_ORDER_ID:
+                    req.setCurrentPage(0);
+                    req.setItemsPerPage(100);
+                    StringEntity param = new StringEntity(JSON.toJSONString(req), Charset.forName("UTF-8"));
+                    client.post(getContext(), HttpClient.PARTS_LIST, param, requestPartsListResponse);
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    @Override
+    protected void buildUI() {
+
     }
 
     private JsonHttpResponseHandler requestPartsListResponse = new JsonHttpResponseHandler() {
         @Override
         public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+            Log.d("INFO", response.toString());
             try {
                 if (ErrorCode.SUCCESS.getCode().equals(response.getString("errorCode"))) {
                     parts = JSONArray.parseArray(response.getJSONObject("data").getString("list"), SparePartsResp.class);
+                    HttpClient client = HttpClient.getInstance();
+                    client.setSparePartsRespList(parts);
                     mListAdapter.notifyDataSetChanged();
                 } else {
                     Toast.makeText(getContext(), R.string.failure_get, Toast.LENGTH_SHORT).show();
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
-                Toast.makeText(getContext(), R.string.exception_message, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), R.string.failure_data_parse, Toast.LENGTH_SHORT).show();
             }
         }
 

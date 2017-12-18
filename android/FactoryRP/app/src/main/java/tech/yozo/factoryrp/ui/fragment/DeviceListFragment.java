@@ -2,7 +2,6 @@ package tech.yozo.factoryrp.ui.fragment;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -19,6 +18,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import tech.yozo.factoryrp.R;
 import tech.yozo.factoryrp.ui.DeviceDetailActivity;
+import tech.yozo.factoryrp.utils.Constant;
 import tech.yozo.factoryrp.utils.ErrorCode;
 import tech.yozo.factoryrp.utils.HttpClient;
 import tech.yozo.factoryrp.vo.req.DeviceInfoReq;
@@ -39,11 +39,9 @@ import java.util.List;
  */
 public class DeviceListFragment extends BaseFragment {
 
-    private List<SimpleDeviceInfoResp> devices;
-
     private ListView mListView;
     private DeviceListAdapter mListAdapter;
-
+    private List<SimpleDeviceInfoResp> devices;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -51,12 +49,10 @@ public class DeviceListFragment extends BaseFragment {
     private static final String ARG_PARAM2 = "param2";
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
+    private int mParam1;
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
-
-    private Button btn;
 
     public DeviceListFragment() {
         // Required empty public constructor
@@ -71,10 +67,10 @@ public class DeviceListFragment extends BaseFragment {
      * @return A new instance of fragment DeviceListFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static DeviceListFragment newInstance(String param1, String param2) {
+    public static DeviceListFragment newInstance(int param1, String param2) {
         DeviceListFragment fragment = new DeviceListFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
+        args.putInt(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
@@ -84,7 +80,7 @@ public class DeviceListFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
+            mParam1 = getArguments().getInt(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
@@ -101,9 +97,18 @@ public class DeviceListFragment extends BaseFragment {
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> arg0, View arg1, int count,
                                     long arg3) {
-                Intent intent = new Intent(getActivity(), DeviceDetailActivity.class);
-                intent.putExtra(DeviceDetailActivity.DEVICE_ID, devices.get(count).getId());
-                startActivity(intent);
+                switch (mParam1) {
+                    case Constant.FOR_BROWE_MODE:
+                        Intent intent = new Intent(getActivity(), DeviceDetailActivity.class);
+                        intent.putExtra(DeviceDetailActivity.DEVICE_ID, devices.get(count).getId().toString());
+                        startActivity(intent);
+                        break;
+                    case Constant.FOR_CHOICE_MODE:
+                        mListener.onDeviceSelected(devices.get(count));
+                        break;
+                    default:
+                        break;
+                }
             }
         });
 
@@ -115,22 +120,16 @@ public class DeviceListFragment extends BaseFragment {
         super.onActivityCreated(savedInstanceState);
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-//    public void onButtonPressed(Uri uri) {
-//        if (mListener != null) {
-//            mListener.onFragmentInteraction(uri);
-//        }
-//    }
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-//        if (context instanceof OnFragmentInteractionListener) {
-//            mListener = (OnFragmentInteractionListener) context;
-//        } else {
-//            throw new RuntimeException(context.toString()
-//                    + " must implement OnFragmentInteractionListener");
-//        }
+
+        if (context instanceof OnFragmentInteractionListener) {
+            mListener = (OnFragmentInteractionListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
     }
 
     @Override
@@ -142,27 +141,46 @@ public class DeviceListFragment extends BaseFragment {
     @Override
     protected void loadData() {
         HttpClient client = HttpClient.getInstance();
-        //TODO
-        DeviceInfoReq req = new DeviceInfoReq();
-        req.setCurrentPage(0);
-        req.setItemsPerPage(100);
-        StringEntity param = new StringEntity(JSON.toJSONString(req), Charset.forName("UTF-8"));
-        client.post(null, HttpClient.DEVICE_LIST, param, requestDeviceListResponse);
+        if(client.getSimpleDeviceList() != null) {
+            devices = client.getSimpleDeviceList();
+        } else {
+            DeviceInfoReq req = new DeviceInfoReq();
+            switch (mParam1) {
+                case Constant.FOR_BROWE_MODE:
+                    req.setCurrentPage(0);
+                    req.setItemsPerPage(100);
+                    break;
+                case Constant.FOR_CHOICE_MODE:
+                    break;
+                default:
+                    break;
+            }
+            StringEntity param = new StringEntity(JSON.toJSONString(req), Charset.forName("UTF-8"));
+            client.post(null, HttpClient.DEVICE_LIST, param, requestDeviceListResponse);
+        }
+    }
+
+    @Override
+    protected void buildUI() {
+
     }
 
     private JsonHttpResponseHandler requestDeviceListResponse = new JsonHttpResponseHandler() {
         @Override
         public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+            Log.d("INFO", response.toString());
             try {
                 if (ErrorCode.SUCCESS.getCode().equals(response.getString("errorCode"))) {
+                    HttpClient client = HttpClient.getInstance();
                     devices = JSONArray.parseArray(response.getJSONObject("data").getString("list"), SimpleDeviceInfoResp.class);
+                    client.setSimpleDeviceList(devices);
                     mListAdapter.notifyDataSetChanged();
                 } else {
                     Toast.makeText(getContext(), R.string.failure_get, Toast.LENGTH_SHORT).show();
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
-                Toast.makeText(getContext(), R.string.exception_message, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), R.string.failure_data_parse, Toast.LENGTH_SHORT).show();
             }
         }
 
@@ -183,8 +201,7 @@ public class DeviceListFragment extends BaseFragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+        void onDeviceSelected(SimpleDeviceInfoResp device);
     }
 
     private static class ViewHolder
@@ -247,5 +264,4 @@ public class DeviceListFragment extends BaseFragment {
             return convertView;
         }
     }
-
 }

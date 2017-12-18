@@ -57,7 +57,7 @@
                 android:label="@string/action_ask_repair"
                 android:windowSoftInputMode="adjustUnspecified|stateHidden">
         </activity>
-        <activity android:name=".ui.DeviceListActivity">
+        <activity android:name=".ui.DeviceSelectActivity">
         </activity>
     </application>
 

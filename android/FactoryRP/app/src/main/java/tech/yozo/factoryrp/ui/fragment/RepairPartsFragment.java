@@ -22,7 +22,7 @@ import java.util.Map;
  * Use the {@link RepairPartsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class RepairPartsFragment extends Fragment {
+public class RepairPartsFragment extends BaseFragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -79,10 +79,6 @@ public class RepairPartsFragment extends Fragment {
         return view;
     }
 
-    public void onAddWorkload(View view) {
-        Toast.makeText(getContext(), "开始处理这个工单", Toast.LENGTH_SHORT).show();
-    }
-
     private List<Map<String, Object>> getData() {
         List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 
@@ -97,5 +93,15 @@ public class RepairPartsFragment extends Fragment {
         list.add(map);
 
         return list;
+    }
+
+    @Override
+    protected void loadData() {
+
+    }
+
+    @Override
+    protected void buildUI() {
+
     }
 }

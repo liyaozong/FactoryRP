@@ -1,6 +1,7 @@
 package tech.yozo.factoryrp.ui.fragment;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -15,7 +16,7 @@ import tech.yozo.factoryrp.R;
  * Use the {@link CheckRecordListFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CheckRecordListFragment extends Fragment {
+public class CheckRecordListFragment extends BaseFragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -23,7 +24,7 @@ public class CheckRecordListFragment extends Fragment {
 
     // TODO: Rename and change types of parameters
     private int mParam1;
-    private long mParam2;
+    private String mParam2;
 
 
     public CheckRecordListFragment() {
@@ -39,10 +40,10 @@ public class CheckRecordListFragment extends Fragment {
      * @return A new instance of fragment CheckRecordListFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static CheckRecordListFragment newInstance(String param1, String param2) {
+    public static CheckRecordListFragment newInstance(int param1, String param2) {
         CheckRecordListFragment fragment = new CheckRecordListFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
+        args.putInt(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
@@ -53,7 +54,7 @@ public class CheckRecordListFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mParam1 = getArguments().getInt(ARG_PARAM1);
-            mParam2 = getArguments().getLong(ARG_PARAM2);
+            mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 
@@ -64,4 +65,13 @@ public class CheckRecordListFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_check_record_list, container, false);
     }
 
+    @Override
+    protected void loadData() {
+
+    }
+
+    @Override
+    protected void buildUI() {
+
+    }
 }
