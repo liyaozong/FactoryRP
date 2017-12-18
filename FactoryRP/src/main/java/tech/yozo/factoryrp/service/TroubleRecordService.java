@@ -90,4 +90,10 @@ public interface TroubleRecordService {
      * @return
      */
     public WorkOrderDetailVo getDetail(Long id,AuthUser user);
+
+
+    /**
+     * 验证工单
+     */
+    public void validate(ValidateRepairReq param, AuthUser user);
 }
