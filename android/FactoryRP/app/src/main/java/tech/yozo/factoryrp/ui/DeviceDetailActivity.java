@@ -16,8 +16,7 @@ import tech.yozo.factoryrp.utils.Constant;
 
 public class DeviceDetailActivity extends AppCompatActivity {
     public static final String DEVICE_ID = "device_id";
-
-    private Long mDeviceId;
+    public static final String DEVICE_CODE = "device_code";
 
     private ViewPager mViewPageContianer;
     private BottomNavigationView mNavigation;
@@ -43,11 +42,6 @@ public class DeviceDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_device_detail);
-
-        Intent intent = getIntent();
-        if(intent.hasExtra(DEVICE_ID)) {
-            mDeviceId = intent.getLongExtra(DEVICE_ID, 0);
-        }
 
         mNavigation = (BottomNavigationView) findViewById(R.id.navigation_device);
         BottomNavigationViewHelper.disableShiftMode(mNavigation);
@@ -81,8 +75,16 @@ public class DeviceDetailActivity extends AppCompatActivity {
         @Override
         public Fragment getItem(int position) {
             Bundle bundle = new Bundle();
-            bundle.putInt("param1", Constant.FOR_DEVICE);
-            bundle.putLong("param2", mDeviceId);
+
+            Intent intent = getIntent();
+            if(intent.hasExtra(DEVICE_ID)) {
+                bundle.putInt("param1", Constant.FOR_DEVICE_ID);
+                bundle.putString("param2", intent.getStringExtra(DEVICE_ID));
+            } else if(intent.hasExtra(DEVICE_CODE)) {
+                bundle.putInt("param1", Constant.FOR_DEVICE_CODE);
+                bundle.putString("param2", intent.getStringExtra(DEVICE_CODE));
+            }
+
             return Fragment.instantiate(DeviceDetailActivity.this, fragments[position], bundle);
         }
 

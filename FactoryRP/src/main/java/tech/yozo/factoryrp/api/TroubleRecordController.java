@@ -154,6 +154,14 @@ public class TroubleRecordController extends BaseController{
         return apiResponse();
     }
 
+    @PostMapping("validate")
+    @ApiOperation(value = "验证工单--Mobile",notes = "验证工单--Mobile",httpMethod = "POST")
+    public ApiResponse validate(HttpServletRequest request,@RequestBody ValidateRepairReq param){
+        AuthUser user = userAuthService.getCurrentUser(request);
+        troubleRecordService.validate(param,user);
+        return apiResponse();
+    }
+
     /**
      * 批量删除故障信息
      * @param ids

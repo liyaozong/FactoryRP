@@ -124,7 +124,7 @@ public class TroubleRecordServiceImpl implements TroubleRecordService {
         Page<TroubleRecord> page = null;
         if (null!=user && status == TroubleStatusEnum.REPAIRING.getCode()){
             page = troubleRecordRepository.findByStatusAndRepairUserId(status,user.getUserId(),p);
-        }else if ((null!=user && status == TroubleStatusEnum.REPAIRING.getCode())){
+        }else if ((null!=user && status == TroubleStatusEnum.REPAIRED.getCode())){
             page = troubleRecordRepository.findByStatusAndValidateUserId(status,user.getUserId(),p);
         }else {
             page= troubleRecordRepository.findByStatusAndCorporateIdentify(status,corporateIdentify,p);
@@ -417,5 +417,25 @@ public class TroubleRecordServiceImpl implements TroubleRecordService {
             throw biz;
         }
         return vo;
+    }
+
+    @Override
+    public void validate(ValidateRepairReq param, AuthUser user) {
+        TroubleRecord old = troubleRecordRepository.findOne(param.getTroubleRecordId());
+        if (null!=old && old.getStatus() == TroubleStatusEnum.REPAIRED.getCode()){
+            if (old.getValidateUserId() != user.getUserId()){
+                BussinessException biz = new BussinessException("10001","不是本人工单，无权限操作");
+                throw biz;
+            }
+            old.setStatus(TroubleStatusEnum.VALIDATED.getCode());
+            old.setUpdateTime(new Date());
+            old.setRepaired(param.getRepaired());
+            old.setSuggest(param.getSuggest());
+            old.setStarLevel(param.getStarLevel());
+            troubleRecordRepository.save(old);
+        }else{
+            BussinessException biz = new BussinessException("10000","工单不存在或状态不正确");
+            throw biz;
+        }
     }
 }

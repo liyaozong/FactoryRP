@@ -2,6 +2,8 @@
  * Created by SHYL on 2016/6/13.
  */
 myApp.controller("HomeController", function($rootScope,UrlService,$cookies,$state, $scope, $resource, $timeout, $http,$location,$log,AuthorizationService,functionManageService,userManagementService) {
+    $("body").removeAttr('id');
+    $("body").css('background','#fff');
     if($location.path()=='/main/deviceManage'){
         console.log($("#menuLeft .leftmenu .deviceManage"));
         $("#menuLeft .leftmenu .deviceManage").removeClass('hide');
@@ -18,15 +20,26 @@ myApp.controller("HomeController", function($rootScope,UrlService,$cookies,$stat
         $("#menuLeft .leftmenu .modelToolsManage").siblings().removeClass('hide');
     }
     $scope.username=$cookies.get('username');
-    $("body").css({
-        'background-color':'#fff',
-        'background-image':'none',
-        'background-repeat':'no-repeat',
-        'background-position':'center top',
-        'overflow':'hidden'
-    });
-//    clearInterval(aa);
-//    clearInterval(bb);
+    /*登出 start*/
+    $scope.onLogout = function(){
+        $cookies.remove('token');
+        $cookies.remove('username');
+        $cookies.remove('corporateIdentify');
+        $cookies.remove('requestSeqNo');
+        $state.go("login");
+//        AuthorizationService.doLogout(function(data){
+//            console.log(data)
+//            if(data != null && data.status == '0' && (data.code == 'LOGIN_SUCESS' || data.code=="LOGOUT_SUCESS")){
+//                $rootScope.allStates = [];
+//
+//            }else{
+//                alert(data.message);
+//            }
+//        }, function(err){
+//            // $rootScope.isLogin = false;
+//        });
+    };
+    /*登出 end*/
     $rootScope.isLogin = AuthorizationService.isLogined();
     $scope.onCloseState = function(state){
         if(!$rootScope.allStates){

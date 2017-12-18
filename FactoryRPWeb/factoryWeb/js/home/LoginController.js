@@ -8,27 +8,15 @@ myApp.controller("LoginController", function($rootScope,UrlService,$cookies,$sta
     /*新版权限系统相关权限 start*/
     $scope.WebURL=UrlService.getUrl('authorizationNew');
     $scope.userPhones=$cookies.get('username');
-
-    $("#userName").focus(function(){
-        $(".loginErrMessage").hide();
-        $(".loginErrMessage").html('');
-        $("#loginButton").removeAttr('disabled');
-        $("#loginButton").html('登录');
-    });
-    $("#passWord").focus(function(){
-        $(".loginErrMessage").hide();
-        $(".loginErrMessage").html('');
-        $("#loginButton").removeAttr('disabled');
-        $("#loginButton").html('登录');
+    $("body").css({
+        'background-color':'#1c77ac',
+        'background-image':'../../images/light.png',
+        'background-repeat':'no-repeat',
+        'background-position':'center top',
+        'overflow':'hidden'
     });
     /*登录start*/
-    $scope.username=$("#userName").val();
-    $scope.imgCode=$("#imgCode").val();
-    $scope.phoneCode=$("#phoneCode").val();
-
-
     $scope.loginToFactory=function(){
-        console.log('123456');
         if($("#username").val()==''||$("#username").val()==null||$("#username").val()==undefined){
             $("#username").focus();
         }else if($("#password").val()==''||$("#password").val()==null||$("#password").val()==undefined){
@@ -36,43 +24,14 @@ myApp.controller("LoginController", function($rootScope,UrlService,$cookies,$sta
         }else if($("#corporateCode").val()==''||$("#corporateCode").val()==null||$("#corporateCode").val()==undefined){
             $("#corporateCode").focus();
         }else{
-//            var pa={
-//                username:$("#username").val(),
-//                password:$("#password").val(),
-//                corporateCode:$("#corporateCode").val()
-//            };
-//            var par={params:pa};
-//            console.log(par,'-----');
-//            $http.get(UrlService.getUrl('authorizationNew')+'login',par).success(function(data){
-//                console.log(data,'123');
-//                if(data != null && data.status == '0' && (data.errorCode == '000000' && data.errorMessage=="成功")){
-//                    $scope.userNick = data.obj.employee.phone;
-//                    $("body").css('background-color','#fff');
-//                    $("body").removeAttr('id');
-////                    $state.go('main.home',{'userName':$scope.userNick});
-//                    console.log('登陆成功');
-//                }else{
-////                    alert(data.message);
-//                    $("#loginButton").removeAttr('disabled');
-//                    $(".loginErrMessage").show();
-//                    $(".loginErrMessage").html(data.errorMessage);
-//                    $("#loginButton").val('登录');
-//                }
-//            }).error(function(response){
-//                alert(response.message);
-//            });
             AuthorizationService.doLoginNew({
                 username:$("#username").val(),
                 password:$("#password").val(),
                 corporateCode:$("#corporateCode").val()
             },function(data){
-                if(data != null && data.status == '0' && (data.errorCode == '000000' && data.errorMessage=="成功")){
-                    $scope.userNick = data.obj.employee.phone;
-                    $("body").css('background-color','#fff');
-                    $("body").removeAttr('id');
-
+                if(data != null && (data.errorCode == '000000' && data.errorMessage=="成功")){
+                    $scope.userNick = data.data.userName;
                 }else{
-
                     $("#loginButton").removeAttr('disabled');
                     $(".loginErrMessage").show();
                     $(".loginErrMessage").html(data.errorMessage);
@@ -83,68 +42,41 @@ myApp.controller("LoginController", function($rootScope,UrlService,$cookies,$sta
             });
         }
     };
-
     $("body").keydown(function(e) {
         var theEvent = window.event || e;
         var code = theEvent.keyCode || theEvent.which;
         if (code == "13") {//keyCode=13是回车键
-            if($("#userName").val()==''||$("#userName").val()==null||$("#userName").val()==undefined){
-                $("#userName").focus();
-            }else if($("#imgCode").val()==''||$("#imgCode").val()==null||$("#imgCode").val()==undefined){
-                $("#imgCode").focus();
-            }else if($("#phoneCode").val()==''||$("#phoneCode").val()==null||$("#phoneCode").val()==undefined){
-                $("#phoneCode").focus();
+            if($("#username").val()==''||$("#username").val()==null||$("#username").val()==undefined){
+                $("#username").focus();
+            }else if($("#password").val()==''||$("#password").val()==null||$("#password").val()==undefined){
+                $("#password").focus();
+            }else if($("#corporateCode").val()==''||$("#corporateCode").val()==null||$("#corporateCode").val()==undefined){
+                $("#corporateCode").focus();
             }else{
-                $("#loginButton").attr('disabled','disabled');
-                $("#loginButton").html('登录中......');
-                /*******登录加密 start*******/
-                //  var loginMd=$("#passWord").val();
-//            hash = faultylabs.MD5($scope.password);
-//
-//            b = base64.encode64(hash);
-////            console.log(b);
-                /*******登录加密 end****/
-                AuthorizationService.doLogin($scope.username, $scope.imgCode, $scope.phoneCode,function(data){
-                    if(data != null && data.status == '0' && (data.code == 'LOGIN_SUCESS' || data.code=="RE_LOGIN_ERROR")){
-//                    $scope.userNick = '1111';
-                        $scope.userNick = data.obj.username;
-//                    alert(1);
-//                    $state.go('main.home',{'userName':$scope.username});
+                AuthorizationService.doLoginNew({
+                    username:$("#username").val(),
+                    password:$("#password").val(),
+                    corporateCode:$("#corporateCode").val()
+                },function(data){
+                    if(data != null && (data.errorCode == '000000' && data.errorMessage=="成功")){
+                        $scope.userNick = data.data.userName;
+                        $state.go('main.home',{'userName':$scope.userNick});
                     }else{
-//                    alert(data.message);
                         $("#loginButton").removeAttr('disabled');
                         $(".loginErrMessage").show();
-                        $(".loginErrMessage").html(data.message);
-                        $("#loginButton").html('登录');
+                        $(".loginErrMessage").html(data.errorMessage);
+                        $("#loginButton").val('登录');
                     }
                 }, function(err){
-                    // $rootScope.isLogin = false;
+
                 });
             }
         }
     });
     /*登录end*/
-    $rootScope.commonTips = '12332';
     $scope.onCloseTips = function(){
         $rootScope.commonTips = '';
     };
-    /*登出 start*/
-    $scope.onLogout = function(){
-        $cookies.remove('JSESSIONID');
-        $state.go("login");
-//        AuthorizationService.doLogout(function(data){
-//            console.log(data)
-//            if(data != null && data.status == '0' && (data.code == 'LOGIN_SUCESS' || data.code=="LOGOUT_SUCESS")){
-//                $rootScope.allStates = [];
-//
-//            }else{
-//                alert(data.message);
-//            }
-//        }, function(err){
-//            // $rootScope.isLogin = false;
-//        });
-    };
-    /*登出 end*/
     /*修改密码 start*/
     $scope.updatePassword=function(){
         popupDiv('updatePassword');

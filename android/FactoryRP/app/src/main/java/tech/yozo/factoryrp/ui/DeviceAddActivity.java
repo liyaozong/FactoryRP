@@ -2,13 +2,15 @@ package tech.yozo.factoryrp.ui;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
+import android.view.*;
 import android.widget.*;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -22,16 +24,19 @@ import org.json.JSONObject;
 import tech.yozo.factoryrp.R;
 import tech.yozo.factoryrp.scan.CaptureActivity;
 import tech.yozo.factoryrp.scan.Intents;
-import tech.yozo.factoryrp.utils.ErrorCode;
-import tech.yozo.factoryrp.utils.HttpClient;
+import tech.yozo.factoryrp.utils.*;
 import tech.yozo.factoryrp.vo.req.AddDeviceReq;
+import tech.yozo.factoryrp.vo.resp.ContactCompany;
+import tech.yozo.factoryrp.vo.resp.DeviceParamDicEnumResp;
 
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
-public class DeviceAddActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
+public class DeviceAddActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, HttpClient.OnHttpListener {
     private static final int SCAN_CODE = 1;
 
     @BindView(R.id.et_device_code)
@@ -69,6 +74,11 @@ public class DeviceAddActivity extends AppCompatActivity implements DatePickerDi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_device_add);
         ButterKnife.bind(this);
+
+        HttpClient client = HttpClient.getInstance();
+        client.initDeviceDict(this, this, Constant.DICT_DEVICE_STATUS);
+        client.initDeviceDict(this, this, Constant.DICT_DEVICE_IDENTIFY);
+        client.getContactCompany(this, this);
     }
 
     @Override
@@ -80,7 +90,7 @@ public class DeviceAddActivity extends AppCompatActivity implements DatePickerDi
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.save_device:
+            case R.id.action_save:
                 attemptSaveDevice();
                 return true;
         }
@@ -89,6 +99,7 @@ public class DeviceAddActivity extends AppCompatActivity implements DatePickerDi
     }
 
     private void attemptSaveDevice() {
+        HttpClient client = HttpClient.getInstance();
         etDeviceName.setError(null);
 
         boolean cancel = false;
@@ -107,27 +118,43 @@ public class DeviceAddActivity extends AppCompatActivity implements DatePickerDi
             deviceCode = "DEV" + System.currentTimeMillis();
         }
 
+        long manufacturerId = -1;
+        long providerId = -1;
+        if(client.getContactCompanies() != null) {
+            for (ContactCompany cc : client.getContactCompanies()) {
+                if (cc.getName().contentEquals(etDeviceManufacturer.getText())) {
+                    manufacturerId = cc.getId();
+                } else if (cc.getName().contentEquals(etDeviceProvider.getText())) {
+                    providerId = cc.getId();
+                }
+            }
+        }
+
         if (cancel) {
             focusView.requestFocus();
         } else {
-            HttpClient client = HttpClient.getInstance();
+
             AddDeviceReq newDevice = new AddDeviceReq();
             newDevice.setCode(deviceCode);
             newDevice.setName(deviceName);
             newDevice.setSpecification(etDeviceType.getText().toString());
             //TODO
-            newDevice.setDeviceType((long) spinnerDeviceCategory.getSelectedItemPosition());
-            newDevice.setDeviceFlag(spinnerDeviceIdentify.getSelectedItem().toString());
-            newDevice.setUseStatus(spinnerDeviceStatus.getSelectedItemPosition());
-            newDevice.setUseDept((long) spinnerDeviceDept.getSelectedItemPosition());
+            newDevice.setDeviceType(spinnerDeviceCategory.getSelectedItemId());
+            newDevice.setDeviceFlag(((DeviceParamDicEnumResp)spinnerDeviceIdentify.getSelectedItem()).getName());
+            newDevice.setUseStatus(spinnerDeviceStatus.getSelectedItemId());
+            newDevice.setUseDept(spinnerDeviceDept.getSelectedItemId());
             newDevice.setInstallationAddress(etDevicePlace.getText().toString());
             newDevice.setOperator(etDeviceOperator.getText().toString());
             newDevice.setBuyDate((Date) etBuyDate.getTag());
-//            newDevice.setManufacturer(etDeviceManufacturer.getText().toString());
-//            newDevice.setSupplier(etDeviceProvider.getText().toString());
+            if(manufacturerId != -1) {
+                newDevice.setManufacturer(manufacturerId);
+            }
+            if(providerId != -1) {
+                newDevice.setSupplier(providerId);
+            }
             newDevice.setRemark(etDeviceDesc.getText().toString());
             StringEntity param = new StringEntity(JSON.toJSONString(newDevice), Charset.forName("UTF-8"));
-            client.post(null, HttpClient.DEVICE_SAVE, param, saveDeviceResponse);
+            client.post(this, HttpClient.DEVICE_SAVE, param, saveDeviceResponse);
         }
     }
 
@@ -140,11 +167,11 @@ public class DeviceAddActivity extends AppCompatActivity implements DatePickerDi
                     Toast.makeText(DeviceAddActivity.this, R.string.hint_device_save_success, Toast.LENGTH_SHORT).show();
                     finish();
                 } else {
-                    Toast.makeText(DeviceAddActivity.this, R.string.failure_save, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(DeviceAddActivity.this, R.string.failure_service, Toast.LENGTH_SHORT).show();
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
-                Toast.makeText(DeviceAddActivity.this, R.string.exception_message, Toast.LENGTH_SHORT).show();
+                Toast.makeText(DeviceAddActivity.this, R.string.failure_data_parse, Toast.LENGTH_SHORT).show();
             }
         }
 
@@ -169,7 +196,11 @@ public class DeviceAddActivity extends AppCompatActivity implements DatePickerDi
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ib_scan_device:
-                startActivityForResult(new Intent(this, CaptureActivity.class), SCAN_CODE);
+                if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA)!= PackageManager.PERMISSION_GRANTED){
+                    ActivityCompat.requestPermissions(this,new String[]{android.Manifest.permission.CAMERA},Constant.REQUEST_SCAN_PERMISSION);
+                }else {
+                    startActivityForResult(new Intent(this, CaptureActivity.class), SCAN_CODE);
+                }
                 break;
             case R.id.et_buy_date:
                 if(dateDialog == null) {
@@ -190,5 +221,39 @@ public class DeviceAddActivity extends AppCompatActivity implements DatePickerDi
         calendar.set(year, month, day);
         etBuyDate.setTag(calendar.getTime());
         etBuyDate.setText(sdf.format(calendar.getTime()));
+    }
+
+    @Override
+    public void onHttpSuccess() {
+        HttpClient client = HttpClient.getInstance();
+        List<DeviceParamDicEnumResp> deviceUseStatusDict = client.getDeviceUseStatusDict();
+        if(deviceUseStatusDict != null) {
+            spinnerDeviceStatus.setAdapter(new DictSpinnerAdapter(this, android.R.layout.simple_list_item_1, deviceUseStatusDict));
+        }
+        List<DeviceParamDicEnumResp> deviceIdentifyDict = client.getDeviceIdentifyDict();
+        if(deviceIdentifyDict != null) {
+            spinnerDeviceIdentify.setAdapter(new DictSpinnerAdapter(this, android.R.layout.simple_list_item_1, deviceIdentifyDict));
+        }
+        List<ContactCompany> contactCompanies = client.getContactCompanies();
+        if(contactCompanies != null) {
+            List<String> dd = new ArrayList<>();
+            for(ContactCompany cc : contactCompanies) {
+                dd.add(cc.getName());
+            }
+            etDeviceManufacturer.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, dd));
+            etDeviceProvider.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, dd));
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        if (requestCode == Constant.REQUEST_SCAN_PERMISSION) {
+            if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                startActivityForResult(new Intent(this, CaptureActivity.class), SCAN_CODE);
+            } else {
+                Toast.makeText(this, R.string.failure_camera_permission, Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 }
