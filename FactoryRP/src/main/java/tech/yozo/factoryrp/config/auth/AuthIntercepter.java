@@ -17,6 +17,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
+import tech.yozo.factoryrp.vo.resp.role.RoleResp;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -68,13 +69,23 @@ public class AuthIntercepter implements HandlerInterceptor {
            //临时的处理逻辑，直接返回用户权限给前端
            String username = request.getParameter("username");
            String password = request.getParameter("password");
+           String corporateCode = request.getParameter("corporateCode");
            User user = authorizationService.findByUserName(username);
+           if(CheckParam.isNull(username) || CheckParam.isNull(password)){
+               AuthWebUtil.loginFailed(request,response);
+               return false;
+           }else if(CheckParam.isNull(corporateCode)){
+               AuthWebUtil.corporateCodeError(request,response);
+               return false;
+           }
+
            AuthUser authUser = new AuthUser();
            authUser.setToken("1");
            authUser.setCorporateIdentify(1L);
            authUser.setUserName(user.getUserName());
            authUser.setUserId(user.getUserId());
            List<AuthUserMenu> authUserMenuList = new ArrayList<>();
+           List<RoleResp> roleList  = new ArrayList<>();
 
            user.getRoleList().forEach(u1 ->{
                u1.getMenuList().forEach(m1 ->{
@@ -87,9 +98,19 @@ public class AuthIntercepter implements HandlerInterceptor {
 
                    authUserMenuList.add(authUserMenu);
                });
+
+               RoleResp roleResp = new RoleResp();
+               roleResp.setEnableStatus(u1.getEnableStatus());
+               roleResp.setRoleCode(u1.getRoleCode());
+               roleResp.setRoleDescription(u1.getRoleDescription());
+               roleResp.setRoleId(String.valueOf(u1.getId()));
+               roleResp.setRoleName(u1.getRoleName());
+
+               roleList.add(roleResp);
            });
 
            authUser.setAuthUserMenuList(authUserMenuList);
+           authUser.setRoleList(roleList);
            AuthWebUtil.loginSuccess(request,response,authUser);
            return true;
 
@@ -151,13 +172,16 @@ public class AuthIntercepter implements HandlerInterceptor {
 
         String username = request.getParameter("username");
         String password = request.getParameter("password");
-
+        String corporateCode = request.getParameter("corporateCode");
 
         /**
          * 用户名密码为空直接返回
          */
         if(CheckParam.isNull(username) || CheckParam.isNull(password)){
             AuthWebUtil.loginFailed(request,response);
+            return false;
+        }else if(CheckParam.isNull(corporateCode)){
+            AuthWebUtil.corporateCodeError(request,response);
             return false;
         }
 
@@ -204,6 +228,7 @@ public class AuthIntercepter implements HandlerInterceptor {
             authUser.setUserId(user.getUserId());
 
             List<AuthUserMenu> authUserMenuList = new ArrayList<>();
+            List<RoleResp> roleList  = new ArrayList<>();
 
             user.getRoleList().forEach(u1 ->{
                 u1.getMenuList().forEach(m1 ->{
@@ -216,9 +241,20 @@ public class AuthIntercepter implements HandlerInterceptor {
 
                     authUserMenuList.add(authUserMenu);
                 });
+
+                RoleResp roleResp = new RoleResp();
+                roleResp.setEnableStatus(u1.getEnableStatus());
+                roleResp.setRoleCode(u1.getRoleCode());
+                roleResp.setRoleDescription(u1.getRoleDescription());
+                roleResp.setRoleId(String.valueOf(u1.getId()));
+                roleResp.setRoleName(u1.getRoleName());
+
+                roleList.add(roleResp);
+
             });
 
             authUser.setAuthUserMenuList(authUserMenuList);
+            authUser.setRoleList(roleList);
 
             stringRedisTemplate.opsForValue().set(authCachePrefix+token, JSON.toJSONString(authUser),authExpiredTime);
 

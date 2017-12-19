@@ -16,8 +16,6 @@ public enum ErrorCode {
 
     SUCCESS("000000","成功"),
     ERROR("999999","业务处理异常"),
-    LOGIN_FAILED("000001","登陆失败(用户名密码错误)"),
-    NEED_LOGIN("000002","请登录"),
     NO_PERMISSION("000003","没有权限"),
     PARAM_ERROR("000004","参数格式错误"),
     CORPORATENAME__REPETED_ERROR("000005","企业名称已经存在"),
@@ -30,7 +28,10 @@ public enum ErrorCode {
     CORPORATE_SPAREPARTS__REPET_ERROR("0000012","备件已经存在"),
     CORPORATE_DEVICEPARAM__REPET_ERROR("0000013","设备参数已经存在"),
     DEVICEPARAMDIC_CODE_NOTEXIST_ERROR("0000014","设备参数枚举值错误"),
-    SYSTEM_DIC_PARAM_REPET_ERROR("0000015","系统字典重复");
+    SYSTEM_DIC_PARAM_REPET_ERROR("0000015","系统字典重复"),
+    LOGIN_FAILED("000666","登陆失败(用户名密码错误)"),
+    NEED_LOGIN("000667","请登录"),
+    CORPORATE_NOTEXIST("000668","企业不存在");
 
 
     private String code;

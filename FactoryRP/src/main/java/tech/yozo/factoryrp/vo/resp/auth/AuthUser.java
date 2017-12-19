@@ -3,6 +3,8 @@ package tech.yozo.factoryrp.vo.resp.auth;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import tech.yozo.factoryrp.entity.Role;
+import tech.yozo.factoryrp.vo.resp.role.RoleResp;
 
 import java.io.Serializable;
 import java.util.List;
@@ -50,5 +52,12 @@ public class AuthUser implements Serializable{
      */
     @ApiModelProperty(value = "登陆后用户能看到的菜单List",required = true,notes = "登陆后用户能看到的菜单List")
     private List<AuthUserMenu> authUserMenuList;
+
+
+    /**
+     * 用户角色列表
+     */
+    @ApiModelProperty(value = "用户角色列表",required = true,notes = "用户角色列表")
+    private List<RoleResp> roleList;
 
 }

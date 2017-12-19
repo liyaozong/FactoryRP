@@ -23,9 +23,9 @@ public class UserAddReq extends ApiRequest implements Serializable {
 
     /**
      * 企业标识符
-     */
+     *//*
     @ApiModelProperty(value = "企业标识符",required = true,notes = "企业标识符",example = "321321321321")
-    private Long corporateIdentify;
+    private Long corporateIdentify;*/
 
     /**
      * 用户名

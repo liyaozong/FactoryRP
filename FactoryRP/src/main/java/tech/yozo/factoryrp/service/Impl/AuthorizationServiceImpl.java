@@ -346,18 +346,28 @@ public class AuthorizationServiceImpl implements AuthorizationService {
             throw new BussinessException(ErrorCode.CORPORATE__NOTEXIST_ERROR.getCode(),ErrorCode.CORPORATE__NOTEXIST_ERROR.getMessage());
         }*/
 
-        User userInCorporate = userRepository.findByUserNameAndCorporateIdentify(userAddReq.getUserName(), userAddReq.getCorporateIdentify());
+        User userInCorporate = userRepository.findByUserNameAndCorporateIdentify(userAddReq.getUserName(), corporateIdentify);
 
-        if(CheckParam.isNull(userInCorporate)) {
+        if(!CheckParam.isNull(userInCorporate)) {
             throw new BussinessException(ErrorCode.CORPORATE_USER__REPET_ERROR.getCode(),ErrorCode.CORPORATE_USER__REPET_ERROR.getMessage());
         }
 
+
+        Corporate corporate = corporateRepository.findByCorporateIdentify(corporateIdentify);
+
         User user =  new User();
 
-        user.setCorporateIdentify(userAddReq.getCorporateIdentify());
+        user.setCorporateIdentify(corporateIdentify);
         user.setUserName(userAddReq.getUserName());
         user.setUserId(UUIDSequenceWorker.uniqueSequenceId());
-        user.setPassword(EncryptUtils.generate(userAddReq.getPassword(),EncryptUtils.generateSalt()));
+
+        String salt = EncryptUtils.generateSalt();
+        user.setPassword(EncryptUtils.generate(userAddReq.getPassword(),salt));
+        user.setSault(salt);
+
+        if(!CheckParam.isNull(corporate)){
+            user.setCorporateCode(corporate.getCorporateCode());
+        }
 
         userRepository.save(user);
 

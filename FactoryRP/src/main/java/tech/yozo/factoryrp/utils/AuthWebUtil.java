@@ -184,6 +184,28 @@ public class AuthWebUtil {
 		}
 	}
 
+
+	/**
+	 * 企业不存在
+	 * @param request
+	 * @param response
+	 */
+	public static void corporateCodeError(ServletRequest request,
+								   ServletResponse response) {
+		ApiResponse apiResponse = new ApiResponse();
+		preSetResponse(response);
+		PrintWriter out = null;
+		apiResponse.setErrorCode(ErrorCode.CORPORATE_NOTEXIST.getCode());
+		apiResponse.setErrorMessage(ErrorCode.CORPORATE_NOTEXIST.getMessage());
+		apiResponse.setResponseTime(DateTimeUtil.currentDateToStr(""));
+		try {
+			HttpServletResponse httpResponse = (HttpServletResponse) response;
+			httpResponse.getWriter().write(JSON.toJSONString(apiResponse));
+		} catch (IOException e) {
+			logger.error("loginFailed error:" + e.getMessage(), e);
+		}
+	}
+
 	/**
 	 * 用户名密码错误
 	 * 
