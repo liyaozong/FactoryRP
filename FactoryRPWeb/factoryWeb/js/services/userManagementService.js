@@ -48,6 +48,21 @@ myApp.factory("queryCorporateAllUser",["AppHttp","FF_API",function(AppHttp,FF_AP
         });
     };
 
+    //查询企业菜单
+    userManageMent.queryCorporateMenu=function(){
+        return AppHttp({
+            method: 'get',
+            url: FF_API.base + FF_API.queryCorporateMenuPath
+        });
+    };
+    //添加菜单
+    userManageMent.addMenu=function(data){
+        return AppHttp({
+            method: 'post',
+            url: FF_API.base + FF_API.addMenuPath,
+            data:data
+        });
+    };
 
 
     return userManageMent;

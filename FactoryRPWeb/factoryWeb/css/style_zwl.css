@@ -45,11 +45,29 @@
     padding-left: 32px;
     padding-right: 300px;
 }
+.contentBody .tableListDiv .menuCF{
+    position: relative;
+    display: inline-block;
+    width: 200px;
+    padding-left: 32px;
+}
+.contentBody .tableListDiv .menuCM{
+    position: relative;
+    display: inline-block;
+    width: 300px;
+}
+.contentBody .tableListDiv .menuCE{
+    position: relative;
+    padding-right: 300px;
+    width: 30%;
+    display: inline-block;
+}
 
 .contentBody .tableListDiv .ccc{
     position: absolute;
     right: 0;
-    width: 300px;
+    width: 250px;
+    text-align: center;
     top: 0;
     z-index: 5;
 }
