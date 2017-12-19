@@ -11,26 +11,35 @@ myApp.directive("deviceTypeList",["deviceType",'$compile','$filter',function(dev
                         scope.deviceTypeList=data.data;
                         scope.hierarchy=0;
                         var str='';
-                        scope.deviceTypeList.forEach(function (n,i) {
-                            // console.log(n,i);
-                            if(n.parentId=='-1'){
-                                str+='<ul hierarchy="'+scope.hierarchy+'" isFlog="true">';
-                                str+='<li class="emptyTd">' +
-                                    '<a href="javascript:void (0)" ng-click="subShowDP('+n.id+',$event)"> + </a> ' +
-                                    '</li>';
-                                str+='<li class="deviceName">'+n.name+'</li>';
-                                str+='<li class="ccc">';
-                                str+='<a href="javascript:void (0)" class="a_btn" ng-click="addSomeDP('+n.id+','+n.parentId+',\''+n.name+'\',1)"> 添加同级 </a>';
-                                str+='<a href="javascript:void (0)" class="a_btn" ng-click="addSomeDP('+n.id+','+n.parentId+',\''+n.name+'\',2)"> 添加下级</a>';
-                                str+='<a href="javascript:void (0)" class="a_btn" ng-click="addSomeDP('+n.id+','+n.parentId+',\''+n.name+'\',3)">编辑</a>';
-                                str+='<a href="javascript:void (0)" class="a_btn" ng-click="deleteDP('+n.id+',\''+n.name+'\')"> 删除 </a>';
-                                str+='</li>';
-                                str+='</ul>';
-                            }
+                        if(scope.deviceTypeList.length>0){
+                            scope.deviceTypeList.forEach(function (n,i) {
+                                // console.log(n,i);
+                                if(n.parentId=='-1'){
+                                    str+='<ul hierarchy="'+scope.hierarchy+'" isFlog="true">';
+                                    str+='<li class="emptyTd">' +
+                                        '<a href="javascript:void (0)" ng-click="subShowDP('+n.id+',$event)"> + </a> ' +
+                                        '</li>';
+                                    str+='<li class="deviceName">'+n.name+'</li>';
+                                    str+='<li class="ccc">';
+                                    str+='<a href="javascript:void (0)" class="a_btn" ng-click="addSomeDP('+n.id+','+n.parentId+',\''+n.name+'\',1)"> 添加同级 </a>';
+                                    str+='<a href="javascript:void (0)" class="a_btn" ng-click="addSomeDP('+n.id+','+n.parentId+',\''+n.name+'\',2)"> 添加下级</a>';
+                                    str+='<a href="javascript:void (0)" class="a_btn" ng-click="addSomeDP('+n.id+','+n.parentId+',\''+n.name+'\',3)">编辑</a>';
+                                    str+='<a href="javascript:void (0)" class="a_btn" ng-click="deleteDP('+n.id+',\''+n.name+'\')"> 删除 </a>';
+                                    str+='</li>';
+                                    str+='</ul>';
+                                }
 
-                        });
-                        var html=$compile(str)(scope);
-                        ele.html(html);
+                            });
+                            var html=$compile(str)(scope);
+                            ele.html(html);
+                        }else {
+                            str+='<ul><li style="width: 100%;text-align: center;">暂无数据。。。请' +
+                                '<a href="javascript:void (0)" class="a_btn" ng-click="addSomeDP(\'\',-1,\'\',1)"> 添加设备类型 </a>' +
+                                '</li></ul>';
+                            var html1=$compile(str)(scope);
+                            ele.html(html1);
+                        }
+
                     }
                 });
                 scope.subShowDP=function (id,$event) {

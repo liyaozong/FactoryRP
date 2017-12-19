@@ -14,7 +14,7 @@ import tech.yozo.factoryrp.R;
  * Use the {@link PartsInfoFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class PartsInfoFragment extends Fragment {
+public class PartsInfoFragment extends BaseFragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -63,4 +63,13 @@ public class PartsInfoFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_parts_info, container, false);
     }
 
+    @Override
+    protected void loadData() {
+
+    }
+
+    @Override
+    protected void buildUI() {
+
+    }
 }

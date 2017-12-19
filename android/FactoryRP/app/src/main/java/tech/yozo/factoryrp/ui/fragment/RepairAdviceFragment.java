@@ -6,9 +6,14 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.Unbinder;
 import tech.yozo.factoryrp.R;
 
 import java.util.ArrayList;
@@ -22,11 +27,18 @@ import java.util.Map;
  * Use the {@link RepairAdviceFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class RepairAdviceFragment extends Fragment {
+public class RepairAdviceFragment extends BaseFragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    @BindView(R.id.lv_repair_advice_info)
+    ListView lvRepairAdviceInfo;
+    @BindView(R.id.b_start_repair)
+    Button bStartRepair;
+    @BindView(R.id.b_finish_repair)
+    Button bFinishRepair;
+    Unbinder unbinder;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -70,17 +82,15 @@ public class RepairAdviceFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_repair_advice, container, false);
+        unbinder = ButterKnife.bind(this, view);
         //TODO
         SimpleAdapter adapter = new SimpleAdapter(getContext(), getData(), R.layout.item_info_list,
-                new String[]{"name","value"},
-                new int[]{R.id.tv_name,R.id.tv_value});
+                new String[]{"name", "value"},
+                new int[]{R.id.tv_name, R.id.tv_value});
         mRepairAdviceView = (ListView) view.findViewById(R.id.lv_repair_advice_info);
         mRepairAdviceView.setAdapter(adapter);
-        return view;
-    }
 
-    public void onStartRepair(View view) {
-        Toast.makeText(getContext(), "开始处理这个工单", Toast.LENGTH_SHORT).show();
+        return view;
     }
 
     private List<Map<String, Object>> getData() {
@@ -112,5 +122,31 @@ public class RepairAdviceFragment extends Fragment {
         list.add(map);
 
         return list;
+    }
+
+    @Override
+    protected void loadData() {
+
+    }
+
+    @Override
+    protected void buildUI() {
+
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+    }
+
+    @OnClick({R.id.b_start_repair, R.id.b_finish_repair})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.b_start_repair:
+                break;
+            case R.id.b_finish_repair:
+                break;
+        }
     }
 }

@@ -16,7 +16,6 @@ import android.os.Build;
 import android.os.Bundle;
 //import android.provider.ContactsContract;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -31,6 +30,7 @@ import cz.msebera.android.httpclient.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
 import tech.yozo.factoryrp.R;
+import tech.yozo.factoryrp.ui.dialog.LoadingDialog;
 import tech.yozo.factoryrp.utils.ErrorCode;
 import tech.yozo.factoryrp.utils.HttpClient;
 import tech.yozo.factoryrp.vo.resp.auth.AuthUser;
@@ -49,6 +49,8 @@ public class LoginActivity extends AppCompatActivity {
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
+
+    LoadingDialog dialog = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -144,11 +146,22 @@ public class LoginActivity extends AppCompatActivity {
         return password.length() > 0;
     }
 
+    private  void showProgress(boolean show) {
+        if(show) {
+            LoadingDialog.Builder builder = new LoadingDialog.Builder(this)
+                    .setMessage(R.string.loading_login);
+            dialog = builder.create();
+            dialog.show();
+        } else {
+            dialog.dismiss();
+        }
+    }
+
     /**
      * Shows the progress UI and hides the login form.
      */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
-    private void showProgress(final boolean show) {
+    private void showProgress2(final boolean show) {
         // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
         // for very easy animations. If available, use these APIs to fade-in
         // the progress spinner.
@@ -201,7 +214,7 @@ public class LoginActivity extends AppCompatActivity {
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
-                Toast.makeText(LoginActivity.this, R.string.exception_message, Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, R.string.failure_data_parse, Toast.LENGTH_SHORT).show();
             }
         }
 

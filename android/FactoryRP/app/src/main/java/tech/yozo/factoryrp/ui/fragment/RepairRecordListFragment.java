@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,7 +41,7 @@ public class RepairRecordListFragment extends BaseFragment {
     private static final String ARG_PARAM2 = "param2";
 
     private int param1;
-    private long param2;
+    private String param2;
 
     private ListView mRepairRecordListView;
     private List<WaitAuditWorkOrderVo> troubles;
@@ -62,11 +63,11 @@ public class RepairRecordListFragment extends BaseFragment {
      * @return A new instance of fragment RepairRecordListFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static RepairRecordListFragment newInstance(int param1, long param2) {
+    public static RepairRecordListFragment newInstance(int param1, String param2) {
         RepairRecordListFragment fragment = new RepairRecordListFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_PARAM1, param1);
-        args.putLong(ARG_PARAM2, param2);
+        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -76,7 +77,7 @@ public class RepairRecordListFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             param1 = getArguments().getInt(ARG_PARAM1);
-            param2 = getArguments().getLong(ARG_PARAM2);
+            param2 = getArguments().getString(ARG_PARAM2);
         }
     }
 
@@ -93,6 +94,7 @@ public class RepairRecordListFragment extends BaseFragment {
             public void onItemClick(AdapterView<?> arg0, View arg1, int count,
                                     long arg3) {
                 Intent intent = new Intent(getActivity(), RepairDetailActivity.class);
+                intent.putExtra(RepairDetailActivity.TROUBLE_ID, troubles.get(count).getId().toString());
                 startActivity(intent);
             }
         });
@@ -115,43 +117,91 @@ public class RepairRecordListFragment extends BaseFragment {
         String url = null;
         switch (param1) {
             case Constant.FOR_WAIT_AUDIT:
-                url = HttpClient.TROUBLE_WAIT_AUDIT;
+                troubles = client.getWaitAuditWorkOrderVoList();
+                if(troubles == null) {
+                    url = HttpClient.TROUBLE_WAIT_AUDIT;
+                }
                 break;
             case Constant.FOR_WAIT_REPAIR:
-                url = HttpClient.TROUBLE_WAIT_REPAIR;
+                troubles = client.getWaitRepairWorkOrderVoList();
+                if(troubles == null) {
+                    url = HttpClient.TROUBLE_WAIT_REPAIR;
+                }
                 break;
             case Constant.FOR_REPAIRING:
-                url = HttpClient.TROUBLE_REPAIRING;
+                troubles = client.getRepairingWorkOrderVoList();
+                if(troubles == null) {
+                    url = HttpClient.TROUBLE_REPAIRING;
+                }
                 break;
             case Constant.FOR_WAIT_VERIFY:
-                url = HttpClient.TROUBLE_WAIT_VALIDATE;
+                troubles = client.getWaitVerifyWorkOrderVoList();
+                if(troubles == null) {
+                    url = HttpClient.TROUBLE_WAIT_VALIDATE;
+                }
                 break;
-            case Constant.FOR_PERSON:
+            case Constant.FOR_PERSON_ID:
+                //TODO
                 break;
-            case Constant.FOR_DEVICE:
-                url = HttpClient.TROUBLE_LIST;
-                req.setDeviceId(param2);
+            case Constant.FOR_DEVICE_ID:
+                if(troubles == null) {
+                    url = HttpClient.TROUBLE_LIST;
+                    req.setDeviceId(Long.decode(param2));
+                }
                 break;
             default:
                 break;
         }
-        StringEntity param = new StringEntity(JSON.toJSONString(req), Charset.forName("UTF-8"));
-        client.post(getContext(), url, param, getTroubleListResponse);
+
+        if(troubles == null) {
+            StringEntity param = new StringEntity(JSON.toJSONString(req), Charset.forName("UTF-8"));
+            client.post(getContext(), url, param, getTroubleListResponse);
+        } else {
+            mRepairRecordListAdapter.notifyDataSetChanged();
+        }
+    }
+
+    @Override
+    protected void buildUI() {
+
     }
 
     private JsonHttpResponseHandler getTroubleListResponse = new JsonHttpResponseHandler() {
         @Override
         public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+            Log.d("INFO", response.toString());
             try {
                 if (ErrorCode.SUCCESS.getCode().equals(response.getString("errorCode"))) {
                     troubles = JSONArray.parseArray(response.getJSONObject("data").getString("list"), WaitAuditWorkOrderVo.class);
+                    HttpClient client = HttpClient.getInstance();
+                    switch (param1) {
+                        case Constant.FOR_WAIT_AUDIT:
+                            client.setWaitAuditWorkOrderVoList(troubles);
+                            break;
+                        case Constant.FOR_WAIT_REPAIR:
+                            client.setWaitRepairWorkOrderVoList(troubles);
+                            break;
+                        case Constant.FOR_REPAIRING:
+                            client.setRepairingWorkOrderVoList(troubles);
+                            break;
+                        case Constant.FOR_WAIT_VERIFY:
+                            client.setWaitVerifyWorkOrderVoList(troubles);
+                            break;
+                        case Constant.FOR_PERSON_ID:
+                            //TODO
+                            break;
+                        case Constant.FOR_DEVICE_ID:
+                            //client.getAllWorkOrderList().addAll(troubles);
+                            break;
+
+                    }
                     mRepairRecordListAdapter.notifyDataSetChanged();
                 } else {
                     Toast.makeText(getContext(), R.string.failure_get, Toast.LENGTH_SHORT).show();
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
-                Toast.makeText(getContext(), R.string.exception_message, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), R.string.failure_data_parse, Toast.LENGTH_SHORT).show();
             }
         }
 

@@ -43,40 +43,37 @@
                 <tr>
                     <th style="min-width: 30px;">序号</th>
                     <th>姓名</th>
-                    <th>详细信息</th>
-                    <th>编辑</th>
                     <th>添加角色</th>
-                    <th>删除</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr ng-repeat="userList in userLists | filter:QueryName | orderBy:userList.userId">
                     <td ng-bind="userList.userId"></td>
                     <td ng-bind="userList.userName"></td>
+                    <!--<td>-->
+                        <!--<a href="javascript:void(0)" class="resBtn deleteBtn" ng-click="">-->
+                            <!--<img src="image/comm/resBtnReset.png" alt="详情"/>-->
+                            <!--<b class="title">详情</b>-->
+                        <!--</a>-->
+                    <!--</td>-->
+                    <!--<td>-->
+                        <!--<a href="javascript:void(0)" class="resBtn editBtn" ng-click="">-->
+                            <!--<img src="image/comm/resBtnEdit.png" alt="编辑"/>-->
+                            <!--<b class="title">编辑</b>-->
+                        <!--</a>-->
+                    <!--</td>-->
                     <td>
-                        <a href="javascript:void(0)" class="resBtn deleteBtn" ng-click="">
-                            <img src="image/comm/resBtnReset.png" alt="详情"/>
-                            <b class="title">详情</b>
-                        </a>
-                    </td>
-                    <td>
-                        <a href="javascript:void(0)" class="resBtn editBtn" ng-click="">
-                            <img src="image/comm/resBtnEdit.png" alt="编辑"/>
-                            <b class="title">编辑</b>
-                        </a>
-                    </td>
-                    <td>
-                        <a href="javascript:void(0)" class="resBtn deleteBtn" ng-click="">
-                            <img src="image/comm/add.png" alt="添加角色"/>
+                        <a href="javascript:void(0)" class="resBtn deleteBtn" ng-click="addUserRole(userList.userId,userList.userName)">
+                            <img src="image/comm/resBtnEdit.png" alt="添加角色"/>
                             <b class="title">添加角色</b>
                         </a>
                     </td>
-                    <td>
-                        <a href="javascript:void(0)" class="resBtn deleteBtn" ng-click="deleteUserBalance(userList.userId)">
-                            <img src="image/comm/resBtnDelete.png" alt="删除"/>
-                            <b class="title">删除</b>
-                        </a>
-                    </td>
+                    <!--<td>-->
+                        <!--<a href="javascript:void(0)" class="resBtn deleteBtn" ng-click="deleteUserBalance(userList.userId)">-->
+                            <!--<img src="image/comm/resBtnDelete.png" alt="删除"/>-->
+                            <!--<b class="title">删除</b>-->
+                        <!--</a>-->
+                    <!--</td>-->
                 </tr>
                 </tbody>
                 <!--<tfoot>-->
@@ -137,94 +134,29 @@
             </div>
         </div>
     </div>
-    <!--新增 往来单位 end-->
+    <!--新增 企业用户 end-->
+    
+    <!--  为用户添加角色-->
+    <div class="ImportantNote addUserRolePop" style="max-width: 760px;">
+        <div class="headline">
+            <span>{{addUserRoleName}}添加角色</span>
+            <img onClick="hideDiv('addUserRolePop')" class="companyCloseImg" src="image/comm/diffClosed.png" width="22" height="22">
+        </div>
+        <div style="padding: 20px 40px 20px 0;" class="businessAuth">
+            <ul class="checkBoxUl">
+                <li ng-repeat="userRoleList in userRoleLists" class="userRoleLi">
+                    <input type="checkbox" roleId="{{userRoleList.roleId}}" id="{{userRoleList.roleId}}" class="userRoleCheckBox" ng-checked="userRoleList.enableStatus=='1'?true:false">
+                    <label for="{{userRoleList.roleId}}" ng-bind="userRoleList.roleName"></label>
+                </li>
 
-    <!--编辑 往来单位 start-->
-    <!--<div class="ImportantNote editContactBalance">-->
-        <!--<div class="headline">-->
-            <!--<span>查看编辑往来单位</span>-->
-            <!--<img onClick="hideDiv('editContactBalance')" class="companyCloseImg" src="image/comm/diffClosed.png" width="22" height="22">-->
-        <!--</div>-->
-        <!--<div style="padding: 20px 40px 20px 0;" class="businessAuth">-->
-            <!--<p style="margin-bottom: 20px;">-->
-                <!--<label for="editName" style="width:auto;">-->
-                    <!--<span style="width: 100px;text-align: right">单位名称:</span>-->
-                    <!--<input id="editName" ng-model="editName" type="text" placeholder="请输入单位名称"/>-->
-                <!--</label>-->
-                <!--<label for="name1" style="width:auto;opacity: 0">-->
-                    <!--<span style="width: 100px;text-align: right">单位名称:</span>-->
-                    <!--<input id="editname1" ng-model="name1" type="text" placeholder="请输入单位名称"/>-->
-                <!--</label>-->
-            <!--</p>-->
-            <!--<p style="margin-bottom: 20px;">-->
-                <!--<label for="editCode" style="width:auto;">-->
-                    <!--<span style="width: 100px;text-align: right">单位编码:</span>-->
-                    <!--<input id="editCode" ng-model="editCode" type="text" placeholder="请输入单位编码"/>-->
-                <!--</label>-->
-                <!--<label for="editContactName" style="width:auto;">-->
-                    <!--<span style="width: 100px;text-align: right">默认联系人:</span>-->
-                    <!--<input id="editContactName" ng-model="editContactName" type="text" placeholder="请输入默认联系人"/>-->
-                <!--</label>-->
-            <!--</p>-->
-            <!--<p style="margin-bottom: 20px;">-->
-                <!--<label for="editContactPhone" style="width:auto;">-->
-                    <!--<span style="width: 100px;text-align: right">联系电话:</span>-->
-                    <!--<input id="editContactPhone" ng-model="editContactPhone" type="text" placeholder="请输入联系电话"/>-->
-                <!--</label>-->
-                <!--<label for="editFax" style="width:auto;">-->
-                    <!--<span style="width: 100px;text-align: right">传真:</span>-->
-                    <!--<input id="editFax" ng-model="editFax" type="text" placeholder="请输入传真"/>-->
-                <!--</label>-->
-            <!--</p>-->
-            <!--<p style="margin-bottom: 20px;">-->
-                <!--<label for="editTaxNumber" style="width:auto;">-->
-                    <!--<span style="width: 100px;text-align: right">税号:</span>-->
-                    <!--<input id="editTaxNumber" ng-model="editTaxNumber" type="text" placeholder="请输入税号"/>-->
-                <!--</label>-->
-                <!--<label for="editEmail" style="width:auto;">-->
-                    <!--<span style="width: 100px;text-align: right">电子邮箱:</span>-->
-                    <!--<input id="editEmail" ng-model="editEmail" type="text" placeholder="请输入电子邮箱"/>-->
-                <!--</label>-->
-            <!--</p>-->
-            <!--<p style="margin-bottom: 20px;">-->
-                <!--<label for="editAddress" style="width:auto;">-->
-                    <!--<span style="width: 100px;text-align: right">地址:</span>-->
-                    <!--<input id="editAddress" ng-model="editAddress" type="text" placeholder="请输入地址"/>-->
-                <!--</label>-->
-                <!--<label for="editZipCode" style="width:auto;">-->
-                    <!--<span style="width: 100px;text-align: right">邮编:</span>-->
-                    <!--<input id="editZipCode" ng-model="editZipCode" type="text" placeholder="请输入邮编"/>-->
-                <!--</label>-->
-            <!--</p>-->
-            <!--<p style="margin-bottom: 20px;">-->
-                <!--<label for="editBankName" style="width:auto;">-->
-                    <!--<span style="width: 100px;text-align: right">开户银行:</span>-->
-                    <!--<input id="editBankName" ng-model="editBankName" type="text" placeholder="请输入开户银行"/>-->
-                <!--</label>-->
-                <!--<label for="editBankNumber" style="width:auto;">-->
-                    <!--<span style="width: 100px;text-align: right">账户:</span>-->
-                    <!--<input id="editBankNumber" ng-model="editBankNumber" type="text" placeholder="请输入账户"/>-->
-                <!--</label>-->
-            <!--</p>-->
-            <!--<p style="margin-bottom: 20px;">-->
-                <!--<label for="editWebSite" style="width:auto;">-->
-                    <!--<span style="width: 100px;text-align: right">网址:</span>-->
-                    <!--<input style="width: 417px;" id="editWebSite" ng-model="editWebSite" type="text" placeholder="请输入网址"/>-->
-                <!--</label>-->
-            <!--</p>-->
-            <!--<p style="margin-bottom: 20px;">-->
-                <!--<label for="editRemark" style="width:auto;">-->
-                    <!--<span style="width: 100px;text-align: right">备注:</span>-->
-                    <!--<textarea style="width: 417px;height: 80px;" id="editRemark" ng-model="editRemark" placeholder="请输入备注"></textarea>-->
-                <!--</label>-->
-            <!--</p>-->
-            <!--<div class="submitBtn1" style="text-align: center;padding-left: 40px;">-->
-                <!--<button type="button" ng-click="editContactSure()" value="" class="btn">保存</button>-->
-                <!--<button type="button" value="" class="btn" onClick="hideDiv('editContactBalance')">取消</button>-->
-            <!--</div>-->
-        <!--</div>-->
-    <!--</div>-->
-    <!--编辑 往来单位 end-->
+            </ul>
+            <div class="submitBtn1" style="text-align: center;padding-left: 40px;">
+                <button type="button" ng-click="addUserRoleSure()" value="" class="btn">保存</button>
+                <button type="button" value="" class="btn" onClick="hideDiv('addUserRolePop')">取消</button>
+            </div>
+        </div>
+    </div>
+    
     <!--保存成功start-->
     <div class="ImportantNote SaveSuccess">
         <div class="headline">

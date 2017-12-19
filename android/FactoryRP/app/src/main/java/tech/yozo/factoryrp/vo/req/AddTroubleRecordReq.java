@@ -1,7 +1,5 @@
 package tech.yozo.factoryrp.vo.req;
 
-//import io.swagger.annotations.ApiModel;
-//import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 //import tech.yozo.factoryrp.vo.base.BaseRequest;
 
@@ -19,7 +17,7 @@ public class AddTroubleRecordReq implements Serializable{
     private Long deviceId;
 
 //    @ApiModelProperty(value = "故障等级",notes = "故障等级")
-    private Integer troubleLevel;
+    private Long troubleLevel;
 
 //    @ApiModelProperty(value = "故障类别",notes = "故障类别")
     private Long troubleType;
@@ -28,7 +26,7 @@ public class AddTroubleRecordReq implements Serializable{
     private Long repairGroupId;
 
 //    @ApiModelProperty(value = "设备状态",required = true,notes = "设备状态")
-    private Integer deviceStatus;
+    private Long deviceStatus;
 
 //    @ApiModelProperty(value = "操作者",notes = "操作者")
     private String deviceUser;

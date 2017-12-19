@@ -6,6 +6,7 @@ import tech.yozo.factoryrp.vo.resp.auth.AuthUser;
 import tech.yozo.factoryrp.vo.resp.device.trouble.SimpleTroubleRecordVo;
 import tech.yozo.factoryrp.vo.resp.device.trouble.WaitAuditWorkOrderVo;
 import tech.yozo.factoryrp.vo.resp.device.trouble.WorkOrderCountVo;
+import tech.yozo.factoryrp.vo.resp.device.trouble.WorkOrderDetailVo;
 
 import java.util.List;
 
@@ -81,4 +82,18 @@ public interface TroubleRecordService {
      * @param user
      */
     public void submitRepair(Long id,AuthUser user);
+
+    /**
+     * 查询工单详情(包括故障信息、处理意见、工作量、更换的配件)
+     * @param id
+     * @param user
+     * @return
+     */
+    public WorkOrderDetailVo getDetail(Long id,AuthUser user);
+
+
+    /**
+     * 验证工单
+     */
+    public void validate(ValidateRepairReq param, AuthUser user);
 }
