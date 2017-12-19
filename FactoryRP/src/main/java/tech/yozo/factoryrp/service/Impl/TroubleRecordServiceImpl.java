@@ -1,15 +1,14 @@
 package tech.yozo.factoryrp.service.Impl;
 
 import org.springframework.data.domain.Sort;
+import org.springframework.transaction.annotation.Transactional;
 import tech.yozo.factoryrp.entity.*;
 import tech.yozo.factoryrp.enums.RepairStatusEnum;
 import tech.yozo.factoryrp.enums.TroubleLevelEnum;
 import tech.yozo.factoryrp.enums.TroubleStatusEnum;
 import tech.yozo.factoryrp.exception.BussinessException;
 import tech.yozo.factoryrp.page.Pagination;
-import tech.yozo.factoryrp.repository.DepartmentRepository;
-import tech.yozo.factoryrp.repository.RepairRecordRepository;
-import tech.yozo.factoryrp.repository.TroubleRecordRepository;
+import tech.yozo.factoryrp.repository.*;
 import tech.yozo.factoryrp.service.TroubleRecordService;
 import tech.yozo.factoryrp.utils.CheckParam;
 import tech.yozo.factoryrp.utils.DateTimeUtil;
@@ -28,7 +27,6 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -44,6 +42,10 @@ public class TroubleRecordServiceImpl implements TroubleRecordService {
     private RepairRecordRepository repairRecordRepository;
     @Autowired
     private DepartmentRepository departmentRepository;
+    @Autowired
+    private WorkTimeRepository workTimeRepository;
+    @Autowired
+    private RepairRecordSparePartRelRepository repairRecordSparePartRelRepository;
     @Override
     public void addTroubleRecord(AddTroubleRecordReq param,Long corporateIdentify,AuthUser user) {
         TroubleRecord troubleRecord = new TroubleRecord();
@@ -326,8 +328,9 @@ public class TroubleRecordServiceImpl implements TroubleRecordService {
     }
 
     @Override
-    public void submitRepair(Long id, AuthUser user) {
-        TroubleRecord old = troubleRecordRepository.findOne(id);
+    @Transactional(rollbackFor = Exception.class)
+    public void submitRepair(SubmitRepairReq param, AuthUser user) {
+        TroubleRecord old = troubleRecordRepository.findOne(param.getTroubleRecordId());
         if (null!=old && old.getStatus() == TroubleStatusEnum.REPAIRING.getCode()){
             if (old.getRepairUserId() != user.getUserId()){
                 BussinessException biz = new BussinessException("10001","不是本人工单，无权限操作");
@@ -336,6 +339,64 @@ public class TroubleRecordServiceImpl implements TroubleRecordService {
             old.setStatus(TroubleStatusEnum.REPAIRED.getCode());
             old.setUpdateTime(new Date());
             troubleRecordRepository.save(old);
+            RepairRecord repairRecord = repairRecordRepository.findByTroubleRecordId(param.getTroubleRecordId());
+            if (null!=repairRecord){
+               List<WorkTimeVo> workTimeVos = param.getWorkTimes();
+               if(!CheckParam.isNull(workTimeVos)){
+                   List<WorkTime> needSave = new ArrayList<>();
+                   workTimeVos.stream().forEach(workTimeVo -> {
+                       WorkTime wt = new WorkTime();
+                       wt.setCostHour(workTimeVo.getCostHour());
+                       wt.setEndTime(DateTimeUtil.strToDate(workTimeVo.getEndTime()));
+                       wt.setStartTime(DateTimeUtil.strToDate(workTimeVo.getStartTime()));
+                       wt.setRepairRecordId(repairRecord.getId());
+                       wt.setRepairUserId(workTimeVo.getRepairUserId());
+                       wt.setRepairUserName(workTimeVo.getRepairUserName());
+                       wt.setCorporateIdentify(user.getCorporateIdentify());
+                       needSave.add(wt);
+                   });
+                   //保存工时信息
+                   List<WorkTime> olds = workTimeRepository.findByRepairRecordId(repairRecord.getId());
+                   if (!CheckParam.isNull(olds)){
+                       //清空老数据
+                       workTimeRepository.delete(olds);
+                   }
+                   if (!CheckParam.isNull(needSave)){
+                       //保存新数据
+                       workTimeRepository.save(needSave);
+                   }
+               }
+               List<UsedSparePartsVo> repairRecordSparePartRels = param.getReplaceSpares();
+               if (!CheckParam.isNull(repairRecordSparePartRels)){
+                   //保存更换配件信息
+                   List<RepairRecordSparePartRel> needSave = new ArrayList<>();
+                   repairRecordSparePartRels.stream().forEach(rr->{
+                       RepairRecordSparePartRel rrp = new RepairRecordSparePartRel();
+                       rrp.setRepairRecordId(repairRecord.getId());
+                       rrp.setName(rr.getName());
+                       rrp.setCode(rr.getCode());
+                       rrp.setSpecificationsAndodels(rr.getSpecificationsAndodels());
+                       rrp.setInventoryUpperLimit(rr.getInventoryUpperLimit());
+                       rrp.setOldOrderNum(rr.getOldOrderNum());
+                       rrp.setNewOrderNum(rr.getNewOrderNum());
+                       rrp.setAmount(rr.getAmount());
+                       rrp.setCorporateIdentify(user.getCorporateIdentify());
+                       needSave.add(rrp);
+                   });
+                   List<RepairRecordSparePartRel> ols = repairRecordSparePartRelRepository.findByRepairRecordId(repairRecord.getId());
+                   if (!CheckParam.isNull(ols)){
+                       //清空老数据
+                       repairRecordSparePartRelRepository.delete(ols);
+                   }
+                   if (!CheckParam.isNull(needSave)){
+                       //保存新数据
+                       repairRecordSparePartRelRepository.save(needSave);
+                   }
+               }
+            }else {
+                BussinessException biz = new BussinessException("10000","工单不存在");
+                throw biz;
+            }
         }else{
             BussinessException biz = new BussinessException("10000","工单不存在或状态不正确");
             throw biz;
@@ -389,27 +450,35 @@ public class TroubleRecordServiceImpl implements TroubleRecordService {
 
                //工作量
                List<WorkTimeVo> workTimes = new ArrayList<>();
-               //TODO  查询工时表，暂时写死
-               WorkTimeVo workTimeVo = new WorkTimeVo();
-               workTimeVo.setCostHour(repairRecord.getCostHour());
-               workTimeVo.setStartTime(vo.getStartTime());
-               workTimeVo.setEndTime(vo.getEndTime());
-               workTimeVo.setRepairUserName(vo.getRepairUserName());
-               workTimes.add(workTimeVo);
+               List<WorkTime> workTimeList= workTimeRepository.findByRepairRecordId(repairRecord.getId());
+               if (!CheckParam.isNull(workTimeList)){
+                   workTimeList.stream().forEach(workTime -> {
+                       WorkTimeVo workTimeVo = new WorkTimeVo();
+                       workTimeVo.setCostHour(workTime.getCostHour());
+                       workTimeVo.setStartTime(DateTimeUtil.dateToStr(workTime.getStartTime(),""));
+                       workTimeVo.setEndTime(DateTimeUtil.dateToStr(workTime.getEndTime(),""));
+                       workTimeVo.setRepairUserName(workTime.getRepairUserName());
+                       workTimes.add(workTimeVo);
+                   });
+               }
                vo.setWorkTimes(workTimes);
 
                //更换配件信息
                List<UsedSparePartsVo> replaceSpares = new ArrayList<>();
-               //TODO 查询更换信息表，暂时写死
-               UsedSparePartsVo usedSparePartsVo = new UsedSparePartsVo();
-               usedSparePartsVo.setAmount(2);
-               usedSparePartsVo.setCode("TESTTEST001");
-               usedSparePartsVo.setInventoryUpperLimit(112);
-               usedSparePartsVo.setName("测试备件");
-               usedSparePartsVo.setOldOrderNum("900900900");
-               usedSparePartsVo.setNewOrderNum("888888888");
-               usedSparePartsVo.setSpecificationsAndodels("BEITAI001");
-               replaceSpares.add(usedSparePartsVo);
+               List<RepairRecordSparePartRel> ols = repairRecordSparePartRelRepository.findByRepairRecordId(repairRecord.getId());
+               if (!CheckParam.isNull(ols)){
+                   ols.stream().forEach(rr->{
+                       UsedSparePartsVo usedSparePartsVo = new UsedSparePartsVo();
+                       usedSparePartsVo.setAmount(rr.getAmount());
+                       usedSparePartsVo.setCode(rr.getCode());
+                       usedSparePartsVo.setInventoryUpperLimit(rr.getInventoryUpperLimit());
+                       usedSparePartsVo.setName(rr.getName());
+                       usedSparePartsVo.setOldOrderNum(rr.getOldOrderNum());
+                       usedSparePartsVo.setNewOrderNum(rr.getNewOrderNum());
+                       usedSparePartsVo.setSpecificationsAndodels(rr.getSpecificationsAndodels());
+                       replaceSpares.add(usedSparePartsVo);
+                   });
+               }
                vo.setReplaceSpares(replaceSpares);
            }
         }else{

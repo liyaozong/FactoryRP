@@ -104,6 +104,7 @@ public class UserAuthService {
         authUser = new AuthUser();
         authUser.setUserId(1l);
         authUser.setUserName("王浩");
+        authUser.setCorporateIdentify(1l);
         return authUser;
     }
 

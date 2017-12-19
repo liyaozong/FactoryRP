@@ -144,13 +144,11 @@ public class TroubleRecordController extends BaseController{
         return apiResponse();
     }
 
-    @GetMapping("submitRepair")
-    @ApiOperation(value = "完成维修并提交--Mobile",notes = "完成维修并提交--Mobile",httpMethod = "GET")
-    @ApiImplicitParams(@ApiImplicitParam(paramType = "query",dataType = "String",name = "id",
-            value = "故障主键",required = true))
-    public ApiResponse submitRepair(HttpServletRequest request,Long id){
+    @PostMapping("submitRepair")
+    @ApiOperation(value = "完成维修并提交--Mobile",notes = "完成维修并提交--Mobile",httpMethod = "POST")
+    public ApiResponse submitRepair(HttpServletRequest request,@RequestBody SubmitRepairReq param){
         AuthUser user = userAuthService.getCurrentUser(request);
-        troubleRecordService.submitRepair(id,user);
+        troubleRecordService.submitRepair(param,user);
         return apiResponse();
     }
 

@@ -78,10 +78,9 @@ public interface TroubleRecordService {
 
     /**
      * 完成维修并提交
-     * @param id
      * @param user
      */
-    public void submitRepair(Long id,AuthUser user);
+    public void submitRepair(SubmitRepairReq param,AuthUser user);
 
     /**
      * 查询工单详情(包括故障信息、处理意见、工作量、更换的配件)

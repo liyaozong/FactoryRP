@@ -12,6 +12,9 @@ import java.io.Serializable;
 @Data
 public class WorkTimeVo implements Serializable{
 
+    @ApiModelProperty(value = "维修人员主键")
+    private Long repairUserId;
+
     @ApiModelProperty(value = "维修人员名称")
     private String repairUserName;
 
