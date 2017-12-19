@@ -30,8 +30,7 @@ public enum ErrorCode {
     DEVICEPARAMDIC_CODE_NOTEXIST_ERROR("0000014","设备参数枚举值错误"),
     SYSTEM_DIC_PARAM_REPET_ERROR("0000015","系统字典重复"),
     LOGIN_FAILED("000666","登陆失败(用户名密码错误)"),
-    NEED_LOGIN("000667","请登录"),
-    CORPORATE_NOTEXIST("000668","企业不存在");
+    NEED_LOGIN("000667","请登录");
 
 
     private String code;

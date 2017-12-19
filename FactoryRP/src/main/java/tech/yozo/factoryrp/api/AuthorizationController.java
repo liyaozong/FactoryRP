@@ -87,8 +87,7 @@ public class AuthorizationController extends BaseController{
             @ApiImplicitParam(dataType = "Long" ,name = "roleId", paramType = "query" ,
                     value = "角色id",required = true,defaultValue = "3"),
     })
-    public ApiResponse<RoleMenuQueryResp> queryByRoleIdAndCorporateIdentify(@PathVariable("requestSeqNo") String requestSeqNo,
-                                                                            @RequestParam(value="roleId",required = true,defaultValue = "1")
+    public ApiResponse<RoleMenuQueryResp> queryByRoleIdAndCorporateIdentify(@RequestParam(value="roleId",required = true,defaultValue = "1")
                                                                                       Long roleId,HttpServletRequest request){
         Long corporateIdentify = userAuthService.getCurrentUserCorporateIdentify(request);
         return apiResponse(authorizationService.queryByRoleIdAndCorporateIdentify(roleId,corporateIdentify));

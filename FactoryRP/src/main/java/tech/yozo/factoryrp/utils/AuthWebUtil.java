@@ -195,8 +195,8 @@ public class AuthWebUtil {
 		ApiResponse apiResponse = new ApiResponse();
 		preSetResponse(response);
 		PrintWriter out = null;
-		apiResponse.setErrorCode(ErrorCode.CORPORATE_NOTEXIST.getCode());
-		apiResponse.setErrorMessage(ErrorCode.CORPORATE_NOTEXIST.getMessage());
+		apiResponse.setErrorCode(ErrorCode.NEED_LOGIN.getCode());
+		apiResponse.setErrorMessage(ErrorCode.NEED_LOGIN.getMessage());
 		apiResponse.setResponseTime(DateTimeUtil.currentDateToStr(""));
 		try {
 			HttpServletResponse httpResponse = (HttpServletResponse) response;
