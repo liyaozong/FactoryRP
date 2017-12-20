@@ -179,7 +179,7 @@ public class AuthorizationController extends BaseController{
 
     /**
      * 根据用户id查询用户角色
-     * @param id
+     * @param userId
      * @return
      */
     @ApiOperation(value = "根据用户id查询用户角色",notes = "根据用户id查询用户角色",httpMethod = "GET")
