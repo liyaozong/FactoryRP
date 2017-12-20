@@ -33,6 +33,15 @@ public interface UserRepository extends BaseRepository<User,Long>{
      */
     List<User> findByCorporateIdentify(Long corporateIdentify);
 
+
+    /**
+     * 根据用户id和企业标识进行查询
+     * @param id
+     * @param corporateIdentify
+     * @return
+     */
+    User findByIdAndCorporateIdentify(Long id,Long corporateIdentify);
+
     /**
      * 通过用户名和企业标识进行查找
      * @param userName
