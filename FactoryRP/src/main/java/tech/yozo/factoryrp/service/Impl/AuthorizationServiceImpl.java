@@ -296,7 +296,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
         roleResp.setRoleName(role.getRoleName());
         roleResp.setRoleCode(role.getRoleCode());
         roleResp.setEnableStatus(roleReq.getEnableStatus());
-        roleResp.setCorporateIdentify(corporateIdentify);
+        //roleResp.setCorporateIdentify(corporateIdentify);
 
         return roleResp;
     }
@@ -317,7 +317,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
             List<RoleResp> roleResps = new ArrayList<>();
             roleList.stream().forEach(r1 ->{
                 RoleResp roleResp = new RoleResp();
-                roleResp.setCorporateIdentify(r1.getCorporateIdentify());
+                //roleResp.setCorporateIdentify(r1.getCorporateIdentify());
                 roleResp.setEnableStatus(r1.getEnableStatus());
                 roleResp.setRoleCode(r1.getRoleCode());
                 roleResp.setRoleDescription(r1.getRoleDescription());
@@ -331,6 +331,33 @@ public class AuthorizationServiceImpl implements AuthorizationService {
             return null;
     }
 
+    /**
+     * 根据用户id查询用户角色
+     * @param id
+     * @return
+     */
+    public List<RoleResp> queryRoleByUserId(Long id, Long corporateIdentify){
+
+        User user = userRepository.findByIdAndCorporateIdentify(id,corporateIdentify);
+
+        if(!CheckParam.isNull(user)){
+            List<RoleResp> roleResps = new ArrayList<>();
+
+            user.getRoleList().stream().forEach(r1 ->{
+                RoleResp roleResp = new RoleResp();
+                roleResp.setEnableStatus(r1.getEnableStatus());
+                roleResp.setRoleCode(r1.getRoleCode());
+                roleResp.setRoleDescription(r1.getRoleDescription());
+                roleResp.setRoleId(String.valueOf(r1.getId()));
+                roleResp.setRoleName(r1.getRoleName());
+
+                roleResps.add(roleResp);
+            });
+
+            return roleResps;
+        }
+        return null;
+    }
 
     /**
      * 企业新增用户

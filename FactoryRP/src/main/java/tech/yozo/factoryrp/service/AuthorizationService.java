@@ -83,6 +83,14 @@ public interface AuthorizationService {
 
 
     /**
+     * 根据用户id查询用户角色
+     * @param id
+     * @param corporateIdentify
+     * @return
+     */
+    List<RoleResp> queryRoleByUserId(Long id, Long corporateIdentify);
+
+    /**
      * 新增角色
      * @param roleReq
      * @param corporateIdentify

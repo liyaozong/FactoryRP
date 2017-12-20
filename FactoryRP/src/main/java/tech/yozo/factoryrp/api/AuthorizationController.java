@@ -121,6 +121,8 @@ public class AuthorizationController extends BaseController{
     }
 
 
+
+
     /**
      * 为角色新增能访问的菜单
      * @param menuRoleReq
@@ -172,6 +174,20 @@ public class AuthorizationController extends BaseController{
     public ApiResponse<List<MenuResp>> queryMenuByCorporateIdentify(HttpServletRequest request){
         Long corporateIdentify = userAuthService.getCurrentUserCorporateIdentify(request);
         return apiResponse(authorizationService.queryMenuByCorporateIdentify(corporateIdentify));
+    }
+
+
+    /**
+     * 根据用户id查询用户角色
+     * @param id
+     * @return
+     */
+    @ApiOperation(value = "根据用户id查询用户角色",notes = "根据用户id查询用户角色",httpMethod = "GET")
+    @GetMapping("/queryRoleByUserId")
+    public ApiResponse<List<RoleResp>> queryRoleUserId(@RequestParam(value="userId",required = true,defaultValue = "1")
+                                                                   Long userId,HttpServletRequest request){
+        Long corporateIdentify = userAuthService.getCurrentUserCorporateIdentify(request);
+        return apiResponse(authorizationService.queryRoleByUserId(userId,corporateIdentify));
     }
 
     /**

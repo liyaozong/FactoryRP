@@ -24,7 +24,7 @@ public class MenuReq extends ApiRequest implements Serializable {
      * 父级菜单Id
      * 若为0则为一级菜单
      */
-    @ApiModelProperty(value = "父级菜单Id,若为0则为一级菜单",required = true,notes = "父级菜单Id",example = "5")
+    @ApiModelProperty(value = "父级菜单Id,若为-1则为一级菜单",required = true,notes = "父级菜单Id",example = "5")
     //@NotEmpty(message = "父级菜单Id不能为空")
     private Long parentId;
 
