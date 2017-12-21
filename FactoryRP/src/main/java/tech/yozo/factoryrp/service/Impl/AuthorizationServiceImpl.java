@@ -27,7 +27,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * @author created by Singer email:313402703@qq.com
@@ -60,13 +59,36 @@ public class AuthorizationServiceImpl implements AuthorizationService {
     private UserRoleRepository userRoleRepository;
 
 
+    /**
+     * 删除指定用户下面指定的角色信息
+     * @param userRoleDeleteReq
+     * @param corporateIdentify
+     */
+    public void deleteUserRoleByUserId(UserRoleDeleteReq userRoleDeleteReq,Long corporateIdentify){
+
+        List<UserRole> userRoleList = userRoleRepository.findByUserIdAndCorporateIdentifyAndRoleIdIn(userRoleDeleteReq.getUserId(),
+                corporateIdentify, userRoleDeleteReq.getRoleList());
+
+        if(!CheckParam.isNull(userRoleList) && !userRoleList.isEmpty()){
+            userRoleRepository.deleteInBatch(userRoleList);
+        }
+
+    }
 
     /**
-     * 删除当前角色下面的菜单信息
-     * @param roleId
-     * @param authUser
+     * 删除指定角色下面指定的菜单信息
+     * @param menuRoleDeleteReq
+     * @param corporateIdentify
      */
-    public void deleteMenuRole(Long roleId, AuthUser authUser){
+    public void deleteMenuRoleByRoleId(MenuRoleDeleteReq menuRoleDeleteReq,Long corporateIdentify){
+
+        List<MenuRole> menuRoleList = menuRoleRepository.findByRoleIdAndCorporateIdentifyAndRoleIdIn(menuRoleDeleteReq.getRoleId(),
+                corporateIdentify, menuRoleDeleteReq.getMenuList());
+
+        if(!CheckParam.isNull(menuRoleList) && !menuRoleList.isEmpty()){
+            menuRoleRepository.deleteInBatch(menuRoleList);
+        }
+
 
     }
 
@@ -212,7 +234,6 @@ public class AuthorizationServiceImpl implements AuthorizationService {
      */
     public UserRoleResp addUserRole(UserRoleReq userRoleReq,Long corporateIdentify){
 
-        //List<Long> roleIdList = new ArrayList<>();
         if (!CheckParam.isNull(userRoleReq.getRoleIdList()) && !userRoleReq.getRoleIdList().isEmpty()){
 
             userRoleReq.setRoleIdList(userRoleReq.getRoleIdList().stream().distinct().collect(Collectors.toList()));
@@ -346,29 +367,58 @@ public class AuthorizationServiceImpl implements AuthorizationService {
      */
     public MenuRoleResp addMenuRole(MenuRoleReq menuRoleReq,Long corporateIdentify){
 
-        MenuRole menuRole = menuRoleRepository.findByRoleIdAndMenuIdAndCorporateIdentify(menuRoleReq.getRoleId(), menuRoleReq.getMenuId(),corporateIdentify);
+        if (!CheckParam.isNull(menuRoleReq.getMenuIdList()) && !menuRoleReq.getMenuIdList().isEmpty()){
 
-        if(!CheckParam.isNull(menuRole)){
-            throw new BussinessException(ErrorCode.MENUROLE__REPETED_ERROR.getCode(),ErrorCode.MENUROLE__REPETED_ERROR.getMessage());
+            //去重操作
+            menuRoleReq.setMenuIdList(menuRoleReq.getMenuIdList().stream().distinct().collect(Collectors.toList()));
+
         }
 
-        menuRole = new MenuRole();
+        List<Long> menuIdList = menuRoleReq.getMenuIdList();
 
-        menuRole.setMenuId(menuRoleReq.getMenuId());
-        menuRole.setRoleId(menuRoleReq.getRoleId());
-        menuRole.setCorporateIdentify(corporateIdentify);
-        menuRole.setRemark(menuRoleReq.getRemark());
+        /**
+         * 此处查询出来的roleId必定全部都是相同的 排除重复的关系
+         */
+        List<MenuRole> menuRoleList = menuRoleRepository.findByRoleIdAndCorporateIdentifyAndRoleIdIn(menuRoleReq.getRoleId(),
+                corporateIdentify, menuIdList);
 
-        menuRoleRepository.save(menuRole);
+        if(null != menuRoleList && !menuRoleList.isEmpty()){
+
+            //形成以菜单id为键的Map
+            Map<Long, MenuRole> menuRoleMap = menuRoleList.stream().collect(Collectors.toMap(MenuRole::getRoleId, Function.identity()));
+
+            //过滤掉在以角色ID为键的Map种存在的角色id
+            menuIdList = menuIdList.stream().filter(r1 -> CheckParam.isNull(menuRoleMap.get(r1))).collect(Collectors.toList());
+
+        }
+
+
+        List<MenuRole> menuRoles = new ArrayList<>();
+
+        menuIdList.stream().forEach(m1 -> {
+            MenuRole menuRole = new MenuRole();
+
+            menuRole.setRoleId(menuRoleReq.getRoleId());
+            menuRole.setCorporateIdentify(corporateIdentify);
+            menuRole.setMenuId(m1);
+
+            menuRoles.add(menuRole);
+        });
+
+
+        menuRoleRepository.save(menuRoles);
 
         MenuRoleResp menuRoleResp = new MenuRoleResp();
 
-        menuRoleResp.setId(menuRole.getId());
-        menuRoleResp.setRemark(menuRole.getRemark());
-        menuRoleResp.setRoleId(menuRole.getRoleId());
-        menuRoleResp.setCorporateIdentify(String.valueOf(menuRole.getCorporateIdentify()));
-        menuRoleResp.setRemark(menuRole.getRemark());
+        menuRoleResp.setRoleId(menuRoleReq.getRoleId());
+        menuRoleResp.setMenuIdList(menuIdList);
 
+        List<Long> ids = new ArrayList<>();
+        menuRoles.stream().forEach(m1 -> {
+            ids.add(m1.getId());
+        });
+
+        menuRoleResp.setIds(ids);
 
         return menuRoleResp;
     }

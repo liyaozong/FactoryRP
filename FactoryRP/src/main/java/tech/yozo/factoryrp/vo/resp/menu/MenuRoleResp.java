@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @author created by Singer email:313402703@qq.com
@@ -19,32 +20,21 @@ public class MenuRoleResp implements Serializable {
 
 
 
-    @ApiModelProperty(value = "id",required = true,notes = "id",example = "3")
-    private Long id;
+    @ApiModelProperty(value = "角色-菜单关系ID集合",required = true,notes = "角色-菜单关系ID集合",example = "[3,4,5]")
+    private List<Long> ids;
 
     /**
      * 角色标识
      */
 
-    @ApiModelProperty(value = "角色标识",required = true,notes = "角色标识",example = "3")
-    private Long roleId;
+    @ApiModelProperty(value = "角色ID", required = true, notes = "角色标识", example = "3")
+    protected Long roleId;
 
     /**
      * 菜单ID
      */
-    @ApiModelProperty(value = "菜单ID",required = true,notes = "菜单ID",example = "3")
-    private Long menuId;
-
-
-    /**
-     * 备注描述
-     */
-    @ApiModelProperty(value = "备注描述",required = true,notes = "备注描述",example = "描述1")
-    private String remark;
-
-
-    @ApiModelProperty(value = "企业唯一标识",required = true,notes = "企业唯一标识",example = "32132132132213")
-    private String corporateIdentify;
+    @ApiModelProperty(value = "菜单ID集合",required = true,notes = "菜单ID集合",example = "3")
+    private List<Long> menuIdList;
 
 
 }

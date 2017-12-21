@@ -1,8 +1,11 @@
 package tech.yozo.factoryrp.repository;
 
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import tech.yozo.factoryrp.entity.MenuRole;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.stereotype.Repository;
+import tech.yozo.factoryrp.entity.UserRole;
 
 import java.util.List;
 
@@ -42,5 +45,16 @@ public interface MenuRoleRepository extends BaseRepository<MenuRole,Long>{
      * @return
      */
     List<MenuRole> findByMenuIdAndCorporateIdentify(Long menuId,Long corporateIdentify);
+
+    /**
+     * 根据菜单id集合进行in查询
+     * @param roleId
+     * @param corporateIdentify
+     * @param menuIdList
+     * @return
+     */
+    @Query("select m from MenuRole m where m.roleId = :roleId and m.corporateIdentify = :corporateIdentify and m.menuId in :menuIdList")
+    List<MenuRole> findByRoleIdAndCorporateIdentifyAndRoleIdIn(@Param("roleId") Long roleId, @Param("corporateIdentify")Long corporateIdentify, @Param("menuIdList")List<Long> menuIdList);
+
 
 }

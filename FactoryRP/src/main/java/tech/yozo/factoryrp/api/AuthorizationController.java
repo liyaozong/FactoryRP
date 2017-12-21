@@ -209,12 +209,43 @@ public class AuthorizationController extends BaseController{
 
 
     /**
-     * 根据菜单id删除菜单
+     * 删除当前角色下面指定的菜单信息
+     * @param menuRoleDeleteReq
+     * @param request
+     * @return
+     */
+    @ApiOperation(value = "删除当前角色下面指定的菜单信息",notes = "删除当前角色下面指定的菜单信息",httpMethod = "POST")
+    @PostMapping("/deleteMenuRoleByRoleId")
+    @ApiImplicitParam(dataType = "MenuRoleDeleteReq" ,name = "menuRoleDeleteReq", paramType = "VO" ,
+            value = "删除当前角色下面指定的菜单信息",required = true)
+    public ApiResponse deleteMenuRoleByRoleId(@Valid @RequestBody MenuRoleDeleteReq menuRoleDeleteReq,HttpServletRequest request){
+        Long corporateIdentify = userAuthService.getCurrentUserCorporateIdentify(request);
+        authorizationService.deleteMenuRoleByRoleId(menuRoleDeleteReq,corporateIdentify);
+        return apiResponse();
+    }
+
+    /**
+     * 删除指定用户下面指定的角色信息
+     * @param userRoleDeleteReq
+     * @param request
+     */
+    @ApiOperation(value = "删除指定用户下面指定的角色信息",notes = "删除指定用户下面指定的角色信息",httpMethod = "POST")
+    @PostMapping("/deleteUserRoleByUserId")
+    @ApiImplicitParam(dataType = "UserRoleDeleteReq" ,name = "userRoleDeleteReq", paramType = "VO" ,
+            value = "删除指定用户下面指定的角色信息",required = true)
+    public ApiResponse deleteUserRoleByUserId(@Valid @RequestBody UserRoleDeleteReq userRoleDeleteReq,HttpServletRequest request){
+        Long corporateIdentify = userAuthService.getCurrentUserCorporateIdentify(request);
+        authorizationService.deleteUserRoleByUserId(userRoleDeleteReq,corporateIdentify);
+        return apiResponse();
+    }
+
+    /**
+     * 根据菜单ID删除菜单
      * @param menuId
      * @param request
      * @return
      */
-    @ApiOperation(value = "根据菜单id删除菜单",notes = "根据菜单id删除菜单",httpMethod = "GET")
+    @ApiOperation(value = "根据菜单ID删除菜单",notes = "根据菜单ID删除菜单",httpMethod = "GET")
     @GetMapping("/deleteMenu")
     public ApiResponse deleteMenu(@RequestParam(value="menuId",required = true,defaultValue = "1")
                                           Long menuId,HttpServletRequest request){
