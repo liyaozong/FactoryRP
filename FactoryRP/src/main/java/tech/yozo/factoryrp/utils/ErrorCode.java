@@ -33,7 +33,8 @@ public enum ErrorCode {
     NEED_LOGIN("000667","请登录"),
     USER_NOTEXIST_ERROR("0000016","用户不存在"),
     ROLE_NOTEXIST_ERROR("0000017","角色不存在"),
-    MENU_NOTEXIST_ERROR("0000018","菜单不存在");
+    MENU_NOTEXIST_ERROR("0000018","菜单不存在"),
+    CURRENTUSER_OPERATESELF_ERROR("0000019","菜单不存在");
 
 
     private String code;

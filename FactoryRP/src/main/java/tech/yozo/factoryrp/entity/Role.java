@@ -53,14 +53,6 @@ public class Role extends BaseEntity implements Serializable {
     @ManyToMany(mappedBy="roleList")
     private List<User> userList;
 
-
-   /* @JoinTable(name="system_permission_role",
-            joinColumns={@JoinColumn(name="role_id", referencedColumnName="id")},
-            inverseJoinColumns={@JoinColumn(name="permission_id", referencedColumnName="id")})
-    @ManyToMany system_menu_role
-    private List<Permission> permissionList;*/
-
-
     /**
      * 系统角色菜单关联
      */

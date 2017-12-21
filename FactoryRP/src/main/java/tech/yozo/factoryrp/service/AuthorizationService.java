@@ -2,6 +2,7 @@ package tech.yozo.factoryrp.service;
 
 import tech.yozo.factoryrp.entity.User;
 import tech.yozo.factoryrp.vo.req.*;
+import tech.yozo.factoryrp.vo.resp.auth.AuthUser;
 import tech.yozo.factoryrp.vo.resp.menu.MenuResp;
 import tech.yozo.factoryrp.vo.resp.menu.MenuRoleResp;
 import tech.yozo.factoryrp.vo.resp.role.RoleMenuQueryResp;
@@ -22,25 +23,25 @@ public interface AuthorizationService {
     /**
      * 删除角色 需要删除角色和用户关联 需要删除角色和菜单关联
      * @param roleId
-     * @param corporateIdentify
+     * @param authUser
      */
-    void deleteRole(Long roleId,Long corporateIdentify);
+    void deleteRole(Long roleId, AuthUser authUser);
 
 
     /**
      * 删除菜单 需要删除菜单信息 删除菜单和角色关联信息
      * @param menuId
-     * @param corporateIdentify
+     * @param authUser
      */
-    void deleteMenu(Long menuId,Long corporateIdentify);
+    void deleteMenu(Long menuId, AuthUser authUser);
 
 
     /**
      * 删除用户 需要删除用户相关角色
      * @param userId
-     * @param corporateIdentify
+     * @param authUser
      */
-    void deleteUser(Long userId,Long corporateIdentify);
+    void deleteUser(Long userId, AuthUser authUser);
 
 
     /**
@@ -107,11 +108,11 @@ public interface AuthorizationService {
 
     /**
      * 根据用户id查询用户角色
-     * @param id
+     * @param userId
      * @param corporateIdentify
      * @return
      */
-    List<RoleResp> queryRoleByUserId(Long id, Long corporateIdentify);
+    List<RoleResp> queryRoleByUserId(Long userId, Long corporateIdentify);
 
     /**
      * 新增角色

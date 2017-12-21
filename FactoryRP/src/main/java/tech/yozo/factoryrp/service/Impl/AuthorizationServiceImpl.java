@@ -10,6 +10,7 @@ import tech.yozo.factoryrp.utils.EncryptUtils;
 import tech.yozo.factoryrp.utils.ErrorCode;
 import tech.yozo.factoryrp.utils.UUIDSequenceWorker;
 import tech.yozo.factoryrp.vo.req.*;
+import tech.yozo.factoryrp.vo.resp.auth.AuthUser;
 import tech.yozo.factoryrp.vo.resp.menu.MenuQueryResp;
 import tech.yozo.factoryrp.vo.resp.menu.MenuResp;
 import tech.yozo.factoryrp.vo.resp.menu.MenuRoleResp;
@@ -60,17 +61,29 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 
 
     /**
+     * 删除当前角色下面的菜单信息
+     * @param roleId
+     * @param authUser
+     */
+    public void deleteMenuRole(Long roleId, AuthUser authUser){
+
+    }
+
+
+    /**
      * 删除菜单 需要删除菜单信息 删除菜单和角色关联信息
      * @param menuId
-     * @param corporateIdentify
+     * @param authUser
      */
-    public void deleteMenu(Long menuId,Long corporateIdentify){
+    public void deleteMenu(Long menuId, AuthUser authUser){
 
         Menu menu = menuRepository.findOne(menuId);
 
         if(CheckParam.isNull(menu)){
             throw new BussinessException(ErrorCode.MENU_NOTEXIST_ERROR.getCode(),ErrorCode.MENU_NOTEXIST_ERROR.getMessage());
         }
+
+        Long corporateIdentify = authUser.getCorporateIdentify();
 
         List<MenuRole> menuRoleList = menuRoleRepository.findByMenuIdAndCorporateIdentify(menuId, corporateIdentify);
 
@@ -86,15 +99,17 @@ public class AuthorizationServiceImpl implements AuthorizationService {
     /**
      * 删除角色 需要删除角色和用户关联 需要删除角色和菜单关联
      * @param roleId
-     * @param corporateIdentify
+     * @param authUser
      */
-    public void deleteRole(Long roleId,Long corporateIdentify){
+    public void deleteRole(Long roleId, AuthUser authUser){
 
         Role role = roleRepository.findOne(roleId);
 
         if(CheckParam.isNull(role)){
             throw new BussinessException(ErrorCode.ROLE_NOTEXIST_ERROR.getCode(),ErrorCode.ROLE_NOTEXIST_ERROR.getMessage());
         }
+
+        Long corporateIdentify = authUser.getCorporateIdentify();
 
         //需要删除角色-用户关联
         List<UserRole> userRoleList = userRoleRepository.findByRoleIdAndCorporateIdentify(roleId, corporateIdentify);
@@ -115,10 +130,19 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 
     /**
      * 删除用户 需要删除用户相关角色
+     * 注意：不能删除当前用户的信息
      * @param userId
-     * @param corporateIdentify
+     * @param authUser
      */
-    public void deleteUser(Long userId,Long corporateIdentify){
+    public void deleteUser(Long userId, AuthUser authUser){
+
+
+        //当前用户不能删除自己
+        if(userId == authUser.getUserId()){
+            throw new BussinessException(ErrorCode.CURRENTUSER_OPERATESELF_ERROR.getCode(),ErrorCode.CURRENTUSER_OPERATESELF_ERROR.getMessage());
+        }
+
+        Long corporateIdentify = authUser.getCorporateIdentify();
 
         User user = userRepository.findByUserIdAndCorporateIdentify(userId, corporateIdentify);
 
@@ -444,12 +468,12 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 
     /**
      * 根据用户id查询用户角色
-     * @param id
+     * @param userId
      * @return
      */
-    public List<RoleResp> queryRoleByUserId(Long id, Long corporateIdentify){
+    public List<RoleResp> queryRoleByUserId(Long userId, Long corporateIdentify){
 
-        User user = userRepository.findByIdAndCorporateIdentify(id,corporateIdentify);
+        User user = userRepository.findByIdAndCorporateIdentify(userId,corporateIdentify);
 
         if(!CheckParam.isNull(user)){
             List<RoleResp> roleResps = new ArrayList<>();

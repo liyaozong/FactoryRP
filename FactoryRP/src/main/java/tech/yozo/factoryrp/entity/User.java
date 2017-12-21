@@ -22,9 +22,6 @@ public class User extends BaseEntity implements Serializable{
 
     private static final long serialVersionUID = -283755687649051591L;
 
-    //private Long userId = UUIDSequenceWorker.uniqueSequenceId();
-
-
     /**
      * 用户ID 工具类生成
      */
@@ -51,21 +48,14 @@ public class User extends BaseEntity implements Serializable{
 
 
     /**
-     * 企业唯一标识
-     */
-    @Column(name = "corporate_identify")
-    private Long corporateIdentify;
-
-
-    /**
      * 企业标识
      */
     private String corporateCode;
 
     @JoinTable(name="system_user_role",
-      joinColumns={@JoinColumn(name="user_id", referencedColumnName="user_id")},
+      joinColumns={@JoinColumn(name="user_id", referencedColumnName="id")},
       inverseJoinColumns={@JoinColumn(name="role_id", referencedColumnName="id")})
-    @ManyToMany(cascade = { CascadeType.ALL }, targetEntity = Role.class, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = { CascadeType.PERSIST }, targetEntity = Role.class, fetch = FetchType.EAGER)
     private List<Role> roleList;
 
     public Long getUserId() {
@@ -98,14 +88,6 @@ public class User extends BaseEntity implements Serializable{
 
     public void setSault(String sault) {
         this.sault = sault;
-    }
-
-    public Long getCorporateIdentify() {
-        return corporateIdentify;
-    }
-
-    public void setCorporateIdentify(Long corporateIdentify) {
-        this.corporateIdentify = corporateIdentify;
     }
 
     public List<Role> getRoleList() {
