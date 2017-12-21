@@ -54,6 +54,30 @@ public class AuthorizationServiceImpl implements AuthorizationService {
     @Resource
     private UserRoleRepository userRoleRepository;
 
+
+    /**
+     * 删除用户 需要删除用户相关角色
+     * @param userId
+     * @param corporateIdentify
+     */
+    public void deleteUser(Long userId,Long corporateIdentify){
+        
+        User user = userRepository.findByUserIdAndCorporateIdentify(userId, corporateIdentify);
+
+        if(CheckParam.isNull(user)){
+            throw new BussinessException(ErrorCode.USER_NOTEXIST_ERROR.getCode(),ErrorCode.USER_NOTEXIST_ERROR.getMessage());
+        }
+
+        List<UserRole> userRoleList = userRoleRepository.findByUserIdAndCorporateIdentify(user.getId(), corporateIdentify);
+
+        if(null != userRoleList && !userRoleList.isEmpty()){
+            userRoleRepository.deleteInBatch(userRoleList);
+        }
+
+        userRepository.delete(user);
+
+    }
+
     /**
      * 根据用户名进行查询
      * @param userName

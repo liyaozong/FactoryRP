@@ -178,6 +178,19 @@ public class AuthorizationController extends BaseController{
 
 
     /**
+     * 删除用户 需要删除用户相关角色
+     * @param userId
+     */
+    @ApiOperation(value = "根据用户id删除用户",notes = "根据用户id删除用户",httpMethod = "GET")
+    @GetMapping("/deleteUser")
+    public ApiResponse deleteUser(@RequestParam(value="userId",required = true,defaultValue = "1")
+                            Long userId,HttpServletRequest request){
+        Long corporateIdentify = userAuthService.getCurrentUserCorporateIdentify(request);
+        authorizationService.deleteUser(userId,corporateIdentify);
+        return apiResponse();
+    }
+
+    /**
      * 根据用户id查询用户角色
      * @param userId
      * @return

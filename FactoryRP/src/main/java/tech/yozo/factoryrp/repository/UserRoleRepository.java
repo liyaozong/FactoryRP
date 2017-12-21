@@ -33,4 +33,13 @@ public interface UserRoleRepository extends BaseRepository<UserRole,Long>{
      */
     UserRole findByUserIdAndRoleIdAndCorporateIdentify(Long userId,Long roleId,Long corporateIdentify);
 
+
+    /**
+     * 根据用户id和企业标识进行查找
+     * @param userId
+     * @param corporateIdentify
+     * @return
+     */
+    List<UserRole> findByUserIdAndCorporateIdentify(Long userId,Long corporateIdentify);
+
 }

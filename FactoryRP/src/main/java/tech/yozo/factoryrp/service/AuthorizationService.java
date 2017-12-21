@@ -19,6 +19,13 @@ import java.util.List;
  */
 public interface AuthorizationService {
 
+    /**
+     * 删除用户 需要删除用户相关角色
+     * @param userId
+     * @param corporateIdentify
+     */
+    void deleteUser(Long userId,Long corporateIdentify);
+
 
     /**
      * 根据用户名进行查询

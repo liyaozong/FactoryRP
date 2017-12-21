@@ -19,6 +19,14 @@ public interface UserRepository extends BaseRepository<User,Long>{
 
 
     /**
+     * 根据用户id和企业唯一标识进行查找
+     * @param userId
+     * @param corporateIdentify
+     * @return
+     */
+    User findByUserIdAndCorporateIdentify(Long userId,Long corporateIdentify);
+
+    /**
      * 根据用户名和企业唯一标识进行查询
      * @param userName
      * @param corporateIdentify
