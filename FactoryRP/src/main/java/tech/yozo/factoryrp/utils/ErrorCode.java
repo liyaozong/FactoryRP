@@ -31,7 +31,9 @@ public enum ErrorCode {
     SYSTEM_DIC_PARAM_REPET_ERROR("0000015","系统字典重复"),
     LOGIN_FAILED("000666","登陆失败(用户名密码错误)"),
     NEED_LOGIN("000667","请登录"),
-    USER_NOTEXIST_ERROR("0000016","用户不存在");
+    USER_NOTEXIST_ERROR("0000016","用户不存在"),
+    ROLE_NOTEXIST_ERROR("0000017","角色不存在"),
+    MENU_NOTEXIST_ERROR("0000018","菜单不存在");
 
 
     private String code;

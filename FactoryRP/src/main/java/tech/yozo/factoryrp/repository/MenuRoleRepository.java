@@ -4,6 +4,8 @@ import tech.yozo.factoryrp.entity.MenuRole;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * @author created by Singer email:313402703@qq.com
  * @time 2017/11/21
@@ -22,5 +24,23 @@ public interface MenuRoleRepository extends BaseRepository<MenuRole,Long>{
      * @return
      */
     MenuRole findByRoleIdAndMenuIdAndCorporateIdentify(Long roleId,Long menuId,Long corporateIdentify);
+
+
+    /**
+     * 根据企业标识和角色id进行查询
+     * @param roleId
+     * @param corporateIdentify
+     * @return
+     */
+    List<MenuRole> findByRoleIdAndCorporateIdentify(Long roleId,Long corporateIdentify);
+
+
+    /**
+     * 根据菜单id进行查询
+     * @param menuId
+     * @param corporateIdentify
+     * @return
+     */
+    List<MenuRole> findByMenuIdAndCorporateIdentify(Long menuId,Long corporateIdentify);
 
 }

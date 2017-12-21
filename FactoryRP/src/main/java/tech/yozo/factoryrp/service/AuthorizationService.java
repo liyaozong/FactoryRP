@@ -20,6 +20,22 @@ import java.util.List;
 public interface AuthorizationService {
 
     /**
+     * 删除角色 需要删除角色和用户关联 需要删除角色和菜单关联
+     * @param roleId
+     * @param corporateIdentify
+     */
+    void deleteRole(Long roleId,Long corporateIdentify);
+
+
+    /**
+     * 删除菜单 需要删除菜单信息 删除菜单和角色关联信息
+     * @param menuId
+     * @param corporateIdentify
+     */
+    void deleteMenu(Long menuId,Long corporateIdentify);
+
+
+    /**
      * 删除用户 需要删除用户相关角色
      * @param userId
      * @param corporateIdentify

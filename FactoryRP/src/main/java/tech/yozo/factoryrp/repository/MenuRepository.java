@@ -16,6 +16,8 @@ import java.util.List;
 public interface MenuRepository extends BaseRepository<Menu,Long>{
 
 
+
+
     /**
      * 根据名称,url,企业唯一标识进行查找
      * @param name

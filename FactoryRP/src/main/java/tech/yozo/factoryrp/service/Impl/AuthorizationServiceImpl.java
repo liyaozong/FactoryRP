@@ -56,12 +56,66 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 
 
     /**
+     * 删除菜单 需要删除菜单信息 删除菜单和角色关联信息
+     * @param menuId
+     * @param corporateIdentify
+     */
+    public void deleteMenu(Long menuId,Long corporateIdentify){
+
+        Menu menu = menuRepository.findOne(menuId);
+
+        if(CheckParam.isNull(menu)){
+            throw new BussinessException(ErrorCode.MENU_NOTEXIST_ERROR.getCode(),ErrorCode.MENU_NOTEXIST_ERROR.getMessage());
+        }
+
+        List<MenuRole> menuRoleList = menuRoleRepository.findByMenuIdAndCorporateIdentify(menuId, corporateIdentify);
+
+        if(null != menuRoleList && !menuRoleList.isEmpty()){
+            menuRoleRepository.deleteInBatch(menuRoleList);
+        }
+
+        menuRepository.delete(menu);
+
+    }
+
+
+    /**
+     * 删除角色 需要删除角色和用户关联 需要删除角色和菜单关联
+     * @param roleId
+     * @param corporateIdentify
+     */
+    public void deleteRole(Long roleId,Long corporateIdentify){
+
+        Role role = roleRepository.findOne(roleId);
+
+        if(CheckParam.isNull(role)){
+            throw new BussinessException(ErrorCode.ROLE_NOTEXIST_ERROR.getCode(),ErrorCode.ROLE_NOTEXIST_ERROR.getMessage());
+        }
+
+        //需要删除角色-用户关联
+        List<UserRole> userRoleList = userRoleRepository.findByRoleIdAndCorporateIdentify(roleId, corporateIdentify);
+
+        if(null != userRoleList && !userRoleList.isEmpty()){
+            userRoleRepository.deleteInBatch(userRoleList);
+        }
+
+        List<MenuRole> menuRoleList = menuRoleRepository.findByRoleIdAndCorporateIdentify(roleId, corporateIdentify);
+
+        if(null != menuRoleList && !menuRoleList.isEmpty()){
+            menuRoleRepository.deleteInBatch(menuRoleList);
+        }
+
+        roleRepository.delete(role);
+
+    }
+
+    /**
      * 删除用户 需要删除用户相关角色
      * @param userId
      * @param corporateIdentify
      */
     public void deleteUser(Long userId,Long corporateIdentify){
-        
+
         User user = userRepository.findByUserIdAndCorporateIdentify(userId, corporateIdentify);
 
         if(CheckParam.isNull(user)){

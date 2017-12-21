@@ -184,9 +184,40 @@ public class AuthorizationController extends BaseController{
     @ApiOperation(value = "根据用户id删除用户",notes = "根据用户id删除用户",httpMethod = "GET")
     @GetMapping("/deleteUser")
     public ApiResponse deleteUser(@RequestParam(value="userId",required = true,defaultValue = "1")
-                            Long userId,HttpServletRequest request){
+                                          Long userId,HttpServletRequest request){
         Long corporateIdentify = userAuthService.getCurrentUserCorporateIdentify(request);
         authorizationService.deleteUser(userId,corporateIdentify);
+        return apiResponse();
+    }
+
+    /**
+     * 根据角色id删除角色
+     * @param roleId
+     * @param request
+     * @return
+     */
+    @ApiOperation(value = "根据角色id删除角色",notes = "根据角色id删除角色",httpMethod = "GET")
+    @GetMapping("/deleteRole")
+    public ApiResponse deleteRole(@RequestParam(value="roleId",required = true,defaultValue = "1")
+                                          Long roleId,HttpServletRequest request){
+        Long corporateIdentify = userAuthService.getCurrentUserCorporateIdentify(request);
+        authorizationService.deleteRole(roleId,corporateIdentify);
+        return apiResponse();
+    }
+
+
+    /**
+     * 根据菜单id删除菜单
+     * @param menuId
+     * @param request
+     * @return
+     */
+    @ApiOperation(value = "根据菜单id删除菜单",notes = "根据菜单id删除菜单",httpMethod = "GET")
+    @GetMapping("/deleteMenu")
+    public ApiResponse deleteMenu(@RequestParam(value="menuId",required = true,defaultValue = "1")
+                                          Long menuId,HttpServletRequest request){
+        Long corporateIdentify = userAuthService.getCurrentUserCorporateIdentify(request);
+        authorizationService.deleteMenu(menuId,corporateIdentify);
         return apiResponse();
     }
 
