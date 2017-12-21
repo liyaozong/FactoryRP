@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @author created by Singer email:313402703@qq.com
@@ -22,7 +23,7 @@ public class UserRoleResp implements Serializable {
      * 角色用户关联id
      */
     @ApiModelProperty(value = "角色用户关联id",required = true,notes = "角色用户关联id",example = "3")
-    private Long id;
+    private List<Long> id;
 
     /**
      * 用户ID
@@ -34,7 +35,8 @@ public class UserRoleResp implements Serializable {
      * 角色ID
      */
     @ApiModelProperty(value = "角色ID",required = true,notes = "角色ID",example = "3")
-    private Long roleId;
+    private List<Long> roleId;
+
 
 
 }

@@ -23,6 +23,10 @@ import tech.yozo.factoryrp.vo.resp.user.UserRoleResp;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * @author created by Singer email:313402703@qq.com
@@ -183,26 +187,55 @@ public class AuthorizationServiceImpl implements AuthorizationService {
      */
     public UserRoleResp addUserRole(UserRoleReq userRoleReq,Long corporateIdentify){
 
-        UserRole userRole = userRoleRepository.findByUserIdAndRoleIdAndCorporateIdentify(userRoleReq.getUserId(),
-                userRoleReq.getRoleId(), corporateIdentify);
+        //List<Long> roleIdList = new ArrayList<>();
+        if (!CheckParam.isNull(userRoleReq.getRoleIdList()) && !userRoleReq.getRoleIdList().isEmpty()){
 
-        if(!CheckParam.isNull(userRole)){
-            throw new BussinessException(ErrorCode.USERROLE__REPETED_ERROR.getCode(),ErrorCode.USERROLE__REPETED_ERROR.getMessage());
+            userRoleReq.setRoleIdList(userRoleReq.getRoleIdList().stream().distinct().collect(Collectors.toList()));
+
         }
 
-        userRole = new UserRole();
+        List<Long> roleIdList = userRoleReq.getRoleIdList();
 
-        userRole.setRoleId(userRoleReq.getRoleId());
-        userRole.setCorporateIdentify(corporateIdentify);
-        userRole.setUserId(userRoleReq.getUserId());
+        /**
+         * 此处查询出来的userId必定全部都是相同的 排除重复的关系
+         */
+        List<UserRole> userRoleList = userRoleRepository.findByUserIdAndCorporateIdentifyAndRoleIdIn(userRoleReq.getUserId(),
+                corporateIdentify, roleIdList);
 
-        userRoleRepository.save(userRole);
+        if(null != userRoleList && !userRoleList.isEmpty()){
+
+            //形成以角色id为键的Map
+            Map<Long, UserRole> userRoleMap = userRoleList.stream().collect(Collectors.toMap(UserRole::getRoleId, Function.identity()));
+
+            //过滤掉在以角色ID为键的Map种存在的角色id
+            roleIdList = roleIdList.stream().filter(r1 -> CheckParam.isNull(userRoleMap.get(r1))).collect(Collectors.toList());
+
+        }
+
+        List<UserRole> userRoles = new ArrayList<>();
+        roleIdList.stream().forEach(r1 -> {
+            UserRole userRole = new UserRole();
+
+            userRole.setRoleId(r1);
+            userRole.setCorporateIdentify(corporateIdentify);
+            userRole.setUserId(userRoleReq.getUserId());
+
+            userRoles.add(userRole);
+        });
+
+        userRoleRepository.save(userRoles);
 
         UserRoleResp userRoleResp = new UserRoleResp();
 
-        userRoleResp.setRoleId(userRole.getRoleId());
-        userRoleResp.setUserId(userRole.getUserId());
-        userRoleResp.setId(userRole.getId());
+        userRoleResp.setRoleId(roleIdList);
+        userRoleResp.setUserId(userRoleReq.getUserId());
+
+        List<Long> ids = new ArrayList<>();
+
+        userRoles.stream().forEach(u1 -> {
+            ids.add(u1.getId());
+        });
+        userRoleResp.setId(ids);
 
         return userRoleResp;
 
