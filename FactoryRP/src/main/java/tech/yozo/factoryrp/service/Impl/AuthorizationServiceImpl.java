@@ -60,6 +60,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
     private UserRoleRepository userRoleRepository;
 
 
+
     /**
      * 删除当前角色下面的菜单信息
      * @param roleId
@@ -281,10 +282,10 @@ public class AuthorizationServiceImpl implements AuthorizationService {
               menuList.stream().forEach(m1 -> {
                   MenuResp menuResp = new MenuResp();
 
-                  menuResp.setId(String.valueOf(m1.getId()));
+                  menuResp.setId(m1.getId());
                   menuResp.setOrderNumber(m1.getOrderNumber());
                   menuResp.setUrl(m1.getUrl());
-                  menuResp.setCorporateIdentify(String.valueOf(m1.getCorporateIdentify()));
+                  menuResp.setCorporateIdentify(m1.getCorporateIdentify());
                   menuResp.setName(m1.getName());
                   menuResp.setParentId(m1.getParentId());
                   menuRespList.add(menuResp);
@@ -302,7 +303,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
      * @param corporateIdentify
      * @return
      */
-    public RoleMenuQueryResp queryByRoleIdAndCorporateIdentify(Long roleId, Long corporateIdentify){
+    public RoleMenuQueryResp queryMenusByRoleId(Long roleId, Long corporateIdentify){
 
 
         Role role = roleRepository.findByIdAndCorporateIdentify(roleId, corporateIdentify);
@@ -321,6 +322,8 @@ public class AuthorizationServiceImpl implements AuthorizationService {
                 menuQueryResp.setName(r1.getName());
                 menuQueryResp.setUrl(r1.getUrl());
                 menuQueryResp.setOrderNumber(r1.getOrderNumber());
+                menuQueryResp.setParentId(r1.getParentId());
+
 
                 menuList.add(menuQueryResp);
             });
@@ -396,10 +399,10 @@ public class AuthorizationServiceImpl implements AuthorizationService {
         menuRepository.save(menu);
 
         MenuResp menuResp = new MenuResp();
-        menuResp.setId(String.valueOf(menu.getId()));
+        menuResp.setId(menu.getId());
         menuResp.setOrderNumber(menu.getOrderNumber());
         menuResp.setUrl(menu.getUrl());
-        menuResp.setCorporateIdentify(String.valueOf(menu.getCorporateIdentify()));
+        menuResp.setCorporateIdentify(menu.getCorporateIdentify());
 
         return menuResp;
     }

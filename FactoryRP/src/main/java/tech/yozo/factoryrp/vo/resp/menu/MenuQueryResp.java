@@ -2,6 +2,7 @@ package tech.yozo.factoryrp.vo.resp.menu;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 
 import java.io.Serializable;
 
@@ -11,6 +12,7 @@ import java.io.Serializable;
  * @description
  */
 @ApiModel
+@Data
 public class MenuQueryResp implements Serializable {
 
 
@@ -41,35 +43,10 @@ public class MenuQueryResp implements Serializable {
     @ApiModelProperty(value = "菜单排序号",required = true,notes = "菜单排序号",example = "1")
     private Integer orderNumber;
 
-    public Long getId() {
-        return id;
-    }
+    /**
+     * 父级菜单id
+     */
+    @ApiModelProperty(value = "父级菜单id",required = true,notes = "父级菜单id",example = "1")
+    private Long parentId;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Integer getOrderNumber() {
-        return orderNumber;
-    }
-
-    public void setOrderNumber(Integer orderNumber) {
-        this.orderNumber = orderNumber;
-    }
 }

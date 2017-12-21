@@ -20,6 +20,8 @@ import java.util.List;
  */
 public interface AuthorizationService {
 
+
+
     /**
      * 删除角色 需要删除角色和用户关联 需要删除角色和菜单关联
      * @param roleId
@@ -87,7 +89,7 @@ public interface AuthorizationService {
      * @param corporateIdentify
      * @return
      */
-    RoleMenuQueryResp queryByRoleIdAndCorporateIdentify(Long roleId, Long corporateIdentify);
+    RoleMenuQueryResp queryMenusByRoleId(Long roleId, Long corporateIdentify);
 
 
     /**

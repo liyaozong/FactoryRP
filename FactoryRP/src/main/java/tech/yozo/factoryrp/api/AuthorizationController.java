@@ -56,7 +56,7 @@ public class AuthorizationController extends BaseController{
      */
     @ApiOperation(value = "根据企业标识查询所有角色",notes = "根据企业标识查询所有角色",httpMethod = "GET")
     @GetMapping("/queryRoles")
-    public ApiResponse<List<RoleResp>> queryRolesByorporateIdentify(@PathVariable("requestSeqNo") String requestSeqNo,HttpServletRequest request){
+    public ApiResponse<List<RoleResp>> queryRolesByorporateIdentify(HttpServletRequest request){
         Long corporateIdentify = userAuthService.getCurrentUserCorporateIdentify(request);
         List<RoleResp> roleResps = authorizationService.queryRolesByCorporateIdentify(corporateIdentify);
         return apiResponse(roleResps);
@@ -78,7 +78,7 @@ public class AuthorizationController extends BaseController{
     }
 
     /**
-     * 根据企业标识查询所有角色
+     * 根据角色id查询角色具备的菜单
      * @return
      */
     @ApiOperation(value = "根据角色id查询角色具备的菜单",notes = "根据角色id查询角色具备的菜单",httpMethod = "GET")
@@ -87,11 +87,13 @@ public class AuthorizationController extends BaseController{
             @ApiImplicitParam(dataType = "Long" ,name = "roleId", paramType = "query" ,
                     value = "角色id",required = true,defaultValue = "3"),
     })
-    public ApiResponse<RoleMenuQueryResp> queryByRoleIdAndCorporateIdentify(@RequestParam(value="roleId",required = true,defaultValue = "1")
-                                                                                      Long roleId,HttpServletRequest request){
+    public ApiResponse<RoleMenuQueryResp> queryMenusByRoleId(@RequestParam(value="roleId",required = true,defaultValue = "1")
+                                                                                      Long roleId, HttpServletRequest request){
         Long corporateIdentify = userAuthService.getCurrentUserCorporateIdentify(request);
-        return apiResponse(authorizationService.queryByRoleIdAndCorporateIdentify(roleId,corporateIdentify));
+        return apiResponse(authorizationService.queryMenusByRoleId(roleId,corporateIdentify));
     }
+
+
 
 
     /**
@@ -185,8 +187,8 @@ public class AuthorizationController extends BaseController{
     @GetMapping("/deleteUser")
     public ApiResponse deleteUser(@RequestParam(value="userId",required = true,defaultValue = "1")
                                           Long userId,HttpServletRequest request){
-        Long corporateIdentify = userAuthService.getCurrentUserCorporateIdentify(request);
-        authorizationService.deleteUser(userId,corporateIdentify);
+        AuthUser authUser = userAuthService.getCurrentUser(request);
+        authorizationService.deleteUser(userId,authUser);
         return apiResponse();
     }
 
@@ -200,8 +202,8 @@ public class AuthorizationController extends BaseController{
     @GetMapping("/deleteRole")
     public ApiResponse deleteRole(@RequestParam(value="roleId",required = true,defaultValue = "1")
                                           Long roleId,HttpServletRequest request){
-        Long corporateIdentify = userAuthService.getCurrentUserCorporateIdentify(request);
-        authorizationService.deleteRole(roleId,corporateIdentify);
+        AuthUser authUser = userAuthService.getCurrentUser(request);
+        authorizationService.deleteRole(roleId,authUser);
         return apiResponse();
     }
 
@@ -216,8 +218,8 @@ public class AuthorizationController extends BaseController{
     @GetMapping("/deleteMenu")
     public ApiResponse deleteMenu(@RequestParam(value="menuId",required = true,defaultValue = "1")
                                           Long menuId,HttpServletRequest request){
-        Long corporateIdentify = userAuthService.getCurrentUserCorporateIdentify(request);
-        authorizationService.deleteMenu(menuId,corporateIdentify);
+        AuthUser authUser = userAuthService.getCurrentUser(request);
+        authorizationService.deleteMenu(menuId,authUser);
         return apiResponse();
     }
 

@@ -2,6 +2,7 @@ package tech.yozo.factoryrp.vo.resp.menu;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 
 import java.io.Serializable;
 
@@ -11,6 +12,7 @@ import java.io.Serializable;
  * @description
  */
 @ApiModel
+@Data
 public class MenuResp  implements Serializable {
 
 
@@ -21,7 +23,7 @@ public class MenuResp  implements Serializable {
      * 菜单id
      */
     @ApiModelProperty(value = "菜单id",required = true,notes = "菜单id",example = "1")
-    private String id;
+    private Long id;
 
     /**
      * 菜单访问URL
@@ -44,56 +46,9 @@ public class MenuResp  implements Serializable {
     private Integer orderNumber;
 
     @ApiModelProperty(value = "企业唯一标识",required = true,notes = "企业唯一标识",example = "32132132132213")
-    private String corporateIdentify;
+    private Long corporateIdentify;
 
     @ApiModelProperty(value = "父级菜单ID",required = true,notes = "父级菜单ID",example = "0")
     private Long  parentId;
 
-    public Long getParentId() {
-        return parentId;
-    }
-
-    public void setParentId(Long parentId) {
-        this.parentId = parentId;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Integer getOrderNumber() {
-        return orderNumber;
-    }
-
-    public void setOrderNumber(Integer orderNumber) {
-        this.orderNumber = orderNumber;
-    }
-
-    public String getCorporateIdentify() {
-        return corporateIdentify;
-    }
-
-    public void setCorporateIdentify(String corporateIdentify) {
-        this.corporateIdentify = corporateIdentify;
-    }
 }
