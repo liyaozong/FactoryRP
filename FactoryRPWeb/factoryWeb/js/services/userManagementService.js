@@ -40,6 +40,14 @@ myApp.factory("queryCorporateAllUser",["AppHttp","FF_API",function(AppHttp,FF_AP
         });
     };
 
+    //根据用户查询角色
+    userManageMent.queryRoleByUserId=function(id){
+        return AppHttp({
+            method: 'get',
+            url: FF_API.base + FF_API.queryRoleByUserIdPath+'?userId='+id
+        });
+    };
+
     //根据企业标示查询角色
     userManageMent.queryRoles=function(requestSeqNo){
         return AppHttp({
@@ -48,6 +56,21 @@ myApp.factory("queryCorporateAllUser",["AppHttp","FF_API",function(AppHttp,FF_AP
         });
     };
 
+    //查询企业菜单
+    userManageMent.queryCorporateMenu=function(){
+        return AppHttp({
+            method: 'get',
+            url: FF_API.base + FF_API.queryCorporateMenuPath
+        });
+    };
+    //添加菜单
+    userManageMent.addMenu=function(data){
+        return AppHttp({
+            method: 'post',
+            url: FF_API.base + FF_API.addMenuPath,
+            data:data
+        });
+    };
 
 
     return userManageMent;

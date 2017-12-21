@@ -17,7 +17,10 @@ var myApp = angular.module('myApp', [
         queryCorporateAllUserPath:'/api/authorization/queryCorporateAllUser' ,  //查询所有企业用户
         addUserPath:'/api/authorization/addUser',   //添加企业用户
         addUserRolePath:'/api/authorization/addUserRole',   //为用户添加角色
+        queryRoleByUserIdPath:'/api/authorization/queryRoleByUserId',   //为用户添加角色
         queryRolesPath:'/api/authorization/queryRoles',   //根据企业标示查询角色
+        queryCorporateMenuPath:'/api/authorization/queryCorporateMenu',   //根据企业标示查询菜单
+        addMenuPath:'/api/authorization/addMenu',   //根据企业标示查询菜单
         deleteUserPath:'' ,  //删除某个用户
         deviceTypeListPath:'/api/deviceType/list' ,  //查询设备类型列表
         addSameDeviceTypePath:'/api/deviceType/addSameDeviceType' ,  //添加同级设备类型
@@ -149,7 +152,32 @@ var myApp = angular.module('myApp', [
                     }
                 }
             })
+            // 菜单管理
+            .state("main.menuManagements",{
+                showName:"菜单管理",
+                tabShow:true,
+                url:"/menuManagements",
+                views:{
+                    'content@main':{
+                        templateUrl:FF_API.baseTpl+'tpls/menuManagements.html',
+                        controller:'menuManagementsCtrl'
+                    }
+                }
+            })
+            // 角色管理
+            .state("main.roleManagements",{
+                showName:"角色管理",
+                tabShow:true,
+                url:"/roleManagements",
+                views:{
+                    'content@main':{
+                        templateUrl:FF_API.baseTpl+'tpls/roleManagements.html',
+                        controller:'roleManagementsCtrl'
+                    }
+                }
+            })
 
+            // 设备类型设置
             .state("main.deviceType",{
                 url:"/deviceType",
                 views:{

@@ -26,3 +26,24 @@ myApp.factory('AppHttp',['$http', '$timeout',"$rootScope",'$cookies',
                 });
         };
 }]);
+
+//表单验证服务
+myApp.factory('validate',["$rootScope",function ($rootScope) {
+    validate.regExp=function(s,reg){
+        var re = new RegExp(reg);
+        if (re.test(s)) {
+            return true;
+        }else{
+            return false;
+        }
+    };
+    validate.required=function (s) {
+        if(s==undefined||s=="undefined"||s==''||s==null){
+            return false
+        }else {
+            return true;
+        }
+    };
+
+    return validate;
+}]);
