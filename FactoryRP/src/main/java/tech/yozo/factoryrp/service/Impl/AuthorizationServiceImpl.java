@@ -422,7 +422,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
         role = new Role();
         role.setRoleCode(roleReq.getRoleCode());
         role.setRoleName(roleReq.getRoleName());
-        role.setEnableStatus(roleReq.getEnableStatus());
+        role.setEnableStatus(CheckParam.isNull(roleReq.getEnableStatus()) ? 1 : roleReq.getEnableStatus()); //默认启用
         role.setCorporateIdentify(corporateIdentify);
         role.setRoleDescription(roleReq.getRoleDescription());
 
