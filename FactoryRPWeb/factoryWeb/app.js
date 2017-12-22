@@ -17,11 +17,18 @@ var myApp = angular.module('myApp', [
         queryCorporateAllUserPath:'/api/authorization/queryCorporateAllUser' ,  //查询所有企业用户
         addUserPath:'/api/authorization/addUser',   //添加企业用户
         addUserRolePath:'/api/authorization/addUserRole',   //为用户添加角色
-        queryRoleByUserIdPath:'/api/authorization/queryRoleByUserId',   //为用户添加角色
+        queryRoleByUserIdPath:'/api/authorization/queryRoleByUserId',   //为用户查询角色
+        deleteUserRoleByUserIdPath:'/api/authorization/deleteUserRoleByUserId',   //为用户删除角色
         queryRolesPath:'/api/authorization/queryRoles',   //根据企业标示查询角色
         queryCorporateMenuPath:'/api/authorization/queryCorporateMenu',   //根据企业标示查询菜单
+        addRolePath:'/api/authorization/addRole',   //新增角色
         addMenuPath:'/api/authorization/addMenu',   //根据企业标示查询菜单
-        deleteUserPath:'' ,  //删除某个用户
+        queryByRoleIdPath:'/api/authorization/queryByRoleId',   //根据角色ID查询菜单
+        addMenuRolePath:'/api/authorization/addMenuRole',   //为角色添加菜单
+        deleteMenuRoleByRoleIdPath:'/api/authorization/deleteMenuRoleByRoleId',   //为角色删除菜单
+        deleteUserPath:'/api/authorization/deleteUser' ,  //删除某个用户
+        deleteRolePath:'/api/authorization/deleteRole' ,  //删除某个角色
+        deleteMenuPath:'/api/authorization/deleteMenu' ,  //删除某个菜单
         deviceTypeListPath:'/api/deviceType/list' ,  //查询设备类型列表
         addSameDeviceTypePath:'/api/deviceType/addSameDeviceType' ,  //添加同级设备类型
         deleteDeviceTypePath:'/api/deviceType/deleteDeviceType' ,  //删除设备类型

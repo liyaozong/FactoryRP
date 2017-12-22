@@ -1,6 +1,6 @@
 //参数设置
 // 设备类型设置控制器
-myApp.controller('menuManagementsCtrl',['$filter','$http','$location','$scope','functionManageService','UrlService','$cookies','$resource','$state',function($filter,$http,$location,$scope,functionManageService,UrlService,$cookies,$resource,$state){
+myApp.controller('menuManagementsCtrl',['$filter','$http','$location','$scope','functionManageService','UrlService','$cookies','$resource','$state','userManageMent',function($filter,$http,$location,$scope,functionManageService,UrlService,$cookies,$resource,$state,userManageMent){
 
     $scope.WebURL=UrlService.getUrl('authorizationNew');
 //    $scope.corporateIdentify=$cookies.get('corporateIdentify');
@@ -89,13 +89,16 @@ myApp.controller('menuManagementsCtrl',['$filter','$http','$location','$scope','
 //        console.log(121121);
 //        console.log(pa);
         $scope.deleteFunction=function(){
-//            $http.get($scope.WebURL+'employee/deletePermissionById',par).success(function(response){
-            $http.post($scope.WebURL+'permission/remove',pa).success(function(response){
-                hideDiv("deleteFunction");
-                popupDiv('SaveSuccess');
-                $(".Message").html(response.message);
-            }).error(function(response){
-                console.log(response.message);
+            userManageMent.deleteMenu(id).success(function (data) {
+                if(data.errorCode=='000000'){
+                    hideDiv('deleteFunction');
+                    popupDiv('SaveSuccess');
+                    $('.SaveSuccess .Message').html(data.errorMessage);
+                }else{
+                    hideDiv('deleteFunction');
+                    popupDiv('SaveSuccess');
+                    $('.SaveSuccess .Message').html(data.errorMessage);
+                }
             });
         };
     };

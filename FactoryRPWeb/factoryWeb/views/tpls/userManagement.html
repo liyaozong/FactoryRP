@@ -44,11 +44,13 @@
                     <th style="min-width: 30px;">序号</th>
                     <th>姓名</th>
                     <th>添加角色</th>
+                    <th>删除角色</th>
+                    <th>删除用户</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr ng-repeat="userList in userLists | filter:QueryName | orderBy:userList.userId">
-                    <td ng-bind="userList.userId"></td>
+                    <td ng-bind="$index+1"></td>
                     <td ng-bind="userList.userName"></td>
                     <!--<td>-->
                         <!--<a href="javascript:void(0)" class="resBtn deleteBtn" ng-click="">-->
@@ -68,12 +70,18 @@
                             <b class="title">添加角色</b>
                         </a>
                     </td>
-                    <!--<td>-->
-                        <!--<a href="javascript:void(0)" class="resBtn deleteBtn" ng-click="deleteUserBalance(userList.userId)">-->
-                            <!--<img src="image/comm/resBtnDelete.png" alt="删除"/>-->
-                            <!--<b class="title">删除</b>-->
-                        <!--</a>-->
-                    <!--</td>-->
+                    <td>
+                        <a href="javascript:void(0)" class="resBtn deleteBtn" ng-click="delUserRole(userList.userId,userList.userName)">
+                            <img src="image/comm/resBtnDelete.png" alt="添加角色"/>
+                            <b class="title">删除角色</b>
+                        </a>
+                    </td>
+                    <td>
+                        <a href="javascript:void(0)" class="resBtn deleteBtn" ng-click="deleteUserBalance(userList.userId,userList.userName)">
+                            <img src="image/comm/resBtnDelete.png" alt="删除"/>
+                            <b class="title">删除用户</b>
+                        </a>
+                    </td>
                 </tr>
                 </tbody>
                 <!--<tfoot>-->
@@ -146,7 +154,7 @@
         <div style="padding: 20px 40px 20px 0;" class="businessAuth">
             <ul class="checkBoxUl">
                 <li ng-repeat="userRoleList in userRoleLists" class="userRoleLi">
-                    <input type="checkbox" roleId="{{userRoleList.roleId}}" id="{{userRoleList.roleId}}" class="userRoleCheckBox" ng-checked="userRoleList.enableStatus=='1'?true:false">
+                    <input type="checkbox" roleId="{{userRoleList.roleId}}" id="{{userRoleList.roleId}}" class="userRoleCheckBox">
                     <label for="{{userRoleList.roleId}}" ng-bind="userRoleList.roleName"></label>
                 </li>
 
@@ -154,6 +162,28 @@
             <div class="submitBtn1" style="text-align: center;padding-left: 40px;">
                 <button type="button" ng-click="addUserRoleSure()" value="" class="btn">保存</button>
                 <button type="button" value="" class="btn" onClick="hideDiv('addUserRolePop')">取消</button>
+            </div>
+        </div>
+    </div>
+
+    <!--  为用户删除角色-->
+    <div class="ImportantNote delUserRolePop" style="max-width: 760px;min-width: 300px">
+        <div class="headline">
+            <span>{{delUserRoleName}}删除角色</span>
+            <img onClick="hideDiv('delUserRolePop')" class="companyCloseImg" src="image/comm/diffClosed.png" width="22" height="22">
+        </div>
+        <div style="padding: 20px 40px 20px 0;" class="businessAuth">
+            <div style="padding-left: 36px;box-sizing: border-box;text-align: center" ng-if="delUserRoleLists.length<=0||delUserRoleLists==undefined||delUserRoleLists==null">该用户暂无角色</div>
+            <ul class="checkBoxUl" ng-if="delUserRoleLists.length>0">
+                <li ng-repeat="delUserRoleList in delUserRoleLists" class="userRoleLi">
+                    <input type="checkbox" roleId="{{delUserRoleList.roleId}}" id="{{delUserRoleList.roleId}}" class="userRoleCheckBoxDel">
+                    <label for="{{delUserRoleList.roleId}}" ng-bind="delUserRoleList.roleName"></label>
+                </li>
+
+            </ul>
+            <div class="submitBtn1" style="text-align: center;padding-left: 40px;">
+                <button type="button" ng-click="delUserRoleSure()" value="" class="btn" ng-if="delUserRoleLists.length>0">保存</button>
+                <button type="button" value="" class="btn" onClick="hideDiv('delUserRolePop')">取消</button>
             </div>
         </div>
     </div>

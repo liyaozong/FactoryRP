@@ -23,11 +23,10 @@ myApp.factory("queryCorporateAllUser",["AppHttp","FF_API",function(AppHttp,FF_AP
     };
 
     //删除某个用户
-    userManageMent.deleteUser=function(data){
+    userManageMent.deleteUser=function(id){
         return AppHttp({
-            method: 'post',
-            url: FF_API.base + FF_API.deleteUserPath,
-            data:data
+            method: 'get',
+            url: FF_API.base + FF_API.deleteUserPath+'?id='+id
         });
     };
 
@@ -36,6 +35,15 @@ myApp.factory("queryCorporateAllUser",["AppHttp","FF_API",function(AppHttp,FF_AP
         return AppHttp({
             method: 'post',
             url: FF_API.base + FF_API.addUserRolePath,
+            data:data
+        });
+    };
+
+    //为用户删除角色
+    userManageMent.deleteUserRoleByUserId=function(data){
+        return AppHttp({
+            method: 'post',
+            url: FF_API.base + FF_API.deleteUserRoleByUserIdPath,
             data:data
         });
     };
@@ -56,6 +64,49 @@ myApp.factory("queryCorporateAllUser",["AppHttp","FF_API",function(AppHttp,FF_AP
         });
     };
 
+    //新增角色
+    userManageMent.addRole=function(data){
+        return AppHttp({
+            method: 'post',
+            url: FF_API.base + FF_API.addRolePath,
+            data:data
+        });
+    };
+
+    //删除角色
+    userManageMent.deleteRole=function(id){
+        return AppHttp({
+            method: 'get',
+            url: FF_API.base + FF_API.deleteRolePath+'?roleId='+id
+        });
+    };
+
+    //为角色添加菜单
+    userManageMent.addMenuRole=function(data){
+        return AppHttp({
+            method: 'post',
+            url: FF_API.base + FF_API.addMenuRolePath,
+            data:data
+        });
+    };
+
+    //为角色删除菜单
+    userManageMent.deleteMenuRoleByRoleId=function(data){
+        return AppHttp({
+            method: 'post',
+            url: FF_API.base + FF_API.deleteMenuRoleByRoleIdPath,
+            data:data
+        });
+    };
+
+    //根据角色ID查询菜单
+    userManageMent.queryByRoleId=function(roleId){
+        return AppHttp({
+            method: 'get',
+            url: FF_API.base + FF_API.queryByRoleIdPath+'?roleId='+roleId
+        });
+    };
+
     //查询企业菜单
     userManageMent.queryCorporateMenu=function(){
         return AppHttp({
@@ -63,12 +114,21 @@ myApp.factory("queryCorporateAllUser",["AppHttp","FF_API",function(AppHttp,FF_AP
             url: FF_API.base + FF_API.queryCorporateMenuPath
         });
     };
+
     //添加菜单
     userManageMent.addMenu=function(data){
         return AppHttp({
             method: 'post',
             url: FF_API.base + FF_API.addMenuPath,
             data:data
+        });
+    };
+
+    //删除菜单
+    userManageMent.deleteMenu=function(id){
+        return AppHttp({
+            method: 'get',
+            url: FF_API.base + FF_API.deleteMenuPath+'?menuId='+id
         });
     };
 

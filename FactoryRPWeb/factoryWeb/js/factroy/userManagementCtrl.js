@@ -40,24 +40,31 @@ myApp.controller('userManagementCtrl',['$filter','$rootScope','$location','$scop
     };
 
     //删除用户
-    $scope.deleteUserBalance=function(id){
-        console.log(id);
+    $scope.deleteUserBalance=function(id,name){
+        $scope.companyName=name;
         popupDiv('deleteUser');
         $scope.deleteUserSure=function(){
-
-
-            hideDiv('deleteUser');
-            // popupDiv('SaveSuccess');
-            // $('.SaveSuccess .Message').html(data.errorMessage);
+            userManageMent.deleteUser(id).success(function (data) {
+                if(data.errorCode=='000000'){
+                    hideDiv('deleteUser');
+                    popupDiv('SaveSuccess');
+                    $('.SaveSuccess .Message').html(data.errorMessage);
+                }else{
+                    hideDiv('deleteUser');
+                    popupDiv('SaveSuccess');
+                    $('.SaveSuccess .Message').html(data.errorMessage);
+                }
+            });
         }
     };
 
     //为用户添加角色
     $scope.addUserRole=function (id,name) {
-        // console.log(id,name);
+        $scope.userRoleLists=[];
         $scope.addUserRoleName=name;
         //每次进入获取角色列表
-        userManageMent.queryRoleByUserId(id).success((function (data) {
+        var requestSeqNo=$cookies.get('corporateIdentify');
+        userManageMent.queryRoles(requestSeqNo).success((function (data) {
             $scope.userRoleLists=data.data;
         }));
         popupDiv('addUserRolePop');
@@ -68,11 +75,10 @@ myApp.controller('userManagementCtrl',['$filter','$rootScope','$location','$scop
                 arr.push($(n).prop('id'));
 
             });
-            var roleIdStr=arr.join(',');
-            // console.log(roleIdStr);
+
             var po={
                 requestTime:$filter('date')(new Date(),'yyyy-MM-dd HH:mm:ss'),
-                roleId:roleIdStr,
+                roleIdList:arr,
                 userId:id
             };
             userManageMent.addUserRole(po).success((function (data) {
@@ -82,6 +88,42 @@ myApp.controller('userManagementCtrl',['$filter','$rootScope','$location','$scop
                     $('.SaveSuccess .Message').html(data.errorMessage);
                 }else{
                     hideDiv('addUserRolePop');
+                    popupDiv('SaveSuccess');
+                    $('.SaveSuccess .Message').html(data.errorMessage);
+                }
+            }));
+        }
+    };
+
+    //为用户删除角色
+    $scope.delUserRole=function (id,name) {
+        $scope.delUserRoleLists=[];
+        $scope.delUserRoleName=name;
+        //每次进入获取角色列表
+        userManageMent.queryRoleByUserId(id).success((function (data) {
+            $scope.delUserRoleLists=data.data;
+        }));
+        popupDiv('delUserRolePop');
+        var arr=[];
+        $scope.delUserRoleSure=function () {
+            $('.userRoleCheckBoxDel:checked').each(function (i,n) {
+                // console.log(i,$(n).prop('id'));
+                arr.push($(n).prop('id'));
+
+            });
+
+            var po={
+                requestTime:$filter('date')(new Date(),'yyyy-MM-dd HH:mm:ss'),
+                roleList:arr,
+                userId:id
+            };
+            userManageMent.deleteUserRoleByUserId(po).success((function (data) {
+                if(data.errorCode=='000000'){
+                    hideDiv('delUserRolePop');
+                    popupDiv('SaveSuccess');
+                    $('.SaveSuccess .Message').html(data.errorMessage);
+                }else{
+                    hideDiv('delUserRolePop');
                     popupDiv('SaveSuccess');
                     $('.SaveSuccess .Message').html(data.errorMessage);
                 }
