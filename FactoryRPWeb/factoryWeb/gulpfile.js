@@ -46,6 +46,7 @@ gulp.task('compress', function() {
         "js/factroy/contactCompanySettingController.js",
         "js/factroy/deviceManageController.js",
         "js/factroy/modelToolsManageController.js",
+        "js/factroy/otherOptionsSettingController.js",
         "js/factroy/sparePartsManageController.js"
   ])
     .pipe(concat('app.min.js'))

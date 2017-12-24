@@ -71,4 +71,15 @@ var factoryParameterSettingApp = angular.module('myApp.factoryParameterSetting',
                     }
                 }
             })
+            .state("main.otherOptionsSetting", {
+                showName:"参数设置-其他选项设置",
+                tabShow:true,
+                url: "/otherOptionsSetting",
+                views:{
+                    'content@main':{
+                        templateUrl:FF_API.baseTpl+'factory/otherOptionsSetting.html',
+                        controller:'otherOptionsSettingController'
+                    }
+                }
+            })
     });

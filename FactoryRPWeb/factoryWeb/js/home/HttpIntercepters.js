@@ -24,8 +24,8 @@ myApp.factory('HttpInterceptor', function($rootScope,$q,$window,$cookies,$inject
 
             	config.headers = config.headers || {};
                 if (token) {
-//                  config.headers.token = token;
-                  config.headers.token = '1';
+                  config.headers.token = token;
+//                  config.headers.token = '1';
                 }
                 return config; 
             },
