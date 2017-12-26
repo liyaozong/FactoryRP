@@ -95,12 +95,13 @@ factoryParameterSettingApp.controller('sparePartsManageController',function ($sc
         currentPage: 1,
         itemsPerPage: 10
     };
+
+    $scope.ccQuery={
+        code:'',
+        contactName:'',
+        name:''
+    };
     $scope.onQuery_cc=function () {
-        $scope.ccQuery={
-            code:'',
-            contactName:'',
-            name:''
-        };
         var ccReq={
             "code": $scope.ccQuery.code,//单位编码
             "contactName": $scope.ccQuery.contactName,//联系人名称
@@ -126,6 +127,11 @@ factoryParameterSettingApp.controller('sparePartsManageController',function ($sc
     };
     //打开厂商或者供应商选择层
     $scope.openCC=function (type) {
+        $scope.ccQuery={
+            code:'',
+            contactName:'',
+            name:''
+        };
         $scope.onQuery_cc();
         $scope.ccType=type;
     };

@@ -27,13 +27,14 @@ myApp.factory("spareParts",["AppHttp","FF_API",function(AppHttp,FF_API){
             data:data
         });
     };
+
+    //查询设备参数
     spareParts.findByCode=function (code) {
         return AppHttp({
             method: 'get',
             url: FF_API.base + FF_API.findByCodePath+'?code='+code
         });
     };
-    //查询设备参数
 
 
     return spareParts;
