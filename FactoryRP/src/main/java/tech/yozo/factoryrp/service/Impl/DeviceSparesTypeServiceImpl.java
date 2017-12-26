@@ -159,6 +159,10 @@ public class DeviceSparesTypeServiceImpl implements DeviceSparesTypeService {
             //修改
             deviceSparesType = deviceSparesTypeRepository.findOne(deviceSparesSaveReq.getId());
 
+            if(!CheckParam.isNull(deviceSparesType)){
+                deviceSparesType.setName(deviceSparesSaveReq.getName());
+            }
+
         }
 
         return deviceSparesTypeRepository.save(deviceSparesType);

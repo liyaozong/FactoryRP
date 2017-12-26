@@ -44,15 +44,15 @@ public class SparePartsAddReq extends ApiCorporateIdentifyRequest implements Ser
     @ApiModelProperty(value = "参考价",notes ="参考价" )
     private Double referencePrice;
 
+    @ApiModelProperty(value = "换算比例",notes ="换算比例" )
+    private Double conversionRatio;
+
     @ApiModelProperty(value = "换算单位",notes ="换算单位" )
     private Long unitConversion;
 
     @ApiModelProperty(value = "物料属性",notes ="生产厂商" )
     @NotEmpty(message = "物料属性-不能为空")
     private String materialProperties;
-
-    @ApiModelProperty(value = "换算比例",notes ="换算比例" )
-    private Double ConversionRatio;
 
     @ApiModelProperty(value = "规格型号",notes ="规格型号" )
     @NotEmpty(message = "规格型号-不能为空")
