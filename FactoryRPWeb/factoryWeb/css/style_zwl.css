@@ -105,15 +105,44 @@
 
 
 
+#mainContain1 .queryDiv ul li label span{
+    width: auto;
+}
+#addP p{
+    text-align: left;
+}
+
+input[type="number"]{
+    text-indent: 5px !important;
+    line-height: 30px;
+    border-radius: 2px 2px 2px 2px !important;
+    border: 1px solid #e6e6e6;
+}
+
+.contactCompanyListPop{
+    min-width: 720px;
+}
+.contactCompanyListPop table{
+    width: 100%;
+}
 
 
-
-
-
-
-
-
-
+.ccTr{
+    background-color: #ff6f09;!important;
+}
+#contactCompanyListPop .ccTr:hover{
+    background: #ff6f09;!important;
+}
+.changedDiv{
+    position: absolute;
+    right: 5px;
+    top: -6px;
+    width: 28px;
+    height: 30px;
+    text-align: center;
+    cursor: pointer;
+    background-color: white;
+}
 
 
 

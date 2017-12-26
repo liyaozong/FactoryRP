@@ -55,7 +55,7 @@ var factoryParameterSettingApp = angular.module('myApp.factoryParameterSetting',
                 url: "/sparePartsManage",
                 views:{
                     'content@main':{
-                        templateUrl:FF_API.baseTpl+'factory/deviceManage.html',
+                        templateUrl:FF_API.baseTpl+'tpls/sparePartsManage.html',
                         controller:'sparePartsManageController'
                     }
                 }

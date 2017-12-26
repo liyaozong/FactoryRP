@@ -30,10 +30,19 @@ var myApp = angular.module('myApp', [
         deleteRolePath:'/api/authorization/deleteRole' ,  //删除某个角色
         deleteMenuPath:'/api/authorization/deleteMenu' ,  //删除某个菜单
         deviceTypeListPath:'/api/deviceType/list' ,  //查询设备类型列表
+        queryAllDeviceSparesTypePath:'/api/deviceSparesType/queryAllDeviceSparesType' ,  //查询备件类型列表
         addSameDeviceTypePath:'/api/deviceType/addSameDeviceType' ,  //添加同级设备类型
+        addSameDeviceSparesPath:'/api/deviceSparesType/addSameDeviceSpares' ,  //添加同级备件类型
         deleteDeviceTypePath:'/api/deviceType/deleteDeviceType' ,  //删除设备类型
+        deleteDeviceSparesTypePath:'/api/deviceSparesType/deleteDeviceSparesType' ,  //删除备件类型
         updateDeviceTypePath:'/api/deviceType/updateDeviceType' ,  //修改设备类型
-        addSubDeviceTypePath:'/api/deviceType/addSubDeviceType'   //添加下级设备类型
+        updateDeviceSparesPath:'/api/deviceSparesType/updateDeviceSpares' ,  //修改备件类型
+        addSubDeviceTypePath:'/api/deviceType/addSubDeviceType' ,  //添加下级设备类型
+        addSubDeviceSparesPath:'/api/deviceSparesType/addSubDeviceSpares',   //添加下级备件类型
+        findByPagePath:'/api/spareParts/findByPage' ,  //查询备件
+        addSparePartsPath:'/api/spareParts/addSpareParts' ,  //新增备件
+        contactCompanyListPath:'/api/contactCompany/list',   //查询往来单位
+        findByCodePath:'/api/deviceParameterDictionary/findByCode'   //查询设备参数
 
 
     })
@@ -191,6 +200,17 @@ var myApp = angular.module('myApp', [
                     'content@main':{
                         templateUrl:FF_API.baseTpl+'tpls/deviceType.html',
                         controller:'deviceTypeCtrl'
+                    }
+                }
+            })
+
+            // 备件类型设置
+            .state("main.deviceSpares",{
+                url:"/deviceSpares",
+                views:{
+                    'content@main':{
+                        templateUrl:FF_API.baseTpl+'tpls/deviceSpares.html',
+                        controller:'deviceSparesCtrl'
                     }
                 }
             })

@@ -29,6 +29,7 @@ myApp.factory('AppHttp',['$http', '$timeout',"$rootScope",'$cookies',
 
 //表单验证服务
 myApp.factory('validate',["$rootScope",function ($rootScope) {
+    var validate={};
     validate.regExp=function(s,reg){
         var re = new RegExp(reg);
         if (re.test(s)) {
