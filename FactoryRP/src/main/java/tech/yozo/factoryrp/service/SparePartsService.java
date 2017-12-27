@@ -21,6 +21,7 @@ public interface SparePartsService {
     /**
      * 根据备件id删除备件
      * @param id
+     * @param corporateIdentify
      */
     void deleteSparePartsById(Long id,Long corporateIdentify);
 
@@ -34,17 +35,19 @@ public interface SparePartsService {
     /**
      * 根据条件分页查询 WEB
      * @param sparePartsQueryReq
+     * @param corporateIdentify
      * @return
      */
-    Pagination<SpareParts> findByPage(SparePartsQueryReq sparePartsQueryReq);
+    Pagination<SpareParts> findByPage(SparePartsQueryReq sparePartsQueryReq,Long corporateIdentify);
 
 
     /**
      * 新增备件
      * @param sparePartsReq
+     * @param corporateIdentify
      * @return
      */
-    SparePartsResp addSpareParts(SparePartsAddReq sparePartsReq);
+    SparePartsResp addSpareParts(SparePartsAddReq sparePartsReq,Long corporateIdentify);
 
     /**
      * 根据主键批量查询
@@ -58,7 +61,7 @@ public interface SparePartsService {
      * @param sparePartsQueryReq
      * @return
      */
-    Pagination<DeviceSparesMobileResp> queryMobileDeviceSpares(SparePartsQueryReq sparePartsQueryReq);
+    Pagination<DeviceSparesMobileResp> queryMobileDeviceSpares(SparePartsQueryReq sparePartsQueryReq,Long corporateIdentify);
 
     /**
      * 批量删除备件信息

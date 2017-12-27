@@ -1,5 +1,7 @@
 package tech.yozo.factoryrp.service.Impl;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import tech.yozo.factoryrp.entity.*;
 import tech.yozo.factoryrp.exception.BussinessException;
@@ -57,6 +59,9 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 
     @Resource
     private UserRoleRepository userRoleRepository;
+
+
+    private static Logger logger = LoggerFactory.getLogger(AuthorizationServiceImpl.class);
 
 
     /**

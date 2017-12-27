@@ -59,10 +59,11 @@ public class SparePartsServiceImpl implements SparePartsService {
     /**
      * 根据条件分页查询
      * @param sparePartsQueryReq
+     * @param corporateIdentify
      * @return
      */
     @Override
-    public Pagination<SpareParts> findByPage(SparePartsQueryReq sparePartsQueryReq) {
+    public Pagination<SpareParts> findByPage(SparePartsQueryReq sparePartsQueryReq,Long corporateIdentify) {
 
         if (sparePartsQueryReq.getCurrentPage() > 0) {
             sparePartsQueryReq.setCurrentPage(sparePartsQueryReq.getCurrentPage()-1);
@@ -73,13 +74,19 @@ public class SparePartsServiceImpl implements SparePartsService {
             @Override
             public Predicate toPredicate(Root<SpareParts> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
                 List<Predicate> listCon = new ArrayList<>();
-                if (!StringUtils.isEmpty(sparePartsQueryReq.getCode())){ //备件编号
+                if (!CheckParam.isNull(corporateIdentify)){ //企业唯一标识
+                    listCon.add(criteriaBuilder.equal(root.get("corporateIdentify").as(Long.class),corporateIdentify));
+                }
+                if (!CheckParam.isNull(sparePartsQueryReq.getCode())){ //备件编号
                     listCon.add(criteriaBuilder.equal(root.get("code").as(String.class),sparePartsQueryReq.getCode()));
                 }
-                if (!StringUtils.isEmpty(sparePartsQueryReq.getName())){ //备件名称
+                if (!CheckParam.isNull(sparePartsQueryReq.getCode())){ //备件编号
+                    listCon.add(criteriaBuilder.equal(root.get("code").as(String.class),sparePartsQueryReq.getCode()));
+                }
+                if (!CheckParam.isNull(sparePartsQueryReq.getName())){ //备件名称
                     listCon.add(criteriaBuilder.like(root.get("name").as(String.class),"%"+sparePartsQueryReq.getName()+"%"));
                 }
-                if (!CheckParam.isNull(null!=sparePartsQueryReq.getManufacturer())){ //生产厂商
+                if (!CheckParam.isNull(sparePartsQueryReq.getManufacturer())){ //生产厂商
                     listCon.add(criteriaBuilder.equal(root.get("manufacturer").as(String.class),sparePartsQueryReq.getManufacturer()));
                 }
                 if (!CheckParam.isNull(sparePartsQueryReq.getSuppliers())){ //供应商
@@ -152,10 +159,11 @@ public class SparePartsServiceImpl implements SparePartsService {
     /**
      * 新增备件
      * @param sparePartsReq
+     * @param corporateIdentify
      * @return
      */
     @Override
-    public SparePartsResp addSpareParts(SparePartsAddReq sparePartsReq) {
+    public SparePartsResp addSpareParts(SparePartsAddReq sparePartsReq,Long corporateIdentify) {
 
         SpareParts spareParts = sparePartsRepository.findByNameAndCorporateIdentify(sparePartsReq.getName(),sparePartsReq.getCorporateIdentify());
 
@@ -249,9 +257,10 @@ public class SparePartsServiceImpl implements SparePartsService {
     /**
      * 手机端查询备件信息
      * @param sparePartsQueryReq
+     * @param corporateIdentify
      * @return
      */
-    public Pagination<DeviceSparesMobileResp> queryMobileDeviceSpares(SparePartsQueryReq sparePartsQueryReq){
+    public Pagination<DeviceSparesMobileResp> queryMobileDeviceSpares(SparePartsQueryReq sparePartsQueryReq,Long corporateIdentify){
         if (sparePartsQueryReq.getCurrentPage() > 0) {
             sparePartsQueryReq.setCurrentPage(sparePartsQueryReq.getCurrentPage()-1);
         }
@@ -259,10 +268,10 @@ public class SparePartsServiceImpl implements SparePartsService {
         Pageable p = new PageRequest(sparePartsQueryReq.getCurrentPage(), sparePartsQueryReq.getItemsPerPage());
         Page<SpareParts> page = sparePartsRepository.findAll((root, criteriaQuery, criteriaBuilder) -> {
             List<Predicate> listCon = new ArrayList<>();
-            if (!StringUtils.isEmpty(sparePartsQueryReq.getCode())){ //备件编号
-                listCon.add(criteriaBuilder.equal(root.get("code").as(String.class),sparePartsQueryReq.getCode()));
+            if (!CheckParam.isNull(corporateIdentify)){ //企业唯一标识
+                listCon.add(criteriaBuilder.equal(root.get("corporateIdentify").as(Long.class),corporateIdentify));
             }
-            if (!StringUtils.isEmpty(sparePartsQueryReq.getName())){ //备件名称
+            if (!CheckParam.isNull(sparePartsQueryReq.getName())){ //备件名称
                 listCon.add(criteriaBuilder.like(root.get("name").as(String.class),"%"+sparePartsQueryReq.getName()+"%"));
             }
             if (!CheckParam.isNull(sparePartsQueryReq.getManufacturer())){ //生产厂商

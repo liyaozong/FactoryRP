@@ -49,8 +49,9 @@ public class SparePartsController extends BaseController{
     @PostMapping("/addSpareParts")
     @ApiImplicitParam(dataType = "SparePartsAddReq" ,name = "sparePartsReq", paramType = "VO" ,
             value = "新增备件",required = true)
-    public ApiResponse<SparePartsResp> addSpareParts(@Valid @RequestBody SparePartsAddReq sparePartsReq){
-        return apiResponse(sparePartsService.addSpareParts(sparePartsReq));
+    public ApiResponse<SparePartsResp> addSpareParts(@Valid @RequestBody SparePartsAddReq sparePartsReq, HttpServletRequest request){
+        Long corporateIdentify = userAuthService.getCurrentUserCorporateIdentify(request);
+        return apiResponse(sparePartsService.addSpareParts(sparePartsReq,corporateIdentify));
     }
 
     /**
@@ -62,8 +63,9 @@ public class SparePartsController extends BaseController{
     @PostMapping("/findByPage")
     @ApiImplicitParam(dataType = "SparePartsQueryReq" ,name = "sparePartsQueryReq", paramType = "VO" ,
             value = "根据条件分页查询",required = true)
-    public ApiResponse<SpareParts> findByPage(@Valid @RequestBody SparePartsQueryReq sparePartsQueryReq){
-        return apiResponse(sparePartsService.findByPage(sparePartsQueryReq));
+    public ApiResponse<SpareParts> findByPage(@Valid @RequestBody SparePartsQueryReq sparePartsQueryReq, HttpServletRequest request){
+        Long corporateIdentify = userAuthService.getCurrentUserCorporateIdentify(request);
+        return apiResponse(sparePartsService.findByPage(sparePartsQueryReq,corporateIdentify));
     }
 
 
@@ -76,8 +78,9 @@ public class SparePartsController extends BaseController{
     @PostMapping("/queryMobileDeviceSpares")
     @ApiImplicitParam(dataType = "SparePartsQueryReq" ,name = "sparePartsQueryReq", paramType = "VO" ,
             value = "手机端查询备件信息",required = true)
-    public ApiResponse<Pagination<DeviceSparesMobileResp>> queryMobileDeviceSparesMobileResp(@Valid @RequestBody SparePartsQueryReq sparePartsQueryReq){
-        return apiResponse(sparePartsService.queryMobileDeviceSpares(sparePartsQueryReq));
+    public ApiResponse<Pagination<DeviceSparesMobileResp>> queryMobileDeviceSparesMobileResp(@Valid @RequestBody SparePartsQueryReq sparePartsQueryReq, HttpServletRequest request){
+        Long corporateIdentify = userAuthService.getCurrentUserCorporateIdentify(request);
+        return apiResponse(sparePartsService.queryMobileDeviceSpares(sparePartsQueryReq,corporateIdentify));
     }
 
     /**
