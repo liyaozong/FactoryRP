@@ -35,7 +35,8 @@ public enum ErrorCode {
     ROLE_NOTEXIST_ERROR("0000017","角色不存在"),
     MENU_NOTEXIST_ERROR("0000018","菜单不存在"),
     CURRENTUSER_OPERATESELF_ERROR("0000019","菜单不存在"),
-    PROCESS_NAME_REPET_ERROR("0000020","流程已经存在");
+    PROCESS_NAME_REPET_ERROR("0000020","流程已经存在"),
+    PROCESS_NOT_EXIST_ERROR("0000021","流程不存在，开启流程失败");
 
 
     private String code;

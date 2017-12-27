@@ -2,15 +2,15 @@ package tech.yozo.factoryrp.service.Impl;
 
 import org.springframework.stereotype.Service;
 import tech.yozo.factoryrp.entity.DeviceProcess;
+import tech.yozo.factoryrp.entity.ProcessInstance;
 import tech.yozo.factoryrp.exception.BussinessException;
-import tech.yozo.factoryrp.repository.DeviceProcessDetailRepository;
-import tech.yozo.factoryrp.repository.DeviceProcessRepository;
-import tech.yozo.factoryrp.repository.UserDepartmentRepository;
+import tech.yozo.factoryrp.repository.*;
 import tech.yozo.factoryrp.service.ProcessService;
 import tech.yozo.factoryrp.utils.CheckParam;
 import tech.yozo.factoryrp.utils.ErrorCode;
 import tech.yozo.factoryrp.vo.req.DeviceProcessAddReq;
 import tech.yozo.factoryrp.vo.resp.process.DeviceProcessAddResp;
+import tech.yozo.factoryrp.vo.resp.process.CreateProcessInstanceResp;
 
 import javax.annotation.Resource;
 
@@ -32,7 +32,44 @@ public class ProcessServiceImpl implements ProcessService {
 
 
     @Resource
-    private UserDepartmentRepository userDepartmentRepository;
+    private ProcessRuntimeInfoRepository processRuntimeInfoRepository;
+
+
+    @Resource
+    private ProcessInstanceRepository processInstanceRepository;
+
+
+    /**
+     * 开启流程
+     * 生成流程实例 返回状态为开启的流程实例
+     * @param processType 流程类型
+     * @param processStage 流程阶段
+     * @return
+     */
+    public CreateProcessInstanceResp createProcessInstance(Long processType,Long processStage,Long corporateIdentify) throws BussinessException{
+        DeviceProcess deviceProcess = deviceProcessRepository.findByProcessTypeAndProcessStageAndCorporateIdentify(processType,
+                processStage, corporateIdentify);
+
+        if(CheckParam.isNull(deviceProcess)){
+            throw new BussinessException(ErrorCode.PROCESS_NOT_EXIST_ERROR.getCode(),ErrorCode.PROCESS_NOT_EXIST_ERROR.getMessage());
+        }
+
+        ProcessInstance processInstance = new ProcessInstance();
+
+        processInstance.setCurrentStep(null); //设置当前步骤为空，代表流程实例刚刚开启
+        processInstance.setProcessId(deviceProcess.getId());
+        processInstance.setProcessStatus(1); //初始化流程实例代表刚刚开启
+        processInstance.setCorporateIdentify(corporateIdentify);
+
+        processInstanceRepository.save(processInstance);
+
+        CreateProcessInstanceResp createProcessInstanceResp = new CreateProcessInstanceResp();
+        createProcessInstanceResp.setId(processInstance.getId());
+
+        return createProcessInstanceResp;
+    }
+
+
 
 
     /**

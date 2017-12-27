@@ -42,10 +42,10 @@ public class DeviceProcessDetail extends BaseEntity implements Serializable {
 
 
     /**
-     * 处理要求
+     * 处理要求类型 1单人签署生效2多人签署生效
      */
-    @Column(name = "handle_demand",length = 20)
-    private Long handleDemand;
+    @Column(name = "handle_demand_type",length = 20)
+    private Integer handleDemandType;
 
 
     /**

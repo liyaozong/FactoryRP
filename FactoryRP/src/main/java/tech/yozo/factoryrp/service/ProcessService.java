@@ -1,6 +1,8 @@
 package tech.yozo.factoryrp.service;
 
+import tech.yozo.factoryrp.exception.BussinessException;
 import tech.yozo.factoryrp.vo.req.DeviceProcessAddReq;
+import tech.yozo.factoryrp.vo.resp.process.CreateProcessInstanceResp;
 import tech.yozo.factoryrp.vo.resp.process.DeviceProcessAddResp;
 
 /**
@@ -11,6 +13,14 @@ import tech.yozo.factoryrp.vo.resp.process.DeviceProcessAddResp;
  */
 public interface ProcessService {
 
+    /**
+     * 开启流程
+     * 生成流程实例 返回状态为开启的流程实例
+     * @param processType 流程类型
+     * @param processStage 流程阶段
+     * @return
+     */
+    CreateProcessInstanceResp createProcessInstance(Long processType, Long processStage, Long corporateIdentify) throws BussinessException;
 
     /**
      * 新增流程

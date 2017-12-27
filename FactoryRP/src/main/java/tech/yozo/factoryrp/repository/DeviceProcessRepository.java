@@ -23,4 +23,13 @@ public interface DeviceProcessRepository extends BaseRepository<DeviceProcess,Lo
     DeviceProcess findByProcessNameAndCorporateIdentify(String processName,Long corporateIdentify);
 
 
+    /**
+     * 根据流程类型，对应阶段以及企业唯一标识进行查询
+     * @param processType
+     * @param processStage
+     * @param corporateIdentify
+     * @return
+     */
+    DeviceProcess findByProcessTypeAndProcessStageAndCorporateIdentify(Long processType,Long processStage,Long corporateIdentify);
+
 }
