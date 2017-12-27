@@ -62,6 +62,7 @@ public class DeviceParameterDictionaryServiceImpl implements DeviceParameterDict
                     deviceParameterDictionary.setName(s);
                     deviceParameterDictionary.setCode(deviceParameterDicBatchAddReq.getCode());
                     deviceParameterDictionary.setType(max+1);
+                    deviceParameterDictionary.setCorporateIdentify(corporateIdentify);
                     deviceParameterDictionaryList.add(deviceParameterDictionary);
 
                     max = max + 1;
