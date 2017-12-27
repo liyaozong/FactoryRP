@@ -36,6 +36,22 @@ myApp.factory("spareParts",["AppHttp","FF_API",function(AppHttp,FF_API){
         });
     };
 
+    //单个删除备件
+    spareParts.deleteSparePartsById=function (id) {
+        return AppHttp({
+            method: 'get',
+            url: FF_API.base + FF_API.deleteSparePartsByIdPath+'?id='+id
+        });
+    };
+
+    //批量删除备件
+    spareParts.deleteSparePartsByIds=function (ids) {
+        return AppHttp({
+            method: 'get',
+            url: FF_API.base + FF_API.deleteSparePartsByIdsPath+'?ids='+ids
+        });
+    };
+
 
     return spareParts;
 }]);

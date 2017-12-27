@@ -63,7 +63,7 @@
                 </label>
                 <label>
                     <button class="btn" ng-click="onQuery()">查询</button>
-                    <button style="margin-left: 10px;" class="btn" onclick="popupDiv('addSparePartsPop')">新增备件</button>
+                    <button style="margin-left: 10px;" class="btn" ng-click="addSpareParts()">新增备件</button>
                 </label>
             </li>
         </ul>
@@ -74,43 +74,43 @@
             <tr>
                 <th style="min-width:50px;">全选<input style="vertical-align: middle;margin-left: 5px" type="checkbox" value="1" onclick="selAll(this)" id="allSelected"/></th>
                 <!--<th>设备编号</th>-->
-                <th>设备名称</th>
-                <th>使用部门</th>
+                <th>序号</th>
+                <th>备件编号</th>
+                <th>条形码</th>
+                <th>备件名称</th>
                 <th>规格型号</th>
-                <th>安装地点</th>
-                <th>操作人员</th>
-                <th>使用情况</th>
-                <th>购买时间</th>
-                <th>资产负责人</th>
-                <th>设备类别</th>
-                <th>供应商</th>
+                <th>备件类型</th>
+                <th>计量单位</th>
+                <th>库存下限</th>
+                <th>库存上限</th>
+                <th>参考价</th>
+                <!--<th>总库存数</th>-->
+                <!--<th>库存金额</th>-->
                 <th>生产厂商</th>
-                <th>设备标记</th>
-                <th>资产原值</th>
-                <th>备注</th>
+                <th>物料属性</th>
                 <th>操作</th>
             </tr>
             </thead>
             <tbody id="apply_infos_table">
-            <tr ng-repeat="orderDetail in deviceListInfos">
+            <tr ng-repeat="orderDetail in sparePartsLists">
                 <td class="firstTd">{{$index+1}}<input style="margin-left: 5px;vertical-align: middle;" type="checkbox" name="che"  value="{{orderDetail.id}}"/></td>
                 <!--<td>{{orderDetail.code||'--'}}</td>-->
+                <td>{{$index+1}}</td>
+                <td>{{orderDetail.code||'--'}}</td>
+                <td>{{orderDetail.barCode||'--'}}</td>
                 <td>{{orderDetail.name||'--'}}</td>
-                <td>{{orderDetail.useDept||'--'}}</td>
-                <td>{{orderDetail.specification||'--'}}</td>
-                <td>{{orderDetail.installationAddress||'--'}}</td>
-                <td>{{orderDetail.operator||'--'}}</td>
-                <td>{{orderDetail.useStatus||'--'}}</td>
-                <td>{{orderDetail.buyDate|date:'yyyy-MM-dd'||'--'}}</td>
-                <td>{{orderDetail.head||'--'}}</td>
-                <td>{{orderDetail.deviceType||'--'}}</td>
-                <td>{{orderDetail.supplier||'--'}}</td>
+                <td>{{orderDetail.specificationsAndodels||'--'}}</td>
+                <td>{{orderDetail.sparePartType||'--'}}</td>
+                <td>{{orderDetail.measuringUnit||'--'}}</td>
+                <td>{{orderDetail.inventoryFloor||'--'}}</td>
+                <td>{{orderDetail.inventoryUpperLimit||'--'}}</td>
+                <td>{{orderDetail.referencePrice||'--'}}</td>
+                <!--<td>{{0||'&#45;&#45;'}}</td>-->
+                <!--<td>{{0||'&#45;&#45;'}}</td>-->
                 <td>{{orderDetail.manufacturer||'--'}}</td>
-                <td>{{orderDetail.deviceFlag||'--'}}</td>
-                <td>{{orderDetail.sourcePrice||'--'}}</td>
-                <td>{{orderDetail.remark||'--'}}</td>
+                <td>{{orderDetail.materialProperties||'--'}}</td>
                 <td>
-                    <a href="javascript:void(0)" class="resBtn editBtn" ng-click="editContactCompanyBalance(orderDetail)">
+                    <a href="javascript:void(0)" class="resBtn editBtn" ng-click="editSparePartsFuc(orderDetail)">
                         <img src="image/comm/resBtnEdit.png" alt="编辑"/>
                         <b class="title">编辑</b>
                     </a>
@@ -124,7 +124,7 @@
             <tfoot>
             <tr>
                 <td>
-                    <a href="javascript:void(0)" class="resBtn deleteBtn" ng-click="deleteContactCompanyBalance(orderDetail)">
+                    <a href="javascript:void(0)" class="resBtn deleteBtn" ng-click="deleteSparePartsBalance(orderDetail)">
                         <img src="image/comm/resBtnDelete.png" alt="删除"/>
                         <b class="title">删除</b>
                     </a>
@@ -288,7 +288,7 @@
                 </label>
             </p>
         </div>
-
+        <div class="errP" style="text-align: center" ng-show="errFlog">表单有空值!!!</div>
         <div class="submitBtn1" style="text-align: center;padding-left: 40px;">
             <button type="button" ng-click="addSparePartsSure()" value="" class="btn">保存</button>
             <button type="button" value="" class="btn" onClick="hideDiv('addSparePartsPop')">取消</button>
@@ -300,7 +300,7 @@
 <!--生产厂商和供应商弹出层-->
 <div class="ImportantNote contactCompanyListPop mainContain" id="contactCompanyListPop">
     <div class="headline">
-        <span>新增备件</span>
+        <span>选择{{contactCompanyName}}</span>
         <img onClick="hideDiv('contactCompanyListPop');popupDiv('addSparePartsPop');" class="companyCloseImg" src="image/comm/diffClosed.png" width="22" height="22">
     </div>
     <div style="padding: 0;width: 100%" class="queryDiv" >
@@ -369,16 +369,16 @@
 </div>
 <!--保存成功end-->
 <!--单个删除弹出框start-->
-<div class="ImportantNote deleteContactCompany">
+<div class="ImportantNote deleteSparePartsPop">
     <div class="headline">
         <span>删除设备信息</span>
-        <img onClick="hideDiv('deleteContactCompany')" class="companyCloseImg" src="image/comm/diffClosed.png" width="22" height="22">
+        <img onClick="hideDiv('deleteSparePartsPop')" class="companyCloseImg" src="image/comm/diffClosed.png" width="22" height="22">
     </div>
     <div class="businessAuth">
         <p><img src="image/comm/attentionPlease.png" alt="注意："/>确认删除选中的设备信息？</p>
         <div class="submitBtn1" style="text-align: center;">
-            <input type="button" value="删除"  class="btn" ng-click="deleteDeviceSure()"/>
-            <input type="button" value="取消" class="btn" onClick="hideDiv('deleteContactCompany')">
+            <input type="button" value="删除"  class="btn" ng-click="deleteSparePartsSure()"/>
+            <input type="button" value="取消" class="btn" onClick="hideDiv('deleteSparePartsPop')">
         </div>
     </div>
 </div>

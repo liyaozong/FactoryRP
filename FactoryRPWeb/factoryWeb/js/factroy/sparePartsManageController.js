@@ -64,28 +64,15 @@ factoryParameterSettingApp.controller('sparePartsManageController',function ($sc
             // "unitConversion": 0//换算单位
         };
         spareParts.findByPage(req).success(function (data) {
-            console.log(data);
             if(data.data.totalCount>=1){
                 $scope.paginationConf.totalItems = data.data.totalCount;
-                // $scope.deviceListInfos=data.data.list
+                $scope.sparePartsLists=data.data.list;
+                console.log($scope.sparePartsLists,'-----');
             }else{
                 $scope.paginationConf.totalItems = 0;
-                // $scope.deviceListInfos.length = 0;
+                $scope.sparePartsLists.length = 0;
             }
         });
-        // spareParts.deviceListInfo({
-        //     name:$scope.cusName,//姓名
-        //     currentPage: $scope.paginationConf.currentPage,
-        //     itemsPerPage: $scope.paginationConf.itemsPerPage
-        // }, function(response){
-        //     if(response.data.totalCount>=1){
-        //         $scope.paginationConf.totalItems = response.data.totalCount;
-        //         $scope.deviceListInfos=response.data.list
-        //     }else{
-        //         $scope.paginationConf.totalItems = 0;
-        //         $scope.deviceListInfos.length = 0;
-        //     }
-        // });
     };
     /*查询设备信息 end*/
     $scope.onQuery();
@@ -95,13 +82,13 @@ factoryParameterSettingApp.controller('sparePartsManageController',function ($sc
         currentPage: 1,
         itemsPerPage: 10
     };
-
     $scope.ccQuery={
         code:'',
         contactName:'',
         name:''
     };
-    $scope.onQuery_cc=function () {
+
+    $scope.onQuery_cc=function (type) {
         var ccReq={
             "code": $scope.ccQuery.code,//单位编码
             "contactName": $scope.ccQuery.contactName,//联系人名称
@@ -121,10 +108,13 @@ factoryParameterSettingApp.controller('sparePartsManageController',function ($sc
                 // $scope.deviceListInfos.length = 0;
             }
             $scope.orderList=data.data.list;
-            hideDiv('addSparePartsPop');
-            popupDiv('contactCompanyListPop');
+            if(type){
+                hideDiv('addSparePartsPop');
+                popupDiv('contactCompanyListPop');
+            }
         });
     };
+    $scope.onQuery_cc();
     //打开厂商或者供应商选择层
     $scope.openCC=function (type) {
         $scope.ccQuery={
@@ -132,8 +122,13 @@ factoryParameterSettingApp.controller('sparePartsManageController',function ($sc
             contactName:'',
             name:''
         };
-        $scope.onQuery_cc();
+        $scope.onQuery_cc(type);
         $scope.ccType=type;
+        if($scope.ccType=='1'){
+            $scope.contactCompanyName='生产厂商';
+        }else  if($scope.ccType=='2'){
+            $scope.contactCompanyName='供应商';
+        }
     };
     //选中厂商或供应商
     $scope.changeCC=function (id,name,$event) {
@@ -154,35 +149,40 @@ factoryParameterSettingApp.controller('sparePartsManageController',function ($sc
         hideDiv('contactCompanyListPop');
         popupDiv('addSparePartsPop');
     };
-
+    $scope.errFlog=false;
     /*新增设备信息 start*/
-    $scope.editSpareParts={
-        sparePartType:'',//备件类型
-        device_id:'',//关联设备
-        name:'',//备件名称
-        specificationsAndodels:'',//规格型号
-        code:'',//备件编号
-        barCode:"",//条形码
-        measuringUnit:'',//计量单位
-        replacementCycle:'',//更换周期
-        manufacturer:'',//生产厂商
-        suppliers:'',//供应商
-        inventoryFloor:'',//库存下限
-        inventoryUpperLimit:'',//库存上限
-        referencePrice:"",//参考价
-        unitConversion:'',//换算单位
-        conversionRatio:'',//换算比例
-        materialProperties:'',//物料属性
-        extendFieldOne:'1',//文本型1
-        extendFieldTwo:'',//文本型2
-        extendFieldThree:'',//文本型3
-        extendFieldFour:'',//文本型4
-        extendFieldFive:'',//文本型5
-        extendFieldSix:'',//文本型6
-        extendFieldSeven:'',//文本型7
-        extendDateFieldOne:'',//自定义日期1
-        extendDateFieldTwo:'',//自定义日期2
-        remark:''//备注
+    $scope.addSpareParts=function () {
+        popupDiv('addSparePartsPop');
+        $scope.editSpareParts={
+            sparePartType:'',//备件类型
+            device_id:'',//关联设备
+            name:'',//备件名称
+            specificationsAndodels:'',//规格型号
+            code:'',//备件编号
+            barCode:"",//条形码
+            measuringUnit:'',//计量单位
+            replacementCycle:'',//更换周期
+            manufacturer:'',//生产厂商
+            suppliers:'',//供应商
+            inventoryFloor:'',//库存下限
+            inventoryUpperLimit:'',//库存上限
+            referencePrice:"",//参考价
+            unitConversion:'',//换算单位
+            conversionRatio:'',//换算比例
+            materialProperties:'',//物料属性
+            extendFieldOne:'1',//文本型1
+            extendFieldTwo:'',//文本型2
+            extendFieldThree:'',//文本型3
+            extendFieldFour:'',//文本型4
+            extendFieldFive:'',//文本型5
+            extendFieldSix:'',//文本型6
+            extendFieldSeven:'',//文本型7
+            extendDateFieldOne:'',//自定义日期1
+            extendDateFieldTwo:'',//自定义日期2
+            remark:''//备注
+        };
+        $scope.sureFlog=1;
+        $scope.errFlog=false;
     };
     $scope.addSparePartsSure=function(){
         var addReq={
@@ -214,161 +214,125 @@ factoryParameterSettingApp.controller('sparePartsManageController',function ($sc
             remark:$scope.editSpareParts.remark//备注
         };
         var flog;
-        console.log(addReq.length);
+        // console.log(addReq.length);
         for(var i in addReq){
-            console.log(i,":",addReq[i]);
+            // console.log(i,":",addReq[i]);
             flog=validate.required(addReq[i]);
             if(!flog){
                 break;
             }
         }
         if(flog){
-            spareParts.addSpareParts(addReq).success(function (data) {
-                if(data.errorCode=='000000'){
-                    hideDiv('addSparePartsPop');
-                    popupDiv('SaveSuccess');
-                    $('.SaveSuccess .Message').html(data.errorMessage);
-                }else{
-                    hideDiv('addSparePartsPop');
-                    popupDiv('SaveSuccess');
-                    $('.SaveSuccess .Message').html(data.errorMessage);
-                }
-            })
+            if($scope.sureFlog==1){
+                console.log('新增');
+                spareParts.addSpareParts(addReq).success(function (data) {
+                    if(data.errorCode=='000000'){
+                        hideDiv('addSparePartsPop');
+                        popupDiv('SaveSuccess');
+                        $('.SaveSuccess .Message').html(data.errorMessage);
+                    }else{
+                        hideDiv('addSparePartsPop');
+                        popupDiv('SaveSuccess');
+                        $('.SaveSuccess .Message').html(data.errorMessage);
+                    }
+                })
+            }else if($scope.sureFlog==2){
+                console.log('编辑');
+            }
         }else {
-            $('.SaveSuccess .Message').html('表单有空值');
+            $scope.errFlog=true;
         }
     };
     /*新增设备信息 end*/
     /*编辑设备信息 start*/
-    $scope.editContactCompanyBalance=function(res){
-        $scope.deviceNameEdit=res.name;
-        $scope.deviceCodeEdit=res.code;
-        $scope.specificationEdit=res.specification;
-        $scope.manufacturerEdit=res.manufacturer;
-        $scope.supplierEdit=res.supplier;
-        $scope.deviceFlag=res.deviceType;
-        $scope.buyDateEdit=res.buyDate;
-        $scope.sourcePriceEdit=res.sourcePrice;
-        $scope.netWorthEdit=res.netWorth;
-        $scope.headEdit=res.head;
-        $scope.usefulLifeEdit=res.usefulLife;
-        $scope.netResidueRateEdit=res.netResidueRate;
-        $scope.useStatusEdit=res.useStatus;
-        $scope.useDeptEdit=res.useDept;
-        $scope.operatorEdit=res.operator;
-        $scope.repairNameEdit=res.code;
-        $scope.installationAddressEdit=res.installationAddress;
-        $scope.checkCircleEdit=res.code;
-        $scope.lastCheckDateEdit=res.code;
-        $scope.nextCheckDateEdit=res.code;
-        $scope.extendFieldOneEdit=res.code;
-        $scope.extendFieldTwoEdit=res.code;
-        $scope.extendFieldThreeEdit=res.code;
-        $scope.extendFieldFourEdit=res.code;
-        $scope.extendFieldFiveEdit=res.code;
-        $scope.extendFieldSixEdit=res.code;
-        $scope.extendFieldSevenEdit=res.code;
-        $scope.extendFieldEightEdit=res.code;
-        $scope.extendFieldNineEdit=res.code;
-        $scope.extendFieldTenEdit=res.code;
-        $scope.NumberEdit=res.code;
-        $scope.startDateEdit=res.code;
-        $scope.remarkEdit=res.remark;
-        popupDiv('editContactBalance');
-        $scope.editContactSure=function(){
-            if($scope.editName==''||$scope.editName==null||$scope.editName==undefined){
-                $("#editName").focus()
-            }else{
-                var pa={
-                    id:res.id,
-                    name:$scope.editName,
-                    code:$scope.editCode,
-                    contactName:$scope.editContactName,
-                    contactPhone:$scope.editContactPhone,
-                    fax:$scope.editFax,
-                    taxNumber:$scope.editTaxNumber,
-                    email:$scope.editEmail,
-                    address:$scope.editAddress,
-                    zipCode:$scope.editZipCode,
-                    bankName:$scope.editBankName,
-                    bankNumber:$scope.editBankNumber,
-                    webSite:$scope.editWebSite,
-                    remark:$scope.editRemark
-                };
-                $scope.saveContactCompany = factoryParameterSettingService.saveContactCompany(pa,function(res){
-                    if(res.errorCode=='000000'){
-                        hideDiv('editContactBalance');
-                        popupDiv('SaveSuccess');
-                        $('.SaveSuccess .Message').html(res.errorMessage);
-                    }else{
-                        hideDiv('editContactBalance');
-                        popupDiv('SaveSuccess');
-                        $('.SaveSuccess .Message').html(res.errorMessage);
-                    }
-                },function(err){
-                    console.log(err);
-                });
+    $scope.editSparePartsFuc=function(res){
+        $scope.errFlog=false;
+        console.log(res);
+        popupDiv('addSparePartsPop');
+        $scope.editSpareParts={
+            sparePartType:res.sparePartType,//备件类型
+            device_id:res.device_id,//关联设备
+            name:res.name,//备件名称
+            specificationsAndodels:res.specificationsAndodels,//规格型号
+            code:res.code,//备件编号
+            barCode:res.barCode,//条形码
+            measuringUnit:res.measuringUnit,//计量单位
+            replacementCycle:res.replacementCycle,//更换周期
+            manufacturer:res.manufacturer,//生产厂商
+            suppliers:res.suppliers,//供应商
+            inventoryFloor:res.inventoryFloor,//库存下限
+            inventoryUpperLimit:res.inventoryUpperLimit,//库存上限
+            referencePrice:res.referencePrice,//参考价
+            unitConversion:res.unitConversion,//换算单位
+            conversionRatio:res.conversionRatio,//换算比例
+            materialProperties:res.materialProperties,//物料属性
+            extendFieldOne:res.extendFieldOne,//文本型1
+            extendFieldTwo:res.extendFieldTwo,//文本型2
+            extendFieldThree:res.extendFieldThree,//文本型3
+            extendFieldFour:res.extendFieldFour,//文本型4
+            extendFieldFive:res.extendFieldFive,//文本型5
+            extendFieldSix:res.extendFieldSix,//文本型6
+            extendFieldSeven:res.extendFieldSeven,//文本型7
+            // extendDateFieldOne:$filter('date')(res.extendDateFieldOne,'yyyy-MM-dd'),//自定义日期1
+            // extendDateFieldTwo:$filter('date')(res.extendDateFieldTwo,'yyyy-MM-dd'),//自定义日期2
+            remark:res.remark//备注
+        };
+        $('#extendDateFieldOne').val($filter('date')(res.extendDateFieldOne,'yyyy-MM-dd'));
+        $('#extendDateFieldTwo').val($filter('date')(res.extendDateFieldTwo,'yyyy-MM-dd'));
+        $("#sparePartType1 option").each(function(){
+            if($(this).val()==$scope.editSpareParts.sparePartType){
+                $(this).prop("selected",true);
             }
-        }
+        });
+        $scope.orderList.forEach(function (n,i) {
+            console.log(n.id,res.suppliers);
+            if(n.id==res.suppliers){
+                $scope.editSpareParts.suppliersName=n.name;
+            }
+            if(n.id==res.manufacturer){
+                $scope.editSpareParts.manufacturerName=n.name;
+            }
+        })
+        $scope.sureFlog=2;
     };
     /*编辑设备信息 end*/
     /*删除设备信息 start*/
-    $scope.deleteContactCompanyBalance=function(res){
-        popupDiv('deleteContactCompany');
-        $scope.companyName=res.name;
-        $scope.deleteContactCompanySure=function(){
-            $scope.deleteContactCompany = factoryParameterSettingService.deleteContactCompany({
-                id:res.id
-            },function(res){
-                if(res.errorCode=='000000'){
-                    hideDiv('deleteContactCompany');
+    $scope.deleteSparePartsBalance=function(res){
+        var $inputCheck=$(".tableListDiv tr td input[name='che']:checked");
+        if($inputCheck.length==1){
+            popupDiv('deleteSparePartsPop');
+            var id=$inputCheck.val();
+            // console.log(id);
+            $scope.deleteSparePartsSure=function () {
+                spareParts.deleteSparePartsById(id).success(function (data) {
+                    hideDiv('deleteSparePartsPop');
                     popupDiv('SaveSuccess');
-                    $('.SaveSuccess .Message').html(res.errorMessage);
-                }else{
-                    hideDiv('deleteContactCompany');
-                    popupDiv('SaveSuccess');
-                    $('.SaveSuccess .Message').html(res.errorMessage);
-                }
-            },function(err){
-                console.log(err);
-            });
-        }
-    };
-    /*删除设备信息 end*/
-    /*批量删除设备信息 start*/
-    $scope.deleteAllRepairGroup=function(){
-        if($(".tableListDiv tr td input[name='che']:checked").length<1){
-            popupDiv('SaveSuccess');
-            $('.SaveSuccess .Message').html('请至少选中一个需要删除的班组');
-        }else{
-            popupDiv('deleteRepairGroupContainer');
-            $scope.ids='';
-            $(".tableListDiv tr td input[name='che']:checked").each(function(){
-                var sfruit=$(this).val();
-                $scope.ids +=','+sfruit;
-            });
-            $scope.ids=$scope.ids.substr(1,$scope.ids.length);
-            console.log($scope.ids);
-            $scope.deleteAllRepairGroupSure=function(){
-                $scope.deleteRepairGroups = factoryParameterSettingService.deleteRepairGroup({
-                    ids:$scope.ids
-                }, function (res) {
-                    if (res.errorCode == '000000' && res.data!=''&& res.data!=null&& res.data!=undefined) {
-                        hideDiv('deleteRepairGroupContainer');
-                        popupDiv('SaveSuccess');
-                        $('.SaveSuccess .Message').html(res.errorMessage);
-                    } else {
-                        hideDiv('deleteRepairGroupContainer');
-                        popupDiv('SaveSuccess');
-                        $('.SaveSuccess .Message').html(res.errorMessage);
-                        console.log(res.errorMessage);
-                    }
-                }, function (err) {
-                    console.log(err);
+                    $('.SaveSuccess .Message').html(data.errorMessage);
                 });
             }
+
+        }else if($inputCheck.length>1){
+            popupDiv('deleteSparePartsPop');
+            var idList=[];
+            $inputCheck.each(function(){
+                idList.push($(this).val());
+            });
+            var ids=idList.join(',');
+            // console.log(ids);
+            $scope.deleteSparePartsSure=function () {
+                spareParts.deleteSparePartsByIds(ids).success(function (data) {
+                    hideDiv('deleteSparePartsPop');
+                    popupDiv('SaveSuccess');
+                    $('.SaveSuccess .Message').html(data.errorMessage);
+                });
+            }
+
+        }else  if($inputCheck.length<1){
+            popupDiv('SaveSuccess');
+            $('.SaveSuccess .Message').html('请至少选中一个需要删除的班组');
         }
+
     };
-    /*批量删除设备信息 end*/
+    /*删除设备信息 end*/
     // $scope.$watch('paginationConf.currentPage + paginationConf.itemsPerPage', $scope.onQuery);
 });

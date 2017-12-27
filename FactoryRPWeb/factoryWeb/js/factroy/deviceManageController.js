@@ -197,6 +197,7 @@ factoryParameterSettingApp.controller('deviceManageController',function ($scope,
                 // 生产厂商
                 $("#manufacturerEdit option").each(function(){
                     if($(this).text()==$scope.oneDeviceType.manufacturer){
+                        console.log($(this).text(),$scope.oneDeviceType.manufacturer);
                         $(this).prop("selected",true);
                     }
                 });
