@@ -388,33 +388,75 @@ public class SparePartsServiceImpl implements SparePartsService {
             if(!CheckParam.isNull(sparePartEditReq.getName())){
                 spareParts.setName(sparePartEditReq.getName());
             }
+            if(!CheckParam.isNull(sparePartEditReq.getConversionRatio())){
+                spareParts.setConversionRatio(sparePartEditReq.getConversionRatio());
+            }
+            if(!CheckParam.isNull(sparePartEditReq.getExtendDateFieldOne())){
+                spareParts.setExtendDateFieldOne(sparePartEditReq.getExtendDateFieldOne());
+            }
+            if(!CheckParam.isNull(sparePartEditReq.getExtendDateFieldTwo())){
+                spareParts.setExtendDateFieldTwo(sparePartEditReq.getExtendDateFieldTwo());
+            }
+            if(!CheckParam.isNull(sparePartEditReq.getExtendFieldThree())){
+                spareParts.setExtendFieldThree(sparePartEditReq.getExtendFieldThree());
+            }
+            if(!CheckParam.isNull(sparePartEditReq.getExtendFieldFour())){
+                spareParts.setExtendFieldFour(sparePartEditReq.getExtendFieldFour());
+            }
+            if(!CheckParam.isNull(sparePartEditReq.getExtendFieldFive())){
+                spareParts.setExtendFieldFive(sparePartEditReq.getExtendFieldFive());
+            }
+            if(!CheckParam.isNull(sparePartEditReq.getExtendFieldSix())){
+                spareParts.setExtendFieldSix(sparePartEditReq.getExtendFieldSix());
+            }
+            if(!CheckParam.isNull(sparePartEditReq.getExtendFieldSeven())){
+                spareParts.setExtendFieldSeven(sparePartEditReq.getExtendFieldSeven());
+            }
+            if(!CheckParam.isNull(sparePartEditReq.getInventoryFloor())){
+                spareParts.setInventoryFloor(sparePartEditReq.getInventoryFloor());
+            }
+            if(!CheckParam.isNull(sparePartEditReq.getInventoryUpperLimit())){
+                spareParts.setInventoryUpperLimit(sparePartEditReq.getInventoryUpperLimit());
+            }
+            if(!CheckParam.isNull(sparePartEditReq.getManufacturer())){
+                spareParts.setManufacturer(sparePartEditReq.getManufacturer());
+            }
+            if(!CheckParam.isNull(sparePartEditReq.getReferencePrice())){
+                spareParts.setReferencePrice(sparePartEditReq.getReferencePrice());
+            }
+            if(!CheckParam.isNull(sparePartEditReq.getMaterialProperties())){
+                spareParts.setMaterialProperties(sparePartEditReq.getMaterialProperties());
+            }
+            if(!CheckParam.isNull(sparePartEditReq.getReplacementCycle())){
+                spareParts.setReplacementCycle(sparePartEditReq.getReplacementCycle());
+            }
+            if(!CheckParam.isNull(sparePartEditReq.getMeasuringUnit())){
+                spareParts.setMeasuringUnit(sparePartEditReq.getMeasuringUnit());
+            }
+            if(!CheckParam.isNull(sparePartEditReq.getSparePartType())){
+                spareParts.setSparePartType(sparePartEditReq.getSparePartType());
+            }
+            if(!CheckParam.isNull(sparePartEditReq.getSpecificationsAndodels())){
+                spareParts.setSpecificationsAndodels(sparePartEditReq.getSpecificationsAndodels());
+            }
+            if(!CheckParam.isNull(sparePartEditReq.getUnitConversion())){
+                spareParts.setUnitConversion(sparePartEditReq.getUnitConversion());
+            }
+            if(!CheckParam.isNull(sparePartEditReq.getSuppliers())){
+                spareParts.setSuppliers(sparePartEditReq.getSuppliers());
+            }
+            if(!CheckParam.isNull(sparePartEditReq.getSparePartType())){
+                spareParts.setSparePartType(sparePartEditReq.getSparePartType());
+            }
+            if(!CheckParam.isNull(sparePartEditReq.getReplacementCycle())){
+                spareParts.setReplacementCycle(sparePartEditReq.getReplacementCycle());
+            }
+            if(!CheckParam.isNull(sparePartEditReq.getRemark())){
+                spareParts.setRemark(sparePartEditReq.getRemark());
+            }
 
+            sparePartsRepository.save(spareParts);
 
-            spareParts.setConversionRatio(sparePartEditReq.getConversionRatio());
-
-
-            spareParts.setExtendDateFieldOne(sparePartEditReq.getExtendDateFieldOne());
-            spareParts.setExtendDateFieldTwo(sparePartEditReq.getExtendDateFieldTwo());
-            spareParts.setExtendFieldThree(sparePartEditReq.getExtendFieldThree());
-            spareParts.setExtendFieldFour(sparePartEditReq.getExtendFieldFour());
-            spareParts.setExtendFieldFive(sparePartEditReq.getExtendFieldFive());
-            spareParts.setExtendFieldSix(sparePartEditReq.getExtendFieldSix());
-            spareParts.setExtendFieldSeven(sparePartEditReq.getExtendFieldSeven());
-
-            spareParts.setInventoryFloor(sparePartEditReq.getInventoryFloor());
-            spareParts.setInventoryUpperLimit(sparePartEditReq.getInventoryUpperLimit());
-            spareParts.setManufacturer(sparePartEditReq.getManufacturer());
-            spareParts.setReferencePrice(sparePartEditReq.getReferencePrice());
-            spareParts.setMaterialProperties(sparePartEditReq.getMaterialProperties());
-            spareParts.setReplacementCycle(sparePartEditReq.getReplacementCycle());
-            spareParts.setMeasuringUnit(sparePartEditReq.getMeasuringUnit());
-            spareParts.setSparePartType(sparePartEditReq.getSparePartType());
-            spareParts.setSpecificationsAndodels(sparePartEditReq.getSpecificationsAndodels());
-            spareParts.setUnitConversion(sparePartEditReq.getUnitConversion());
-            spareParts.setSuppliers(sparePartEditReq.getSuppliers());
-            spareParts.setSparePartType(sparePartEditReq.getSparePartType());
-            spareParts.setReplacementCycle(sparePartEditReq.getReplacementCycle());
-            spareParts.setRemark(sparePartEditReq.getRemark());
         }
 
 
