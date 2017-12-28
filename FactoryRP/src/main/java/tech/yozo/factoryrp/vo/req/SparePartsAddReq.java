@@ -6,6 +6,7 @@ import lombok.Data;
 import tech.yozo.factoryrp.vo.base.ApiRequest;
 import tech.yozo.factoryrp.vo.validation.NotEmpty;
 
+import javax.persistence.Column;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -19,6 +20,7 @@ import java.util.Date;
 public class SparePartsAddReq extends ApiRequest implements Serializable {
 
     private static final long serialVersionUID = 3974816824139446195L;
+
 
     @ApiModelProperty(value = "备件类型",notes ="备件类型" )
     private Long sparePartType;
@@ -70,6 +72,9 @@ public class SparePartsAddReq extends ApiRequest implements Serializable {
 
     @ApiModelProperty(value = "库存上限",notes ="库存上限" )
     private Integer inventoryUpperLimit;
+
+    @ApiModelProperty(value = "备件备注",notes ="备件备注" )
+    private String remark;
 
     @ApiModelProperty(value = "自定义字段1",notes ="自定义字段1" )
     @NotEmpty(message = "自定义字段1-不能为空")

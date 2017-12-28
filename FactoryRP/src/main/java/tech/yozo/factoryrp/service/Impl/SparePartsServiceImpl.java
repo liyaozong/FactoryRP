@@ -11,6 +11,7 @@ import tech.yozo.factoryrp.service.SparePartsService;
 import tech.yozo.factoryrp.utils.CheckParam;
 import tech.yozo.factoryrp.utils.ErrorCode;
 import tech.yozo.factoryrp.vo.req.DeviceInfoReq;
+import tech.yozo.factoryrp.vo.req.SparePartEditReq;
 import tech.yozo.factoryrp.vo.req.SparePartsAddReq;
 import tech.yozo.factoryrp.vo.req.SparePartsQueryReq;
 import tech.yozo.factoryrp.vo.resp.sparepars.DeviceSparesMobileResp;
@@ -181,8 +182,10 @@ public class SparePartsServiceImpl implements SparePartsService {
 
         spareParts.setExtendDateFieldOne(sparePartsReq.getExtendDateFieldOne());
         spareParts.setExtendDateFieldTwo(sparePartsReq.getExtendDateFieldTwo());
+        spareParts.setExtendFieldOne(sparePartsReq.getExtendFieldOne());
+        spareParts.setExtendFieldTwo(sparePartsReq.getExtendFieldTwo());
         spareParts.setExtendFieldThree(sparePartsReq.getExtendFieldThree());
-        spareParts.setExtendFieldFour(spareParts.getExtendFieldFour());
+        spareParts.setExtendFieldFour(sparePartsReq.getExtendFieldFour());
         spareParts.setExtendFieldFive(sparePartsReq.getExtendFieldFive());
         spareParts.setExtendFieldSix(sparePartsReq.getExtendFieldSix());
         spareParts.setExtendFieldSeven(sparePartsReq.getExtendFieldSeven());
@@ -201,6 +204,8 @@ public class SparePartsServiceImpl implements SparePartsService {
         spareParts.setSuppliers(sparePartsReq.getSuppliers());
         spareParts.setSparePartType(sparePartsReq.getSparePartType());
         spareParts.setReplacementCycle(sparePartsReq.getReplacementCycle());
+        spareParts.setSparePartType(sparePartsReq.getSparePartType());
+        spareParts.setRemark(sparePartsReq.getRemark());
 
         sparePartsRepository.save(spareParts);
 
@@ -361,6 +366,57 @@ public class SparePartsServiceImpl implements SparePartsService {
             sparePartsRepository.deleteInBatch(deviceSparesTypeList);
             eviceSparePartRelService.deleteRelInfoByDeviceId(ids,corporateIdentify);
         }
+
+    }
+
+    /**
+     * 备件编辑接口
+     * @param sparePartEditReq
+     */
+    public void editSparePartsById(SparePartEditReq sparePartEditReq) {
+
+        SpareParts spareParts = sparePartsRepository.findOne(sparePartEditReq.getId());
+
+        if(!CheckParam.isNull(spareParts)){
+
+            if(!CheckParam.isNull(sparePartEditReq.getBarCode())){
+                spareParts.setBarCode(sparePartEditReq.getBarCode());
+            }
+            if(!CheckParam.isNull(sparePartEditReq.getCode())){
+                spareParts.setCode(sparePartEditReq.getCode());
+            }
+            if(!CheckParam.isNull(sparePartEditReq.getName())){
+                spareParts.setName(sparePartEditReq.getName());
+            }
+
+
+            spareParts.setConversionRatio(sparePartEditReq.getConversionRatio());
+
+
+            spareParts.setExtendDateFieldOne(sparePartEditReq.getExtendDateFieldOne());
+            spareParts.setExtendDateFieldTwo(sparePartEditReq.getExtendDateFieldTwo());
+            spareParts.setExtendFieldThree(sparePartEditReq.getExtendFieldThree());
+            spareParts.setExtendFieldFour(sparePartEditReq.getExtendFieldFour());
+            spareParts.setExtendFieldFive(sparePartEditReq.getExtendFieldFive());
+            spareParts.setExtendFieldSix(sparePartEditReq.getExtendFieldSix());
+            spareParts.setExtendFieldSeven(sparePartEditReq.getExtendFieldSeven());
+
+            spareParts.setInventoryFloor(sparePartEditReq.getInventoryFloor());
+            spareParts.setInventoryUpperLimit(sparePartEditReq.getInventoryUpperLimit());
+            spareParts.setManufacturer(sparePartEditReq.getManufacturer());
+            spareParts.setReferencePrice(sparePartEditReq.getReferencePrice());
+            spareParts.setMaterialProperties(sparePartEditReq.getMaterialProperties());
+            spareParts.setReplacementCycle(sparePartEditReq.getReplacementCycle());
+            spareParts.setMeasuringUnit(sparePartEditReq.getMeasuringUnit());
+            spareParts.setSparePartType(sparePartEditReq.getSparePartType());
+            spareParts.setSpecificationsAndodels(sparePartEditReq.getSpecificationsAndodels());
+            spareParts.setUnitConversion(sparePartEditReq.getUnitConversion());
+            spareParts.setSuppliers(sparePartEditReq.getSuppliers());
+            spareParts.setSparePartType(sparePartEditReq.getSparePartType());
+            spareParts.setReplacementCycle(sparePartEditReq.getReplacementCycle());
+            spareParts.setRemark(sparePartEditReq.getRemark());
+        }
+
 
     }
 

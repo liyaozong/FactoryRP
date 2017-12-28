@@ -3,6 +3,7 @@ package tech.yozo.factoryrp.service;
 import tech.yozo.factoryrp.entity.SpareParts;
 import tech.yozo.factoryrp.page.Pagination;
 import tech.yozo.factoryrp.vo.req.DeviceInfoReq;
+import tech.yozo.factoryrp.vo.req.SparePartEditReq;
 import tech.yozo.factoryrp.vo.req.SparePartsAddReq;
 import tech.yozo.factoryrp.vo.req.SparePartsQueryReq;
 import tech.yozo.factoryrp.vo.resp.sparepars.DeviceSparesMobileResp;
@@ -71,4 +72,11 @@ public interface SparePartsService {
      * @param corporateIdentify
      */
     void deleteSparePartsByIds(List<Long> ids,Long corporateIdentify);
+
+
+    /**
+     * 备件编辑接口
+     * @param sparePartEditReq
+     */
+    void editSparePartsById(SparePartEditReq sparePartEditReq);
 }
