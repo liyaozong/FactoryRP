@@ -36,7 +36,8 @@ public enum ErrorCode {
     MENU_NOTEXIST_ERROR("0000018","菜单不存在"),
     CURRENTUSER_OPERATESELF_ERROR("0000019","菜单不存在"),
     PROCESS_NAME_REPET_ERROR("0000020","流程已经存在"),
-    PROCESS_NOT_EXIST_ERROR("0000021","流程不存在，开启流程失败");
+    PROCESS_NOT_EXIST_ERROR("0000021","流程未被定义，开启流程失败"),
+    PROCESS_INSTANCE_NOT_EXIST_ERROR("0000022","流程实例不存在，开启流程失败");
 
 
     private String code;

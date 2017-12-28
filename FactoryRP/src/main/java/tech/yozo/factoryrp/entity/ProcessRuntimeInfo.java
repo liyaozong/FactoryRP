@@ -23,8 +23,13 @@ public class ProcessRuntimeInfo extends BaseEntity implements Serializable {
      * 流程实例ID，表明是属于哪个流程实例的
      */
     @Column(name = "process_instance_id",length = 20)
-    private Long processId;
+    private Long processInstanceId;
 
+    /**
+     * 流程详情id，表明正在进行哪个流程具体步骤
+     */
+    @Column(name = "process_detail_id",length = 20)
+    private Long processDetailId;
 
     /**
      * 流程运行时状态 1正在运行2成功3失败
@@ -32,11 +37,11 @@ public class ProcessRuntimeInfo extends BaseEntity implements Serializable {
     @Column(name = "process_runtime_status",length = 20)
     private Integer processRuntimeStatus;
 
-
     /**
      * 处理成功的人数
      */
     @Column(name = "handler_success_number",length = 20)
     private Integer handlerSuccessNumber;
+
 
 }

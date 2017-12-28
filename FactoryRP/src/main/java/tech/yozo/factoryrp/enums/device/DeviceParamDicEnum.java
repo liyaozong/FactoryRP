@@ -70,7 +70,6 @@ public enum DeviceParamDicEnum {
      * @return
      */
     public static Boolean verifyIsExist(String code){
-        boolean b = CheckParam.isNull(getByCode(code));
         return !CheckParam.isNull(getByCode(code));
     }
 

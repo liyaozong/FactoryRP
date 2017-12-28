@@ -13,9 +13,9 @@ import java.io.Serializable;
  * @time 2017/12/27
  * @description
  */
-/*@Data
+@Data
 @Table(name = "device_process_handler_info")
-@Entity*/
+@Entity
 public class DeviceProcessHandlerInfo extends BaseEntity implements Serializable {
 
 

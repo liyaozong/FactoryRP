@@ -11,4 +11,17 @@ import tech.yozo.factoryrp.entity.DeviceProcessDetail;
  */
 @Repository
 public interface DeviceProcessDetailRepository extends BaseRepository<DeviceProcessDetail,Long>{
+
+
+    /**
+     * 根据流程步骤,流程ID和企业唯一标识进行查询
+     * @param processId
+     * @param processStep
+     * @param corporateIdentify
+     * @return
+     */
+    DeviceProcessDetail findByProcessIdAndProcessStepAndCorporateIdentify(Long processId,Integer processStep,Long corporateIdentify);
+
+
+
 }

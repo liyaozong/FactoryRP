@@ -32,7 +32,7 @@ public class ProcessInstance extends BaseEntity implements Serializable {
     private Integer processStatus;
 
     /**
-     * 当前实例所处步骤
+     * 当前实例所处步骤 在processStatus为1的情况下为空
      */
     @Column(name = "current_step",length = 20)
     private Integer currentStep;
