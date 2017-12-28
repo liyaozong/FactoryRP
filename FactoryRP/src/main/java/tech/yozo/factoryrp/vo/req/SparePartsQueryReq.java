@@ -1,9 +1,9 @@
 package tech.yozo.factoryrp.vo.req;
 
-import tech.yozo.factoryrp.vo.base.ApiCorporateIdentifyRequest;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import tech.yozo.factoryrp.vo.base.ApiRequest;
 
 import java.io.Serializable;
 
@@ -14,7 +14,7 @@ import java.io.Serializable;
  */
 @ApiModel
 @Data
-public class SparePartsQueryReq extends ApiCorporateIdentifyRequest implements Serializable {
+public class SparePartsQueryReq extends ApiRequest implements Serializable {
 
 
     private static final long serialVersionUID = 9117599321104866076L;

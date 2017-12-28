@@ -165,7 +165,7 @@ public class SparePartsServiceImpl implements SparePartsService {
     @Override
     public SparePartsResp addSpareParts(SparePartsAddReq sparePartsReq,Long corporateIdentify) {
 
-        SpareParts spareParts = sparePartsRepository.findByNameAndCorporateIdentify(sparePartsReq.getName(),sparePartsReq.getCorporateIdentify());
+        SpareParts spareParts = sparePartsRepository.findByNameAndCorporateIdentify(sparePartsReq.getName(),corporateIdentify);
 
         if(!CheckParam.isNull(spareParts)){
             throw new BussinessException(ErrorCode.CORPORATE_SPAREPARTS__REPET_ERROR.getCode(),ErrorCode.CORPORATE_SPAREPARTS__REPET_ERROR.getMessage());
