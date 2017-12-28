@@ -1,10 +1,10 @@
 package tech.yozo.factoryrp.vo.req;
 
-import tech.yozo.factoryrp.vo.base.ApiCorporateIdentifyRequest;
-import tech.yozo.factoryrp.vo.validation.NotEmpty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import tech.yozo.factoryrp.vo.base.ApiRequest;
+import tech.yozo.factoryrp.vo.validation.NotEmpty;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -16,7 +16,7 @@ import java.util.Date;
  */
 @ApiModel
 @Data
-public class SparePartsAddReq extends ApiCorporateIdentifyRequest implements Serializable {
+public class SparePartsAddReq extends ApiRequest implements Serializable {
 
     private static final long serialVersionUID = 3974816824139446195L;
 

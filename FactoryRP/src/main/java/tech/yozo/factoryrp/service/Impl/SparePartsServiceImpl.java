@@ -197,7 +197,7 @@ public class SparePartsServiceImpl implements SparePartsService {
         spareParts.setSparePartType(sparePartsReq.getSparePartType());
         spareParts.setSpecificationsAndodels(sparePartsReq.getSpecificationsAndodels());
         spareParts.setUnitConversion(sparePartsReq.getUnitConversion());
-        spareParts.setCorporateIdentify(sparePartsReq.getCorporateIdentify());
+        spareParts.setCorporateIdentify(corporateIdentify);
         spareParts.setSuppliers(sparePartsReq.getSuppliers());
         spareParts.setSparePartType(sparePartsReq.getSparePartType());
         spareParts.setReplacementCycle(sparePartsReq.getReplacementCycle());
