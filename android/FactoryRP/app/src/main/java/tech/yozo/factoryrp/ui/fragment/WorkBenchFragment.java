@@ -1,8 +1,6 @@
 package tech.yozo.factoryrp.ui.fragment;
 
-import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -11,24 +9,18 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
-import com.alibaba.fastjson.JSON;
-import com.loopj.android.http.JsonHttpResponseHandler;
-import cz.msebera.android.httpclient.Header;
-import org.json.JSONException;
-import org.json.JSONObject;
 import tech.yozo.factoryrp.R;
 import tech.yozo.factoryrp.ui.DeviceAddActivity;
 import tech.yozo.factoryrp.ui.RepairRecordListActivity;
 import tech.yozo.factoryrp.ui.ReportFaultActivity;
-import tech.yozo.factoryrp.utils.Constant;
-import tech.yozo.factoryrp.utils.ErrorCode;
 import tech.yozo.factoryrp.utils.HttpClient;
 import tech.yozo.factoryrp.vo.resp.device.trouble.WorkOrderCountVo;
+
+import java.util.List;
 
 
 /**
@@ -37,18 +29,15 @@ import tech.yozo.factoryrp.vo.resp.device.trouble.WorkOrderCountVo;
  * Use the {@link WorkBenchFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class WorkBenchFragment extends BaseFragment {
-    // TODO: Rename parameter arguments, choose names that match
+public class WorkBenchFragment extends BaseFragment implements HttpClient.OnHttpListener {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_PARAM1 = "mode";
+    private static final String ARG_PARAM2 = "id";
 
     @BindView(R.id.button_ask_repair)
     Button buttonAskRepair;
     @BindView(R.id.button_add_repair)
     Button buttonAddRepair;
-    @BindView(R.id.button_ask_parts)
-    Button buttonAskParts;
     @BindView(R.id.button_add_device)
     Button buttonAddDevice;
     @BindView(R.id.textView_waitto_audit)
@@ -69,12 +58,8 @@ public class WorkBenchFragment extends BaseFragment {
     TextView noNewCheckTask;
     Unbinder unbinder;
 
-    // TODO: Rename and change types of parameters
-    private int mParam1;
-    private String mParam2;
-
-    private WorkOrderCountVo mTroubleCount;
-
+    private int mParam_mode;
+    private String mParam_id;
 
     public WorkBenchFragment() {
         // Required empty public constructor
@@ -88,7 +73,6 @@ public class WorkBenchFragment extends BaseFragment {
      * @param param2 Parameter 2.
      * @return A new instance of fragment WorkBenchFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static WorkBenchFragment newInstance(int param1, String param2) {
         WorkBenchFragment fragment = new WorkBenchFragment();
         Bundle args = new Bundle();
@@ -102,8 +86,8 @@ public class WorkBenchFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getInt(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            mParam_mode = getArguments().getInt(ARG_PARAM1);
+            mParam_id = getArguments().getString(ARG_PARAM2);
         }
     }
 
@@ -127,15 +111,17 @@ public class WorkBenchFragment extends BaseFragment {
     @Override
     protected void loadData() {
         HttpClient client = HttpClient.getInstance();
-        client.get(getContext(), HttpClient.TROUBLE_COUNT, null, getTroubleCountResponse);
+        if(client.getMTroubleCount() == null) {
+            client.requestTroubleCount(getContext(), this);
+        }
     }
 
     @Override
     protected void buildUI() {
-        refreshTroubleCount();
+        updateUI();
     }
 
-    @OnClick({R.id.button_ask_repair, R.id.button_add_repair, R.id.button_ask_parts, R.id.button_add_device, R.id.textView_waitto_audit, R.id.textView_waitto_exec, R.id.textView_executing, R.id.textView_waitto_verify})
+    @OnClick({R.id.button_ask_repair, R.id.button_add_repair, R.id.button_add_device, R.id.textView_waitto_audit, R.id.textView_waitto_exec, R.id.textView_executing, R.id.textView_waitto_verify})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.button_ask_repair: {
@@ -146,8 +132,6 @@ public class WorkBenchFragment extends BaseFragment {
             case R.id.button_add_repair:
                 //TODO
                 break;
-            case R.id.button_ask_parts:
-                break;
             case R.id.button_add_device: {
                 Intent intent = new Intent(getContext(), DeviceAddActivity.class);
                 startActivity(intent);
@@ -155,54 +139,33 @@ public class WorkBenchFragment extends BaseFragment {
             }
             case R.id.textView_waitto_audit: {
                 Intent intent = new Intent(getContext(), RepairRecordListActivity.class);
-                intent.putExtra(RepairRecordListActivity.RECORD_CATEGORY, Constant.FOR_WAIT_AUDIT);
+                intent.putExtra(RepairRecordListActivity.RECORD_CATEGORY, HttpClient.REQUEST_TROUBLE_WAIT_AUDIT);
                 startActivity(intent);
                 break;
             }
             case R.id.textView_waitto_exec: {
                 Intent intent = new Intent(getContext(), RepairRecordListActivity.class);
-                intent.putExtra(RepairRecordListActivity.RECORD_CATEGORY, Constant.FOR_WAIT_REPAIR);
+                intent.putExtra(RepairRecordListActivity.RECORD_CATEGORY, HttpClient.REQUEST_TROUBLE_WAIT_REPAIR);
                 startActivity(intent);
                 break;
             }
             case R.id.textView_executing: {
                 Intent intent = new Intent(getContext(), RepairRecordListActivity.class);
-                intent.putExtra(RepairRecordListActivity.RECORD_CATEGORY, Constant.FOR_REPAIRING);
+                intent.putExtra(RepairRecordListActivity.RECORD_CATEGORY, HttpClient.REQUEST_TROUBLE_REPAIRING);
                 startActivity(intent);
                 break;
             }
             case R.id.textView_waitto_verify: {
                 Intent intent = new Intent(getContext(), RepairRecordListActivity.class);
-                intent.putExtra(RepairRecordListActivity.RECORD_CATEGORY, Constant.FOR_WAIT_VERIFY);
+                intent.putExtra(RepairRecordListActivity.RECORD_CATEGORY, HttpClient.REQUEST_TROUBLE_WAIT_VALIDATE);
                 startActivity(intent);
                 break;
             }
         }
     }
 
-    private JsonHttpResponseHandler getTroubleCountResponse = new JsonHttpResponseHandler() {
-        @Override
-        public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-            try {
-                if (ErrorCode.SUCCESS.getCode().equals(response.getString("errorCode"))) {
-                    mTroubleCount = JSON.parseObject(response.getString("data"), WorkOrderCountVo.class);
-                    refreshTroubleCount();
-                } else {
-                    Toast.makeText(getContext(), R.string.failure_service, Toast.LENGTH_SHORT).show();
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-                Toast.makeText(getContext(), R.string.failure_data_parse, Toast.LENGTH_SHORT).show();
-            }
-        }
-
-        @Override
-        public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-            Toast.makeText(getContext(), R.string.failure_request, Toast.LENGTH_SHORT).show();
-        }
-    };
-
-    private void refreshTroubleCount() {
+    private void updateUI() {
+        WorkOrderCountVo mTroubleCount = HttpClient.getInstance().getMTroubleCount();
         if (mTroubleCount != null) {
             textViewWaittoAudit.setText(String.valueOf(mTroubleCount.getWaitAuditNum()));
             if(mTroubleCount.getWaitAuditNum() <= 0) {
@@ -229,5 +192,15 @@ public class WorkBenchFragment extends BaseFragment {
                 textViewWaittoVerify.setEnabled(true);
             }
         }
+    }
+
+    @Override
+    public void onHttpSuccess(int requestType, Object obj, List<?> list) {
+        updateUI();
+    }
+
+    @Override
+    public void onFailure(int requestType) {
+
     }
 }

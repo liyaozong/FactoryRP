@@ -4,27 +4,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.loopj.android.http.JsonHttpResponseHandler;
-import cz.msebera.android.httpclient.Header;
-import cz.msebera.android.httpclient.entity.StringEntity;
-import org.json.JSONException;
-import org.json.JSONObject;
 import tech.yozo.factoryrp.R;
 import tech.yozo.factoryrp.ui.DeviceDetailActivity;
+import tech.yozo.factoryrp.ui.dialog.LoadingDialog;
 import tech.yozo.factoryrp.utils.Constant;
-import tech.yozo.factoryrp.utils.ErrorCode;
 import tech.yozo.factoryrp.utils.HttpClient;
-import tech.yozo.factoryrp.vo.req.DeviceInfoReq;
 import tech.yozo.factoryrp.vo.resp.device.info.SimpleDeviceInfoResp;
 
-import java.nio.charset.Charset;
 import java.util.List;
 
 
@@ -37,21 +27,20 @@ import java.util.List;
  * Use the {@link DeviceListFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class DeviceListFragment extends BaseFragment {
+public class DeviceListFragment extends BaseFragment implements HttpClient.OnHttpListener {
 
     private ListView mListView;
     private DeviceListAdapter mListAdapter;
     private List<SimpleDeviceInfoResp> devices;
 
-    // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_PARAM1 = "mode";
+    private static final String ARG_PARAM2 = "id";
 
-    // TODO: Rename and change types of parameters
-    private int mParam1;
-    private String mParam2;
+    private int mParam_mode;
+    private String mParam_id;
 
+    private LoadingDialog dialog;
     private OnFragmentInteractionListener mListener;
 
     public DeviceListFragment() {
@@ -66,7 +55,6 @@ public class DeviceListFragment extends BaseFragment {
      * @param param2 Parameter 2.
      * @return A new instance of fragment DeviceListFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static DeviceListFragment newInstance(int param1, String param2) {
         DeviceListFragment fragment = new DeviceListFragment();
         Bundle args = new Bundle();
@@ -80,8 +68,8 @@ public class DeviceListFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getInt(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            mParam_mode = getArguments().getInt(ARG_PARAM1);
+            mParam_id = getArguments().getString(ARG_PARAM2);
         }
     }
 
@@ -97,14 +85,16 @@ public class DeviceListFragment extends BaseFragment {
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> arg0, View arg1, int count,
                                     long arg3) {
-                switch (mParam1) {
+                switch (mParam_mode) {
                     case Constant.FOR_BROWE_MODE:
                         Intent intent = new Intent(getActivity(), DeviceDetailActivity.class);
-                        intent.putExtra(DeviceDetailActivity.DEVICE_ID, devices.get(count).getId().toString());
+                        intent.putExtra(DeviceDetailActivity.DEVICE_ID, devices.get(count).getId());
                         startActivity(intent);
                         break;
                     case Constant.FOR_CHOICE_MODE:
-                        mListener.onDeviceSelected(devices.get(count));
+                        if(mListener != null) {
+                            mListener.onDeviceSelected(devices.get(count));
+                        }
                         break;
                     default:
                         break;
@@ -116,19 +106,16 @@ public class DeviceListFragment extends BaseFragment {
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-    }
-
-    @Override
     public void onAttach(Context context) {
         super.onAttach(context);
 
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+        if(mParam_mode == Constant.FOR_CHOICE_MODE) {
+            if (context instanceof OnFragmentInteractionListener) {
+                mListener = (OnFragmentInteractionListener) context;
+            } else {
+                throw new RuntimeException(context.toString()
+                        + " must implement OnFragmentInteractionListener");
+            }
         }
     }
 
@@ -141,54 +128,39 @@ public class DeviceListFragment extends BaseFragment {
     @Override
     protected void loadData() {
         HttpClient client = HttpClient.getInstance();
-        if(client.getSimpleDeviceList() != null) {
-            devices = client.getSimpleDeviceList();
-        } else {
-            DeviceInfoReq req = new DeviceInfoReq();
-            switch (mParam1) {
-                case Constant.FOR_BROWE_MODE:
-                    req.setCurrentPage(0);
-                    req.setItemsPerPage(100);
-                    break;
-                case Constant.FOR_CHOICE_MODE:
-                    break;
-                default:
-                    break;
-            }
-            StringEntity param = new StringEntity(JSON.toJSONString(req), Charset.forName("UTF-8"));
-            client.post(null, HttpClient.DEVICE_LIST, param, requestDeviceListResponse);
+        devices = client.getSimpleDeviceList();
+        if(devices == null) {
+            LoadingDialog.Builder builder = new LoadingDialog.Builder(getContext())
+                    .setMessage(R.string.loading_loading);
+            dialog = builder.create();
+            dialog.show();
+            client.requestDeviceList(getContext(), this);
         }
     }
 
     @Override
     protected void buildUI() {
-
+        HttpClient client = HttpClient.getInstance();
+        devices = client.getSimpleDeviceList();
+        mListAdapter.notifyDataSetChanged();
     }
 
-    private JsonHttpResponseHandler requestDeviceListResponse = new JsonHttpResponseHandler() {
-        @Override
-        public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-            Log.d("INFO", response.toString());
-            try {
-                if (ErrorCode.SUCCESS.getCode().equals(response.getString("errorCode"))) {
-                    HttpClient client = HttpClient.getInstance();
-                    devices = JSONArray.parseArray(response.getJSONObject("data").getString("list"), SimpleDeviceInfoResp.class);
-                    client.setSimpleDeviceList(devices);
-                    mListAdapter.notifyDataSetChanged();
-                } else {
-                    Toast.makeText(getContext(), R.string.failure_get, Toast.LENGTH_SHORT).show();
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-                Toast.makeText(getContext(), R.string.failure_data_parse, Toast.LENGTH_SHORT).show();
-            }
+    @Override
+    public void onHttpSuccess(int requestType, Object obj, List<?> list) {
+        if(requestType == HttpClient.REQUEST_DEVICE_LIST) {
+            HttpClient client = HttpClient.getInstance();
+            devices = client.getSimpleDeviceList();
+            mListAdapter.notifyDataSetChanged();
+            dialog.dismiss();
         }
+    }
 
-        @Override
-        public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-            Toast.makeText(getContext(), R.string.failure_request, Toast.LENGTH_SHORT).show();
+    @Override
+    public void onFailure(int requestType) {
+        if(requestType == HttpClient.REQUEST_DEVICE_LIST) {
+            dialog.dismiss();
         }
-    };
+    }
 
     /**
      * This interface must be implemented by activities that contain this

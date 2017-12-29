@@ -1,54 +1,32 @@
 package tech.yozo.factoryrp.ui;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.annotation.TargetApi;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
-//import android.app.LoaderManager.LoaderCallbacks;
-
-//import android.content.CursorLoader;
-//import android.content.Loader;
 import android.content.Intent;
-//import android.database.Cursor;
-//import android.net.Uri;
-
-import android.os.Build;
 import android.os.Bundle;
-//import android.provider.ContactsContract;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
-//import android.widget.ArrayAdapter;
 import android.widget.*;
-import com.alibaba.fastjson.JSON;
-import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
-import com.loopj.android.http.TextHttpResponseHandler;
-import cz.msebera.android.httpclient.Header;
-import org.json.JSONException;
-import org.json.JSONObject;
 import tech.yozo.factoryrp.R;
 import tech.yozo.factoryrp.ui.dialog.LoadingDialog;
-import tech.yozo.factoryrp.utils.ErrorCode;
 import tech.yozo.factoryrp.utils.HttpClient;
-import tech.yozo.factoryrp.vo.resp.auth.AuthUser;
-//import java.util.ArrayList;
-//import java.util.List;
+
+import java.util.List;
 
 
 /**
  * A login screen that offers login via user/password.
  */
-//public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity implements HttpClient.OnHttpListener {
 
     // UI references.
-    private AutoCompleteTextView mUserView;
+    private EditText mCorpView;
+    private EditText mUserView;
     private EditText mPasswordView;
-    private View mProgressView;
-    private View mLoginFormView;
 
     LoadingDialog dialog = null;
 
@@ -57,8 +35,10 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         // Set up the login form.
-        mUserView = (AutoCompleteTextView) findViewById(R.id.user);
-//        populateAutoComplete();
+        mCorpView = (EditText) findViewById(R.id.address);
+        SharedPreferences sharedPreferences = getSharedPreferences("private_data", MODE_PRIVATE);
+        mCorpView.setText(sharedPreferences.getString("corporateCode",""));
+        mUserView = (EditText) findViewById(R.id.user);
 
         mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -79,9 +59,6 @@ public class LoginActivity extends AppCompatActivity {
                 attemptLogin();
             }
         });
-
-        mLoginFormView = findViewById(R.id.login_form);
-        mProgressView = findViewById(R.id.login_progress);
     }
 
     /**
@@ -95,6 +72,7 @@ public class LoginActivity extends AppCompatActivity {
         mPasswordView.setError(null);
 
         // Store values at the time of the login attempt.
+        String corp = mCorpView.getText().toString();
         String user = mUserView.getText().toString();
         String password = mPasswordView.getText().toString();
 
@@ -102,7 +80,7 @@ public class LoginActivity extends AppCompatActivity {
         View focusView = null;
 
         // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
+        if (TextUtils.isEmpty(password)) {
             mPasswordView.setError(getString(R.string.error_invalid_password));
             focusView = mPasswordView;
             cancel = true;
@@ -111,10 +89,6 @@ public class LoginActivity extends AppCompatActivity {
         // Check for a valid user address.
         if (TextUtils.isEmpty(user)) {
             mUserView.setError(getString(R.string.error_field_required));
-            focusView = mUserView;
-            cancel = true;
-        } else if (!isUserValid(user)) {
-            mUserView.setError(getString(R.string.error_invalid_user));
             focusView = mUserView;
             cancel = true;
         }
@@ -126,109 +100,49 @@ public class LoginActivity extends AppCompatActivity {
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
-            showProgress(true);
             RequestParams params = new RequestParams();
             params.add("username", user);
             params.add("password", password);
+            params.add("corporateCode", corp);
             HttpClient client = HttpClient.getInstance();
-            client.get(this, HttpClient.LOGIN, params, userLoginResponse);
-        }
-    }
+            if(!client.isNetworkConnected(this)) {
+                Toast.makeText(this, R.string.failure_network, Toast.LENGTH_SHORT).show();
+                return;
+            }
 
-    private boolean isUserValid(String user) {
-        //TODO: Replace this with your own logic
-        return true;
-//        return user.contains("@");
-    }
-
-    private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
-        return password.length() > 0;
-    }
-
-    private  void showProgress(boolean show) {
-        if(show) {
             LoadingDialog.Builder builder = new LoadingDialog.Builder(this)
                     .setMessage(R.string.loading_login);
             dialog = builder.create();
             dialog.show();
-        } else {
-            dialog.dismiss();
+            client.login(this, this, params);
         }
     }
 
-    /**
-     * Shows the progress UI and hides the login form.
-     */
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
-    private void showProgress2(final boolean show) {
-        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
-        // for very easy animations. If available, use these APIs to fade-in
-        // the progress spinner.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
+    @Override
+    protected void onStop() {
+        SharedPreferences sharedPreferences = getSharedPreferences("private_data", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("corporateCode", mCorpView.getText().toString().trim());
+        editor.apply();
 
-            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-            mLoginFormView.animate().setDuration(shortAnimTime).alpha(
-                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-                }
-            });
-
-            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mProgressView.animate().setDuration(shortAnimTime).alpha(
-                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-                }
-            });
-        } else {
-            // The ViewPropertyAnimator APIs are not available, so simply show
-            // and hide the relevant UI components.
-            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-        }
+        super.onStop();
     }
 
-    private TextHttpResponseHandler userLoginResponse = new JsonHttpResponseHandler() {
-        @Override
-        public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-            showProgress(false);
-            HttpClient client = HttpClient.getInstance();
-            try {
-                if (ErrorCode.SUCCESS.getCode().equals(response.getString("errorCode"))) {
-                    AuthUser auth = JSON.parseObject(response.getString("data"), AuthUser.class);
-                    client.setAuthUser(auth);
-                    finish();
-                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                } else if (ErrorCode.LOGIN_FAILED.getCode().equals(response.getString("errorCode"))) {
-                    mPasswordView.setError(ErrorCode.LOGIN_FAILED.getMessage());
-                    mPasswordView.requestFocus();
-                } else if (ErrorCode.PARAM_ERROR.getCode().equals(response.getString("errorCode"))) {
-                    Toast.makeText(LoginActivity.this, ErrorCode.PARAM_ERROR.getMessage(), Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(LoginActivity.this, R.string.failure_login, Toast.LENGTH_SHORT).show();
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-                Toast.makeText(LoginActivity.this, R.string.failure_data_parse, Toast.LENGTH_SHORT).show();
-            }
-        }
+    @Override
+    public void onHttpSuccess(int requestType, Object obj, List<?> list) {
+        dialog.dismiss();
+        finish();
+        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+    }
 
-        @Override
-        public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-            showProgress(false);
-            Toast.makeText(LoginActivity.this, R.string.failure_request, Toast.LENGTH_SHORT).show();
-        }
+    @Override
+    public void onFailure(int requestType) {
+        dialog.dismiss();
+    }
 
-        @Override
-        public void onCancel() {
-            showProgress(false);
-            super.onCancel();
-        }
-    };
+    public void onAboutUS(View view) {
+        Intent intent = new Intent(this, AboutUsActivity.class);
+        startActivity(intent);
+    }
 }
 

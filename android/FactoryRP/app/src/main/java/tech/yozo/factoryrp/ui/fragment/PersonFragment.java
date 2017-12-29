@@ -9,12 +9,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import tech.yozo.factoryrp.R;
+import tech.yozo.factoryrp.ui.AboutUsActivity;
 import tech.yozo.factoryrp.ui.LoginActivity;
 import tech.yozo.factoryrp.utils.HttpClient;
 
@@ -26,17 +28,25 @@ import tech.yozo.factoryrp.utils.HttpClient;
  * create an instance of this fragment.
  */
 public class PersonFragment extends BaseFragment {
-    // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_PARAM1 = "mode";
+    private static final String ARG_PARAM2 = "id";
     @BindView(R.id.button_logout)
     Button buttonLogout;
     @BindView(R.id.tv_person_name)
     TextView tvPersonName;
+    @BindView(R.id.ll_my_repair)
+    LinearLayout llMyRepair;
+    @BindView(R.id.ll_change_password)
+    LinearLayout llChangePassword;
+    @BindView(R.id.ll_data_sync)
+    LinearLayout llDataSync;
+    @BindView(R.id.ll_check_update)
+    LinearLayout llCheckUpdate;
+    @BindView(R.id.ll_about_us)
+    LinearLayout llAboutUs;
     Unbinder unbinder;
 
-    // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
@@ -52,7 +62,6 @@ public class PersonFragment extends BaseFragment {
      * @param param2 Parameter 2.
      * @return A new instance of fragment PersonFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static PersonFragment newInstance(String param1, String param2) {
         PersonFragment fragment = new PersonFragment();
         Bundle args = new Bundle();
@@ -103,15 +112,31 @@ public class PersonFragment extends BaseFragment {
         unbinder.unbind();
     }
 
-    @OnClick(R.id.button_logout)
+    @OnClick({R.id.button_logout, R.id.ll_my_repair, R.id.ll_change_password, R.id.ll_data_sync, R.id.ll_check_update, R.id.ll_about_us})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.button_logout:
-                Intent intent = new Intent(getContext(), LoginActivity.class);
-                startActivity(intent);
+            case R.id.button_logout: {
                 HttpClient client = HttpClient.getInstance();
                 client.setAuthUser(null);
+
+                Intent intent = new Intent(getContext(), LoginActivity.class);
+                startActivity(intent);
                 getActivity().finish();
+                break;
+            }
+            case R.id.ll_my_repair:
+                break;
+            case R.id.ll_change_password:
+                break;
+            case R.id.ll_data_sync:
+                break;
+            case R.id.ll_check_update:
+                break;
+            case R.id.ll_about_us: {
+                Intent intent = new Intent(getContext(), AboutUsActivity.class);
+                startActivity(intent);
+                break;
+            }
         }
     }
 }

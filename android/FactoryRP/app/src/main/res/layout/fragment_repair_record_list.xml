@@ -4,8 +4,6 @@
               android:layout_height="match_parent"
               tools:context="tech.yozo.factoryrp.ui.fragment.RepairRecordListFragment" android:orientation="vertical">
 
-    <!-- TODO: Update blank fragment layout -->
-
     <TextView
             android:text="维修工单列表为空"
             android:layout_width="match_parent"

@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import tech.yozo.factoryrp.R;
 
 
@@ -16,15 +17,14 @@ import tech.yozo.factoryrp.R;
  * create an instance of this fragment.
  */
 public class MaintainRecordListFragment extends BaseFragment {
-    // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_PARAM1 = "mode";
+    private static final String ARG_PARAM2 = "id";
 
-    // TODO: Rename and change types of parameters
-    private int mParam1;
-    private String mParam2;
+    private int mParam_mode;
+    private Long mParam_id;
 
+    private ListView mMaintainRecordListView;
 
     public MaintainRecordListFragment() {
         // Required empty public constructor
@@ -38,12 +38,11 @@ public class MaintainRecordListFragment extends BaseFragment {
      * @param param2 Parameter 2.
      * @return A new instance of fragment MaintainRecordListFragment.
      */
-    // TODO: Rename and change types and number of parameters
-    public static MaintainRecordListFragment newInstance(int param1, String param2) {
+    public static MaintainRecordListFragment newInstance(int param1, Long param2) {
         MaintainRecordListFragment fragment = new MaintainRecordListFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putLong(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -52,8 +51,8 @@ public class MaintainRecordListFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getInt(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            mParam_mode = getArguments().getInt(ARG_PARAM1);
+            mParam_id = getArguments().getLong(ARG_PARAM2);
         }
     }
 
@@ -61,7 +60,10 @@ public class MaintainRecordListFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_maintain_record_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_maintain_record_list, container, false);
+        mMaintainRecordListView = (ListView) view.findViewById(R.id.lv_maintain_record);
+        mMaintainRecordListView.setEmptyView(view.findViewById(R.id.tv_empty_maintain));
+        return view;
     }
 
     @Override

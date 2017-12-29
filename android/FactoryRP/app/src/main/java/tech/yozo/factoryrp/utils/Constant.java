@@ -5,13 +5,7 @@ public class Constant {
     public static final int FOR_CHOICE_MODE = 0x200001;
     public static final int FOR_PERSON_ID = 0x200002;
     public static final int FOR_DEVICE_ID = 0x200003;
-    public static final int FOR_DEVICE_CODE = 0x200004;
-    public static final int FOR_WORK_ORDER_ID = 0x200005;
-
-    public static final int FOR_WAIT_AUDIT = 0x210001;
-    public static final int FOR_WAIT_REPAIR = 0x210002;
-    public static final int FOR_REPAIRING = 0x210003;
-    public static final int FOR_WAIT_VERIFY = 0x210004;
+    public static final int FOR_REPAIR_ID = 0x200005;
 
     public static final int DICT_DEVICE_STATUS = 0x220000;
     public static final int DICT_DEVICE_IDENTIFY = 0x220001;

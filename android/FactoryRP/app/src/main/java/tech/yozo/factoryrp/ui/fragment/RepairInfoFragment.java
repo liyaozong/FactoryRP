@@ -7,14 +7,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import com.loopj.android.http.RequestParams;
 import tech.yozo.factoryrp.R;
 import tech.yozo.factoryrp.utils.HttpClient;
+import tech.yozo.factoryrp.vo.req.ValidateRepairReq;
+import tech.yozo.factoryrp.vo.resp.device.trouble.WorkOrderDetailVo;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,23 +31,46 @@ import java.util.Map;
  * create an instance of this fragment.
  */
 public class RepairInfoFragment extends BaseFragment implements HttpClient.OnHttpListener {
-    // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_PARAM1 = "mode";
+    private static final String ARG_PARAM2 = "obj";
+
     @BindView(R.id.b_i_repair)
     Button bIRepair;
-    @BindView(R.id.lv_repair_fault_info)
-    ListView lvRepairFaultInfo;
     @BindView(R.id.b_i_not_repair)
     Button bINotRepair;
+    @BindView(R.id.b_validate_repair)
+    Button bValidateRepair;
+    @BindView(R.id.tv_device_name)
+    TextView tvDeviceName;
+    @BindView(R.id.tv_device_code)
+    TextView tvDeviceCode;
+    @BindView(R.id.tv_device_type)
+    TextView tvDeviceType;
+    @BindView(R.id.tv_device_dept)
+    TextView tvDeviceDept;
+    @BindView(R.id.tv_device_place)
+    TextView tvDevicePlace;
+    @BindView(R.id.tv_device_status)
+    TextView tvDeviceStatus;
+    @BindView(R.id.tv_happen_time)
+    TextView tvHappenTime;
+    @BindView(R.id.tv_repair_id)
+    TextView tvRepairId;
+    @BindView(R.id.tv_device_operator)
+    TextView tvDeviceOperator;
+    @BindView(R.id.tv_operator_phone)
+    TextView tvOperatorPhone;
+    @BindView(R.id.tv_trouble_submitter)
+    TextView tvTroubleSubmitter;
+    @BindView(R.id.tv_maintainer)
+    TextView tvMaintainer;
+    @BindView(R.id.tv_trouble_desc)
+    TextView tvTroubleDesc;
     Unbinder unbinder;
 
-    // TODO: Rename and change types of parameters
-    private int mParam1;
-    private String mParam2;
-
-    private ListView mRepairInfoView;
+    private int mParam_mode;
+    private WorkOrderDetailVo mParam_obj;
 
     public RepairInfoFragment() {
         // Required empty public constructor
@@ -58,12 +84,11 @@ public class RepairInfoFragment extends BaseFragment implements HttpClient.OnHtt
      * @param param2 Parameter 2.
      * @return A new instance of fragment RepairInfoFragment.
      */
-    // TODO: Rename and change types and number of parameters
-    public static RepairInfoFragment newInstance(int param1, String param2) {
+    public static RepairInfoFragment newInstance(int param1, long param2) {
         RepairInfoFragment fragment = new RepairInfoFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putLong(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -72,8 +97,8 @@ public class RepairInfoFragment extends BaseFragment implements HttpClient.OnHtt
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getInt(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            mParam_mode = getArguments().getInt(ARG_PARAM1);
+            mParam_obj = (WorkOrderDetailVo) getArguments().getSerializable(ARG_PARAM2);
         }
     }
 
@@ -83,13 +108,20 @@ public class RepairInfoFragment extends BaseFragment implements HttpClient.OnHtt
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_repair_info, container, false);
         unbinder = ButterKnife.bind(this, view);
+        tvDeviceName.setText(mParam_obj.getDeviceName());
+        tvDeviceCode.setText(mParam_obj.getDeviceCode());
+        tvDeviceType.setText(mParam_obj.getSpecification());
+        tvDeviceDept.setText(mParam_obj.getUseDept());
+        tvDevicePlace.setText(mParam_obj.getInstallationAddress());
         //TODO
-        SimpleAdapter adapter = new SimpleAdapter(getContext(), getData(), R.layout.item_info_list,
-                new String[]{"name", "value"},
-                new int[]{R.id.tv_name, R.id.tv_value});
-        mRepairInfoView = (ListView) view.findViewById(R.id.lv_repair_fault_info);
-        mRepairInfoView.setAdapter(adapter);
-
+        tvDeviceStatus.setText(String.valueOf(mParam_obj.getRepairStatus()));
+        tvHappenTime.setText(mParam_obj.getHappenTime().toString());
+        tvRepairId.setText(String.valueOf(mParam_obj.getTroubleRecordId()));
+        tvDeviceOperator.setText(mParam_obj.getDeviceUser());
+        tvOperatorPhone.setText(mParam_obj.getPhone());
+        tvTroubleSubmitter.setText(mParam_obj.getCreateUser());
+        tvMaintainer.setText(mParam_obj.getRepairUserName());
+        tvTroubleDesc.setText(mParam_obj.getRemark());
         return view;
     }
 
@@ -103,58 +135,61 @@ public class RepairInfoFragment extends BaseFragment implements HttpClient.OnHtt
 
     }
 
-    private List<Map<String, Object>> getData() {
-        List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
-
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put("name", "设备名称：");
-        map.put("value", "台式钻床");
-        list.add(map);
-
-        map = new HashMap<String, Object>();
-        map.put("name", "所在部门：");
-        map.put("value", "一车间");
-        list.add(map);
-
-        map = new HashMap<String, Object>();
-        map.put("name", "设备状态：");
-        map.put("value", "带病运行");
-        list.add(map);
-
-        map = new HashMap<String, Object>();
-        map.put("name", "发现时间：");
-        map.put("value", "2017-12-5 10：10：10");
-        list.add(map);
-
-        map = new HashMap<String, Object>();
-        map.put("name", "故障描述：");
-        map.put("value", "电线损坏，夹断");
-        list.add(map);
-
-        return list;
-    }
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
     }
 
-    @OnClick({R.id.b_i_repair, R.id.b_i_not_repair})
+    @OnClick({R.id.b_i_repair, R.id.b_i_not_repair, R.id.b_validate_repair})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.b_i_repair: {
                 HttpClient client = HttpClient.getInstance();
-                client.catchRepairTask(getContext(), this, mParam2);
+                RequestParams params = new RequestParams();
+                params.put("id", mParam_obj.getTroubleRecordId());
+                client.grabRepairTask(getContext(), this, params);
                 break;
             }
-            case R.id.b_i_not_repair:
+            case R.id.b_i_not_repair: {
+                HttpClient client = HttpClient.getInstance();
+                RequestParams params = new RequestParams();
+                params.put("id", mParam_obj.getTroubleRecordId());
+                client.giveUpRepairTask(getContext(), this, params);
+                break;
+            }
+            case R.id.b_validate_repair: {
+                //TODO 用模态对话框来实现
+                HttpClient client = HttpClient.getInstance();
+                ValidateRepairReq req = new ValidateRepairReq();
+                req.setTroubleRecordId(mParam_obj.getTroubleRecordId());
+                req.setRepaired(1);
+                req.setSuggest("");
+                req.setStarLevel(5);
+                client.validateRepairTask(getContext(), this, req);
+                break;
+            }
+            default:
                 break;
         }
     }
 
     @Override
-    public void onHttpSuccess() {
+    public void onHttpSuccess(int requestType, Object obj, List<?> list) {
+        switch (requestType) {
+            case HttpClient.REQUEST_REPAIR_GRAB_URL:
+                tvMaintainer.setText(HttpClient.getInstance().getAuthUser().getUserName());
+                break;
+            case HttpClient.REQUEST_REPAIR_GIVEUP_URL:
+                tvMaintainer.setText("");
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void onFailure(int requestType) {
 
     }
 }

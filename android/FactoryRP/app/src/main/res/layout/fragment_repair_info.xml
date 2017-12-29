@@ -1,25 +1,214 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              tools:context="tech.yozo.factoryrp.ui.fragment.RepairInfoFragment" android:orientation="vertical">
+              tools:context="tech.yozo.factoryrp.ui.fragment.RepairInfoFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-
-    <ListView
+    <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:id="@+id/lv_repair_fault_info"/>
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true" android:layout_above="@+id/linearLayout3">
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                      android:orientation="vertical" android:background="@color/colorBackground">
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" android:padding="8dp" android:layout_marginTop="1dp"
+                    android:background="@android:color/background_light">
+                <TextView
+                        android:text="@string/text_device_name"
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content" android:id="@+id/textView63"/>
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:id="@+id/tv_device_name"
+                        android:layout_weight="2"/>
+            </LinearLayout>
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" android:padding="8dp" android:layout_marginTop="1dp"
+                    android:background="@android:color/background_light">
+                <TextView
+                        android:text="@string/text_device_code"
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content" android:id="@+id/textView64"/>
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:id="@+id/tv_device_code"
+                        android:layout_weight="2"/>
+            </LinearLayout>
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" android:padding="8dp" android:layout_marginTop="1dp"
+                    android:background="@android:color/background_light">
+                <TextView
+                        android:text="@string/text_device_type"
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content" android:id="@+id/textView66"/>
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:id="@+id/tv_device_type"
+                        android:layout_weight="2"/>
+            </LinearLayout>
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" android:padding="8dp" android:layout_marginTop="1dp"
+                    android:background="@android:color/background_light">
+                <TextView
+                        android:text="@string/text_device_using_dept"
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content" android:id="@+id/textView68"/>
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:id="@+id/tv_device_dept"
+                        android:layout_weight="2"/>
+            </LinearLayout>
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" android:padding="8dp" android:layout_marginTop="1dp"
+                    android:background="@android:color/background_light">
+                <TextView
+                        android:text="@string/text_device_using_place"
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content" android:id="@+id/textView70"/>
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:id="@+id/tv_device_place"
+                        android:layout_weight="2"/>
+            </LinearLayout>
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" android:padding="8dp" android:layout_marginTop="6dp"
+                    android:background="@android:color/background_light">
+                <TextView
+                        android:text="@string/text_device_using_status"
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content" android:id="@+id/textView72"/>
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:id="@+id/tv_device_status"
+                        android:layout_weight="2"/>
+            </LinearLayout>
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" android:padding="8dp" android:layout_marginTop="1dp"
+                    android:background="@android:color/background_light">
+                <TextView
+                        android:text="@string/text_device_fault_time"
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content" android:id="@+id/textView74"/>
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:id="@+id/tv_happen_time"
+                        android:layout_weight="2"/>
+            </LinearLayout>
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" android:padding="8dp" android:layout_marginTop="1dp"
+                    android:background="@android:color/background_light">
+                <TextView
+                        android:text="@string/text_repair_no"
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content" android:id="@+id/textView76"/>
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:id="@+id/tv_repair_id" android:layout_weight="2"/>
+            </LinearLayout>
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" android:padding="8dp" android:layout_marginTop="1dp"
+                    android:background="@android:color/background_light">
+                <TextView
+                        android:text="@string/text_device_operator"
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content" android:id="@+id/textView78"/>
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:id="@+id/tv_device_operator"
+                        android:layout_weight="2"/>
+            </LinearLayout>
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" android:padding="8dp" android:layout_marginTop="1dp"
+                    android:background="@android:color/background_light">
+                <TextView
+                        android:text="@string/text_device_operator_phone"
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content" android:id="@+id/textView80"/>
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:id="@+id/tv_operator_phone"
+                        android:layout_weight="2"/>
+            </LinearLayout>
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" android:padding="8dp" android:layout_marginTop="1dp"
+                    android:background="@android:color/background_light">
+                <TextView
+                        android:text="@string/text_device_repair_submitter"
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content" android:id="@+id/textView82"/>
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:id="@+id/tv_trouble_submitter"
+                        android:layout_weight="2"/>
+            </LinearLayout>
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" android:padding="8dp" android:layout_marginTop="1dp"
+                    android:background="@android:color/background_light">
+                <TextView
+                        android:text="@string/text_maintainer"
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content" android:id="@+id/textView84"/>
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:id="@+id/tv_maintainer" android:layout_weight="2"/>
+            </LinearLayout>
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" android:padding="8dp" android:layout_marginTop="6dp"
+                    android:background="@android:color/background_light">
+                <TextView
+                        android:text="@string/text_device_fault_desc"
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content" android:id="@+id/textView86"/>
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:id="@+id/tv_trouble_desc" android:layout_weight="2"
+                        android:minLines="3"/>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
     <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:layout_weight="1">
+            android:layout_height="wrap_content" android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true" android:id="@+id/linearLayout3">
         <Button
                 android:text="@string/action_i_repair_it"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content" android:id="@+id/b_i_repair"/>
         <Button
                 android:text="@string/action_i_not_repair"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:id="@+id/b_i_not_repair" android:visibility="gone"/>
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/b_i_not_repair"/>
+        <Button
+                android:text="@string/action_validate_repair"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/b_validate_repair" android:layout_weight="1"/>
     </LinearLayout>
-</LinearLayout>
+</RelativeLayout>
