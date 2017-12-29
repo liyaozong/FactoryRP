@@ -206,6 +206,7 @@ public class SparePartsServiceImpl implements SparePartsService {
         spareParts.setReplacementCycle(sparePartsReq.getReplacementCycle());
         spareParts.setSparePartType(sparePartsReq.getSparePartType());
         spareParts.setRemark(sparePartsReq.getRemark());
+        spareParts.setDeviceInfoId(sparePartsReq.getDeviceInfoId());
 
         sparePartsRepository.save(spareParts);
 

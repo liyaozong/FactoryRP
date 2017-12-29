@@ -21,6 +21,9 @@ public class SparePartsAddReq extends ApiRequest implements Serializable {
 
     private static final long serialVersionUID = 3974816824139446195L;
 
+    @ApiModelProperty(value = "关联设备ID",notes ="关联设备ID" )
+    private Long deviceInfoId;
+
 
     @ApiModelProperty(value = "备件类型",notes ="备件类型" )
     private Long sparePartType;
