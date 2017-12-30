@@ -100,14 +100,14 @@
                 <td>{{orderDetail.barCode||'--'}}</td>
                 <td>{{orderDetail.name||'--'}}</td>
                 <td>{{orderDetail.specificationsAndodels||'--'}}</td>
-                <td>{{orderDetail.sparePartType||'--'}}</td>
-                <td>{{orderDetail.measuringUnit||'--'}}</td>
+                <td>{{orderDetail.sparePartTypeName||'--'}}</td>
+                <td>{{orderDetail.measuringUnitName||'--'}}</td>
                 <td>{{orderDetail.inventoryFloor||'--'}}</td>
                 <td>{{orderDetail.inventoryUpperLimit||'--'}}</td>
                 <td>{{orderDetail.referencePrice||'--'}}</td>
                 <!--<td>{{0||'&#45;&#45;'}}</td>-->
                 <!--<td>{{0||'&#45;&#45;'}}</td>-->
-                <td>{{orderDetail.manufacturer||'--'}}</td>
+                <td>{{orderDetail.manufacturerNameTd||'--'}}</td>
                 <td>{{orderDetail.materialProperties||'--'}}</td>
                 <td>
                     <a href="javascript:void(0)" class="resBtn editBtn" ng-click="editSparePartsFuc(orderDetail)">
@@ -173,7 +173,7 @@
                 </label>
                 <label for="deviceType" >
                     <span style="width: 100px;text-align: right">关联设备:</span>
-                    <select id="deviceType" ng-model="editSpareParts.device_id" ng-options="deviceTypeListDetail.id as deviceTypeListDetail.name for deviceTypeListDetail in deviceTypeList">
+                    <select id="deviceType" ng-model="editSpareParts.deviceInfoId" ng-options="deviceTypeListDetail.id as deviceTypeListDetail.name for deviceTypeListDetail in deviceTypeList">
                         <option value="">请选择关联设备</option>
                     </select>
                 </label>

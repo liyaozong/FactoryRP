@@ -18,6 +18,14 @@ myApp.factory("spareParts",["AppHttp","FF_API",function(AppHttp,FF_API){
             data:data
         });
     };
+    //新增备件
+    spareParts.editSpareParts=function(data){
+        return AppHttp({
+            method: 'post',
+            url: FF_API.base + FF_API.editSparePartsPath,
+            data:data
+        });
+    };
 
     //查询往来单位（生产厂商和供应商）
     spareParts.contactCompanyList=function(data){

@@ -41,6 +41,7 @@ var myApp = angular.module('myApp', [
         addSubDeviceSparesPath:'/api/deviceSparesType/addSubDeviceSpares',   //添加下级备件类型
         findByPagePath:'/api/spareParts/findByPage' ,  //查询备件
         addSparePartsPath:'/api/spareParts/addSpareParts' ,  //新增备件
+        editSparePartsPath:'/api/spareParts/editSpareParts' ,  //编辑备件
         deleteSparePartsByIdPath:'/api/spareParts/deleteSparePartsById' ,  //单个删除备件
         deleteSparePartsByIdsPath:'/api/spareParts/deleteSparePartsByIds' ,  //批量删除备件
         contactCompanyListPath:'/api/contactCompany/list',   //查询往来单位

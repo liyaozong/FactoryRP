@@ -1,7 +1,7 @@
 /**
  * Created by jayvenLee on 2017/11/11.
  */
-factoryParameterSettingApp.controller('sparePartsManageController',function ($scope,UrlService,$http,$filter,$cookies,$resource, $location, $state, spareParts,deviceSpares,deviceType,validate) {
+factoryParameterSettingApp.controller('sparePartsManageController',function ($scope,UrlService,$http,$filter,$cookies,$resource, $location, $state, spareParts,deviceSpares,deviceType,validate,$timeout) {
     $scope.WebURL=UrlService.getUrl('factoryServe');
     if($location.path()=='/main/sparePartsManage'){
         $("#menuLeft .leftmenu .sparePartsManage .menuson").css('display','block');
@@ -39,44 +39,6 @@ factoryParameterSettingApp.controller('sparePartsManageController',function ($sc
     deviceType.list().success(function (data) {
         $scope.deviceTypeList=data.data;
     });
-
-    /*查询设备信息 start*/
-    $scope.onQuery=function () {
-        var req={
-            "barCode": $scope.barCode, //条形码
-            "code": $scope.code,//备件编号
-            // "conversionRatio": 0,//换算比例
-            // "corporateIdentify": 32132132132213,//企业唯一标示
-            "currentPage": $scope.paginationConf.currentPage, //当前页码
-            "inventoryFloor": $scope.inventoryFloor,//库存下限
-            "inventoryUpperLimit": $scope.inventoryUpperLimit,//库存上限
-            "itemsPerPage": $scope.paginationConf.itemsPerPage,//每页显示记录数
-            // "manufacturer": $scope.manufacturer,//生产厂商
-            // "materialProperties": "string",//无聊属性
-            // "measuringUnit": 0,//计量单位
-            "name": $scope.name,//备件名称
-            // "referencePrice": 0,//参考价
-            // "replacementCycle": 0,//更换周期
-            "requestTime": $filter('date')(new Date(),'yyyy-MM-dd HH:mm:ss'),//请求时间
-            "sparePartType": $scope.sparePartType,//备件类型
-            "specificationsAndodels": $scope.specificationsAndodels//规格型号
-            // "suppliers": 0,//供应商
-            // "unitConversion": 0//换算单位
-        };
-        spareParts.findByPage(req).success(function (data) {
-            if(data.data.totalCount>=1){
-                $scope.paginationConf.totalItems = data.data.totalCount;
-                $scope.sparePartsLists=data.data.list;
-                console.log($scope.sparePartsLists,'-----');
-            }else{
-                $scope.paginationConf.totalItems = 0;
-                $scope.sparePartsLists.length = 0;
-            }
-        });
-    };
-    /*查询设备信息 end*/
-    $scope.onQuery();
-
     /* 查询往来单位 */
     $scope.paginationConf_CC = {
         currentPage: 1,
@@ -108,13 +70,67 @@ factoryParameterSettingApp.controller('sparePartsManageController',function ($sc
                 // $scope.deviceListInfos.length = 0;
             }
             $scope.orderList=data.data.list;
-            if(type){
-                hideDiv('addSparePartsPop');
-                popupDiv('contactCompanyListPop');
-            }
         });
     };
     $scope.onQuery_cc();
+
+    /*查询设备信息 start*/
+    $scope.onQuery=function () {
+        var req={
+            "barCode": $scope.barCode, //条形码
+            "code": $scope.code,//备件编号
+            // "conversionRatio": 0,//换算比例
+            // "corporateIdentify": 32132132132213,//企业唯一标示
+            "currentPage": $scope.paginationConf.currentPage, //当前页码
+            "inventoryFloor": $scope.inventoryFloor,//库存下限
+            "inventoryUpperLimit": $scope.inventoryUpperLimit,//库存上限
+            "itemsPerPage": $scope.paginationConf.itemsPerPage,//每页显示记录数
+            // "manufacturer": $scope.manufacturer,//生产厂商
+            // "materialProperties": "string",//无聊属性
+            // "measuringUnit": 0,//计量单位
+            "name": $scope.name,//备件名称
+            // "referencePrice": 0,//参考价
+            // "replacementCycle": 0,//更换周期
+            "requestTime": $filter('date')(new Date(),'yyyy-MM-dd HH:mm:ss'),//请求时间
+            "sparePartType": $scope.sparePartType,//备件类型
+            "specificationsAndodels": $scope.specificationsAndodels//规格型号
+            // "suppliers": 0,//供应商
+            // "unitConversion": 0//换算单位
+        };
+        spareParts.findByPage(req).success(function (data) {
+            if(data.data.totalCount>=1){
+                $scope.paginationConf.totalItems = data.data.totalCount;
+                $scope.sparePartsLists=data.data.list;
+                $timeout(function () {
+                    for(var i=0;i<$scope.sparePartsLists.length;i++){
+                        for(var j=0;j<$scope.sparePartTypeLists.length;j++){
+                            if($scope.sparePartsLists[i].sparePartType==$scope.sparePartTypeLists[j].id){
+                                $scope.sparePartsLists[i].sparePartTypeName=$scope.sparePartTypeLists[j].name;
+                            }
+                        }
+                        for(var k=0;k<$scope.measuringUnitLists.length;k++){
+                            if($scope.sparePartsLists[i].measuringUnit==$scope.measuringUnitLists[k].id){
+                                $scope.sparePartsLists[i].measuringUnitName=$scope.measuringUnitLists[k].name;
+                            }
+                        }
+                        for(var m=0;m<$scope.orderList.length;m++){
+                            if($scope.sparePartsLists[i].manufacturer==$scope.orderList[m].id){
+                                $scope.sparePartsLists[i].manufacturerNameTd=$scope.orderList[m].name;
+                            }
+                        }
+                    }
+                },500);
+
+            }else{
+                $scope.paginationConf.totalItems = 0;
+                $scope.sparePartsLists.length = 0;
+            }
+        });
+    };
+    /*查询设备信息 end*/
+    $scope.onQuery();
+
+
     //打开厂商或者供应商选择层
     $scope.openCC=function (type) {
         $scope.ccQuery={
@@ -129,6 +145,8 @@ factoryParameterSettingApp.controller('sparePartsManageController',function ($sc
         }else  if($scope.ccType=='2'){
             $scope.contactCompanyName='供应商';
         }
+        hideDiv('addSparePartsPop');
+        popupDiv('contactCompanyListPop');
     };
     //选中厂商或供应商
     $scope.changeCC=function (id,name,$event) {
@@ -155,7 +173,7 @@ factoryParameterSettingApp.controller('sparePartsManageController',function ($sc
         popupDiv('addSparePartsPop');
         $scope.editSpareParts={
             sparePartType:'',//备件类型
-            device_id:'',//关联设备
+            deviceInfoId:'',//关联设备
             name:'',//备件名称
             specificationsAndodels:'',//规格型号
             code:'',//备件编号
@@ -179,15 +197,18 @@ factoryParameterSettingApp.controller('sparePartsManageController',function ($sc
             extendFieldSeven:'',//文本型7
             extendDateFieldOne:'',//自定义日期1
             extendDateFieldTwo:'',//自定义日期2
-            remark:''//备注
+            remark:'',//备注
+            id:null
         };
+        $('#extendDateFieldOne').val('');
+        $('#extendDateFieldTwo').val('');
         $scope.sureFlog=1;
         $scope.errFlog=false;
     };
     $scope.addSparePartsSure=function(){
         var addReq={
             sparePartType:$scope.editSpareParts.sparePartType,//备件类型
-            device_id:$scope.editSpareParts.device_id,//关联设备
+            deviceInfoId:$scope.editSpareParts.deviceInfoId,//关联设备
             name:$scope.editSpareParts.name,//备件名称
             specificationsAndodels:$scope.editSpareParts.specificationsAndodels,//规格型号
             code:$scope.editSpareParts.code,//备件编号
@@ -209,14 +230,14 @@ factoryParameterSettingApp.controller('sparePartsManageController',function ($sc
             extendFieldFive:$scope.editSpareParts.extendFieldFive,//文本型5
             extendFieldSix:$scope.editSpareParts.extendFieldSix,//文本型6
             extendFieldSeven:$scope.editSpareParts.extendFieldSeven,//文本型7
-            extendDateFieldOne:$filter('date')($scope.editSpareParts.extendDateFieldOne,'yyyy-MM-dd'),//自定义日期1
-            extendDateFieldTwo:$filter('date')($scope.editSpareParts.extendDateFieldTwo,'yyyy-MM-dd'),//自定义日期2
+            extendDateFieldOne:$filter('date')($scope.editSpareParts.extendDateFieldOne,'yyyy-MM-dd')?$filter('date')($scope.editSpareParts.extendDateFieldOne,'yyyy-MM-dd'):$('#extendDateFieldOne').val(),//自定义日期1
+            extendDateFieldTwo:$filter('date')($scope.editSpareParts.extendDateFieldTwo,'yyyy-MM-dd')?$filter('date')($scope.editSpareParts.extendDateFieldTwo,'yyyy-MM-dd'):$('#extendDateFieldTwo').val(),//自定义日期2
             remark:$scope.editSpareParts.remark//备注
         };
         var flog;
         // console.log(addReq.length);
         for(var i in addReq){
-            // console.log(i,":",addReq[i]);
+            console.log(i,":",addReq[i]);
             flog=validate.required(addReq[i]);
             if(!flog){
                 break;
@@ -237,7 +258,19 @@ factoryParameterSettingApp.controller('sparePartsManageController',function ($sc
                     }
                 })
             }else if($scope.sureFlog==2){
-                console.log('编辑');
+                addReq.id=$scope.editSpareParts.id;
+                console.log('编辑',addReq);
+                spareParts.editSpareParts(addReq).success(function (data) {
+                    if(data.errorCode=='000000'){
+                        hideDiv('addSparePartsPop');
+                        popupDiv('SaveSuccess');
+                        $('.SaveSuccess .Message').html(data.errorMessage);
+                    }else{
+                        hideDiv('addSparePartsPop');
+                        popupDiv('SaveSuccess');
+                        $('.SaveSuccess .Message').html(data.errorMessage);
+                    }
+                })
             }
         }else {
             $scope.errFlog=true;
@@ -251,7 +284,7 @@ factoryParameterSettingApp.controller('sparePartsManageController',function ($sc
         popupDiv('addSparePartsPop');
         $scope.editSpareParts={
             sparePartType:res.sparePartType,//备件类型
-            device_id:res.device_id,//关联设备
+            deviceInfoId:res.deviceInfoId,//关联设备
             name:res.name,//备件名称
             specificationsAndodels:res.specificationsAndodels,//规格型号
             code:res.code,//备件编号
@@ -275,7 +308,8 @@ factoryParameterSettingApp.controller('sparePartsManageController',function ($sc
             extendFieldSeven:res.extendFieldSeven,//文本型7
             // extendDateFieldOne:$filter('date')(res.extendDateFieldOne,'yyyy-MM-dd'),//自定义日期1
             // extendDateFieldTwo:$filter('date')(res.extendDateFieldTwo,'yyyy-MM-dd'),//自定义日期2
-            remark:res.remark//备注
+            remark:res.remark,//备注
+            id:res.id
         };
         $('#extendDateFieldOne').val($filter('date')(res.extendDateFieldOne,'yyyy-MM-dd'));
         $('#extendDateFieldTwo').val($filter('date')(res.extendDateFieldTwo,'yyyy-MM-dd'));
@@ -284,15 +318,20 @@ factoryParameterSettingApp.controller('sparePartsManageController',function ($sc
                 $(this).prop("selected",true);
             }
         });
+        $("#deviceType option").each(function(){
+            if($(this).val()==$scope.editSpareParts.deviceInfoId){
+                $(this).prop("selected",true);
+            }
+        });
         $scope.orderList.forEach(function (n,i) {
-            console.log(n.id,res.suppliers);
+            // console.log(n.id,res.suppliers);
             if(n.id==res.suppliers){
                 $scope.editSpareParts.suppliersName=n.name;
             }
             if(n.id==res.manufacturer){
                 $scope.editSpareParts.manufacturerName=n.name;
             }
-        })
+        });
         $scope.sureFlog=2;
     };
     /*编辑设备信息 end*/
@@ -334,5 +373,6 @@ factoryParameterSettingApp.controller('sparePartsManageController',function ($sc
 
     };
     /*删除设备信息 end*/
-    // $scope.$watch('paginationConf.currentPage + paginationConf.itemsPerPage', $scope.onQuery);
+    $scope.$watch('paginationConf.currentPage + paginationConf.itemsPerPage', $scope.onQuery);
+    $scope.$watch('paginationConf_CC.currentPage + paginationConf_CC.itemsPerPage', $scope.onQuery_cc);
 });
