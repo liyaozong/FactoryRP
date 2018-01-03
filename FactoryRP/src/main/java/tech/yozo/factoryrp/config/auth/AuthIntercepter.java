@@ -67,7 +67,7 @@ public class AuthIntercepter implements HandlerInterceptor {
 
 
            //临时的处理逻辑，直接返回用户权限给前端
-           String username = request.getParameter("username");
+           /*String username = request.getParameter("username");
            String password = request.getParameter("password");
            String corporateCode = request.getParameter("corporateCode");
            User user = authorizationService.findByUserName(username);
@@ -112,15 +112,15 @@ public class AuthIntercepter implements HandlerInterceptor {
            authUser.setAuthUserMenuList(authUserMenuList);
            authUser.setRoleList(roleList);
            AuthWebUtil.loginSuccess(request,response,authUser);
-           return true;
+           return true;*/
 
 
-           //return handleLogin(request,response);
+           return handleLogin(request,response);
         }
 
         logger.info(">>>>>>>>>>>>>>>>>>>>>>>>>>调用非登陆接口，开始token验证，请求地址为:<<<<<<<<<<<<<<<<<<"+requestURI);
-        //return verifyToken(request,response);
-        return true;
+        return verifyToken(request,response);
+        //return true;
     }
 
     @Override
