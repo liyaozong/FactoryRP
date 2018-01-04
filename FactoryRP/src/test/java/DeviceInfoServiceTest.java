@@ -10,7 +10,9 @@ import tech.yozo.factoryrp.enums.TroubleStatusEnum;
 import tech.yozo.factoryrp.page.Pagination;
 import tech.yozo.factoryrp.service.DeviceInfoService;
 import tech.yozo.factoryrp.service.TroubleRecordService;
+import tech.yozo.factoryrp.vo.req.StartRepairReq;
 import tech.yozo.factoryrp.vo.req.WorkOrderListReq;
+import tech.yozo.factoryrp.vo.resp.auth.AuthUser;
 import tech.yozo.factoryrp.vo.resp.device.info.FullDeviceInfoResp;
 import tech.yozo.factoryrp.vo.resp.device.trouble.WaitAuditWorkOrderVo;
 
@@ -46,5 +48,15 @@ public class DeviceInfoServiceTest {
             String js = JSON.toJSONString(vo);
             System.out.println(js);
         }
+    }
+
+    @Test
+    public void dealWorkOrderTest(){
+        StartRepairReq req = new StartRepairReq();
+        req.setTroubleRecordId(3l);
+        AuthUser user = new AuthUser();
+        user.setUserId(1l);
+        user.setUserName("王浩");
+        troubleRecordService.startRepair(req,user);
     }
 }
