@@ -2,6 +2,7 @@ package tech.yozo.factoryrp.ui;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -20,23 +21,18 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.alibaba.fastjson.JSON;
-import com.loopj.android.http.JsonHttpResponseHandler;
-import cz.msebera.android.httpclient.Header;
-import cz.msebera.android.httpclient.entity.StringEntity;
-import org.json.JSONException;
-import org.json.JSONObject;
 import tech.yozo.factoryrp.R;
-import tech.yozo.factoryrp.scan.CaptureActivity;
 import tech.yozo.factoryrp.scan.Intents;
+import tech.yozo.factoryrp.scan.ScanActivity;
+import tech.yozo.factoryrp.ui.dialog.LoadingDialog;
 import tech.yozo.factoryrp.utils.Constant;
 import tech.yozo.factoryrp.utils.DictSpinnerAdapter;
-import tech.yozo.factoryrp.utils.ErrorCode;
 import tech.yozo.factoryrp.utils.HttpClient;
 import tech.yozo.factoryrp.vo.req.AddTroubleRecordReq;
+import tech.yozo.factoryrp.vo.resp.ContactCompany;
 import tech.yozo.factoryrp.vo.resp.DeviceParamDicEnumResp;
 import tech.yozo.factoryrp.vo.resp.device.info.SimpleDeviceInfoResp;
 
-import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -84,6 +80,7 @@ public class ReportFaultActivity extends AppCompatActivity implements DatePicker
 
     private long selectedDeviceId = -1;
 
+    private LoadingDialog dialog;
     private int mImageCount;
     private DatePickerDialog dateDialog;
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日 HH时MM分");
@@ -98,9 +95,28 @@ public class ReportFaultActivity extends AppCompatActivity implements DatePicker
         etFaultTime.setText(sdf.format(now));
         etFaultTime.setTag(now);
 
+//        SharedPreferences sharedPreferences = getSharedPreferences("private_data", MODE_PRIVATE);
+//        List<DeviceParamDicEnumResp> deviceUseStatusDict = JSON.parseArray(sharedPreferences.getString("deviceUseStatusDict", ""), DeviceParamDicEnumResp.class);
+//        if(deviceUseStatusDict != null) {
+//            spinnerDeviceStatus.setAdapter(new DictSpinnerAdapter(this, android.R.layout.simple_list_item_1, deviceUseStatusDict));
+//        }
+//        List<DeviceParamDicEnumResp> troubleLevelDict = JSON.parseArray(sharedPreferences.getString("troubleLevelDict", ""), DeviceParamDicEnumResp.class);
+//        if(troubleLevelDict != null) {
+//            spinnerFaultLevel.setAdapter(new DictSpinnerAdapter(this, android.R.layout.simple_list_item_1, troubleLevelDict));
+//        }
+
         HttpClient client = HttpClient.getInstance();
-        client.initDeviceDict(this, this, Constant.DICT_TROUBLE_LEVEL);
-        client.initDeviceDict(this, this, Constant.DICT_DEVICE_STATUS);
+        if(client.getDictEnum(Constant.DICT_TROUBLE_LEVEL) == null) {
+            client.requestDeviceDict(this, this, Constant.DICT_TROUBLE_LEVEL);
+        } else {
+            updateUI(HttpClient.REQUEST_DATA_DICT);
+        }
+
+        if(client.getDictEnum(Constant.DICT_DEVICE_STATUS) == null) {
+            client.requestDeviceDict(this, this, Constant.DICT_DEVICE_STATUS);
+        } else {
+            updateUI(HttpClient.REQUEST_DATA_DICT);
+        }
         //TODO 维修班组 故障类别
     }
 
@@ -156,33 +172,13 @@ public class ReportFaultActivity extends AppCompatActivity implements DatePicker
             reportReq.setRemark(etFaultDesc.getText().toString());
             //TODO 图片处理
 
-            StringEntity param = new StringEntity(JSON.toJSONString(reportReq), Charset.forName("UTF-8"));
-            client.post(this, HttpClient.TROUBLE_ADD, param, reportFaultResponse);
+            LoadingDialog.Builder builder = new LoadingDialog.Builder(this)
+                    .setMessage(R.string.loading_report);
+            dialog = builder.create();
+            dialog.show();
+            client.reportFault(this, this, reportReq);
         }
     }
-
-    private JsonHttpResponseHandler reportFaultResponse = new JsonHttpResponseHandler() {
-        @Override
-        public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-            Log.d("INFO", response.toString());
-            try {
-                if (ErrorCode.SUCCESS.getCode().equals(response.getString("errorCode"))) {
-                    Toast.makeText(ReportFaultActivity.this, R.string.hint_report_fault_success, Toast.LENGTH_SHORT).show();
-                    finish();
-                } else {
-                    Toast.makeText(ReportFaultActivity.this, R.string.failure_service, Toast.LENGTH_SHORT).show();
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-                Toast.makeText(ReportFaultActivity.this, R.string.failure_data_parse, Toast.LENGTH_SHORT).show();
-            }
-        }
-
-        @Override
-        public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-            Toast.makeText(ReportFaultActivity.this, R.string.failure_request, Toast.LENGTH_SHORT).show();
-        }
-    };
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -240,7 +236,7 @@ public class ReportFaultActivity extends AppCompatActivity implements DatePicker
                 if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA)!= PackageManager.PERMISSION_GRANTED){
                     ActivityCompat.requestPermissions(this,new String[]{android.Manifest.permission.CAMERA}, Constant.REQUEST_SCAN_PERMISSION);
                 }else {
-                    startActivityForResult(new Intent(this, CaptureActivity.class), REQUEST_CODE_SCAN);
+                    startActivityForResult(new Intent(this, ScanActivity.class), REQUEST_CODE_SCAN);
                 }
                 break;
             }
@@ -289,7 +285,7 @@ public class ReportFaultActivity extends AppCompatActivity implements DatePicker
                                            @NonNull int[] grantResults) {
         if (requestCode == Constant.REQUEST_SCAN_PERMISSION) {
             if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                startActivityForResult(new Intent(this, CaptureActivity.class), REQUEST_CODE_SCAN);
+                startActivityForResult(new Intent(this, ScanActivity.class), REQUEST_CODE_SCAN);
             } else {
                 Toast.makeText(this, R.string.failure_camera_permission, Toast.LENGTH_SHORT).show();
             }
@@ -304,15 +300,38 @@ public class ReportFaultActivity extends AppCompatActivity implements DatePicker
     }
 
     @Override
-    public void onHttpSuccess() {
-        HttpClient client = HttpClient.getInstance();
-        List<DeviceParamDicEnumResp> troubleLevelDict = client.getTroubleLevelDict();
-        if(troubleLevelDict != null) {
-            spinnerFaultLevel.setAdapter(new DictSpinnerAdapter(this, android.R.layout.simple_list_item_1, troubleLevelDict));
+    public void onHttpSuccess(int requestType, Object obj, List<?> list) {
+        if(requestType == HttpClient.REQUEST_TROUBLE_ADD) {
+            dialog.dismiss();
         }
-        List<DeviceParamDicEnumResp> deviceUseStatusDict = client.getDeviceUseStatusDict();
-        if(deviceUseStatusDict != null) {
-            spinnerDeviceStatus.setAdapter(new DictSpinnerAdapter(this, android.R.layout.simple_list_item_1, deviceUseStatusDict));
+        updateUI(requestType);
+    }
+
+    @Override
+    public void onFailure(int requestType) {
+        if(requestType == HttpClient.REQUEST_TROUBLE_ADD) {
+            dialog.dismiss();
+        }
+    }
+
+    private void updateUI(int requestType) {
+        HttpClient client = HttpClient.getInstance();
+        switch (requestType) {
+            case HttpClient.REQUEST_TROUBLE_ADD:
+                finish();
+                break;
+            case HttpClient.REQUEST_DATA_DICT:
+                List<DeviceParamDicEnumResp> deviceUseStatusDict = client.getDictEnum(Constant.DICT_DEVICE_STATUS);
+                if(deviceUseStatusDict != null) {
+                    spinnerDeviceStatus.setAdapter(new DictSpinnerAdapter(this, android.R.layout.simple_list_item_1, deviceUseStatusDict));
+                }
+                List<DeviceParamDicEnumResp> troubleLevelDict = client.getDictEnum(Constant.DICT_TROUBLE_LEVEL);
+                if(troubleLevelDict != null) {
+                    spinnerFaultLevel.setAdapter(new DictSpinnerAdapter(this, android.R.layout.simple_list_item_1, troubleLevelDict));
+                }
+                break;
+            default:
+                break;
         }
     }
 }

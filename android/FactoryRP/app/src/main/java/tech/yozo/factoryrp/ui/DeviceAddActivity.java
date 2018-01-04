@@ -22,8 +22,9 @@ import cz.msebera.android.httpclient.entity.StringEntity;
 import org.json.JSONException;
 import org.json.JSONObject;
 import tech.yozo.factoryrp.R;
-import tech.yozo.factoryrp.scan.CaptureActivity;
 import tech.yozo.factoryrp.scan.Intents;
+import tech.yozo.factoryrp.scan.ScanActivity;
+import tech.yozo.factoryrp.ui.dialog.LoadingDialog;
 import tech.yozo.factoryrp.utils.*;
 import tech.yozo.factoryrp.vo.req.AddDeviceReq;
 import tech.yozo.factoryrp.vo.resp.ContactCompany;
@@ -64,9 +65,10 @@ public class DeviceAddActivity extends AppCompatActivity implements DatePickerDi
     @BindView(R.id.et_device_desc)
     EditText etDeviceDesc;
     @BindView(R.id.et_buy_date)
-    EditText etBuyDate;
+    TextView etBuyDate;
 
     private DatePickerDialog dateDialog;
+    private LoadingDialog dialog;
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日");
 
     @Override
@@ -76,9 +78,23 @@ public class DeviceAddActivity extends AppCompatActivity implements DatePickerDi
         ButterKnife.bind(this);
 
         HttpClient client = HttpClient.getInstance();
-        client.initDeviceDict(this, this, Constant.DICT_DEVICE_STATUS);
-        client.initDeviceDict(this, this, Constant.DICT_DEVICE_IDENTIFY);
-        client.getContactCompany(this, this);
+        if(client.getDictEnum(Constant.DICT_DEVICE_STATUS) == null) {
+            client.requestDeviceDict(this, this, Constant.DICT_DEVICE_STATUS);
+        } else {
+            updateUI(HttpClient.REQUEST_DATA_DICT);
+        }
+
+        if(client.getDictEnum(Constant.DICT_DEVICE_IDENTIFY) == null) {
+            client.requestDeviceDict(this, this, Constant.DICT_DEVICE_IDENTIFY);
+        } else {
+            updateUI(HttpClient.REQUEST_DATA_DICT);
+        }
+
+        if (client.getContactCompanies() == null) {
+            client.requestContactCompany(this, this);
+        } else {
+            updateUI(HttpClient.REQUEST_CONTACT_COMPANY);
+        }
     }
 
     @Override
@@ -114,7 +130,6 @@ public class DeviceAddActivity extends AppCompatActivity implements DatePickerDi
 
         String deviceCode = etDeviceCode.getText().toString();
         if (TextUtils.isEmpty(deviceCode)) {
-            //TODO
             deviceCode = "DEV" + System.currentTimeMillis();
         }
 
@@ -133,7 +148,6 @@ public class DeviceAddActivity extends AppCompatActivity implements DatePickerDi
         if (cancel) {
             focusView.requestFocus();
         } else {
-
             AddDeviceReq newDevice = new AddDeviceReq();
             newDevice.setCode(deviceCode);
             newDevice.setName(deviceName);
@@ -153,33 +167,14 @@ public class DeviceAddActivity extends AppCompatActivity implements DatePickerDi
                 newDevice.setSupplier(providerId);
             }
             newDevice.setRemark(etDeviceDesc.getText().toString());
-            StringEntity param = new StringEntity(JSON.toJSONString(newDevice), Charset.forName("UTF-8"));
-            client.post(this, HttpClient.DEVICE_SAVE, param, saveDeviceResponse);
+
+            LoadingDialog.Builder builder = new LoadingDialog.Builder(this)
+                    .setMessage(R.string.loading_save);
+            dialog = builder.create();
+            dialog.show();
+            client.deviceAdd(this, this, newDevice);
         }
     }
-
-    private JsonHttpResponseHandler saveDeviceResponse = new JsonHttpResponseHandler() {
-        @Override
-        public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-            Log.d("INFO", response.toString());
-            try {
-                if (ErrorCode.SUCCESS.getCode().equals(response.getString("errorCode"))) {
-                    Toast.makeText(DeviceAddActivity.this, R.string.hint_device_save_success, Toast.LENGTH_SHORT).show();
-                    finish();
-                } else {
-                    Toast.makeText(DeviceAddActivity.this, R.string.failure_service, Toast.LENGTH_SHORT).show();
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-                Toast.makeText(DeviceAddActivity.this, R.string.failure_data_parse, Toast.LENGTH_SHORT).show();
-            }
-        }
-
-        @Override
-        public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-            Toast.makeText(DeviceAddActivity.this, R.string.failure_request, Toast.LENGTH_SHORT).show();
-        }
-    };
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -199,7 +194,7 @@ public class DeviceAddActivity extends AppCompatActivity implements DatePickerDi
                 if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA)!= PackageManager.PERMISSION_GRANTED){
                     ActivityCompat.requestPermissions(this,new String[]{android.Manifest.permission.CAMERA},Constant.REQUEST_SCAN_PERMISSION);
                 }else {
-                    startActivityForResult(new Intent(this, CaptureActivity.class), SCAN_CODE);
+                    startActivityForResult(new Intent(this, ScanActivity.class), SCAN_CODE);
                 }
                 break;
             case R.id.et_buy_date:
@@ -224,24 +219,50 @@ public class DeviceAddActivity extends AppCompatActivity implements DatePickerDi
     }
 
     @Override
-    public void onHttpSuccess() {
+    public void onHttpSuccess(int requestType, Object obj, List<?> list) {
+        if(requestType == HttpClient.REQUEST_DEVICE_SAVE) {
+            dialog.dismiss();
+        }
+        updateUI(requestType);
+    }
+
+    @Override
+    public void onFailure(int requestType) {
+        if(requestType == HttpClient.REQUEST_DEVICE_SAVE) {
+            dialog.dismiss();
+        }
+    }
+
+    private void updateUI(int requestType) {
         HttpClient client = HttpClient.getInstance();
-        List<DeviceParamDicEnumResp> deviceUseStatusDict = client.getDeviceUseStatusDict();
-        if(deviceUseStatusDict != null) {
-            spinnerDeviceStatus.setAdapter(new DictSpinnerAdapter(this, android.R.layout.simple_list_item_1, deviceUseStatusDict));
-        }
-        List<DeviceParamDicEnumResp> deviceIdentifyDict = client.getDeviceIdentifyDict();
-        if(deviceIdentifyDict != null) {
-            spinnerDeviceIdentify.setAdapter(new DictSpinnerAdapter(this, android.R.layout.simple_list_item_1, deviceIdentifyDict));
-        }
-        List<ContactCompany> contactCompanies = client.getContactCompanies();
-        if(contactCompanies != null) {
-            List<String> dd = new ArrayList<>();
-            for(ContactCompany cc : contactCompanies) {
-                dd.add(cc.getName());
-            }
-            etDeviceManufacturer.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, dd));
-            etDeviceProvider.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, dd));
+        switch (requestType) {
+            case HttpClient.REQUEST_DEVICE_SAVE:
+                // 设备保存成功
+                finish();
+                break;
+            case HttpClient.REQUEST_CONTACT_COMPANY:
+                List<ContactCompany> contactCompanies = client.getContactCompanies();
+                if(contactCompanies != null) {
+                    List<String> dd = new ArrayList<>();
+                    for(ContactCompany cc : contactCompanies) {
+                        dd.add(cc.getName());
+                    }
+                    etDeviceManufacturer.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, dd));
+                    etDeviceProvider.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, dd));
+                }
+                break;
+            case HttpClient.REQUEST_DATA_DICT:
+                List<DeviceParamDicEnumResp> deviceUseStatusDict = client.getDictEnum(Constant.DICT_DEVICE_STATUS);
+                if(deviceUseStatusDict != null) {
+                    spinnerDeviceStatus.setAdapter(new DictSpinnerAdapter(this, android.R.layout.simple_list_item_1, deviceUseStatusDict));
+                }
+                List<DeviceParamDicEnumResp> deviceIdentifyDict = client.getDictEnum(Constant.DICT_DEVICE_IDENTIFY);
+                if(deviceIdentifyDict != null) {
+                    spinnerDeviceIdentify.setAdapter(new DictSpinnerAdapter(this, android.R.layout.simple_list_item_1, deviceIdentifyDict));
+                }
+                break;
+            default:
+                break;
         }
     }
 
@@ -250,7 +271,7 @@ public class DeviceAddActivity extends AppCompatActivity implements DatePickerDi
                                            @NonNull int[] grantResults) {
         if (requestCode == Constant.REQUEST_SCAN_PERMISSION) {
             if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                startActivityForResult(new Intent(this, CaptureActivity.class), SCAN_CODE);
+                startActivityForResult(new Intent(this, ScanActivity.class), SCAN_CODE);
             } else {
                 Toast.makeText(this, R.string.failure_camera_permission, Toast.LENGTH_SHORT).show();
             }

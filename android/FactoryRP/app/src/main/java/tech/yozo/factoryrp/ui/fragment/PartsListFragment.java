@@ -5,27 +5,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.loopj.android.http.JsonHttpResponseHandler;
-import cz.msebera.android.httpclient.Header;
-import cz.msebera.android.httpclient.entity.StringEntity;
-import org.json.JSONException;
-import org.json.JSONObject;
 import tech.yozo.factoryrp.R;
 import tech.yozo.factoryrp.ui.PartsDetailActivity;
+import tech.yozo.factoryrp.ui.dialog.LoadingDialog;
 import tech.yozo.factoryrp.utils.Constant;
-import tech.yozo.factoryrp.utils.ErrorCode;
 import tech.yozo.factoryrp.utils.HttpClient;
-import tech.yozo.factoryrp.vo.req.SparePartsQueryReq;
 import tech.yozo.factoryrp.vo.resp.sparepars.SparePartsResp;
 
-import java.nio.charset.Charset;
 import java.util.List;
 
 
@@ -35,20 +25,21 @@ import java.util.List;
  * Use the {@link PartsListFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class PartsListFragment extends BaseFragment {
-    // TODO: Rename parameter arguments, choose names that match
+public class PartsListFragment extends BaseFragment implements HttpClient.OnHttpListener {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_PARAM1 = "mode";
+    private static final String ARG_PARAM2 = "id";
 
-    // TODO: Rename and change types of parameters
-    private int mParam1;
-    private String mParam2;
+    private int mParam_mode;
+    private Long mParam_id;
 
     private ListView mPartsListView;
     private List<SparePartsResp> parts;
 
     private PartsListAdapter mListAdapter;
+    private LoadingDialog dialog;
+
+    private OnFragmentInteractionListener mListener;
 
     public PartsListFragment() {
         // Required empty public constructor
@@ -62,12 +53,11 @@ public class PartsListFragment extends BaseFragment {
      * @param param2 Parameter 2.
      * @return A new instance of fragment PartsListFragment.
      */
-    // TODO: Rename and change types and number of parameters
-    public static PartsListFragment newInstance(int param1, String param2) {
+    public static PartsListFragment newInstance(int param1, Long param2) {
         PartsListFragment fragment = new PartsListFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putLong(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -76,8 +66,8 @@ public class PartsListFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getInt(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            mParam_mode = getArguments().getInt(ARG_PARAM1);
+            mParam_id = getArguments().getLong(ARG_PARAM2);
         }
     }
 
@@ -94,74 +84,112 @@ public class PartsListFragment extends BaseFragment {
         mPartsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> arg0, View arg1, int count,
                                     long arg3) {
-                Intent intent = new Intent(getActivity(), PartsDetailActivity.class);
-                intent.putExtra(PartsDetailActivity.PARTS_ID, parts.get(count).getId());
-                startActivity(intent);
+                switch (mParam_mode) {
+                    case Constant.FOR_BROWE_MODE:
+                        Intent intent = new Intent(getActivity(), PartsDetailActivity.class);
+                        intent.putExtra(PartsDetailActivity.PARTS_ID, parts.get(count));
+                        startActivity(intent);
+                        break;
+                    case Constant.FOR_CHOICE_MODE:
+                        if(mListener != null) {
+                            mListener.onPartSelected(parts.get(count));
+                        }
+                        break;
+                }
             }
         });
         return view;
     }
 
     @Override
-    protected void loadData() {
-        HttpClient client = HttpClient.getInstance();
-        if(client.getSparePartsRespList() != null) {
-            parts = client.getSparePartsRespList();
-        } else {
-            //TODO
-            SparePartsQueryReq req = new SparePartsQueryReq();
-            switch (mParam1) {
-                case Constant.FOR_BROWE_MODE:
-                case Constant.FOR_DEVICE_ID:
-                case Constant.FOR_PERSON_ID:
-                case Constant.FOR_WORK_ORDER_ID:
-                    req.setCurrentPage(0);
-                    req.setItemsPerPage(100);
-                    StringEntity param = new StringEntity(JSON.toJSONString(req), Charset.forName("UTF-8"));
-                    client.post(getContext(), HttpClient.PARTS_LIST, param, requestPartsListResponse);
-                    break;
-                default:
-                    break;
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        if(mParam_mode == Constant.FOR_CHOICE_MODE) {
+            if (context instanceof OnFragmentInteractionListener) {
+                mListener = (OnFragmentInteractionListener) context;
+            } else {
+                throw new RuntimeException(context.toString()
+                        + " must implement OnFragmentInteractionListener");
             }
         }
     }
 
     @Override
-    protected void buildUI() {
-
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
     }
 
-    private JsonHttpResponseHandler requestPartsListResponse = new JsonHttpResponseHandler() {
-        @Override
-        public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-            Log.d("INFO", response.toString());
-            try {
-                if (ErrorCode.SUCCESS.getCode().equals(response.getString("errorCode"))) {
-                    parts = JSONArray.parseArray(response.getJSONObject("data").getString("list"), SparePartsResp.class);
-                    HttpClient client = HttpClient.getInstance();
-                    client.setSparePartsRespList(parts);
-                    mListAdapter.notifyDataSetChanged();
-                } else {
-                    Toast.makeText(getContext(), R.string.failure_get, Toast.LENGTH_SHORT).show();
+    @Override
+    protected void loadData() {
+        HttpClient client = HttpClient.getInstance();
+        switch (mParam_mode) {
+            case Constant.FOR_BROWE_MODE:
+            case Constant.FOR_CHOICE_MODE:
+                if(client.getSparePartsRespList() == null) {
+                    LoadingDialog.Builder builder = new LoadingDialog.Builder(getContext())
+                            .setMessage(R.string.loading_loading);
+                    dialog = builder.create();
+                    dialog.show();
+                    client.requestPartsList(getContext(), this);
                 }
-            } catch (JSONException e) {
-                e.printStackTrace();
-                Toast.makeText(getContext(), R.string.failure_data_parse, Toast.LENGTH_SHORT).show();
-            }
+                break;
+            case Constant.FOR_DEVICE_ID:
+                //TODO
+                break;
+            case Constant.FOR_REPAIR_ID:
+                break;
+            default:
+                break;
         }
+    }
 
-        @Override
-        public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-            Toast.makeText(getContext(), R.string.failure_request, Toast.LENGTH_SHORT).show();
+    @Override
+    protected void buildUI() {
+        HttpClient client = HttpClient.getInstance();
+        switch (mParam_mode) {
+            case Constant.FOR_BROWE_MODE:
+            case Constant.FOR_CHOICE_MODE:
+                parts = client.getSparePartsRespList();
+                mListAdapter.notifyDataSetChanged();
+                break;
+            case Constant.FOR_DEVICE_ID:
+                break;
+            case Constant.FOR_REPAIR_ID:
+                break;
+            default:
+                break;
         }
-    };
+    }
+
+    @Override
+    public void onHttpSuccess(int requestType, Object obj, List<?> list) {
+        if(requestType == HttpClient.REQUEST_PARTS_LIST) {
+            HttpClient client = HttpClient.getInstance();
+            parts = client.getSparePartsRespList();
+            mListAdapter.notifyDataSetChanged();
+            dialog.dismiss();
+        }
+    }
+
+    @Override
+    public void onFailure(int requestType) {
+        if(requestType == HttpClient.REQUEST_PARTS_LIST) {
+            dialog.dismiss();
+        }
+    }
+
+    public interface OnFragmentInteractionListener {
+        void onPartSelected(SparePartsResp device);
+    }
 
     private static class ViewHolder
     {
         TextView name;
         TextView code;
         TextView type;
-        TextView stock;
+//        TextView stock;
     }
 
     private class PartsListAdapter extends BaseAdapter {
@@ -199,7 +227,7 @@ public class PartsListFragment extends BaseFragment {
                 holder.name = (TextView) convertView.findViewById(R.id.tv_parts_name);
                 holder.code = (TextView) convertView.findViewById(R.id.tv_parts_no);
                 holder.type = (TextView) convertView.findViewById(R.id.tv_parts_type);
-                holder.stock = (TextView) convertView.findViewById(R.id.tv_parts_stock);
+//                holder.stock = (TextView) convertView.findViewById(R.id.tv_parts_stock);
                 convertView.setTag(holder);
             }
             else {
@@ -209,7 +237,7 @@ public class PartsListFragment extends BaseFragment {
             holder.name.setText(parts.get(i).getName());
             holder.code.setText(parts.get(i).getCode());
             holder.type.setText(parts.get(i).getSpecificationsAndodels());
-            holder.stock.setText("4个");
+//            holder.stock.setText("4个");
 
             return convertView;
         }

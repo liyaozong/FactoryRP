@@ -135,6 +135,18 @@ public class DeviceInfoServiceImpl implements DeviceInfoService {
     }
 
     @Override
+    public FullDeviceInfoResp getByCode(String code, Long corporateIdentify) {
+        DeviceInfo deviceInfo = deviceInfoRepository.findByCodeAndCorporateIdentify(code,corporateIdentify);
+        List<DeviceInfo> list =new ArrayList<>();
+        list.add(deviceInfo);
+        List<FullDeviceInfoResp> reList =convertDeviceInfo(corporateIdentify,list);
+        if (!CheckParam.isNull(reList)){
+            return reList.get(0);
+        }
+        return null;
+    }
+
+    @Override
     public Pagination<SimpleDeviceInfoResp> findSimpleInfoByPage(DeviceInfoReq param, Long corporateIdentify) {
         Pagination<FullDeviceInfoResp> res = this.findByPage(param,corporateIdentify);
         Pagination<SimpleDeviceInfoResp> r = new Pagination(res.getCurrentPage(),res.getItemsPerPage(),res.getTotalCount());

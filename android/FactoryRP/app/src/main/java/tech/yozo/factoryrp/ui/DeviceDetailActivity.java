@@ -16,7 +16,6 @@ import tech.yozo.factoryrp.utils.Constant;
 
 public class DeviceDetailActivity extends AppCompatActivity {
     public static final String DEVICE_ID = "device_id";
-    public static final String DEVICE_CODE = "device_code";
 
     private ViewPager mViewPageContianer;
     private BottomNavigationView mNavigation;
@@ -77,13 +76,8 @@ public class DeviceDetailActivity extends AppCompatActivity {
             Bundle bundle = new Bundle();
 
             Intent intent = getIntent();
-            if(intent.hasExtra(DEVICE_ID)) {
-                bundle.putInt("param1", Constant.FOR_DEVICE_ID);
-                bundle.putString("param2", intent.getStringExtra(DEVICE_ID));
-            } else if(intent.hasExtra(DEVICE_CODE)) {
-                bundle.putInt("param1", Constant.FOR_DEVICE_CODE);
-                bundle.putString("param2", intent.getStringExtra(DEVICE_CODE));
-            }
+            bundle.putInt("mode", Constant.FOR_DEVICE_ID);
+            bundle.putLong("id", intent.getLongExtra(DEVICE_ID, -1));
 
             return Fragment.instantiate(DeviceDetailActivity.this, fragments[position], bundle);
         }

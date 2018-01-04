@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
-import android.widget.Toast;
 import tech.yozo.factoryrp.R;
 
 import java.util.ArrayList;
@@ -23,14 +22,12 @@ import java.util.Map;
  * create an instance of this fragment.
  */
 public class RepairWorkloadFragment extends BaseFragment {
-    // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_PARAM1 = "mode";
+    private static final String ARG_PARAM2 = "id";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private int mParam_mode;
+    private long mParam_id;
 
     private ListView mRepairWorkloadView;
 
@@ -46,12 +43,11 @@ public class RepairWorkloadFragment extends BaseFragment {
      * @param param2 Parameter 2.
      * @return A new instance of fragment RepairInfoFragment.
      */
-    // TODO: Rename and change types and number of parameters
-    public static RepairWorkloadFragment newInstance(String param1, String param2) {
+    public static RepairWorkloadFragment newInstance(int param1, long param2) {
         RepairWorkloadFragment fragment = new RepairWorkloadFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putInt(ARG_PARAM1, param1);
+        args.putLong(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -60,8 +56,8 @@ public class RepairWorkloadFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            mParam_mode = getArguments().getInt(ARG_PARAM1);
+            mParam_id = getArguments().getLong(ARG_PARAM2);
         }
     }
 

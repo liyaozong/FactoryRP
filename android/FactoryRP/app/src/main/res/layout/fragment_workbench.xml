@@ -10,7 +10,7 @@
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@android:color/background_light" android:paddingTop="6dp">
+            android:background="@android:color/background_light" android:paddingTop="6dp" android:paddingBottom="6dp">
         <Button
                 android:text="@string/action_ask_repair"
                 android:layout_width="match_parent"
@@ -24,15 +24,8 @@
                 android:layout_height="wrap_content" android:id="@+id/button_add_repair" android:layout_weight="1"
                 android:drawableTop="@drawable/selector_repair_order"
                 android:background="@android:color/background_light"
-                android:enabled="false"/>
+        />
 
-        <Button
-                android:text="@string/action_ask_parts"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:id="@+id/button_ask_parts" android:layout_weight="1"
-                android:drawableTop="@drawable/selector_ask_parts"
-                android:background="@android:color/background_light"
-                android:enabled="false"/>
         <Button
                 android:text="@string/action_add_device"
                 android:layout_width="match_parent"

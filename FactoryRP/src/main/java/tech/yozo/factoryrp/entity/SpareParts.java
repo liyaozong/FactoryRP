@@ -85,6 +85,10 @@ public class SpareParts extends BaseEntity implements Serializable {
     @Column(name = "inventory_upper_limit",length = 10)
     private Integer inventoryUpperLimit;
 
+    @ApiModelProperty(value = "备件备注",notes ="备件备注" )
+    @Column(name = "remark",length = 10)
+    private String remark;
+
     @ApiModelProperty(value = "自定义字段1",notes ="自定义字段1" )
     @Column(name = "extend_field_one")
     private String extendFieldOne;

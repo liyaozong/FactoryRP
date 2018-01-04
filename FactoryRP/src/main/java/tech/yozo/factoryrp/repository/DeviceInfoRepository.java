@@ -8,4 +8,6 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface DeviceInfoRepository extends BaseRepository<DeviceInfo,Long>{
+
+    public DeviceInfo findByCodeAndCorporateIdentify(String code,Long corporateIdentify);
 }

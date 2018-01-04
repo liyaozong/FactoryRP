@@ -1,25 +1,29 @@
 package tech.yozo.factoryrp.ui.fragment;
 
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ListView;
-import android.widget.SimpleAdapter;
-import android.widget.Toast;
+import android.widget.*;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import com.loopj.android.http.RequestParams;
 import tech.yozo.factoryrp.R;
+import tech.yozo.factoryrp.ui.dialog.LoadingDialog;
+import tech.yozo.factoryrp.utils.HttpClient;
+import tech.yozo.factoryrp.vo.req.EndRepairReq;
+import tech.yozo.factoryrp.vo.req.StartRepairReq;
+import tech.yozo.factoryrp.vo.req.SubmitRepairReq;
+import tech.yozo.factoryrp.vo.resp.device.trouble.WorkOrderDetailVo;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 维修意见页
@@ -27,24 +31,46 @@ import java.util.Map;
  * Use the {@link RepairAdviceFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class RepairAdviceFragment extends BaseFragment {
-    // TODO: Rename parameter arguments, choose names that match
+public class RepairAdviceFragment extends BaseFragment implements DatePickerDialog.OnDateSetListener, HttpClient.OnHttpListener {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-    @BindView(R.id.lv_repair_advice_info)
-    ListView lvRepairAdviceInfo;
+    private static final String ARG_PARAM1 = "mode";
+    private static final String ARG_PARAM2 = "obj";
+
     @BindView(R.id.b_start_repair)
     Button bStartRepair;
     @BindView(R.id.b_finish_repair)
     Button bFinishRepair;
+    @BindView(R.id.tv_repair_group)
+    TextView tvRepairGroup;
+    @BindView(R.id.spinner_repair_status)
+    Spinner spinnerRepairStatus;
+    @BindView(R.id.spinner_trouble_type)
+    Spinner spinnerTroubleType;
+    @BindView(R.id.spinner_trouble_reason)
+    Spinner spinnerTroubleReason;
+    @BindView(R.id.spinner_repair_level)
+    Spinner spinnerRepairLevel;
+    @BindView(R.id.spinner_is_stop)
+    Spinner spinnerIsStop;
+    @BindView(R.id.editText_stop_time)
+    EditText editTextStopTime;
+    @BindView(R.id.editText_repair_cost)
+    EditText editTextRepairCost;
+    @BindView(R.id.editText_repair_desc)
+    EditText editTextRepairDesc;
+    @BindView(R.id.tv_start_time)
+    TextView tvStartTime;
+    @BindView(R.id.tv_end_time)
+    TextView tvEndTime;
+    @BindView(R.id.editText_total_time)
+    EditText editTextTotalTime;
     Unbinder unbinder;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private int mParam_mode;
+    private WorkOrderDetailVo mParam_obj;
 
-    private ListView mRepairAdviceView;
+    private DatePickerDialog dateDialog;
+    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日");
 
     public RepairAdviceFragment() {
         // Required empty public constructor
@@ -58,12 +84,11 @@ public class RepairAdviceFragment extends BaseFragment {
      * @param param2 Parameter 2.
      * @return A new instance of fragment RepairInfoFragment.
      */
-    // TODO: Rename and change types and number of parameters
-    public static RepairAdviceFragment newInstance(String param1, String param2) {
+    public static RepairAdviceFragment newInstance(int param1, long param2) {
         RepairAdviceFragment fragment = new RepairAdviceFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putInt(ARG_PARAM1, param1);
+        args.putLong(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -72,8 +97,8 @@ public class RepairAdviceFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            mParam_mode = getArguments().getInt(ARG_PARAM1);
+            mParam_obj = (WorkOrderDetailVo) getArguments().getSerializable(ARG_PARAM2);
         }
     }
 
@@ -84,44 +109,28 @@ public class RepairAdviceFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_repair_advice, container, false);
         unbinder = ButterKnife.bind(this, view);
         //TODO
-        SimpleAdapter adapter = new SimpleAdapter(getContext(), getData(), R.layout.item_info_list,
-                new String[]{"name", "value"},
-                new int[]{R.id.tv_name, R.id.tv_value});
-        mRepairAdviceView = (ListView) view.findViewById(R.id.lv_repair_advice_info);
-        mRepairAdviceView.setAdapter(adapter);
+        tvRepairGroup.setText(String.valueOf(mParam_obj.getRepairGroupId()));
+        if(mParam_obj.getRepairStatus() != null) {
+            spinnerRepairStatus.setSelection(mParam_obj.getRepairStatus());
+        }
+//        spinnerTroubleType.setSelection(mParam_obj.getTroubleType());
+        if(mParam_obj.getTroubleReason() != null) {
+            spinnerTroubleReason.setSelection(mParam_obj.getTroubleReason());
+        }
+        if(mParam_obj.getRepairLevel() != null) {
+            spinnerRepairLevel.setSelection(mParam_obj.getRepairLevel());
+        }
+        if(mParam_obj.getStoped() != null) {
+            spinnerIsStop.setSelection(mParam_obj.getStoped());
+        }
+        editTextStopTime.setText(mParam_obj.getStopedHour());
+        editTextRepairCost.setText(mParam_obj.getRepairAmount());
+        editTextRepairDesc.setText(mParam_obj.getWorkRemark());
+        tvStartTime.setText(mParam_obj.getStartTime());
+        tvEndTime.setText(mParam_obj.getEndTime());
+        editTextTotalTime.setText(mParam_obj.getCostHour());
 
         return view;
-    }
-
-    private List<Map<String, Object>> getData() {
-        List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
-
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put("name", "维修班组：");
-        map.put("value", "电气班");
-        list.add(map);
-
-        map = new HashMap<String, Object>();
-        map.put("name", "维修人员：");
-        map.put("value", "工程师A");
-        list.add(map);
-
-        map = new HashMap<String, Object>();
-        map.put("name", "维修状态：");
-        map.put("value", "正在维修");
-        list.add(map);
-
-        map = new HashMap<String, Object>();
-        map.put("name", "故障原因：");
-        map.put("value", "线头松动");
-        list.add(map);
-
-        map = new HashMap<String, Object>();
-        map.put("name", "维修级别：");
-        map.put("value", "突发性故障");
-        list.add(map);
-
-        return list;
     }
 
     @Override
@@ -140,13 +149,60 @@ public class RepairAdviceFragment extends BaseFragment {
         unbinder.unbind();
     }
 
-    @OnClick({R.id.b_start_repair, R.id.b_finish_repair})
+
+    @OnClick({R.id.tv_start_time, R.id.tv_end_time, R.id.b_start_repair, R.id.b_finish_repair})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.b_start_repair:
+            case R.id.tv_start_time:
+            case R.id.tv_end_time:
+                openDateDialog();
                 break;
-            case R.id.b_finish_repair:
+            case R.id.b_start_repair: {
+                HttpClient client = HttpClient.getInstance();
+                StartRepairReq req = new StartRepairReq();
+                //TODO
+                req.setStartTime(tvStartTime.getText().toString());
+                req.setWorkRemark(editTextRepairDesc.getText().toString());
+                client.startRepairTask(getContext(), this, req);
+                break;
+            }
+            case R.id.b_finish_repair: {
+                HttpClient client = HttpClient.getInstance();
+                EndRepairReq req = new EndRepairReq();
+                //TODO
+                req.setEndTime(tvEndTime.getText().toString());
+                req.setWorkRemark(editTextRepairDesc.getText().toString());
+                client.endRepairTask(getContext(), this, req);
+                break;
+            }
+            default:
                 break;
         }
+    }
+
+    private void openDateDialog() {
+        if(dateDialog == null) {
+            final Calendar calendar = Calendar.getInstance();
+            int year = calendar.get(Calendar.YEAR);
+            int month = calendar.get(Calendar.MONTH);
+            int day = calendar.get(Calendar.DAY_OF_MONTH);
+            dateDialog = new DatePickerDialog(getContext(), this, year, month, day);
+        }
+        dateDialog.show();
+    }
+
+    @Override
+    public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+
+    }
+
+    @Override
+    public void onHttpSuccess(int requestType, Object obj, List<?> list) {
+
+    }
+
+    @Override
+    public void onFailure(int requestType) {
+
     }
 }

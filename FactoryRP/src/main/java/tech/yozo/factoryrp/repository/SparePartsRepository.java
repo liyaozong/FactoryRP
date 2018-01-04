@@ -10,6 +10,8 @@ import tech.yozo.factoryrp.entity.SpareParts;
 public interface SparePartsRepository extends BaseRepository<SpareParts,Long> {
 
 
+
+
     /**
      * 根据备件名称进行查询
      * @param name

@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">设备管理系统</string>
+    <string name="operator">北京银河灵动科技有限公司</string>
     <string name="manufacturer">华圣铝业有限公司</string>
 
     <!-- Strings related to login -->
@@ -7,17 +8,18 @@
     <string name="prompt_user">用户</string>
     <string name="prompt_password">密码</string>
     <string name="action_sign_in">登录</string>
-    <string name="action_logout">退出</string>
+    <string name="action_logout">注销</string>
     <string name="contact_us">联系我们</string>
     <string name="action_sign_in_short">登录</string>
     <string name="error_invalid_user">用户名无效</string>
-    <string name="error_invalid_password">密码长度不足</string>
+    <string name="error_invalid_password">密码不能为空</string>
     <string name="error_field_required">必填项</string>
 
     <string name="failure_get">获取内容失败</string>
+    <string name="failure_get_device">没有该设备的记录</string>
     <string name="failure_login">登录失败</string>
-    <string name="failure_service">服务器返回错误</string>
     <string name="failure_data_parse">数据解析错误</string>
+    <string name="failure_network">网络不可用，请检查网络设置</string>
     <string name="failure_request">请求错误，请查看手机网络或服务器状态</string>
     <string name="failure_camera_permission">没有授权，无法使用照相机</string>
 
@@ -36,21 +38,24 @@
     <string name="action_add_repair">填写工单</string>
     <string name="action_ask_parts">申请备件</string>
     <string name="action_save_device">保存</string>
+    <string name="action_repair_submit">提交验收</string>
 
     <string name="action_i_repair_it">抢单，我来维修</string>
     <string name="action_i_not_repair">撤单，我不修了</string>
+    <string name="action_validate_repair">验收</string>
     <string name="action_start_repair">开始维修</string>
     <string name="action_finish_repair">完成维修</string>
     <string name="action_repair_add_workload">添加人员工时</string>
     <string name="action_repair_add_parts">添加所需的配件</string>
 
     <string name="hint_catch_repair_success">抢单成功</string>
-    <string name="hint_finish_repair_success">抢单成功</string>
+    <string name="hint_give_up_repair_success">你成功放弃该工单</string>
+    <string name="hint_finish_repair_success">提交成功</string>
 
     <string name="title_scan_device">扫描设备条码</string>
     <string name="title_device_info">设备信息</string>
     <string name="title_device_detail">设备详情</string>
-    <string name="title_device_parts">设备备件</string>
+    <string name="title_device_parts">关联备件</string>
     <string name="title_device_repair_record">维修记录</string>
     <string name="title_device_maintain_record">保养记录</string>
     <string name="title_device_check_record">点检记录</string>
@@ -79,6 +84,7 @@
     <string name="text_device_provider">供应商：</string>
     <string name="text_device_fault_time">发生时间：</string>
     <string name="text_device_fault_level">故障等级：</string>
+    <string name="text_device_fault_reason">故障原因：</string>
     <string name="text_device_fault_type">故障类别：</string>
     <string name="text_device_repair_group">维修班组：</string>
     <string name="text_device_using_status">设备状态：</string>
@@ -88,6 +94,17 @@
     <string name="text_device_repair_submitter">报修人：</string>
     <string name="text_device_fault_desc">故障描述：</string>
     <string name="text_device_desc">备注：</string>
+    <string name="text_repair_no">维修工单号：</string>
+    <string name="text_maintainer">接单侠：</string>
+    <string name="text_repair_status">维修状态：</string>
+    <string name="text_repair_level">维修级别：</string>
+    <string name="text_is_stop_repair">是否停机：</string>
+    <string name="text_stop_time">停机时长：</string>
+    <string name="text_repair_cost">维修费用(元)：</string>
+    <string name="text_repair_desc">维修工作描述：</string>
+    <string name="text_repair_start_time">开始时间：</string>
+    <string name="text_repair_finish_time">完成时间：</string>
+    <string name="text_repair_total_time">维修用时：</string>
 
     <string name="loading_login">登录中</string>
     <string name="loading_loading">加载中</string>

@@ -9,6 +9,7 @@ import tech.yozo.factoryrp.page.Pagination;
 import tech.yozo.factoryrp.service.SparePartsService;
 import tech.yozo.factoryrp.utils.CheckParam;
 import tech.yozo.factoryrp.vo.base.ApiResponse;
+import tech.yozo.factoryrp.vo.req.SparePartEditReq;
 import tech.yozo.factoryrp.vo.req.SparePartsAddReq;
 import tech.yozo.factoryrp.vo.req.SparePartsQueryReq;
 import tech.yozo.factoryrp.vo.resp.sparepars.DeviceSparesMobileResp;
@@ -68,6 +69,18 @@ public class SparePartsController extends BaseController{
         return apiResponse(sparePartsService.findByPage(sparePartsQueryReq,corporateIdentify));
     }
 
+    /**
+     * 备件编辑接口
+     * @param sparePartEditReq
+     */
+    @ApiOperation(value = "备件编辑-WEB",notes = "备件编辑",httpMethod = "POST")
+    @PostMapping("/editSpareParts")
+    @ApiImplicitParam(dataType = "SparePartEditReq" ,name = "sparePartEditReq", paramType = "VO" ,
+            value = "备件编辑",required = true)
+    public ApiResponse editSparePartsById(@Valid @RequestBody SparePartEditReq sparePartEditReq){
+        sparePartsService.editSparePartsById(sparePartEditReq);
+        return apiResponse();
+    }
 
     /**
      * 手机端查询备件信息

@@ -12,13 +12,6 @@
               tools:context="tech.yozo.factoryrp.ui.LoginActivity">
 
     <!-- Login progress -->
-    <ProgressBar
-            android:id="@+id/login_progress"
-            style="?android:attr/progressBarStyleLarge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:visibility="gone"/>
 
     <ScrollView
             android:id="@+id/login_form"
@@ -58,7 +51,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                <AutoCompleteTextView
+                <EditText
                         android:id="@+id/address"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -74,7 +67,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                <AutoCompleteTextView
+                <EditText
                         android:id="@+id/user"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -119,7 +112,7 @@
             android:id="@+id/imageButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:srcCompat="@drawable/ic_contact_us"/>
+            app:srcCompat="@drawable/ic_contact_us" android:layout_marginTop="24dp" android:onClick="onAboutUS"/>
     <TextView
             android:id="@+id/contact_us_textView"
             android:layout_width="match_parent"
