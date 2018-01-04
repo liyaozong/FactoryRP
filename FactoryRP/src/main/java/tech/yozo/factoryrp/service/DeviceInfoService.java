@@ -33,6 +33,13 @@ public interface DeviceInfoService {
     public FullDeviceInfoResp getById(Long id,Long corporateIdentify);
 
     /**
+     * 根据设备编码查询
+     * @param code
+     * @return
+     */
+    public FullDeviceInfoResp getByCode(String code,Long corporateIdentify);
+
+    /**
      * 分页查询设备简略信息
      * @param param
      * @return

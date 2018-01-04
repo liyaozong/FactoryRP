@@ -61,6 +61,13 @@ public class DeviceInfoController extends BaseController{
         return apiResponse(deviceInfoService.findSimpleInfoByPage(param,corporateIdentify));
     }
 
+    @ApiOperation(value = "根据设备code查询设备信息--WEB/Mobile",notes = "根据设备code查询设备信息--WEB/Mobile",httpMethod = "GET")
+    @RequestMapping("getByCode")
+    public ApiResponse<FullDeviceInfoResp> getByCode(String code, HttpServletRequest request){
+        Long corporateIdentify = userAuthService.getCurrentUserCorporateIdentify(request);
+        return apiResponse(deviceInfoService.getByCode(code,corporateIdentify));
+    }
+
     /**
      * 批量删除设备信息
      * @param ids
