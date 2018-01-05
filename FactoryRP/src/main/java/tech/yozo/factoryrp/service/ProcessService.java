@@ -4,6 +4,7 @@ import tech.yozo.factoryrp.exception.BussinessException;
 import tech.yozo.factoryrp.vo.req.DeviceProcessAddReq;
 import tech.yozo.factoryrp.vo.resp.process.CreateProcessInstanceResp;
 import tech.yozo.factoryrp.vo.resp.process.DeviceProcessAddResp;
+import tech.yozo.factoryrp.vo.resp.process.ProcessStatusQueryResp;
 
 /**
  * 流程相关服务
@@ -12,6 +13,16 @@ import tech.yozo.factoryrp.vo.resp.process.DeviceProcessAddResp;
  * @description
  */
 public interface ProcessService {
+
+
+    /**
+     * 查询流程状态 查询当前流程实例的状态以及流程详细步骤的状态
+     * @param processInstanceId 流程实例ID
+     * @param corporateIdentify 企业唯一标识
+     * @return
+     * @throws BussinessException
+     */
+    ProcessStatusQueryResp queryProcessStatus(Long processInstanceId, Long corporateIdentify) throws BussinessException;
 
     /**
      * 开启流程
