@@ -9,19 +9,14 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.*;
 import android.widget.*;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import com.alibaba.fastjson.JSON;
-import com.loopj.android.http.JsonHttpResponseHandler;
-import cz.msebera.android.httpclient.Header;
-import cz.msebera.android.httpclient.entity.StringEntity;
-import org.json.JSONException;
-import org.json.JSONObject;
 import tech.yozo.factoryrp.R;
+import tech.yozo.factoryrp.entity.Department;
+import tech.yozo.factoryrp.entity.DeviceType;
 import tech.yozo.factoryrp.scan.Intents;
 import tech.yozo.factoryrp.scan.ScanActivity;
 import tech.yozo.factoryrp.ui.dialog.LoadingDialog;
@@ -30,7 +25,6 @@ import tech.yozo.factoryrp.vo.req.AddDeviceReq;
 import tech.yozo.factoryrp.vo.resp.ContactCompany;
 import tech.yozo.factoryrp.vo.resp.DeviceParamDicEnumResp;
 
-import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -95,6 +89,18 @@ public class DeviceAddActivity extends AppCompatActivity implements DatePickerDi
         } else {
             updateUI(HttpClient.REQUEST_CONTACT_COMPANY);
         }
+
+        if(client.getDeviceTypeList() == null)  {
+            client.requestDeviceType(this, this);
+        } else {
+            updateUI(HttpClient.REQUEST_DEVICE_TYPE_URL);
+        }
+
+        if(client.getDepartmentList() == null) {
+            client.requestDeptList(this, this);
+        } else {
+            updateUI(HttpClient.REQUEST_DEPARTMENT_LIST_URL);
+        }
     }
 
     @Override
@@ -131,6 +137,10 @@ public class DeviceAddActivity extends AppCompatActivity implements DatePickerDi
         String deviceCode = etDeviceCode.getText().toString();
         if (TextUtils.isEmpty(deviceCode)) {
             deviceCode = "DEV" + System.currentTimeMillis();
+        } else if(deviceCode.length() > 17) {
+            etDeviceCode.setError(getString(R.string.error_too_long));
+            focusView = etDeviceName;
+            cancel = true;
         }
 
         long manufacturerId = -1;
@@ -152,7 +162,6 @@ public class DeviceAddActivity extends AppCompatActivity implements DatePickerDi
             newDevice.setCode(deviceCode);
             newDevice.setName(deviceName);
             newDevice.setSpecification(etDeviceType.getText().toString());
-            //TODO
             newDevice.setDeviceType(spinnerDeviceCategory.getSelectedItemId());
             newDevice.setDeviceFlag(((DeviceParamDicEnumResp)spinnerDeviceIdentify.getSelectedItem()).getName());
             newDevice.setUseStatus(spinnerDeviceStatus.getSelectedItemId());
@@ -172,7 +181,7 @@ public class DeviceAddActivity extends AppCompatActivity implements DatePickerDi
                     .setMessage(R.string.loading_save);
             dialog = builder.create();
             dialog.show();
-            client.deviceAdd(this, this, newDevice);
+            client.requestDeviceAdd(this, this, newDevice);
         }
     }
 
@@ -259,6 +268,18 @@ public class DeviceAddActivity extends AppCompatActivity implements DatePickerDi
                 List<DeviceParamDicEnumResp> deviceIdentifyDict = client.getDictEnum(Constant.DICT_DEVICE_IDENTIFY);
                 if(deviceIdentifyDict != null) {
                     spinnerDeviceIdentify.setAdapter(new DictSpinnerAdapter(this, android.R.layout.simple_list_item_1, deviceIdentifyDict));
+                }
+                break;
+            case HttpClient.REQUEST_DEPARTMENT_LIST_URL:
+                List<Department> departments = client.getDepartmentList();
+                if(departments != null) {
+                    spinnerDeviceDept.setAdapter(new DepartmentSpinnerAdapter(this, android.R.layout.simple_list_item_1, departments));
+                }
+                break;
+            case HttpClient.REQUEST_DEVICE_TYPE_URL:
+                List<DeviceType> deviceTypes = client.getDeviceTypeList();
+                if(deviceTypes != null) {
+                    spinnerDeviceCategory.setAdapter(new DeviceTypeSpinnerAdapter(this, android.R.layout.simple_list_item_1, deviceTypes));
                 }
                 break;
             default:

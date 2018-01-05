@@ -76,7 +76,6 @@ public class PartsListFragment extends BaseFragment implements HttpClient.OnHttp
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_parts_list, container, false);
-        //TODO
         mPartsListView = (ListView) view.findViewById(R.id.lv_parts_list);
         mPartsListView.setEmptyView(view.findViewById(R.id.textView18));
         mListAdapter = new PartsListAdapter(getContext());
@@ -136,6 +135,7 @@ public class PartsListFragment extends BaseFragment implements HttpClient.OnHttp
                 }
                 break;
             case Constant.FOR_DEVICE_ID:
+
                 //TODO
                 break;
             case Constant.FOR_REPAIR_ID:
@@ -181,7 +181,7 @@ public class PartsListFragment extends BaseFragment implements HttpClient.OnHttp
     }
 
     public interface OnFragmentInteractionListener {
-        void onPartSelected(SparePartsResp device);
+        void onPartSelected(SparePartsResp parts);
     }
 
     private static class ViewHolder

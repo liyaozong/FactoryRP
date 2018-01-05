@@ -12,193 +12,184 @@
     <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-        <RelativeLayout android:layout_width="match_parent"
-                        android:layout_height="600dp">
+        <LinearLayout android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:orientation="vertical" android:background="@color/colorBackground">
 
             <include layout="@layout/select_device_element" android:id="@+id/linearLayout"/>
 
-            <ImageView
+            <LinearLayout
+                    android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="6dp" app:srcCompat="@color/colorBackground"
-                    android:layout_below="@+id/linearLayout"
-                    android:layout_marginTop="2dp" android:id="@+id/imageView21"/>
-            <EditText
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:inputType="date"
-                    android:ems="12"
-                    android:id="@+id/et_fault_time"
-                    android:layout_marginTop="2dp" android:layout_below="@+id/imageView21"
-                    android:layout_alignEnd="@+id/linearLayout"/>
-            <TextView
-                    android:text="@string/text_device_fault_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/textView41" android:layout_alignBaseline="@+id/et_fault_time"
-                    android:layout_alignBottom="@+id/et_fault_time" android:layout_alignStart="@+id/linearLayout"/>
-            <ImageView
+                    android:layout_height="wrap_content" android:background="@android:color/background_light"
+                    android:padding="4dp" android:layout_marginTop="2dp">
+                <TextView
+                        android:text="@string/text_device_fault_time"
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/textView41"
+                />
+                <Button
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/et_fault_time"
+                        android:layout_weight="1" android:background="@android:color/background_light"
+                        android:drawableEnd="@drawable/ic_device_info" android:textAlignment="viewStart"/>
+            </LinearLayout>
+            <LinearLayout
+                    android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="1dp" app:srcCompat="@color/colorBackground"
-                    android:layout_below="@+id/et_fault_time"
-                    android:layout_marginTop="2dp" android:id="@+id/imageView22"/>
-            <Spinner
-                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/spinner_fault_level"
-                    android:layout_below="@+id/imageView22" android:layout_alignEnd="@+id/linearLayout"
-                    android:layout_marginTop="8dp" android:layout_alignStart="@+id/et_fault_time"
-                    android:entries="@array/device_defect_level"/>
-            <TextView
-                    android:text="@string/text_device_fault_level"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/textView42" android:layout_alignBaseline="@+id/spinner_fault_level"
-                    android:layout_alignBottom="@+id/spinner_fault_level" android:layout_alignStart="@+id/textView41"/>
-            <ImageView
+                    android:background="@android:color/background_light" android:layout_marginTop="1dp"
+                    android:padding="4dp">
+                <TextView
+                        android:text="@string/text_device_fault_level"
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/textView42"
+                />
+                <Spinner
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/spinner_fault_level"
+                        android:layout_weight="1"/>
+            </LinearLayout>
+            <LinearLayout
+                    android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="1dp" app:srcCompat="@color/colorBackground"
-                    android:layout_below="@+id/spinner_fault_level"
-                    android:layout_marginTop="8dp" android:id="@+id/imageView23"/>
-            <Spinner
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" android:layout_below="@+id/imageView23"
-                    android:layout_alignEnd="@+id/spinner_fault_level" android:layout_marginTop="8dp"
-                    android:id="@+id/spinner_fault_type"
-                    android:layout_alignStart="@+id/spinner_fault_level"
-                    android:entries="@array/device_fault_type"/>
-            <TextView
-                    android:text="@string/text_device_fault_type"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/textView43" android:layout_alignBaseline="@+id/spinner_fault_type"
-                    android:layout_alignBottom="@+id/spinner_fault_type" android:layout_alignStart="@+id/textView42"/>
-            <ImageView
+                    android:layout_height="wrap_content" android:padding="4dp" android:layout_marginTop="1dp"
+                    android:background="@android:color/background_light">
+                <TextView
+                        android:text="@string/text_device_fault_type"
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/textView43"
+                />
+                <Spinner
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/spinner_fault_type"
+                        android:layout_weight="1"/>
+            </LinearLayout>
+            <LinearLayout
+                    android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" app:srcCompat="@color/colorBackground"
-                    android:layout_below="@+id/spinner_fault_type"
-                    android:layout_marginTop="8dp" android:id="@+id/imageView24"/>
-            <Spinner
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" android:layout_below="@+id/imageView24"
-                    android:layout_alignEnd="@+id/spinner_fault_type" android:layout_marginTop="8dp"
-                    android:id="@+id/spinner_repair_group"
-                    android:layout_alignStart="@+id/spinner_fault_type"
-                    android:entries="@array/maintain_group"/>
-            <TextView
-                    android:text="@string/text_device_repair_group"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/textView44" android:layout_alignBaseline="@+id/spinner_repair_group"
-                    android:layout_alignBottom="@+id/spinner_repair_group" android:layout_alignStart="@+id/textView43"/>
-            <ImageView
+                    android:layout_height="wrap_content" android:layout_marginTop="1dp" android:padding="4dp"
+                    android:background="@android:color/background_light">
+                <TextView
+                        android:text="@string/text_device_repair_group"
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/textView44"
+                />
+                <Spinner
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/spinner_repair_group"
+                        android:layout_weight="1"/>
+            </LinearLayout>
+            <LinearLayout
+                    android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="1dp" app:srcCompat="@color/colorBackground"
-                    android:layout_below="@+id/spinner_repair_group" android:layout_alignParentEnd="true"
-                    android:layout_marginTop="8dp" android:id="@+id/imageView25"/>
-            <Spinner
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" android:layout_below="@+id/imageView25"
-                    android:layout_alignEnd="@+id/spinner_repair_group" android:layout_marginTop="8dp"
-                    android:id="@+id/spinner_device_status"
-                    android:layout_alignStart="@+id/spinner_repair_group"
-                    android:entries="@array/device_using_status"/>
-            <TextView
-                    android:text="@string/text_device_using_status"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/textView45" android:layout_alignBaseline="@+id/spinner_device_status"
-                    android:layout_alignBottom="@+id/spinner_device_status"
-                    android:layout_alignStart="@+id/textView44"/>
-            <ImageView
+                    android:layout_height="wrap_content" android:layout_marginTop="1dp" android:padding="4dp"
+                    android:background="@android:color/background_light">
+                <TextView
+                        android:text="@string/text_device_using_status"
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/textView45"
+                />
+                <Spinner
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/spinner_device_status"
+                        android:layout_weight="1"/>
+            </LinearLayout>
+            <LinearLayout
+                    android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="1dp" app:srcCompat="@color/colorBackground"
-                    android:layout_below="@+id/spinner_device_status" android:layout_alignParentEnd="true"
-                    android:layout_marginTop="8dp" android:id="@+id/imageView26"/>
-            <EditText
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:inputType="textPersonName"
-                    android:ems="12"
-                    android:layout_below="@+id/imageView26" android:layout_alignEnd="@+id/spinner_device_status"
-                    android:layout_marginTop="2dp" android:id="@+id/et_operator"/>
-            <TextView
-                    android:text="@string/text_device_operator"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/textView46" android:layout_alignBaseline="@+id/et_operator"
-                    android:layout_alignBottom="@+id/et_operator" android:layout_alignStart="@+id/textView45"/>
-            <ImageView
+                    android:layout_height="wrap_content" android:layout_marginTop="1dp" android:padding="4dp"
+                    android:background="@android:color/background_light">
+                <TextView
+                        android:text="@string/text_device_operator"
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/textView46"
+                />
+                <EditText
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPersonName"
+                        android:ems="12"
+                        android:id="@+id/et_operator" android:layout_weight="1"/>
+            </LinearLayout>
+            <LinearLayout
+                    android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="1dp" app:srcCompat="@color/colorBackground"
-                    android:layout_below="@+id/et_operator" android:layout_alignParentEnd="true"
-                    android:layout_marginTop="2dp" android:id="@+id/imageView27"/>
-            <EditText
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:inputType="textPersonName"
-                    android:ems="12"
-                    android:layout_below="@+id/imageView27" android:layout_alignEnd="@+id/et_operator"
-                    android:layout_marginTop="2dp" android:id="@+id/et_phone_number"/>
-            <TextView
-                    android:text="@string/text_device_operator_phone"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/textView47" android:layout_alignBaseline="@+id/et_phone_number"
-                    android:layout_alignBottom="@+id/et_phone_number" android:layout_alignStart="@+id/textView46"/>
-            <ImageView
+                    android:layout_height="wrap_content" android:layout_marginTop="1dp" android:padding="4dp"
+                    android:background="@android:color/background_light">
+                <TextView
+                        android:text="@string/text_device_operator_phone"
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/textView47"
+                />
+                <EditText
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:ems="12"
+                        android:id="@+id/et_phone_number" android:layout_weight="1"/>
+            </LinearLayout>
+            <LinearLayout
+                    android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="1dp" app:srcCompat="@color/colorBackground"
-                    android:layout_below="@+id/et_phone_number" android:layout_alignParentEnd="true"
-                    android:layout_marginTop="2dp" android:id="@+id/imageView28"/>
-            <EditText
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:inputType="textPersonName"
-                    android:ems="12"
-                    android:layout_below="@+id/imageView28" android:layout_alignEnd="@+id/et_phone_number"
-                    android:layout_marginTop="2dp" android:id="@+id/et_device_place"/>
-            <TextView
-                    android:text="@string/text_device_using_place"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/textView48" android:layout_alignBaseline="@+id/et_device_place"
-                    android:layout_alignBottom="@+id/et_device_place" android:layout_alignStart="@+id/textView47"/>
-            <ImageView
+                    android:layout_height="wrap_content" android:layout_marginTop="1dp" android:padding="4dp"
+                    android:background="@android:color/background_light">
+                <TextView
+                        android:text="@string/text_device_using_place"
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/textView48"
+                />
+                <EditText
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPersonName"
+                        android:ems="12"
+                        android:id="@+id/et_device_place" android:layout_weight="1"/>
+            </LinearLayout>
+            <LinearLayout
+                    android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="6dp" app:srcCompat="@color/colorBackground"
-                    android:layout_below="@+id/et_device_place" android:layout_alignParentEnd="true"
-                    android:layout_marginTop="2dp" android:id="@+id/imageView30"/>
-            <EditText
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:inputType="textMultiLine"
-                    android:ems="12"
-                    android:layout_below="@+id/imageView30" android:layout_alignEnd="@+id/et_device_place"
-                    android:layout_marginTop="2dp" android:id="@+id/et_fault_desc" android:minLines="2"/>
-            <TextView
-                    android:text="@string/text_device_fault_desc"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/textView50" android:layout_alignBaseline="@+id/et_fault_desc"
-                    android:layout_alignBottom="@+id/et_fault_desc" android:layout_alignStart="@+id/textView49"/>
-            <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp" app:srcCompat="@color/colorBackground"
-                    android:layout_below="@+id/et_fault_desc" android:layout_alignParentEnd="true"
-                    android:id="@+id/imageView31" android:layout_marginTop="2dp"/>
+                    android:layout_height="wrap_content" android:layout_marginTop="1dp" android:padding="4dp"
+                    android:background="@android:color/background_light">
+                <TextView
+                        android:text="@string/text_device_fault_desc"
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/textView50"
+                />
+                <EditText
+                        android:layout_height="wrap_content"
+                        android:inputType="textMultiLine"
+                        android:ems="12"
+                        android:id="@+id/et_fault_desc" android:minLines="3"
+                        android:layout_weight="1" android:layout_width="0dp"/>
+            </LinearLayout>
             <HorizontalScrollView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/imageView31" android:layout_alignEnd="@+id/et_fault_desc"
-                    android:layout_alignStart="@+id/linearLayout" android:layout_marginTop="2dp">
-                <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent"
+                    android:layout_marginTop="2dp"
+                    android:visibility="gone" android:background="@android:color/background_light"
+                    android:padding="8dp">
+                <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
                               android:orientation="horizontal" android:id="@+id/ll_images">
                     <ImageButton
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content" app:srcCompat="@android:drawable/ic_menu_camera"
-                            android:id="@+id/ib_capture"/>
+                            android:id="@+id/ib_capture" android:background="@android:color/background_light"/>
                 </LinearLayout>
             </HorizontalScrollView>
-        </RelativeLayout>
+        </LinearLayout>
     </ScrollView>
 </LinearLayout>

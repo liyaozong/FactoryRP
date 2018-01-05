@@ -1,5 +1,6 @@
 package tech.yozo.factoryrp.ui;
 
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -10,12 +11,14 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.content.Intent;
 import android.widget.Toast;
+import com.loopj.android.http.RequestParams;
 import tech.yozo.factoryrp.R;
 import tech.yozo.factoryrp.scan.Intents;
 import tech.yozo.factoryrp.scan.ScanActivity;
@@ -26,6 +29,7 @@ import tech.yozo.factoryrp.ui.fragment.WorkBenchFragment;
 import tech.yozo.factoryrp.utils.BottomNavigationViewHelper;
 import tech.yozo.factoryrp.utils.Constant;
 import tech.yozo.factoryrp.utils.HttpClient;
+import tech.yozo.factoryrp.vo.resp.device.info.FullDeviceInfoResp;
 import tech.yozo.factoryrp.vo.resp.device.info.SimpleDeviceInfoResp;
 
 import java.util.List;
@@ -150,27 +154,45 @@ public class MainActivity extends AppCompatActivity implements HttpClient.OnHttp
     }
 
     @Override
+    public void onBackPressed() {
+        new AlertDialog.Builder(this).setTitle("确认退出吗？")
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        MainActivity.this.finish();
+                    }
+                })
+                .setNegativeButton("返回", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // 点击“返回”后的操作,这里不设置没有任何操作
+                    }
+                }).show();
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case SCAN_CODE:
+                    boolean needNet = true;
                     String code = data.getStringExtra(Intents.Scan.RESULT);
-                    List<SimpleDeviceInfoResp> list = HttpClient.getInstance().getSimpleDeviceList();
-                    if(list != null) {
-                        for(SimpleDeviceInfoResp item : list) {
-                            if(code.contentEquals(item.getCode())) {
-                                Intent intent = new Intent(this, DeviceDetailActivity.class);
-                                intent.putExtra(DeviceDetailActivity.DEVICE_ID, item.getId());
-                                startActivity(intent);
-                                return;
-                            }
+                    HttpClient client = HttpClient.getInstance();
+                    List<FullDeviceInfoResp> list = client.getFullDeviceInfoRespList();
+                    for(FullDeviceInfoResp device : list) {
+                        if (code.contentEquals(device.getCode())) {
+                            Intent intent = new Intent(this, DeviceDetailActivity.class);
+                            intent.putExtra(DeviceDetailActivity.DEVICE_ID, device.getId());
+                            startActivity(intent);
+                            needNet = false;
+                            break;
                         }
-                        Toast.makeText(this, R.string.failure_get_device, Toast.LENGTH_SHORT).show();
-                    } else {
-//                        HttpClient.getInstance().requestDeviceList(this, this);
-                        //TODO
-                        Toast.makeText(this, R.string.failure_get_device, Toast.LENGTH_SHORT).show();
+                    }
+                    if(needNet) {
+                        RequestParams params = new RequestParams();
+                        params.put("code", code);
+                        client.requestDeviceByCode(this, this, params);
                     }
                     break;
                 default:
@@ -194,6 +216,12 @@ public class MainActivity extends AppCompatActivity implements HttpClient.OnHttp
 
     @Override
     public void onHttpSuccess(int requestType, Object obj, List<?> list) {
+        if (requestType == HttpClient.REQUEST_DEVICE_GET_BY_CODE) {
+            FullDeviceInfoResp device = (FullDeviceInfoResp) obj;
+            Intent intent = new Intent(this, DeviceDetailActivity.class);
+            intent.putExtra(DeviceDetailActivity.DEVICE_ID, device.getId());
+            startActivity(intent);
+        }
 
     }
 

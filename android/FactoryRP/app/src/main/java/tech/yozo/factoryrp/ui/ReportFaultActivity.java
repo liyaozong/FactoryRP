@@ -2,7 +2,6 @@ package tech.yozo.factoryrp.ui;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -12,7 +11,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,18 +18,18 @@ import android.widget.*;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import com.alibaba.fastjson.JSON;
+import com.loopj.android.http.RequestParams;
 import tech.yozo.factoryrp.R;
+import tech.yozo.factoryrp.entity.RepairGroup;
 import tech.yozo.factoryrp.scan.Intents;
 import tech.yozo.factoryrp.scan.ScanActivity;
 import tech.yozo.factoryrp.ui.dialog.LoadingDialog;
-import tech.yozo.factoryrp.utils.Constant;
-import tech.yozo.factoryrp.utils.DictSpinnerAdapter;
-import tech.yozo.factoryrp.utils.HttpClient;
+import tech.yozo.factoryrp.utils.*;
 import tech.yozo.factoryrp.vo.req.AddTroubleRecordReq;
-import tech.yozo.factoryrp.vo.resp.ContactCompany;
 import tech.yozo.factoryrp.vo.resp.DeviceParamDicEnumResp;
+import tech.yozo.factoryrp.vo.resp.device.info.FullDeviceInfoResp;
 import tech.yozo.factoryrp.vo.resp.device.info.SimpleDeviceInfoResp;
+import tech.yozo.factoryrp.vo.resp.device.trouble.DeviceTroubleTypeVo;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -56,7 +54,7 @@ public class ReportFaultActivity extends AppCompatActivity implements DatePicker
     @BindView(R.id.tv_device_using_dept)
     TextView tvDeviceUsingDept;
     @BindView(R.id.et_fault_time)
-    EditText etFaultTime;
+    Button etFaultTime;
     @BindView(R.id.spinner_fault_level)
     Spinner spinnerFaultLevel;
     @BindView(R.id.spinner_fault_type)
@@ -100,10 +98,6 @@ public class ReportFaultActivity extends AppCompatActivity implements DatePicker
 //        if(deviceUseStatusDict != null) {
 //            spinnerDeviceStatus.setAdapter(new DictSpinnerAdapter(this, android.R.layout.simple_list_item_1, deviceUseStatusDict));
 //        }
-//        List<DeviceParamDicEnumResp> troubleLevelDict = JSON.parseArray(sharedPreferences.getString("troubleLevelDict", ""), DeviceParamDicEnumResp.class);
-//        if(troubleLevelDict != null) {
-//            spinnerFaultLevel.setAdapter(new DictSpinnerAdapter(this, android.R.layout.simple_list_item_1, troubleLevelDict));
-//        }
 
         HttpClient client = HttpClient.getInstance();
         if(client.getDictEnum(Constant.DICT_TROUBLE_LEVEL) == null) {
@@ -117,7 +111,18 @@ public class ReportFaultActivity extends AppCompatActivity implements DatePicker
         } else {
             updateUI(HttpClient.REQUEST_DATA_DICT);
         }
-        //TODO 维修班组 故障类别
+
+        if(client.getRepairGroupList() == null) {
+            client.requestRepairGroup(this, this);
+        } else {
+            updateUI(HttpClient.REQUEST_REPAIR_GROUP_URL);
+        }
+
+        if(client.getTroubleTypeVoList() == null) {
+            client.requestTroubleType(this, this);
+        } else {
+            updateUI(HttpClient.REQUEST_DEVICE_TROUBLE_TYPE_URL);
+        }
     }
 
     @Override
@@ -137,7 +142,6 @@ public class ReportFaultActivity extends AppCompatActivity implements DatePicker
     }
 
     private void attemptSaveTrouble() {
-        //TODO
         boolean cancel = false;
         View focusView = null;
 
@@ -170,13 +174,12 @@ public class ReportFaultActivity extends AppCompatActivity implements DatePicker
             reportReq.setPhone(etPhoneNumber.getText().toString());
             reportReq.setDeviceAddress(etDevicePlace.getText().toString());
             reportReq.setRemark(etFaultDesc.getText().toString());
-            //TODO 图片处理
 
             LoadingDialog.Builder builder = new LoadingDialog.Builder(this)
                     .setMessage(R.string.loading_report);
             dialog = builder.create();
             dialog.show();
-            client.reportFault(this, this, reportReq);
+            client.requestReportFault(this, this, reportReq);
         }
     }
 
@@ -208,7 +211,9 @@ public class ReportFaultActivity extends AppCompatActivity implements DatePicker
                                 }
                             }
                         } else {
-                            //TODO
+                            RequestParams params = new RequestParams();
+                            params.put("code", data.getStringExtra(Intents.Scan.RESULT));
+                            HttpClient.getInstance().requestDeviceByCode(this, this, params);
                         }
                     }
                     break;
@@ -303,6 +308,9 @@ public class ReportFaultActivity extends AppCompatActivity implements DatePicker
     public void onHttpSuccess(int requestType, Object obj, List<?> list) {
         if(requestType == HttpClient.REQUEST_TROUBLE_ADD) {
             dialog.dismiss();
+        } else if (requestType == HttpClient.REQUEST_DEVICE_GET_BY_CODE) {
+            FullDeviceInfoResp device = (FullDeviceInfoResp) obj;
+            showSelectedDevice(device);
         }
         updateUI(requestType);
     }
@@ -328,6 +336,18 @@ public class ReportFaultActivity extends AppCompatActivity implements DatePicker
                 List<DeviceParamDicEnumResp> troubleLevelDict = client.getDictEnum(Constant.DICT_TROUBLE_LEVEL);
                 if(troubleLevelDict != null) {
                     spinnerFaultLevel.setAdapter(new DictSpinnerAdapter(this, android.R.layout.simple_list_item_1, troubleLevelDict));
+                }
+                break;
+            case HttpClient.REQUEST_DEVICE_TROUBLE_TYPE_URL:
+                List<DeviceTroubleTypeVo> troubleTypeVoList = client.getTroubleTypeVoList();
+                if(troubleTypeVoList != null) {
+                    spinnerFaultType.setAdapter(new TroubleTypeSpinnerAdapter(this, android.R.layout.simple_list_item_1, troubleTypeVoList));
+                }
+                break;
+            case HttpClient.REQUEST_REPAIR_GROUP_URL:
+                List<RepairGroup> repairGroupList = client.getRepairGroupList();
+                if(repairGroupList != null) {
+                    spinnerRepairGroup.setAdapter(new GroupSpinnerAdapter(this, android.R.layout.simple_list_item_1, repairGroupList));
                 }
                 break;
             default:

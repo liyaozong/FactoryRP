@@ -8,20 +8,20 @@ import java.io.Serializable;
 public class SimpleDeviceInfoResp implements Serializable {
 
 //    @ApiModelProperty(value = "主键")
-    private Long id;
+    protected Long id;
 
 //    @ApiModelProperty(value = "设备名称")
-    private String name;
+    protected String name;
 
 //    @ApiModelProperty(value = "规格型号")
-    private String specification;
+    protected String specification;
 
 //    @ApiModelProperty(value = "设备编号")
-    private String code;
+    protected String code;
 
 //    @ApiModelProperty(value = "安装地点")
-    private String installationAddress;
+    protected String installationAddress;
 
 //    @ApiModelProperty(value = "使用部门")
-    private String useDept;
+    protected String useDept;
 }

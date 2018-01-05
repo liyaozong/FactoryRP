@@ -8,7 +8,7 @@
 
     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:id="@+id/ll_user"
                   android:background="@android:color/background_light" android:gravity="center_vertical"
-                  android:padding="6dp">
+                  android:padding="12dp">
         <ImageView
                 android:layout_width="70dp"
                 android:layout_height="70dp" app:srcCompat="@drawable/ic_person" android:id="@+id/imageView3"
@@ -30,7 +30,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" android:layout_gravity="center_vertical"
             android:gravity="center_vertical" android:background="@android:color/background_light"
-            android:layout_marginTop="6dp" android:padding="8dp" android:id="@+id/ll_my_repair">
+            android:layout_marginTop="6dp" android:id="@+id/ll_my_repair"
+            android:paddingTop="12dp" android:paddingBottom="12dp" android:paddingStart="8dp">
         <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" app:srcCompat="@drawable/ic_ask_repair"
@@ -46,7 +47,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" android:layout_gravity="center_vertical"
             android:gravity="center_vertical" android:background="@android:color/background_light"
-            android:layout_marginTop="6dp" android:padding="8dp" android:id="@+id/ll_change_password">
+            android:layout_marginTop="6dp" android:id="@+id/ll_change_password" android:paddingBottom="12dp"
+            android:paddingStart="8dp" android:paddingTop="12dp">
         <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" app:srcCompat="@drawable/ic_ask_repair"
@@ -62,23 +64,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" android:layout_gravity="center_vertical"
             android:gravity="center_vertical" android:background="@android:color/background_light"
-            android:layout_marginTop="1dp" android:padding="8dp" android:id="@+id/ll_data_sync">
-        <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" app:srcCompat="@drawable/ic_ask_repair"
-                android:id="@+id/imageView10"/>
-        <TextView
-                android:text="数据同步"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:id="@+id/textView22" android:layout_weight="1"
-                android:paddingStart="6dp"/>
-    </LinearLayout>
-    <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:layout_gravity="center_vertical"
-            android:gravity="center_vertical" android:background="@android:color/background_light"
-            android:layout_marginTop="1dp" android:padding="8dp" android:id="@+id/ll_check_update">
+            android:layout_marginTop="1dp" android:id="@+id/ll_check_update" android:paddingBottom="12dp"
+            android:paddingTop="12dp" android:paddingStart="8dp">
         <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" app:srcCompat="@drawable/ic_ask_repair"
@@ -94,7 +81,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" android:layout_gravity="center_vertical"
             android:gravity="center_vertical" android:background="@android:color/background_light"
-            android:layout_marginTop="1dp" android:padding="8dp" android:id="@+id/ll_about_us">
+            android:layout_marginTop="1dp" android:id="@+id/ll_about_us" android:paddingBottom="12dp"
+            android:paddingTop="12dp" android:paddingStart="8dp">
         <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" app:srcCompat="@drawable/ic_ask_repair"

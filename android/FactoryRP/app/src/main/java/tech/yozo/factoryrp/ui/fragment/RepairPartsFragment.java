@@ -1,14 +1,17 @@
 package tech.yozo.factoryrp.ui.fragment;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import tech.yozo.factoryrp.R;
+import tech.yozo.factoryrp.ui.PartsSelectActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,6 +33,7 @@ public class RepairPartsFragment extends BaseFragment {
     private long mParam_id;
 
     private ListView mRepairPartsView;
+    private Button mAddParts;
 
     public RepairPartsFragment() {
         // Required empty public constructor
@@ -66,6 +70,13 @@ public class RepairPartsFragment extends BaseFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_repair_parts, container, false);
+        mAddParts = (Button) view.findViewById(R.id.b_add_part);
+        mAddParts.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getActivity(), PartsSelectActivity.class));
+            }
+        });
         //TODO
         SimpleAdapter adapter = new SimpleAdapter(getContext(), getData(), R.layout.item_info_list,
                 new String[]{"name","value"},
