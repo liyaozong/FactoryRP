@@ -7,18 +7,18 @@ import java.util.Date;
 
 @Data
 //@ApiModel(value = "完整设备信息")
-public class FullDeviceInfoResp implements Serializable {
+public class FullDeviceInfoResp extends SimpleDeviceInfoResp implements Serializable {
 //    @ApiModelProperty(value = "主键",notes ="主键" )
-    private Long id;
+//    private Long id;
 
 //    @ApiModelProperty(value = "设备名称",notes ="设备名称" )
-    private String name;
+//    private String name;
 
 //    @ApiModelProperty(value = "规格型号",notes ="规格型号" )
-    private String specification;
+//    private String specification;
 
 //    @ApiModelProperty(value = "设备编号",notes ="设备编号" )
-    private String code;
+//    private String code;
 
 //    @ApiModelProperty(value = "生产厂商",notes ="生产厂商" )
     private String manufacturer;
@@ -54,13 +54,13 @@ public class FullDeviceInfoResp implements Serializable {
     private String useStatus;
 
 //    @ApiModelProperty(value = "安装地点",notes ="安装地点" )
-    private String installationAddress;
+//    private String installationAddress;
 
 //    @ApiModelProperty(value = "操作员",notes ="操作员" )
     private String operator;
 
 //    @ApiModelProperty(value = "使用部门",notes ="使用部门" )
-    private String useDept;
+//    private String useDept;
 
 //    @ApiModelProperty(value = "备注",notes ="备注" )
     private String remark;

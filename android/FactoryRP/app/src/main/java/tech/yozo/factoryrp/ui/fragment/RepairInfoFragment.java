@@ -1,13 +1,13 @@
 package tech.yozo.factoryrp.ui.fragment;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -15,14 +15,12 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 import com.loopj.android.http.RequestParams;
 import tech.yozo.factoryrp.R;
+import tech.yozo.factoryrp.ui.ValidateRepairActivity;
 import tech.yozo.factoryrp.utils.HttpClient;
 import tech.yozo.factoryrp.vo.req.ValidateRepairReq;
 import tech.yozo.factoryrp.vo.resp.device.trouble.WorkOrderDetailVo;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 维修信息页
@@ -148,25 +146,20 @@ public class RepairInfoFragment extends BaseFragment implements HttpClient.OnHtt
                 HttpClient client = HttpClient.getInstance();
                 RequestParams params = new RequestParams();
                 params.put("id", mParam_obj.getTroubleRecordId());
-                client.grabRepairTask(getContext(), this, params);
+                client.requestGrabRepairTask(getContext(), this, params);
                 break;
             }
             case R.id.b_i_not_repair: {
                 HttpClient client = HttpClient.getInstance();
                 RequestParams params = new RequestParams();
                 params.put("id", mParam_obj.getTroubleRecordId());
-                client.giveUpRepairTask(getContext(), this, params);
+                client.requestGiveUpRepairTask(getContext(), this, params);
                 break;
             }
             case R.id.b_validate_repair: {
-                //TODO 用模态对话框来实现
-                HttpClient client = HttpClient.getInstance();
-                ValidateRepairReq req = new ValidateRepairReq();
-                req.setTroubleRecordId(mParam_obj.getTroubleRecordId());
-                req.setRepaired(1);
-                req.setSuggest("");
-                req.setStarLevel(5);
-                client.validateRepairTask(getContext(), this, req);
+                Intent intent = new Intent(getActivity(), ValidateRepairActivity.class);
+                intent.putExtra("id", mParam_obj.getTroubleRecordId());
+                startActivity(intent);
                 break;
             }
             default:

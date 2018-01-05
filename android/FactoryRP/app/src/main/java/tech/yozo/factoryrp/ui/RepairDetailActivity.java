@@ -1,5 +1,6 @@
 package tech.yozo.factoryrp.ui;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -7,6 +8,7 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -34,6 +36,9 @@ public class RepairDetailActivity extends AppCompatActivity implements HttpClien
     private WorkOrderDetailVo detailVo;
     private int mode;
     private long id;
+
+    private boolean cancelForParts;
+    private boolean cancelForTimes;
 
     private String[] fragments = new String[]{
             RepairInfoFragment.class.getName(),
@@ -125,8 +130,6 @@ public class RepairDetailActivity extends AppCompatActivity implements HttpClien
         mNavigation = (BottomNavigationView) findViewById(R.id.navigation_repair);
         BottomNavigationViewHelper.disableShiftMode(mNavigation);
         mNavigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-
-
     }
 
     @Override
@@ -139,7 +142,18 @@ public class RepairDetailActivity extends AppCompatActivity implements HttpClien
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_submit:
-                attemptSubmitRepair();
+                if(detailVo.getReplaceSpares() == null) {
+                    cancelForParts = true;
+                    partsAlertDialog();
+                } else {
+                    cancelForParts = false;
+                }
+                if(detailVo.getWorkTimes() == null) {
+                    cancelForTimes = true;
+                    timesAlertDialog();
+                } else {
+                    cancelForTimes = false;
+                }
                 return true;
         }
 
@@ -147,13 +161,58 @@ public class RepairDetailActivity extends AppCompatActivity implements HttpClien
     }
 
     private void attemptSubmitRepair() {
-        //TODO
-        HttpClient client = HttpClient.getInstance();
-        SubmitRepairReq req = new SubmitRepairReq();
-        req.setTroubleRecordId(detailVo.getTroubleRecordId());
-        req.setReplaceSpares(detailVo.getReplaceSpares());
-        req.setWorkTimes(detailVo.getWorkTimes());
-        client.submitRepairTask(this, this, req);
+        if(!cancelForParts && !cancelForTimes) {
+            HttpClient client = HttpClient.getInstance();
+            SubmitRepairReq req = new SubmitRepairReq();
+            req.setTroubleRecordId(detailVo.getTroubleRecordId());
+            req.setReplaceSpares(detailVo.getReplaceSpares());
+            req.setWorkTimes(detailVo.getWorkTimes());
+            client.requestSubmitRepairTask(this, this, req);
+        }
+    }
+
+    private void partsAlertDialog() {
+        final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setTitle(R.string.hint);
+        alertDialogBuilder.setMessage(R.string.submit_hint_1);
+        alertDialogBuilder.setPositiveButton(R.string.submit_positive_1, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                cancelForParts = false;
+                attemptSubmitRepair();
+            }
+        });
+        alertDialogBuilder.setNegativeButton(R.string.submit_negative, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                cancelForParts = true;
+            }
+        });
+
+        AlertDialog dialog = alertDialogBuilder.create();
+        dialog.show();
+    }
+
+    private void timesAlertDialog() {
+        final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setTitle(R.string.hint);
+        alertDialogBuilder.setMessage(R.string.submit_hint_2);
+        alertDialogBuilder.setPositiveButton(R.string.submit_positive_2, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                cancelForTimes = false;
+                attemptSubmitRepair();
+            }
+        });
+        alertDialogBuilder.setNegativeButton(R.string.submit_negative, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                cancelForTimes = true;
+            }
+        });
+
+        AlertDialog dialog = alertDialogBuilder.create();
+        dialog.show();
     }
 
     @Override

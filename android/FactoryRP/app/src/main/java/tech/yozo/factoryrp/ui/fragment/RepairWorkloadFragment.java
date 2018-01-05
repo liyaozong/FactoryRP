@@ -1,14 +1,21 @@
 package tech.yozo.factoryrp.ui.fragment;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.Unbinder;
 import tech.yozo.factoryrp.R;
+import tech.yozo.factoryrp.ui.MaintainerSelectActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,11 +32,14 @@ public class RepairWorkloadFragment extends BaseFragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "mode";
     private static final String ARG_PARAM2 = "id";
+    @BindView(R.id.b_add_workload)
+    Button bAddWorkload;
+    @BindView(R.id.lv_repair_workload)
+    ListView lvRepairWorkload;
+    Unbinder unbinder;
 
     private int mParam_mode;
     private long mParam_id;
-
-    private ListView mRepairWorkloadView;
 
     public RepairWorkloadFragment() {
         // Required empty public constructor
@@ -66,12 +76,13 @@ public class RepairWorkloadFragment extends BaseFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_repair_workload, container, false);
+        unbinder = ButterKnife.bind(this, view);
+
         //TODO
         SimpleAdapter adapter = new SimpleAdapter(getContext(), getData(), R.layout.item_info_list,
-                new String[]{"name","value"},
-                new int[]{R.id.tv_name,R.id.tv_value});
-        mRepairWorkloadView = (ListView) view.findViewById(R.id.lv_repair_workload);
-        mRepairWorkloadView.setAdapter(adapter);
+                new String[]{"name", "value"},
+                new int[]{R.id.tv_name, R.id.tv_value});
+        lvRepairWorkload.setAdapter(adapter);
         return view;
     }
 
@@ -99,5 +110,20 @@ public class RepairWorkloadFragment extends BaseFragment {
     @Override
     protected void buildUI() {
 
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+    }
+
+    @OnClick({R.id.b_add_workload})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.b_add_workload:
+                startActivity(new Intent(getActivity(), MaintainerSelectActivity.class));
+                break;
+        }
     }
 }

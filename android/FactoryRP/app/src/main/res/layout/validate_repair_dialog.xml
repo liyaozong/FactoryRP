@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent" android:orientation="vertical" android:gravity="center_horizontal">
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:paddingStart="4dp" android:paddingEnd="4dp"
+            android:paddingBottom="8dp" android:paddingTop="8dp" android:gravity="center_vertical">
+        <TextView
+                android:text="故障是否修复"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content" android:id="@+id/textView75"/>
+        <RadioGroup
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" android:id="@+id/rg_repair_suecss" android:layout_weight="1">
+            <RadioButton
+                    android:text="是"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:id="@+id/radioButton_yes" android:layout_weight="1"/>
+            <RadioButton
+                    android:text="否"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:id="@+id/radioButton_no" android:layout_weight="1"/>
+        </RadioGroup>
+    </LinearLayout>
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:padding="4dp" android:gravity="center_vertical"
+            android:layout_marginTop="1dp">
+        <TextView
+                android:text="是否重新修复"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content" android:id="@+id/textView77"/>
+        <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/checkBox_again" android:layout_weight="1"/>
+    </LinearLayout>
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:padding="4dp" android:gravity="center_vertical"
+            android:layout_marginTop="1dp">
+        <TextView
+                android:text="评价与建议"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content" android:id="@+id/textView79"/>
+        <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                android:ems="10"
+                android:id="@+id/editText_comment" android:layout_weight="1" android:minLines="3"/>
+    </LinearLayout>
+    <RatingBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/comment_star" android:numStars="5"
+            android:layout_marginTop="12dp" android:stepSize="1"/>
+    <Space
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:layout_weight="1"/>
+    <Button
+            android:text="提交"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:id="@+id/submit_button" android:layout_marginTop="12dp"
+    />
+</LinearLayout>

@@ -96,7 +96,7 @@ public class DeviceInfoFragment extends BaseFragment implements HttpClient.OnHtt
         if(!exist) {
             RequestParams params = new RequestParams();
             params.put("id", mParam_id);
-            client.getDeviceById(getContext(), this, params);
+            client.requestDeviceById(getContext(), this, params);
         }
     }
 
