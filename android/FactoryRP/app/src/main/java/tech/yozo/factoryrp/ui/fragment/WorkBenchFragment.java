@@ -15,6 +15,7 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 import tech.yozo.factoryrp.R;
 import tech.yozo.factoryrp.ui.DeviceAddActivity;
+import tech.yozo.factoryrp.ui.RepairAddActivity;
 import tech.yozo.factoryrp.ui.RepairRecordListActivity;
 import tech.yozo.factoryrp.ui.ReportFaultActivity;
 import tech.yozo.factoryrp.utils.HttpClient;
@@ -129,9 +130,11 @@ public class WorkBenchFragment extends BaseFragment implements HttpClient.OnHttp
                 startActivity(intent);
                 break;
             }
-            case R.id.button_add_repair:
-                //TODO
+            case R.id.button_add_repair: {
+                Intent intent = new Intent(getContext(), RepairAddActivity.class);
+                startActivity(intent);
                 break;
+            }
             case R.id.button_add_device: {
                 Intent intent = new Intent(getContext(), DeviceAddActivity.class);
                 startActivity(intent);

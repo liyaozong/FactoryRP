@@ -13,10 +13,6 @@ public class LoadingDialog extends Dialog {
         super(context);
     }
 
-    public LoadingDialog(Context context, int themeResId) {
-        super(context, themeResId);
-    }
-
     public static class Builder{
 
         private Context context;
@@ -35,9 +31,8 @@ public class LoadingDialog extends Dialog {
          * @param message
          * @return
          */
-
         public Builder setMessage(int message){
-            this.message=message;
+            this.message = message;
             return this;
         }
 
@@ -56,9 +51,8 @@ public class LoadingDialog extends Dialog {
          * @param isCancelable
          * @return
          */
-
         public Builder setCancelable(boolean isCancelable){
-            this.isCancelable=isCancelable;
+            this.isCancelable = isCancelable;
             return this;
         }
 
@@ -68,26 +62,26 @@ public class LoadingDialog extends Dialog {
          * @return
          */
         public Builder setCancelOutside(boolean isCancelOutside){
-            this.isCancelOutside=isCancelOutside;
+            this.isCancelOutside = isCancelOutside;
             return this;
         }
 
         public LoadingDialog create(){
-
             LayoutInflater inflater = LayoutInflater.from(context);
             View view=inflater.inflate(R.layout.dialog_loading,null);
-            LoadingDialog loadingDailog=new LoadingDialog(context);
+            LoadingDialog loadingDailog = new LoadingDialog(context);
             TextView msgText= (TextView) view.findViewById(R.id.tipTextView);
+
             if(isShowMessage){
                 msgText.setText(message);
             }else{
                 msgText.setVisibility(View.GONE);
             }
+
             loadingDailog.setContentView(view);
             loadingDailog.setCancelable(isCancelable);
             loadingDailog.setCanceledOnTouchOutside(isCancelOutside);
             return  loadingDailog;
-
         }
     }
 }

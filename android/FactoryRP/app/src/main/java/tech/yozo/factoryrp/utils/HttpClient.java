@@ -1,9 +1,9 @@
 package tech.yozo.factoryrp.utils;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.util.Log;
 import android.widget.Toast;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
@@ -11,8 +11,6 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import cz.msebera.android.httpclient.Header;
-import cz.msebera.android.httpclient.conn.ConnectTimeoutException;
-import cz.msebera.android.httpclient.conn.ConnectionPoolTimeoutException;
 import cz.msebera.android.httpclient.entity.StringEntity;
 import cz.msebera.android.httpclient.message.BasicHeader;
 import lombok.Getter;
@@ -20,59 +18,61 @@ import lombok.Setter;
 import org.json.JSONException;
 import org.json.JSONObject;
 import tech.yozo.factoryrp.R;
+import tech.yozo.factoryrp.entity.Department;
+import tech.yozo.factoryrp.entity.DeviceType;
+import tech.yozo.factoryrp.entity.RepairGroup;
 import tech.yozo.factoryrp.vo.req.*;
 import tech.yozo.factoryrp.vo.resp.ContactCompany;
 import tech.yozo.factoryrp.vo.resp.DeviceParamDicEnumResp;
 import tech.yozo.factoryrp.vo.resp.auth.AuthUser;
 import tech.yozo.factoryrp.vo.resp.device.info.FullDeviceInfoResp;
 import tech.yozo.factoryrp.vo.resp.device.info.SimpleDeviceInfoResp;
+import tech.yozo.factoryrp.vo.resp.device.trouble.DeviceTroubleTypeVo;
 import tech.yozo.factoryrp.vo.resp.device.trouble.WaitAuditWorkOrderVo;
 import tech.yozo.factoryrp.vo.resp.device.trouble.WorkOrderCountVo;
 import tech.yozo.factoryrp.vo.resp.device.trouble.WorkOrderDetailVo;
+import tech.yozo.factoryrp.vo.resp.sparepars.DeviceSparesTypeResp;
 import tech.yozo.factoryrp.vo.resp.sparepars.SparePartsResp;
 
-import java.io.IOException;
-import java.net.SocketTimeoutException;
-import java.net.UnknownHostException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.content.Context.MODE_PRIVATE;
-
 
 public class HttpClient {
-    private static final String BASE_URL = "http://factoryrp.yozo.tech:9550/";
-//    private static final String BASE_URL = "http://192.168.6.100:9550/";
+    //    private static final String BASE_URL = "http://192.168.6.100:9550/";
+        private static final String BASE_URL = "http://factoryrp.yozo.tech:9550/";
+//    private static final String BASE_URL = "http://39.104.71.127:9550/";
 
     private static final String CONTENT_TYPE = "application/json";
 
-    public static final String LOGIN = "api/authorization/login"; //登录
-    public static final String DATA_DICT = "api/deviceParameterDictionary/findByCode"; //数据字典
-    public static final String CONTACT_COMPANY = "api/contactCompany/list"; //来往单位
-    public static final String DEVICE_LIST = "api/deviceInfo/listSimpleInfo"; //设备列表
-    public static final String DEVICE_SAVE = "api/deviceInfo/save"; //设备添加
-    public static final String DEVICE_GET = "api/deviceInfo/get"; //设备详细信息
-    public static final String PARTS_LIST = "api/spareParts/queryMobileDeviceSpares"; //备件列表
-    public static final String TROUBLE_ADD = "troubleRecord/add"; //故障报修
-    public static final String TROUBLE_COUNT = "troubleRecord/countWorkOrderList"; //故障分类统计数值
-    public static final String TROUBLE_WAIT_AUDIT = "troubleRecord/waitAuditList"; //待审核的故障
-    public static final String TROUBLE_WAIT_REPAIR = "troubleRecord/waitRepairList"; //待维修的故障
-    public static final String TROUBLE_REPAIRING = "troubleRecord/repairingList"; //维修中的故障
-    public static final String TROUBLE_WAIT_VALIDATE = "troubleRecord/waitValidateList"; //待验证的故障
-    public static final String REPAIR_GRAB_URL = "troubleRecord/obtainOrder"; //我来修
-    public static final String REPAIR_GIVEUP_URL = "troubleRecord/cancelOrder"; //我不修了
-    public static final String REPAIR_DETAIL_URL = "troubleRecord/get"; //故障详细信息
-    public static final String START_REPAIR_ACTION = "troubleRecord/startRepair"; //开始维修
-    public static final String END_REPAIR_ACTION = "troubleRecord/endRepair"; //开始维修
-    public static final String SUBMIT_REPAIR_ACTION = "troubleRecord/submitRepair"; //完成维修并提交维修信息
-    public static final String VALIDATE_REPAIR_ACTION = "troubleRecord/validate"; //验证维修
-    public static final String FIND_PARTS_FOR_DEVICE = "deviceSpareRel/findRelSparts"; //设备关联的备件
-    public static final String REPAIR_GROUP_URL = "api/repairGroup/list"; //维修工段/班组列表
-    public static final String DEVICE_TYPE_URL = "api/deviceType/list"; //设备类型字典
-    public static final String DEVICE_TROUBLE_TYPE_URL = "api/deviceTroubleType/queryAlldDeviceTroubleType"; //故障类型字典
-    public static final String PARTS_TYPE_URL = "api/deviceSparesType/queryAllDeviceSparesType"; //备件类型字典
-    public static final String DEPARTMENT_LIST_URL = "api/department/list"; //部门列表
+    private static final String LOGIN = "api/authorization/login"; //登录
+    private static final String DATA_DICT = "api/deviceParameterDictionary/findByCode"; //数据字典
+    private static final String CONTACT_COMPANY = "api/contactCompany/list"; //来往单位
+    private static final String DEVICE_LIST = "api/deviceInfo/listSimpleInfo"; //设备列表
+    private static final String DEVICE_SAVE = "api/deviceInfo/save"; //设备添加
+    private static final String DEVICE_GET = "api/deviceInfo/get"; //设备详细信息
+    private static final String PARTS_LIST = "api/spareParts/queryMobileDeviceSpares"; //备件列表
+    private static final String TROUBLE_ADD = "troubleRecord/add"; //故障报修
+    private static final String TROUBLE_COUNT = "troubleRecord/countWorkOrderList"; //故障分类统计数值
+    private static final String TROUBLE_WAIT_AUDIT = "troubleRecord/waitAuditList"; //待审核的故障
+    private static final String TROUBLE_WAIT_REPAIR = "troubleRecord/waitRepairList"; //待维修的故障
+    private static final String TROUBLE_REPAIRING = "troubleRecord/repairingList"; //维修中的故障
+    private static final String TROUBLE_WAIT_VALIDATE = "troubleRecord/waitValidateList"; //待验证的故障
+    private static final String REPAIR_GRAB_URL = "troubleRecord/obtainOrder"; //我来修
+    private static final String REPAIR_GIVEUP_URL = "troubleRecord/cancelOrder"; //我不修了
+    private static final String REPAIR_DETAIL_URL = "troubleRecord/get"; //故障详细信息
+    private static final String START_REPAIR_ACTION = "troubleRecord/startRepair"; //开始维修
+    private static final String END_REPAIR_ACTION = "troubleRecord/endRepair"; //开始维修
+    private static final String SUBMIT_REPAIR_ACTION = "troubleRecord/submitRepair"; //完成维修并提交维修信息
+    private static final String VALIDATE_REPAIR_ACTION = "troubleRecord/validate"; //验证维修
+    private static final String FIND_PARTS_FOR_DEVICE = "deviceSpareRel/findRelSparts"; //设备关联的备件
+    private static final String REPAIR_GROUP_URL = "api/repairGroup/list"; //维修工段/班组列表
+    private static final String DEVICE_TYPE_URL = "api/deviceType/list"; //设备类型字典
+    private static final String DEVICE_TROUBLE_TYPE_URL = "api/deviceTroubleType/queryAlldDeviceTroubleType"; //故障类型字典
+    private static final String PARTS_TYPE_URL = "api/deviceSparesType/queryAllDeviceSparesType"; //备件类型字典
+    private static final String DEPARTMENT_LIST_URL = "api/department/list"; //部门列表
+    private static final String DEVICE_GET_BY_CODE = "api/deviceInfo/getByCode"; //根据条形码查询设备
 
     public static final int REQUEST_LOGIN = 1;
     public static final int REQUEST_DATA_DICT = 2;
@@ -100,6 +100,7 @@ public class HttpClient {
     public static final int REQUEST_DEVICE_TROUBLE_TYPE_URL = 25;
     public static final int REQUEST_PARTS_TYPE_URL = 26;
     public static final int REQUEST_DEPARTMENT_LIST_URL = 27;
+    public static final int REQUEST_DEVICE_GET_BY_CODE = 28;
 
     private AsyncHttpClient client;
     private List<Header> headers = new ArrayList<>();
@@ -135,6 +136,21 @@ public class HttpClient {
     @Setter
     private List<ContactCompany> contactCompanies;
 
+    @Setter @Getter
+    private List<RepairGroup> repairGroupList;
+
+    @Getter @Setter
+    private List<DeviceType> deviceTypeList;
+
+    @Setter @Getter
+    private List<DeviceTroubleTypeVo> troubleTypeVoList;
+
+    @Getter @Setter
+    private List<DeviceSparesTypeResp> partsTypeList;
+
+    @Setter @Getter
+    private List<Department> departmentList;
+
     private List<DeviceParamDicEnumResp> deviceUseStatusDict;
 
     private List<DeviceParamDicEnumResp> deviceIdentifyDict;
@@ -151,11 +167,6 @@ public class HttpClient {
 
 
     private HttpClient() {
-//        AsyncHttpClient.blockRetryExceptionClass(UnknownHostException.class);
-//        AsyncHttpClient.blockRetryExceptionClass(ConnectionPoolTimeoutException.class);
-//        AsyncHttpClient.allowRetryExceptionClass(IOException.class);
-//        AsyncHttpClient.allowRetryExceptionClass(SocketTimeoutException.class);
-//        AsyncHttpClient.allowRetryExceptionClass(ConnectTimeoutException.class);
         client = new AsyncHttpClient();
     }
 
@@ -185,19 +196,7 @@ public class HttpClient {
     }
 
     public void login(Context context, OnHttpListener listener, RequestParams params) {
-        client.get(context, getAbsoluteUrl(LOGIN), null, params, new YozoHttpResponseHandler(context, listener, REQUEST_LOGIN));
-    }
-
-    public void syncData(Context context, OnHttpListener listener) {
-        //TODO
-        requestDeviceDict(context, listener, Constant.DICT_DEVICE_STATUS);
-        requestDeviceDict(context, listener, Constant.DICT_DEVICE_IDENTIFY);
-        requestDeviceDict(context, listener, Constant.DICT_TROUBLE_LEVEL);
-        requestDeviceDict(context, listener, Constant.DICT_TROUBLE_REASON);
-        requestDeviceDict(context, listener, Constant.DICT_MAINTAIN_LEVEL);
-        requestDeviceDict(context, listener, Constant.DICT_REPAIR_LEVEL);
-        requestDeviceDict(context, listener, Constant.DICT_VERIFY_COMMENT);
-        requestContactCompany(context, listener);
+        client.get(context, getAbsoluteUrl(LOGIN), null, params, new FactoryHttpResponseHandler(context, listener, REQUEST_LOGIN));
     }
 
     public void requestDeviceDict(Context context, OnHttpListener listener, int dict) {
@@ -228,7 +227,7 @@ public class HttpClient {
                 return;
         }
 
-        client.get(context, getAbsoluteUrl(DATA_DICT), headers.toArray(new Header[headers.size()]), params, new YozoHttpResponseHandler(context, listener, REQUEST_DATA_DICT, dict));
+        client.get(context, getAbsoluteUrl(DATA_DICT), headers.toArray(new Header[headers.size()]), params, new FactoryHttpResponseHandler(context, listener, REQUEST_DATA_DICT, dict));
     }
 
     public List<DeviceParamDicEnumResp> getDictEnum(int requestType) {
@@ -257,31 +256,35 @@ public class HttpClient {
         req.setCurrentPage(1);
         req.setItemsPerPage(100);
         StringEntity params = new StringEntity(JSON.toJSONString(req), Charset.forName("UTF-8"));
-        client.post(context, getAbsoluteUrl(CONTACT_COMPANY), headers.toArray(new Header[headers.size()]), params, CONTENT_TYPE, new YozoHttpResponseHandler(context, listener, REQUEST_CONTACT_COMPANY));
+        client.post(context, getAbsoluteUrl(CONTACT_COMPANY), headers.toArray(new Header[headers.size()]), params, CONTENT_TYPE, new FactoryHttpResponseHandler(context, listener, REQUEST_CONTACT_COMPANY));
     }
 
     public void requestRepairGroup(Context context, OnHttpListener listener) {
-        client.get(context, getAbsoluteUrl(REPAIR_GROUP_URL), headers.toArray(new Header[headers.size()]), null, new YozoHttpResponseHandler(context, listener, REQUEST_REPAIR_GROUP_URL));
+        client.get(context, getAbsoluteUrl(REPAIR_GROUP_URL), headers.toArray(new Header[headers.size()]), null, new FactoryHttpResponseHandler(context, listener, REQUEST_REPAIR_GROUP_URL));
     }
 
     public void requestDeviceType(Context context, OnHttpListener listener) {
-        client.get(context, getAbsoluteUrl(DEVICE_TYPE_URL), headers.toArray(new Header[headers.size()]), null, new YozoHttpResponseHandler(context, listener, REQUEST_DEVICE_TYPE_URL));
+        client.get(context, getAbsoluteUrl(DEVICE_TYPE_URL), headers.toArray(new Header[headers.size()]), null, new FactoryHttpResponseHandler(context, listener, REQUEST_DEVICE_TYPE_URL));
     }
 
     public void requestTroubleType(Context context, OnHttpListener listener) {
-        client.get(context, getAbsoluteUrl(DEVICE_TROUBLE_TYPE_URL), headers.toArray(new Header[headers.size()]), null, new YozoHttpResponseHandler(context, listener, REQUEST_DEVICE_TROUBLE_TYPE_URL));
+        client.get(context, getAbsoluteUrl(DEVICE_TROUBLE_TYPE_URL), headers.toArray(new Header[headers.size()]), null, new FactoryHttpResponseHandler(context, listener, REQUEST_DEVICE_TROUBLE_TYPE_URL));
     }
 
     public void requestPartsType(Context context, OnHttpListener listener) {
-        client.get(context, getAbsoluteUrl(PARTS_TYPE_URL), headers.toArray(new Header[headers.size()]), null, new YozoHttpResponseHandler(context, listener, REQUEST_PARTS_TYPE_URL));
+        client.get(context, getAbsoluteUrl(PARTS_TYPE_URL), headers.toArray(new Header[headers.size()]), null, new FactoryHttpResponseHandler(context, listener, REQUEST_PARTS_TYPE_URL));
+    }
+
+    public void requestDeviceByCode(Context context, OnHttpListener listener, RequestParams params) {
+        client.get(context, getAbsoluteUrl(DEVICE_GET_BY_CODE), headers.toArray(new Header[headers.size()]), params, new FactoryHttpResponseHandler(context, listener, REQUEST_DEVICE_GET_BY_CODE));
     }
 
     public void requestDeptList(Context context, OnHttpListener listener) {
-        client.get(context, getAbsoluteUrl(DEPARTMENT_LIST_URL), headers.toArray(new Header[headers.size()]), null, new YozoHttpResponseHandler(context, listener, REQUEST_DEPARTMENT_LIST_URL));
+        client.get(context, getAbsoluteUrl(DEPARTMENT_LIST_URL), headers.toArray(new Header[headers.size()]), null, new FactoryHttpResponseHandler(context, listener, REQUEST_DEPARTMENT_LIST_URL));
     }
 
     public void requestTroubleCount(Context context, OnHttpListener listener) {
-        client.get(context, getAbsoluteUrl(TROUBLE_COUNT), headers.toArray(new Header[headers.size()]), null, new YozoHttpResponseHandler(context, listener, REQUEST_TROUBLE_COUNT));
+        client.get(context, getAbsoluteUrl(TROUBLE_COUNT), headers.toArray(new Header[headers.size()]), null, new FactoryHttpResponseHandler(context, listener, REQUEST_TROUBLE_COUNT));
     }
 
     public void requestDeviceList(Context context, OnHttpListener listener) {
@@ -290,11 +293,11 @@ public class HttpClient {
         req.setItemsPerPage(100);
 
         StringEntity param = new StringEntity(JSON.toJSONString(req), Charset.forName("UTF-8"));
-        client.post(context, getAbsoluteUrl(DEVICE_LIST), headers.toArray(new Header[headers.size()]), param, CONTENT_TYPE, new YozoHttpResponseHandler(context, listener, REQUEST_DEVICE_LIST));
+        client.post(context, getAbsoluteUrl(DEVICE_LIST), headers.toArray(new Header[headers.size()]), param, CONTENT_TYPE, new FactoryHttpResponseHandler(context, listener, REQUEST_DEVICE_LIST));
     }
 
-    public void getDeviceById(Context context, OnHttpListener listener, RequestParams params) {
-        client.get(context, getAbsoluteUrl(DEVICE_GET), headers.toArray(new Header[headers.size()]), params, new YozoHttpResponseHandler(context, listener, REQUEST_DEVICE_GET));
+    public void requestDeviceById(Context context, OnHttpListener listener, RequestParams params) {
+        client.get(context, getAbsoluteUrl(DEVICE_GET), headers.toArray(new Header[headers.size()]), params, new FactoryHttpResponseHandler(context, listener, REQUEST_DEVICE_GET));
     }
 
     public void requestPartsList(Context context, OnHttpListener listener) {
@@ -303,17 +306,17 @@ public class HttpClient {
         req.setItemsPerPage(100);
 
         StringEntity param = new StringEntity(JSON.toJSONString(req), Charset.forName("UTF-8"));
-        client.post(context, getAbsoluteUrl(PARTS_LIST), headers.toArray(new Header[headers.size()]), param, CONTENT_TYPE, new YozoHttpResponseHandler(context, listener, REQUEST_PARTS_LIST));
+        client.post(context, getAbsoluteUrl(PARTS_LIST), headers.toArray(new Header[headers.size()]), param, CONTENT_TYPE, new FactoryHttpResponseHandler(context, listener, REQUEST_PARTS_LIST));
     }
 
-    public void deviceAdd(Context context, OnHttpListener listener, AddDeviceReq req) {
+    public void requestDeviceAdd(Context context, OnHttpListener listener, AddDeviceReq req) {
         StringEntity param = new StringEntity(JSON.toJSONString(req), Charset.forName("UTF-8"));
-        client.post(context, getAbsoluteUrl(HttpClient.DEVICE_SAVE), headers.toArray(new Header[headers.size()]), param, CONTENT_TYPE, new YozoHttpResponseHandler(context, listener, REQUEST_DEVICE_SAVE));
+        client.post(context, getAbsoluteUrl(HttpClient.DEVICE_SAVE), headers.toArray(new Header[headers.size()]), param, CONTENT_TYPE, new FactoryHttpResponseHandler(context, listener, REQUEST_DEVICE_SAVE));
     }
 
-    public void reportFault(Context context, OnHttpListener listener, AddTroubleRecordReq req) {
+    public void requestReportFault(Context context, OnHttpListener listener, AddTroubleRecordReq req) {
         StringEntity param = new StringEntity(JSON.toJSONString(req), Charset.forName("UTF-8"));
-        client.post(context, getAbsoluteUrl(HttpClient.TROUBLE_ADD), headers.toArray(new Header[headers.size()]), param, CONTENT_TYPE, new YozoHttpResponseHandler(context, listener, REQUEST_TROUBLE_ADD));
+        client.post(context, getAbsoluteUrl(HttpClient.TROUBLE_ADD), headers.toArray(new Header[headers.size()]), param, CONTENT_TYPE, new FactoryHttpResponseHandler(context, listener, REQUEST_TROUBLE_ADD));
     }
 
     public void requestRepairList(Context context, OnHttpListener listener, int requestType) {
@@ -345,7 +348,7 @@ public class HttpClient {
                 break;
         }
         StringEntity param = new StringEntity(JSON.toJSONString(req), Charset.forName("UTF-8"));
-        client.post(context, getAbsoluteUrl(url), headers.toArray(new Header[headers.size()]), param, CONTENT_TYPE, new YozoHttpResponseHandler(context, listener, requestType));
+        client.post(context, getAbsoluteUrl(url), headers.toArray(new Header[headers.size()]), param, CONTENT_TYPE, new FactoryHttpResponseHandler(context, listener, requestType));
     }
 
     public List<WaitAuditWorkOrderVo> getRepairList(int requestType) {
@@ -364,35 +367,35 @@ public class HttpClient {
     }
 
     public void requestRepairDetail(Context context, OnHttpListener listener, RequestParams params) {
-        client.get(context, getAbsoluteUrl(REPAIR_DETAIL_URL), headers.toArray(new Header[headers.size()]), params, new YozoHttpResponseHandler(context, listener, REQUEST_REPAIR_DETAIL_URL));
+        client.get(context, getAbsoluteUrl(REPAIR_DETAIL_URL), headers.toArray(new Header[headers.size()]), params, new FactoryHttpResponseHandler(context, listener, REQUEST_REPAIR_DETAIL_URL));
     }
 
-    public void grabRepairTask(Context context, OnHttpListener listener, RequestParams params) {
-        client.get(context, getAbsoluteUrl(REPAIR_GRAB_URL), headers.toArray(new Header[headers.size()]), params, new YozoHttpResponseHandler(context, listener, REQUEST_REPAIR_GRAB_URL));
+    public void requestGrabRepairTask(Context context, OnHttpListener listener, RequestParams params) {
+        client.get(context, getAbsoluteUrl(REPAIR_GRAB_URL), headers.toArray(new Header[headers.size()]), params, new FactoryHttpResponseHandler(context, listener, REQUEST_REPAIR_GRAB_URL));
     }
 
-    public void giveUpRepairTask(Context context, OnHttpListener listener, RequestParams params) {
-        client.get(context, getAbsoluteUrl(REPAIR_GIVEUP_URL), headers.toArray(new Header[headers.size()]), params, new YozoHttpResponseHandler(context, listener, REQUEST_REPAIR_GIVEUP_URL));
+    public void requestGiveUpRepairTask(Context context, OnHttpListener listener, RequestParams params) {
+        client.get(context, getAbsoluteUrl(REPAIR_GIVEUP_URL), headers.toArray(new Header[headers.size()]), params, new FactoryHttpResponseHandler(context, listener, REQUEST_REPAIR_GIVEUP_URL));
     }
 
-    public void startRepairTask(Context context, OnHttpListener listener, StartRepairReq req) {
+    public void requestStartRepairTask(Context context, OnHttpListener listener, StartRepairReq req) {
         StringEntity params = new StringEntity(JSON.toJSONString(req), Charset.forName("UTF-8"));
-        client.post(context, getAbsoluteUrl(START_REPAIR_ACTION), headers.toArray(new Header[headers.size()]), params, CONTENT_TYPE, new YozoHttpResponseHandler(context, listener, REQUEST_START_REPAIR_ACTION));
+        client.post(context, getAbsoluteUrl(START_REPAIR_ACTION), headers.toArray(new Header[headers.size()]), params, CONTENT_TYPE, new FactoryHttpResponseHandler(context, listener, REQUEST_START_REPAIR_ACTION));
     }
 
-    public void endRepairTask(Context context, OnHttpListener listener, EndRepairReq req) {
+    public void requestEndRepairTask(Context context, OnHttpListener listener, EndRepairReq req) {
         StringEntity params = new StringEntity(JSON.toJSONString(req), Charset.forName("UTF-8"));
-        client.post(context, getAbsoluteUrl(END_REPAIR_ACTION), headers.toArray(new Header[headers.size()]), params, CONTENT_TYPE, new YozoHttpResponseHandler(context, listener, REQUEST_END_REPAIR_ACTION));
+        client.post(context, getAbsoluteUrl(END_REPAIR_ACTION), headers.toArray(new Header[headers.size()]), params, CONTENT_TYPE, new FactoryHttpResponseHandler(context, listener, REQUEST_END_REPAIR_ACTION));
     }
 
-    public void submitRepairTask(Context context, OnHttpListener listener, SubmitRepairReq req) {
+    public void requestSubmitRepairTask(Context context, OnHttpListener listener, SubmitRepairReq req) {
         StringEntity params = new StringEntity(JSON.toJSONString(req), Charset.forName("UTF-8"));
-        client.post(context, getAbsoluteUrl(SUBMIT_REPAIR_ACTION), headers.toArray(new Header[headers.size()]), params, CONTENT_TYPE, new YozoHttpResponseHandler(context, listener, REQUEST_SUBMIT_REPAIR_ACTION));
+        client.post(context, getAbsoluteUrl(SUBMIT_REPAIR_ACTION), headers.toArray(new Header[headers.size()]), params, CONTENT_TYPE, new FactoryHttpResponseHandler(context, listener, REQUEST_SUBMIT_REPAIR_ACTION));
     }
 
-    public void validateRepairTask(Context context, OnHttpListener listener, ValidateRepairReq req) {
+    public void requestValidateRepairTask(Context context, OnHttpListener listener, ValidateRepairReq req) {
         StringEntity params = new StringEntity(JSON.toJSONString(req), Charset.forName("UTF-8"));
-        client.post(context, getAbsoluteUrl(VALIDATE_REPAIR_ACTION), headers.toArray(new Header[headers.size()]), params, CONTENT_TYPE, new YozoHttpResponseHandler(context, listener, REQUEST_VALIDATE_REPAIR_ACTION));
+        client.post(context, getAbsoluteUrl(VALIDATE_REPAIR_ACTION), headers.toArray(new Header[headers.size()]), params, CONTENT_TYPE, new FactoryHttpResponseHandler(context, listener, REQUEST_VALIDATE_REPAIR_ACTION));
     }
 
     public interface OnHttpListener {
@@ -400,19 +403,19 @@ public class HttpClient {
         void onFailure(int requestType);
     }
 
-    private class YozoHttpResponseHandler extends JsonHttpResponseHandler {
+    private class FactoryHttpResponseHandler extends JsonHttpResponseHandler {
         private OnHttpListener mListener;
         private Context mContext;
         private int mRequestType;
         private int mParam;
 
-        public YozoHttpResponseHandler(Context context, OnHttpListener listener, int requestType) {
+        public FactoryHttpResponseHandler(Context context, OnHttpListener listener, int requestType) {
             mContext = context;
             mListener = listener;
             mRequestType = requestType;
         }
 
-        public YozoHttpResponseHandler(Context context, OnHttpListener listener, int requestType, int param) {
+        public FactoryHttpResponseHandler(Context context, OnHttpListener listener, int requestType, int param) {
             mContext = context;
             mListener = listener;
             mRequestType = requestType;
@@ -421,121 +424,62 @@ public class HttpClient {
 
         @Override
         public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+            Log.d("FactoryRP", response.toString());
             try {
                 String errorCode = response.getString("errorCode");
                 if (ErrorCode.SUCCESS.getCode().equals(errorCode)) {
                     switch (mRequestType) {
-                        case REQUEST_LOGIN: {
+                        case REQUEST_LOGIN:
                             authUser = JSON.parseObject(response.getString("data"), AuthUser.class);
                             setAuthUser(authUser);
                             mListener.onHttpSuccess(mRequestType, null, null);
                             break;
-                        }
-                        case REQUEST_DATA_DICT: {
-//                            SharedPreferences sharedPreferences = mContext.getSharedPreferences("private_data", MODE_PRIVATE);
-//                            SharedPreferences.Editor editor = sharedPreferences.edit();
-
-                            switch (mParam) {
-                                case Constant.DICT_DEVICE_STATUS:
-//                                    editor.putString("deviceUseStatusDict", response.getString("data"));
-                                    deviceUseStatusDict = JSON.parseArray(response.getString("data"), DeviceParamDicEnumResp.class);
-                                    break;
-                                case Constant.DICT_DEVICE_IDENTIFY:
-//                                    editor.putString("deviceIdentifyDict", response.getString("data"));
-                                    deviceIdentifyDict = JSON.parseArray(response.getString("data"), DeviceParamDicEnumResp.class);
-                                    break;
-                                case Constant.DICT_TROUBLE_LEVEL:
-//                                    editor.putString("troubleLevelDict", response.getString("data"));
-                                    troubleLevelDict = JSON.parseArray(response.getString("data"), DeviceParamDicEnumResp.class);
-                                    break;
-                                case Constant.DICT_TROUBLE_REASON:
-//                                    editor.putString("troubleReasonDict", response.getString("data"));
-                                    troubleReasonDict = JSON.parseArray(response.getString("data"), DeviceParamDicEnumResp.class);
-                                    break;
-                                case Constant.DICT_MAINTAIN_LEVEL:
-//                                    editor.putString("maintainLevelDict", response.getString("data"));
-                                    maintainLevelDict = JSON.parseArray(response.getString("data"), DeviceParamDicEnumResp.class);
-                                    break;
-                                case Constant.DICT_REPAIR_LEVEL:
-//                                    editor.putString("repairLevelDict", response.getString("data"));
-                                    repairLevelDict = JSON.parseArray(response.getString("data"), DeviceParamDicEnumResp.class);
-                                    break;
-                                case Constant.DICT_VERIFY_COMMENT:
-//                                    editor.putString("verifyCommentDict", response.getString("data"));
-                                    verifyCommentDict = JSON.parseArray(response.getString("data"), DeviceParamDicEnumResp.class);
-                                    break;
-                                default:
-                                    break;
-                            }
-                            mListener.onHttpSuccess(mRequestType, null, null);
-//                            editor.apply();
-                            break;
-                        }
-                        case REQUEST_CONTACT_COMPANY: {
-//                            SharedPreferences sharedPreferences = mContext.getSharedPreferences("private_data", MODE_PRIVATE);
-//                            SharedPreferences.Editor editor = sharedPreferences.edit();
-//                            editor.putString("contactCompanies", response.getJSONObject("data").getString("list"));
-//                            editor.apply();
-                            contactCompanies = JSONArray.parseArray(response.getJSONObject("data").getString("list"), ContactCompany.class);
-                            mListener.onHttpSuccess(mRequestType, null, contactCompanies);
-                            break;
-                        }
-                        case REQUEST_REPAIR_GRAB_URL: {
+                        case REQUEST_REPAIR_GRAB_URL:
                             Toast.makeText(mContext, R.string.hint_catch_repair_success, Toast.LENGTH_SHORT).show();
                             mListener.onHttpSuccess(mRequestType, null, null);
                             break;
-                        }
-                        case REQUEST_REPAIR_GIVEUP_URL: {
+                        case REQUEST_REPAIR_GIVEUP_URL:
                             Toast.makeText(mContext, R.string.hint_give_up_repair_success, Toast.LENGTH_SHORT).show();
                             mListener.onHttpSuccess(mRequestType, null, null);
                             break;
-                        }
-                        case REQUEST_START_REPAIR_ACTION: {
-                            //TODO
+                        case REQUEST_START_REPAIR_ACTION:
+                            Toast.makeText(mContext, R.string.action_start_repair, Toast.LENGTH_SHORT).show();
                             mListener.onHttpSuccess(mRequestType, null, null);
                             break;
-                        }
-                        case REQUEST_SUBMIT_REPAIR_ACTION: {
-                            //TODO
+                        case REQUEST_SUBMIT_REPAIR_ACTION:
+                            Toast.makeText(mContext, R.string.hint_finish_repair_success, Toast.LENGTH_SHORT).show();
                             mListener.onHttpSuccess(mRequestType, null, null);
                             break;
-                        }
-                        case REQUEST_DEVICE_LIST: {
+                        case REQUEST_DEVICE_LIST:
                             simpleDeviceList = JSONArray.parseArray(response.getJSONObject("data").getString("list"), SimpleDeviceInfoResp.class);
                             mListener.onHttpSuccess(mRequestType, null, simpleDeviceList);
                             break;
-                        }
-                        case REQUEST_TROUBLE_ADD: {
+                        case REQUEST_TROUBLE_ADD:
                             Toast.makeText(mContext, R.string.hint_report_fault_success, Toast.LENGTH_SHORT).show();
                             mListener.onHttpSuccess(mRequestType, null, null);
                             break;
-                        }
-                        case REQUEST_REPAIR_DETAIL_URL: {
+                        case REQUEST_REPAIR_DETAIL_URL:
                             WorkOrderDetailVo detailVo = JSON.parseObject(response.getString("data"), WorkOrderDetailVo.class);
                             mListener.onHttpSuccess(mRequestType, detailVo, null);
                             break;
-                        }
-                        case REQUEST_DEVICE_SAVE: {
+                        case REQUEST_DEVICE_SAVE:
                             Toast.makeText(mContext, R.string.hint_device_save_success, Toast.LENGTH_SHORT).show();
                             mListener.onHttpSuccess(mRequestType, null, null);
                             break;
-                        }
-                        case REQUEST_TROUBLE_COUNT: {
+                        case REQUEST_TROUBLE_COUNT:
                             mTroubleCount = JSON.parseObject(response.getString("data"), WorkOrderCountVo.class);
                             mListener.onHttpSuccess(mRequestType, mTroubleCount, null);
                             break;
-                        }
-                        case REQUEST_PARTS_LIST: {
+                        case REQUEST_PARTS_LIST:
                             sparePartsRespList = JSONArray.parseArray(response.getJSONObject("data").getString("list"), SparePartsResp.class);
                             mListener.onHttpSuccess(mRequestType, null, sparePartsRespList);
                             break;
-                        }
-                        case REQUEST_DEVICE_GET: {
+                        case REQUEST_DEVICE_GET:
+                        case REQUEST_DEVICE_GET_BY_CODE:
                             FullDeviceInfoResp device = JSON.parseObject(response.getString("data"), FullDeviceInfoResp.class);
                             fullDeviceInfoRespList.add(device);
                             mListener.onHttpSuccess(mRequestType, device, null);
                             break;
-                        }
                         case REQUEST_TROUBLE_WAIT_AUDIT:
                             waitAuditWorkOrderVoList = JSONArray.parseArray(response.getJSONObject("data").getString("list"), WaitAuditWorkOrderVo.class);
                             mListener.onHttpSuccess(mRequestType, null, waitAuditWorkOrderVoList);
@@ -551,6 +495,62 @@ public class HttpClient {
                         case REQUEST_TROUBLE_WAIT_VALIDATE:
                             waitVerifyWorkOrderVoList = JSONArray.parseArray(response.getJSONObject("data").getString("list"), WaitAuditWorkOrderVo.class);
                             mListener.onHttpSuccess(mRequestType, null, waitVerifyWorkOrderVoList);
+                            break;
+                        case REQUEST_REPAIR_GROUP_URL:
+                            repairGroupList = JSONArray.parseArray(response.getString("data"), RepairGroup.class);
+                            mListener.onHttpSuccess(mRequestType, null, repairGroupList);
+                            break;
+                        case REQUEST_DEVICE_TYPE_URL:
+                            deviceTypeList = JSONArray.parseArray(response.getString("data"), DeviceType.class);
+                            mListener.onHttpSuccess(mRequestType, null, deviceTypeList);
+                            break;
+                        case REQUEST_PARTS_TYPE_URL:
+                            partsTypeList = JSONArray.parseArray(response.getString("data"), DeviceSparesTypeResp.class);
+                            mListener.onHttpSuccess(mRequestType, null, partsTypeList);
+                            break;
+                        case REQUEST_DEVICE_TROUBLE_TYPE_URL:
+                            troubleTypeVoList = JSONArray.parseArray(response.getString("data"), DeviceTroubleTypeVo.class);
+                            mListener.onHttpSuccess(mRequestType, null, troubleTypeVoList);
+                            break;
+                        case REQUEST_DEPARTMENT_LIST_URL:
+                            departmentList = JSONArray.parseArray(response.getString("data"), Department.class);
+                            mListener.onHttpSuccess(mRequestType, null, departmentList);
+                            break;
+                        case REQUEST_CONTACT_COMPANY:
+//                            SharedPreferences sharedPreferences = mContext.getSharedPreferences("private_data", MODE_PRIVATE);
+//                            SharedPreferences.Editor editor = sharedPreferences.edit();
+//                            editor.putString("contactCompanies", response.getJSONObject("data").getString("list"));
+//                            editor.apply();
+                            contactCompanies = JSONArray.parseArray(response.getJSONObject("data").getString("list"), ContactCompany.class);
+                            mListener.onHttpSuccess(mRequestType, null, contactCompanies);
+                            break;
+                        case REQUEST_DATA_DICT:
+                            switch (mParam) {
+                                case Constant.DICT_DEVICE_STATUS:
+                                    deviceUseStatusDict = JSON.parseArray(response.getString("data"), DeviceParamDicEnumResp.class);
+                                    break;
+                                case Constant.DICT_DEVICE_IDENTIFY:
+                                    deviceIdentifyDict = JSON.parseArray(response.getString("data"), DeviceParamDicEnumResp.class);
+                                    break;
+                                case Constant.DICT_TROUBLE_LEVEL:
+                                    troubleLevelDict = JSON.parseArray(response.getString("data"), DeviceParamDicEnumResp.class);
+                                    break;
+                                case Constant.DICT_TROUBLE_REASON:
+                                    troubleReasonDict = JSON.parseArray(response.getString("data"), DeviceParamDicEnumResp.class);
+                                    break;
+                                case Constant.DICT_MAINTAIN_LEVEL:
+                                    maintainLevelDict = JSON.parseArray(response.getString("data"), DeviceParamDicEnumResp.class);
+                                    break;
+                                case Constant.DICT_REPAIR_LEVEL:
+                                    repairLevelDict = JSON.parseArray(response.getString("data"), DeviceParamDicEnumResp.class);
+                                    break;
+                                case Constant.DICT_VERIFY_COMMENT:
+                                    verifyCommentDict = JSON.parseArray(response.getString("data"), DeviceParamDicEnumResp.class);
+                                    break;
+                                default:
+                                    break;
+                            }
+                            mListener.onHttpSuccess(mRequestType, null, null);
                             break;
                         default:
                             break;

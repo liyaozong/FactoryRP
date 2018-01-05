@@ -4,7 +4,7 @@
 
     <uses-permission android:name="android.permission.CAMERA"/>
     <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
     <application
             android:allowBackup="true"
@@ -41,6 +41,11 @@
                 android:label="@string/title_device_repair_record">
         </activity>
         <activity
+                android:name=".ui.RepairAddActivity"
+                android:label="@string/title_device_add_record"
+                android:windowSoftInputMode="adjustUnspecified|stateHidden">
+        </activity>
+        <activity
                 android:name=".ui.RepairRecordListActivity"
                 android:label="@string/title_repair_order">
         </activity>
@@ -58,11 +63,26 @@
                 android:label="@string/action_ask_repair"
                 android:windowSoftInputMode="adjustUnspecified|stateHidden">
         </activity>
-        <activity android:name=".ui.DeviceSelectActivity">
+        <activity
+                android:name=".ui.DeviceSelectActivity"
+                android:label="@string/title_select_device">
+        </activity>
+        <activity
+                android:name=".ui.PartsSelectActivity"
+                android:label="@string/title_select_parts">
         </activity>
         <activity android:name=".scan.ScanActivity">
         </activity>
-        <activity android:name=".ui.AboutUsActivity">
+        <activity
+                android:name=".ui.AboutUsActivity"
+                android:label="@string/about_us">
+        </activity>
+        <activity
+                android:name=".ui.ValidateRepairActivity"
+                android:label="@string/title_repair_validate">
+        </activity>
+        <activity android:name=".ui.MaintainerSelectActivity"
+                android:label="@string/title_select_maintainer">
         </activity>
     </application>
 

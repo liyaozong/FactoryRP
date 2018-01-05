@@ -1,0 +1,48 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              tools:context="tech.yozo.factoryrp.ui.fragment.RepairAddFragment" android:orientation="vertical"
+              android:background="@color/colorBackground">
+
+    <include layout="@layout/select_device_element" android:id="@+id/linearLayout"/>
+
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:background="@android:color/background_light"
+            android:padding="4dp" android:layout_marginTop="2dp">
+        <TextView
+                android:text="@string/text_device_fault_time"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView41"
+        />
+        <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/et_fault_time"
+                android:layout_weight="1" android:background="@android:color/background_light"
+                android:drawableEnd="@drawable/ic_device_info" android:textAlignment="viewStart"/>
+    </LinearLayout>
+
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:layout_marginTop="1dp" android:padding="4dp"
+            android:background="@android:color/background_light">
+        <TextView
+                android:text="@string/text_device_fault_desc"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView50"
+        />
+        <EditText
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                android:ems="12"
+                android:id="@+id/et_fault_desc" android:minLines="3"
+                android:layout_weight="1" android:layout_width="0dp"/>
+    </LinearLayout>
+
+</LinearLayout>

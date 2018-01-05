@@ -12,6 +12,7 @@ import java.io.Serializable;
 @Data
 public class RepairGroup {
 
+    private Long id;
 //    @ApiModelProperty(value = "班组编码")
     private String code;
 

@@ -6,6 +6,7 @@ public class Constant {
     public static final int FOR_PERSON_ID = 0x200002;
     public static final int FOR_DEVICE_ID = 0x200003;
     public static final int FOR_REPAIR_ID = 0x200005;
+    public static final int FOR_REPAIR_ADD = 0x200006;
 
     public static final int DICT_DEVICE_STATUS = 0x220000;
     public static final int DICT_DEVICE_IDENTIFY = 0x220001;

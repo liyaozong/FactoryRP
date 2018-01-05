@@ -16,7 +16,7 @@ public enum RepairStatusEnum {
     WAIT_STOP(4,"待停机维修"),
     STOPED(5,"停机待修"),
     CAN_NOT_REPAIR(6,"无法修复"),
-    WAIT_TRANS_TO_OUT(7,"待转外围维修");
+    WAIT_TRANS_TO_OUT(7,"待转外委维修");
 
     private Integer code;
     private String name;

@@ -39,8 +39,6 @@ public class PersonFragment extends BaseFragment {
     LinearLayout llMyRepair;
     @BindView(R.id.ll_change_password)
     LinearLayout llChangePassword;
-    @BindView(R.id.ll_data_sync)
-    LinearLayout llDataSync;
     @BindView(R.id.ll_check_update)
     LinearLayout llCheckUpdate;
     @BindView(R.id.ll_about_us)
@@ -112,7 +110,7 @@ public class PersonFragment extends BaseFragment {
         unbinder.unbind();
     }
 
-    @OnClick({R.id.button_logout, R.id.ll_my_repair, R.id.ll_change_password, R.id.ll_data_sync, R.id.ll_check_update, R.id.ll_about_us})
+    @OnClick({R.id.button_logout, R.id.ll_my_repair, R.id.ll_change_password, R.id.ll_check_update, R.id.ll_about_us})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.button_logout: {
@@ -127,8 +125,6 @@ public class PersonFragment extends BaseFragment {
             case R.id.ll_my_repair:
                 break;
             case R.id.ll_change_password:
-                break;
-            case R.id.ll_data_sync:
                 break;
             case R.id.ll_check_update:
                 break;
