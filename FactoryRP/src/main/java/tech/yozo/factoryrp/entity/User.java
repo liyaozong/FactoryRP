@@ -48,8 +48,9 @@ public class User extends BaseEntity implements Serializable{
 
 
     /**
-     * 企业标识
+     * 企业code
      */
+    @Column(name = "corporate_code",length = 20)
     private String corporateCode;
 
     @JoinTable(name="system_user_role",

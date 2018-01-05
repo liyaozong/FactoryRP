@@ -185,7 +185,9 @@ public class AuthIntercepter implements HandlerInterceptor {
             return false;
         }
 
-        User user = authorizationService.findByUserName(username);
+        //User user = authorizationService.findByUserName(username);
+
+        User user = authorizationService.findByUserNameAndCorporateCode(username,corporateCode);
 
         /**
          * 用户不存在直接返回

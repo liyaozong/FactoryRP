@@ -188,6 +188,18 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 
     }
 
+
+    /**
+     * 根据企业标识码和企业code进行查找
+     * @param userName
+     * @param corporateCode
+     * @return
+     */
+    public User findByUserNameAndCorporateCode(String userName,String corporateCode){
+        return userRepository.findByUserNameAndCorporateCode(userName,corporateCode);
+    }
+
+
     /**
      * 根据用户名进行查询
      * @param userName

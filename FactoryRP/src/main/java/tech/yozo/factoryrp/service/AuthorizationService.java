@@ -22,6 +22,14 @@ public interface AuthorizationService {
 
 
     /**
+     * 根据企业标识码和企业code进行查找
+     * @param userName
+     * @param corporateCode
+     * @return
+     */
+    User findByUserNameAndCorporateCode(String userName,String corporateCode);
+
+    /**
      * 删除指定用户下面指定的角色信息
      * @param userRoleDeleteReq
      * @param corporateIdentify
