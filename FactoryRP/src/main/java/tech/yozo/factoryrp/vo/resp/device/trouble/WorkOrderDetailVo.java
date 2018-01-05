@@ -58,8 +58,11 @@ public class WorkOrderDetailVo implements Serializable{
     @ApiModelProperty(value = "维修班组主键")
     private Long repairGroupId;
 
+    @ApiModelProperty(value = "维修状态文字描述")
+    private String repairStatusString;
+
     @ApiModelProperty(value = "维修状态")
-    private String repairStatus;
+    private Integer repairStatus;
 
     @ApiModelProperty(value = "故障类别")
     private String troubleType;
