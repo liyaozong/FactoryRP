@@ -433,7 +433,7 @@ public class TroubleRecordServiceImpl implements TroubleRecordService {
             //维修单信息
            RepairRecord repairRecord = repairRecordRepository.findByTroubleRecordId(id);
            if (null!=repairRecord){
-               vo.setRepairStatus(repairRecord.getRepairStatus());
+               vo.setRepairStatus(RepairStatusEnum.getByCode(repairRecord.getRepairStatus()).getName());
                DeviceTroubleType troubleType = repairRecord.getTroubleType();
                if (null!=troubleType){
                    vo.setTroubleType(troubleType.getName());
