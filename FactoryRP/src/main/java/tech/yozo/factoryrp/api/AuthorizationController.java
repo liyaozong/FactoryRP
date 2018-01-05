@@ -4,6 +4,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import tech.yozo.factoryrp.config.auth.UserAuthService;
 import tech.yozo.factoryrp.service.AuthorizationService;

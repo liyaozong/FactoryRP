@@ -1,11 +1,10 @@
 package tech.yozo.factoryrp.vo.req;
 
-import tech.yozo.factoryrp.vo.base.ApiCorporateIdentifyRequest;
-import tech.yozo.factoryrp.vo.base.ApiRequest;
-import tech.yozo.factoryrp.vo.validation.NotEmpty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import tech.yozo.factoryrp.vo.base.ApiRequest;
+import tech.yozo.factoryrp.vo.validation.NotEmpty;
 
 import java.io.Serializable;
 

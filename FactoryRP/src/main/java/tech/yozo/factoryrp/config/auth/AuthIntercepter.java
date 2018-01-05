@@ -34,7 +34,7 @@ import java.util.List;
 public class AuthIntercepter implements HandlerInterceptor {
 
 
-    Logger logger  = LoggerFactory.getLogger(AuthIntercepter.class);
+    private static Logger logger  = LoggerFactory.getLogger(AuthIntercepter.class);
 
 
     @Autowired
