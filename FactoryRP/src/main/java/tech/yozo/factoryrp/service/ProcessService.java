@@ -1,10 +1,15 @@
 package tech.yozo.factoryrp.service;
 
+import tech.yozo.factoryrp.entity.DeviceProcess;
 import tech.yozo.factoryrp.exception.BussinessException;
+import tech.yozo.factoryrp.page.Pagination;
 import tech.yozo.factoryrp.vo.req.DeviceProcessAddReq;
+import tech.yozo.factoryrp.vo.req.DeviceProcessQueryReq;
 import tech.yozo.factoryrp.vo.resp.process.CreateProcessInstanceResp;
 import tech.yozo.factoryrp.vo.resp.process.DeviceProcessAddResp;
 import tech.yozo.factoryrp.vo.resp.process.ProcessStatusQueryResp;
+
+import java.util.List;
 
 /**
  * 流程相关服务
@@ -40,5 +45,14 @@ public interface ProcessService {
      * @return
      */
     DeviceProcessAddResp addDeviceProcess(DeviceProcessAddReq deviceProcessAddReq, Long corporateIdentify);
+
+
+    /**
+     * 流程分页查询
+     * @param deviceProcessQueryReq
+     * @param corporateIdentify
+     * @return
+     */
+    Pagination<DeviceProcess> findByPage(DeviceProcessQueryReq deviceProcessQueryReq, Long corporateIdentify);
 
 }

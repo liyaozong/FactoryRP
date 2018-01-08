@@ -22,6 +22,14 @@ public interface AuthorizationService {
 
 
     /**
+     * 根据角色code查询用户信息
+     * @param roleCode
+     * @param corporateIdentify
+     * @return
+     */
+    UserRespWarpResp queryUserByRoleCode(String roleCode,Long corporateIdentify);
+
+    /**
      * 根据企业标识码和企业code进行查找
      * @param userName
      * @param corporateCode

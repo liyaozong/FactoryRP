@@ -51,6 +51,25 @@ public class AuthorizationController extends BaseController{
 
     @Resource
     private StringRedisTemplate stringRedisTemplate;*/
+
+
+    /**
+     * 根据角色code查询用户信息
+     * @param roleCode
+     * @param request
+     * @return
+     */
+    @ApiOperation(value = "根据角色code查询用户信息",notes = "根据角色code查询用户信息",httpMethod = "GET")
+    @GetMapping("/queryUserByRoleCode")
+    @ApiImplicitParams({
+            @ApiImplicitParam(dataType = "String" ,name = "roleCode", paramType = "query" ,
+                    value = "角色Code",required = true,defaultValue = "MAINTENANCE_PERSONNEL"),
+    })
+    public ApiResponse<UserRespWarpResp> queryUserByRoleCode(@RequestParam(required = true) String roleCode,HttpServletRequest request){
+        Long corporateIdentify = userAuthService.getCurrentUserCorporateIdentify(request);
+        return apiResponse(authorizationService.queryUserByRoleCode(roleCode,corporateIdentify));
+    }
+
     /**
      * 根据企业标识查询所有角色
      * @return

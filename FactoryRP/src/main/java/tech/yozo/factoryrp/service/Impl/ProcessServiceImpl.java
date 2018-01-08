@@ -1,21 +1,32 @@
 package tech.yozo.factoryrp.service.Impl;
 
 import com.alibaba.fastjson.JSON;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import tech.yozo.factoryrp.entity.DeviceProcess;
 import tech.yozo.factoryrp.entity.DeviceProcessDetail;
+import tech.yozo.factoryrp.entity.SpareParts;
 import tech.yozo.factoryrp.exception.BussinessException;
+import tech.yozo.factoryrp.page.Pagination;
 import tech.yozo.factoryrp.repository.DeviceProcessDetailRepository;
 import tech.yozo.factoryrp.repository.DeviceProcessRepository;
 import tech.yozo.factoryrp.service.ProcessService;
 import tech.yozo.factoryrp.utils.CheckParam;
 import tech.yozo.factoryrp.utils.ErrorCode;
 import tech.yozo.factoryrp.vo.req.DeviceProcessAddReq;
+import tech.yozo.factoryrp.vo.req.DeviceProcessQueryReq;
 import tech.yozo.factoryrp.vo.resp.process.CreateProcessInstanceResp;
 import tech.yozo.factoryrp.vo.resp.process.DeviceProcessAddResp;
 import tech.yozo.factoryrp.vo.resp.process.ProcessStatusQueryResp;
 
 import javax.annotation.Resource;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,20 +45,6 @@ public class ProcessServiceImpl implements ProcessService {
 
     @Resource
     private DeviceProcessDetailRepository deviceProcessDetailRepository;
-
-
-    public static void main(String[] args) {
-        List<Long> ids = new ArrayList<>();
-
-        ids.add(1L);
-        ids.add(2L);
-
-        String string = JSON.toJSONString(ids);
-
-        List<Long> list = JSON.parseObject(string,List.class);
-        System.out.println(JSON.toJSONString(ids));
-    }
-
 
 
     /**
@@ -105,6 +102,65 @@ public class ProcessServiceImpl implements ProcessService {
         deviceProcessAddResp.setProcessName(deviceProcess.getProcessName());
 
         return deviceProcessAddResp;
+    }
+
+
+    /**
+     * 流程分页查询
+     * @param deviceProcessQueryReq
+     * @param corporateIdentify
+     * @return
+     */
+    @Override
+    public Pagination<DeviceProcess> findByPage(DeviceProcessQueryReq deviceProcessQueryReq,Long corporateIdentify) {
+
+        if (deviceProcessQueryReq.getCurrentPage() > 0) {
+            deviceProcessQueryReq.setCurrentPage(deviceProcessQueryReq.getCurrentPage()-1);
+        }
+        Pageable p = new PageRequest(deviceProcessQueryReq.getCurrentPage(), deviceProcessQueryReq.getItemsPerPage());
+
+        Page<DeviceProcess> page = deviceProcessRepository.findAll((Root<DeviceProcess> root,
+                                                                   CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) -> {
+
+            List<Predicate> list = new ArrayList<>();
+
+            if (!CheckParam.isNull(deviceProcessQueryReq.getId())) { //主键
+                list.add(criteriaBuilder.equal(root.get("id").as(Long.class), deviceProcessQueryReq.getId()));
+            }
+            if (!CheckParam.isNull(deviceProcessQueryReq.getProcessName())) { //流程名称
+                list.add(criteriaBuilder.like(root.get("processName").as(String.class), "%" + deviceProcessQueryReq.getProcessName() + "%"));
+            }
+            if (!CheckParam.isNull(deviceProcessQueryReq.getProcessType())) { //流程类型
+                list.add(criteriaBuilder.equal(root.get("processType").as(Long.class), deviceProcessQueryReq.getProcessType()));
+            }
+            if (!CheckParam.isNull(deviceProcessQueryReq.getProcessStage())) { //流程阶段
+                list.add(criteriaBuilder.equal(root.get("processStage").as(Long.class), deviceProcessQueryReq.getProcessStage()));
+            }
+            if (!CheckParam.isNull(deviceProcessQueryReq.getTriggerConditionType())) { //触发条件类型
+                list.add(criteriaBuilder.equal(root.get("triggerConditionType").as(Long.class), deviceProcessQueryReq.getTriggerConditionType()));
+            }
+            if (!CheckParam.isNull(deviceProcessQueryReq.getTriggerCondition())) { //触发条件详情
+                list.add(criteriaBuilder.equal(root.get("triggerCondition").as(Long.class), deviceProcessQueryReq.getTriggerCondition()));
+            }
+            if (!CheckParam.isNull(deviceProcessQueryReq.getProcessRemark())) { //流程阶段
+                list.add(criteriaBuilder.like(root.get("processRemark").as(String.class), "%" + deviceProcessQueryReq.getProcessRemark() + "%"));
+            }
+            list.add(criteriaBuilder.equal(root.get("corporateIdentify").as(Long.class), corporateIdentify));
+
+            Predicate[] predicates = new Predicate[list.size()];
+            predicates = list.toArray(predicates);
+            return criteriaBuilder.and(predicates);
+        }, p);
+
+        Pagination<DeviceProcess> res = new Pagination<>();
+        if (page.hasContent()){
+            res.setList(page.getContent());
+        }
+        res.setCurrentPage(deviceProcessQueryReq.getCurrentPage());
+        res.setItemsPerPage(deviceProcessQueryReq.getItemsPerPage());
+        res.setTotalCount(Integer.valueOf(String.valueOf(page.getTotalElements())));
+
+        return res;
     }
 
 }

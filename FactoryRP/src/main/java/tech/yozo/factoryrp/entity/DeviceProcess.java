@@ -1,5 +1,6 @@
 package tech.yozo.factoryrp.entity;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.persistence.Column;
@@ -25,6 +26,7 @@ public class DeviceProcess extends BaseEntity implements Serializable {
      * 流程名称
      */
     @Column(name = "process_name",length = 20)
+    @ApiModelProperty(value = "流程名称",notes = "流程名称",example = "测试流程1")
     private String processName;
 
 
@@ -32,6 +34,7 @@ public class DeviceProcess extends BaseEntity implements Serializable {
      * 流程类型
      */
     @Column(name = "process_type",length = 20)
+    @ApiModelProperty(value = "流程类型",notes = "流程类型",example = "1")
     private Long processType;
 
 
@@ -39,12 +42,14 @@ public class DeviceProcess extends BaseEntity implements Serializable {
      * 流程阶段
      */
     @Column(name = "process_stage",length = 20)
+    @ApiModelProperty(value = "流程阶段",notes = "流程阶段",example = "1")
     private Long processStage;
 
     /**
      * 触发条件类型 对应设备类型 金额上限 部门等
      */
     @Column(name = "trigger_condition_type",length = 20)
+    @ApiModelProperty(value = "触发条件类型 对应设备类型 金额上限 部门等",notes = "触发条件类型 对应设备类型 金额上限 部门等",example = "1")
     private Long triggerConditionType;
 
 
@@ -52,12 +57,14 @@ public class DeviceProcess extends BaseEntity implements Serializable {
      * 条件详情
      */
     @Column(name = "trigger_condition",length = 20)
+    @ApiModelProperty(value = "条件详情",notes = "条件详情",example = "1")
     private Long triggerCondition;
 
     /**
      * 流程备注
      */
     @Column(name = "process_remark")
+    @ApiModelProperty(value = "流程备注",notes = "流程备注",example = "1")
     private String processRemark;
 
 }

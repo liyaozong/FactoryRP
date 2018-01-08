@@ -23,7 +23,7 @@ public class Role extends BaseEntity implements Serializable {
     /**
      * 角色code
      */
-    @Column(name = "role_code",length = 20)
+    @Column(name = "role_code",length = 50)
     private String roleCode;
 
     /**

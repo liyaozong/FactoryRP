@@ -17,6 +17,14 @@ public interface RoleRepository extends BaseRepository<Role,Long>{
 
 
     /**
+     * 根据角色名称和企业唯一标识进行查询
+     * @param roleCode
+     * @param corporateIdentify
+     * @return
+     */
+    Role findByRoleCodeAndCorporateIdentify(String roleCode,Long corporateIdentify);
+
+    /**
      * 通过id的in查询
      * @param ids
      * @return
@@ -38,7 +46,7 @@ public interface RoleRepository extends BaseRepository<Role,Long>{
      * @param corporateIdentify
      * @return
      */
-    Role findByRoleCodeAndCorporateIdentify(String roleCode,Long corporateIdentify);
+    //Role findByRoleCodeAndCorporateIdentify(String roleCode,Long corporateIdentify);
 
 
     /**

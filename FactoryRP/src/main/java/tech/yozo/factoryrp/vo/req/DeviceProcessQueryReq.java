@@ -50,9 +50,9 @@ public class DeviceProcessQueryReq extends BaseRequest implements Serializable{
 
 
     /**
-     * 触发条件类型 对应设备类型 金额上限 部门等
+     * 触发条件详情 对应设备类型 金额上限 部门等
      */
-    @ApiModelProperty(value = "条件详情,给列表值",notes = "条件详情,给列表值",example = "1")
+    @ApiModelProperty(value = "条件详情,给列表值",notes = "触发条件详情,给列表值",example = "1")
     private Long triggerCondition;
 
 

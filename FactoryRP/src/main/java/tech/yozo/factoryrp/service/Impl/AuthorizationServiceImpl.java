@@ -65,6 +65,39 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 
 
     /**
+     * 根据角色code查询用户信息
+     * @param roleCode
+     * @param corporateIdentify
+     * @return
+     */
+    public UserRespWarpResp queryUserByRoleCode(String roleCode,Long corporateIdentify){
+        Role role = roleRepository.findByRoleCodeAndCorporateIdentify(roleCode, corporateIdentify);
+
+        if(!CheckParam.isNull(role)){
+
+            UserRespWarpResp userRespWarpResp = new UserRespWarpResp();
+
+            List<UserResp> userRespList = new ArrayList<>();
+
+            role.getUserList().stream().forEach(r1 -> {
+                UserResp userResp = new UserResp();
+                userResp.setUserId(r1.getId());
+                userResp.setUserName(r1.getUserName());
+
+                userRespList.add(userResp);
+            });
+
+
+            userRespWarpResp.setUserRespList(userRespList);
+
+            return userRespWarpResp;
+        }
+
+        return null;
+    }
+
+
+    /**
      * 删除指定用户下面指定的角色信息
      * @param userRoleDeleteReq
      * @param corporateIdentify

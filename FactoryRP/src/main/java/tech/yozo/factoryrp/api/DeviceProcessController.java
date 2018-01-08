@@ -8,10 +8,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import tech.yozo.factoryrp.config.auth.UserAuthService;
+import tech.yozo.factoryrp.entity.DeviceProcess;
+import tech.yozo.factoryrp.page.Pagination;
 import tech.yozo.factoryrp.service.ProcessService;
 import tech.yozo.factoryrp.vo.base.ApiResponse;
 import tech.yozo.factoryrp.vo.req.DeviceParameterDicBatchAddReq;
 import tech.yozo.factoryrp.vo.req.DeviceProcessAddReq;
+import tech.yozo.factoryrp.vo.req.DeviceProcessQueryReq;
 import tech.yozo.factoryrp.vo.resp.process.DeviceProcessAddResp;
 
 import javax.annotation.Resource;
@@ -51,5 +54,21 @@ public class DeviceProcessController extends BaseController  {
     public ApiResponse<DeviceProcessAddResp> addDeviceProcess(@Valid @RequestBody DeviceProcessAddReq deviceProcessAddReq, HttpServletRequest request){
         Long corporateIdentify = userAuthService.getCurrentUserCorporateIdentify(request);
         return apiResponse(processService.addDeviceProcess(deviceProcessAddReq,corporateIdentify));
+    }
+
+
+    /**
+     * 流程分页查询
+     * @param deviceProcessQueryReq
+     * @param request
+     * @return
+     */
+    @PostMapping("/findByPage")
+    @ApiOperation(value = "流程分页查询",notes = "流程分页查询",httpMethod = "POST")
+    @ApiImplicitParam(dataType = "DeviceProcessQueryReq" ,name = "deviceProcessQueryReq", paramType = "VO" ,
+            value = "流程分页查询",required = true)
+    public ApiResponse<Pagination<DeviceProcess>> addDeviceProcess(@Valid @RequestBody DeviceProcessQueryReq deviceProcessQueryReq, HttpServletRequest request){
+        Long corporateIdentify = userAuthService.getCurrentUserCorporateIdentify(request);
+        return apiResponse(processService.findByPage(deviceProcessQueryReq,corporateIdentify));
     }
 }
