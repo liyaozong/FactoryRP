@@ -12,6 +12,61 @@
     .mainContain .tableListDiv tr th{
         font-size: 12px;
     }
+    .ImportantNote input[type='text']{
+        width: 133px;
+    }
+    .ImportantNote input[type='date']{
+        width: 133px;
+    }
+    .ImportantNote .titleDiv p textarea{
+        width: 612px;
+    }
+    .mainContain .tableListDiv{
+        margin-bottom: 0;
+    }
+    #tabWarp{
+        width: 97%;
+        height: auto;
+        border: 1px solid #e6e6e6;
+        margin: auto;
+        padding: 0 10px;
+    }
+    #tabMenu{
+        width: 100%;
+        height: 27px;
+        overflow: hidden;
+        border-bottom: 1px solid #e6e6e6;
+        margin-top: 5px;
+        line-height: 0;
+    }
+    #tabMenu ul{height: 26px;}
+    #tabMenu ul li{
+        width:auto;
+        float:left;
+        list-style:none;
+        font-size:12px;
+        line-height:25px;
+        height:25px;
+        text-align:center;
+        color:#0066CC;
+        cursor:pointer;
+        border-left:1px solid #e6e6e6;
+        border-right:1px solid #e6e6e6;
+        border-top:1px solid #e6e6e6;
+        margin:0px;
+        padding: 0 5px;
+        -webkit-transition:all .2s linear;
+        -moz-transition:all .2s linear;
+        -ms-transition:all .2s linear;
+        transition:all .2s linear;
+    }
+    #tabMenu ul li:hover{
+        background:#FBF5E1; font-weight:bold; color:#FF6600;
+    }
+    #tabMenu ul li.curent{background:#FBF5E1; font-weight:bold; color:#FF6600;}
+    #tabContent{ width:100%; height:auto;font-size:12px;}
+    #tabContent .hide{ display:none;}
+    #tabContent .tableListDiv{padding: 0}
 </style>
 <div class="place">
     <span>位置：</span>
@@ -75,6 +130,9 @@
     <div style="max-height: 400px;overflow: auto;" class="tableListDiv data-container jurisdiction">
         <table>
             <thead>
+            <tr>
+                <th style="text-align: left" colspan="17">设备列表</th>
+            </tr>
             <tr>
                 <th style="min-width:50px;">全选<input style="vertical-align: middle;margin-left: 5px" type="checkbox" value="1" onclick="selAll(this)" id="allSelected"/></th>
                 <!--<th>设备编号</th>-->
@@ -153,6 +211,131 @@
             <input name="" type="button"  class="cancel" value="取消" />
         </div>
     </div>
+
+    <!--故障报修相关 start-->
+    <div id="tabWarp">
+        <div id="tabMenu">
+            <ul>
+                 <li class="curent">故障报修</li>
+                 <li>维修计划</li>
+                 <li>保养计划</li>
+                 <li>维修记录</li>
+                 <li>保养记录</li>
+                 <li>配件更换记录</li>
+                 <li>关联备件</li>
+                 <li>关联文档</li>
+                 <li>设备图片</li>
+                 <li>自定义选项</li>
+                 <li>扩展技术参数</li>
+                 <li>设备生命期</li>
+            </ul>
+        </div>
+        <div id="tabContent">
+            <div style="max-height: 400px;overflow: auto;" class="tableListDiv">
+                <table>
+                    <thead>
+                    <tr>
+                        <th style="text-align: left" colspan="17">设备列表</th>
+                    </tr>
+                    <tr>
+                        <th style="min-width:50px;">全选<input style="vertical-align: middle;margin-left: 5px" type="checkbox" value="1" onclick="selAll(this)" id="allSelected"/></th>
+                        <!--<th>设备编号</th>-->
+                        <th>设备名称</th>
+                        <th>使用部门</th>
+                        <th>规格型号</th>
+                        <th>安装地点</th>
+                        <th>操作人员</th>
+                        <th>使用情况</th>
+                        <th>购买时间</th>
+                        <th>资产负责人</th>
+                        <th>设备类别</th>
+                        <th>供应商</th>
+                        <th>生产厂商</th>
+                        <th>设备标记</th>
+                        <th>资产原值</th>
+                        <th>备注</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="orderDetail in deviceListInfos">
+                        <td class="firstTd">{{$index+1}}<input style="margin-left: 5px;vertical-align: middle;" type="checkbox" name="che"  value="{{orderDetail.id}}"/></td>
+                        <!--<td>{{orderDetail.code||'--'}}</td>-->
+                        <td>{{orderDetail.name||'--'}}</td>
+                        <td>{{orderDetail.useDept||'--'}}</td>
+                        <td>{{orderDetail.specification||'--'}}</td>
+                        <td>{{orderDetail.installationAddress||'--'}}</td>
+                        <td>{{orderDetail.operator||'--'}}</td>
+                        <td>{{orderDetail.useStatus||'--'}}</td>
+                        <td>{{orderDetail.buyDate|date:'yyyy-MM-dd'||'--'}}</td>
+                        <td>{{orderDetail.head||'--'}}</td>
+                        <td>{{orderDetail.deviceType||'--'}}</td>
+                        <td>{{orderDetail.supplier||'--'}}</td>
+                        <td>{{orderDetail.manufacturer||'--'}}</td>
+                        <td>{{orderDetail.deviceFlag||'--'}}</td>
+                        <td>{{orderDetail.sourcePrice||'--'}}</td>
+                        <td>{{orderDetail.remark||'--'}}</td>
+                        <td>
+                            <a href="javascript:void(0)" class="resBtn editBtn" ng-click="editContactCompanyBalance(orderDetail)">
+                                <img src="image/comm/resBtnEdit.png" alt="编辑"/>
+                                <b class="title">编辑</b>
+                            </a>
+                            <!--<a href="javascript:void(0)" class="resBtn deleteBtn" ng-click="deleteContactCompanyBalance(orderDetail)">-->
+                            <!--<img src="image/comm/resBtnDelete.png" alt="删除"/>-->
+                            <!--<b class="title">删除</b>-->
+                            <!--</a>-->
+                        </td>
+                    </tr>
+                    </tbody>
+                    <tfoot>
+                    <tr>
+                        <td>
+                            <a href="javascript:void(0)" class="resBtn deleteBtn" ng-click="deleteContactCompanyBalance(orderDetail)">
+                                <img src="image/comm/resBtnDelete.png" alt="删除"/>
+                                <b class="title">删除</b>
+                            </a>
+                        </td>
+                        <td style="text-align: center" colspan="17"><tm-pagination conf="paginationConf"></tm-pagination></td>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+            <div class="tableListDiv hide">
+                <p>维修计划</p>
+            </div>
+            <div class="tableListDiv hide">
+                <p>保养计划</p>
+            </div>
+            <div class="tableListDiv hide">
+                <p>维修记录</p>
+            </div>
+            <div class="tableListDiv hide">
+                <p>保养记录</p>
+            </div>
+            <div class="tableListDiv hide">
+                <p>配件更换记录</p>
+            </div>
+            <div class="tableListDiv hide">
+                <p>关联备件</p>
+            </div>
+            <div class="tableListDiv hide">
+                <p>关联文档</p>
+            </div>
+            <div class="tableListDiv hide">
+                <p>设备图片</p>
+            </div>
+            <div class="tableListDiv hide">
+                <p>自定义选项</p>
+            </div>
+            <div class="tableListDiv hide">
+                <p>扩展技术参数</p>
+            </div>
+            <div class="tableListDiv hide">
+                <p>设备生命期</p>
+            </div>
+        </div>
+    </div>
+    <!--故障报修相关 end-->
 </div>
 <!--新增设备 start-->
 <div class="ImportantNote addContactBalance">
@@ -607,6 +790,35 @@
             });
 
         });
+        /*tab 切换效果 start*/
+        function fgTab(tabNav,tabBody){
+            var tabMenu=document.getElementById(tabNav);
+            var tabTitle=tabMenu.getElementsByTagName('li');
+            var tabContent=document.getElementById(tabBody);
+            var tabBody=tabContent.getElementsByClassName('tableListDiv');
+            function switchTab(i){
+                tabTitle[i].onclick=function(){
+                    for(j=0; j<tabTitle.length; j++){
+                        if(i==j){
+                            tabTitle[j].className='curent';
+                            tabBody[j].style.display="block";
+                        }else{
+                            tabTitle[j].className='';
+                            tabBody[j].style.display="none";
+                        }
+                    }
+                    //document.getElementById('what').innerHTML = i+'<br/>'+out();
+                }
+            }
+            for( i=0; i<tabTitle.length; i++){
+                switchTab(i);
+            }
+        }
+        function out(){
+            return i + '<br/>'+j;
+        }
+        fgTab('tabMenu','tabContent');
+        /*tab 切换效果 end*/
     </script>
     <script type="text/javascript">
 	    $('.tablelist tbody tr:odd').addClass('odd');
