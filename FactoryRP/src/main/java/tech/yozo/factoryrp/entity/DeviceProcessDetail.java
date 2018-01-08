@@ -1,5 +1,6 @@
 package tech.yozo.factoryrp.entity;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.persistence.Column;
@@ -35,10 +36,10 @@ public class DeviceProcessDetail extends BaseEntity implements Serializable {
 
 
     /**
-     * 审核人 这个流程审核关联表的id
+     * 审核人 这个流程审核关联表的id 多个用逗号分隔
      */
     @Column(name = "process_auditor",length = 20)
-    private Long processAuditor;
+    private String processAuditor;
 
 
     /**

@@ -136,14 +136,13 @@ public class AuthIntercepter implements HandlerInterceptor {
 
     /**
      * 验证token
-     *  如果token在Redis缓存里面不存在，需要重新登陆
+     * 如果token在Redis缓存里面不存在，需要重新登陆
      * @param request
      * @param response
      * @return
      */
     private boolean verifyToken(HttpServletRequest request,HttpServletResponse response){
         String token = request.getHeader("token");
-
 
         //从请求头和从请求参数里面拿到token都可以
         if(CheckParam.isNull(token)){

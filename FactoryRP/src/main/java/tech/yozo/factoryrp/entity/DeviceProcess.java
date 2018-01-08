@@ -8,7 +8,7 @@ import javax.persistence.Table;
 import java.io.Serializable;
 
 /**
- * 设备流程实体
+ * 设备流程实体-设备流程基本信息
  * @author created by Singer email:313402703@qq.com
  * @time 2017/12/27
  * @description

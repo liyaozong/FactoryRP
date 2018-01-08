@@ -22,7 +22,7 @@ public interface ProcessService {
      * @return
      * @throws BussinessException
      */
-    ProcessStatusQueryResp queryProcessStatus(Long processInstanceId, Long corporateIdentify) throws BussinessException;
+    //ProcessStatusQueryResp queryProcessStatus(Long processInstanceId, Long corporateIdentify) throws BussinessException;
 
     /**
      * 开启流程
@@ -31,7 +31,7 @@ public interface ProcessService {
      * @param processStage 流程阶段
      * @return
      */
-    CreateProcessInstanceResp createProcessInstance(Long processType, Long processStage, Long corporateIdentify) throws BussinessException;
+    //CreateProcessInstanceResp createProcessInstance(Long processType, Long processStage, Long corporateIdentify) throws BussinessException;
 
     /**
      * 新增流程

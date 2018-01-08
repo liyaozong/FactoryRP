@@ -6,6 +6,7 @@ import lombok.Data;
 import tech.yozo.factoryrp.vo.base.BaseRequest;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * 流程新增请求Vo
@@ -56,5 +57,12 @@ public class DeviceProcessAddReq extends BaseRequest implements Serializable {
      */
     @ApiModelProperty(value = "流程备注，可有可无",notes = "流程备注，可有可无",example = "1")
     private String processRemark;
+
+
+    /**
+     * 流程细节集合
+     */
+    @ApiModelProperty(value = "流程细节集合",notes = "流程细节集合",example = "List")
+    private List<DeviceProcessDetailAddReq> list;
 
 }
