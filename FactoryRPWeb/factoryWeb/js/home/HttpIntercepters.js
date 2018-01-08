@@ -43,7 +43,7 @@ myApp.factory('HttpInterceptor', function($rootScope,$q,$window,$cookies,$inject
                         stateService.go("main.home");
                     }
                     rootScope.stateBeforeLogin = null;
-                } else if(response && response.data  && response.data.errorCode == '000002' && response.data.errorMessage == '请登录'){
+                } else if(response && response.data && response.data.errorCode == '000667' && response.data.errorMessage == '请登录'){
                     $cookies.remove('token');
                     $cookies.remove('username');
 
@@ -53,21 +53,11 @@ myApp.factory('HttpInterceptor', function($rootScope,$q,$window,$cookies,$inject
                     }
                     var stateService = $injector.get('$state');
                     stateService.go("login");
-                } else if(response && response.data  && response.data.errorCode == '000002' && response.data.errorMessage == '请登录'){
-                    $cookies.remove('token');
-
-                    var rootScope = $injector.get('$rootScope');
-                    if($injector.get('$rootScope').$state && $injector.get('$rootScope').$state.current && $injector.get('$rootScope').$state.current.name != 'login'){
-                        rootScope.stateBeforeLogin = {current:$injector.get('$rootScope').$state.current, params:$injector.get('$rootScope').$state.params};
-                    }
-                    var stateService = $injector.get('$state');
-                    stateService.go("login");
-                    return $q.reject(response);
-                } else if(response && response.data && response.data.status != '0' && response.data.message){
+                }else if(response && response.data && response.data.status != '0' && response.data.message){
                     var rootScope = $injector.get('$rootScope');
                     rootScope.alertMsg = response.data.message;
                 }else{
-//                    console.log(1)
+                   console.log(1)
                 }
 
                 if($rootScope.loading > 1) {
