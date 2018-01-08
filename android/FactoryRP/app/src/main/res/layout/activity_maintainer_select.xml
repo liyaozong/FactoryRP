@@ -5,15 +5,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context="tech.yozo.factoryrp.ui.MaintainerSelectActivity">
+        tools:context="tech.yozo.factoryrp.ui.EngineerSelectActivity">
 
     <ListView
             android:layout_width="match_parent"
             android:layout_height="match_parent" android:layout_above="@+id/button_add_maintainer"
             android:id="@+id/lv_maintainer"/>
-    <Button
-            android:text="@string/action_repair_add_maintainer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:id="@+id/button_add_maintainer"
-            android:layout_alignParentBottom="true" android:layout_alignParentStart="true"/>
 </RelativeLayout>

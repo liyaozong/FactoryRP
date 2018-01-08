@@ -37,6 +37,8 @@ public class PersonFragment extends BaseFragment {
     TextView tvPersonName;
     @BindView(R.id.ll_my_repair)
     LinearLayout llMyRepair;
+    @BindView(R.id.ll_my_report)
+    LinearLayout llMyReport;
     @BindView(R.id.ll_change_password)
     LinearLayout llChangePassword;
     @BindView(R.id.ll_check_update)
@@ -45,8 +47,9 @@ public class PersonFragment extends BaseFragment {
     LinearLayout llAboutUs;
     Unbinder unbinder;
 
-    private String mParam1;
-    private String mParam2;
+
+    private int mParam_mode;
+    private String mParam_id;
 
     public PersonFragment() {
         // Required empty public constructor
@@ -60,10 +63,10 @@ public class PersonFragment extends BaseFragment {
      * @param param2 Parameter 2.
      * @return A new instance of fragment PersonFragment.
      */
-    public static PersonFragment newInstance(String param1, String param2) {
+    public static PersonFragment newInstance(int param1, String param2) {
         PersonFragment fragment = new PersonFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
+        args.putInt(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
@@ -73,8 +76,8 @@ public class PersonFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            mParam_mode = getArguments().getInt(ARG_PARAM1);
+            mParam_id = getArguments().getString(ARG_PARAM2);
         }
     }
 
@@ -110,7 +113,7 @@ public class PersonFragment extends BaseFragment {
         unbinder.unbind();
     }
 
-    @OnClick({R.id.button_logout, R.id.ll_my_repair, R.id.ll_change_password, R.id.ll_check_update, R.id.ll_about_us})
+    @OnClick({R.id.button_logout, R.id.ll_my_repair, R.id.ll_my_report, R.id.ll_change_password, R.id.ll_check_update, R.id.ll_about_us})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.button_logout: {
@@ -123,6 +126,8 @@ public class PersonFragment extends BaseFragment {
                 break;
             }
             case R.id.ll_my_repair:
+                break;
+            case R.id.ll_my_report:
                 break;
             case R.id.ll_change_password:
                 break;

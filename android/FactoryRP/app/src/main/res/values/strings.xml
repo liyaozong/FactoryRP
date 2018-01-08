@@ -25,6 +25,7 @@
     <string name="failure_request">请求错误，请查看手机网络或服务器状态</string>
     <string name="failure_camera_permission">没有授权，无法使用照相机</string>
 
+    <string name="hint_parts_count">最多只能添加10个。</string>
     <string name="hint_image_count">只能添加3张照片。</string>
     <string name="hint_device_save_success">设备保存成功。</string>
     <string name="hint_report_fault_success">故障上报成功。</string>
@@ -53,8 +54,9 @@
     <string name="action_repair_add_parts">添加所需的配件</string>
 
     <string name="hint_catch_repair_success">抢单成功</string>
-    <string name="hint_give_up_repair_success">你成功放弃该工单</string>
+    <string name="hint_give_up_repair_success">你放弃了该工单</string>
     <string name="hint_finish_repair_success">提交成功</string>
+    <string name="hint_finish_validate_success">验收完成</string>
 
     <string name="title_scan_device">扫描设备条码</string>
     <string name="title_device_info">设备信息</string>
@@ -96,7 +98,8 @@
     <string name="text_device_fault_reason">故障原因：</string>
     <string name="text_device_fault_type">故障类别：</string>
     <string name="text_device_repair_group">维修班组：</string>
-    <string name="text_device_using_status">设备状态：</string>
+    <string name="text_device_status">设备状态：</string>
+    <string name="text_device_running_status">设备运行状态：</string>
     <string name="text_device_operator">设备操作人：</string>
     <string name="text_device_operator_phone">操作人电话：</string>
     <string name="text_device_using_place">设备位置：</string>
@@ -107,13 +110,14 @@
     <string name="text_maintainer">接单侠：</string>
     <string name="text_repair_status">维修状态：</string>
     <string name="text_repair_level">维修级别：</string>
-    <string name="text_is_stop_repair">是否停机：</string>
+    <string name="text_is_stop_repair">是否需要停机：</string>
     <string name="text_stop_time">停机时长(时)：</string>
     <string name="text_repair_cost">维修费用(元)：</string>
     <string name="text_repair_desc">维修工作描述：</string>
     <string name="text_repair_start_time">开始时间：</string>
     <string name="text_repair_finish_time">完成时间：</string>
     <string name="text_repair_total_time">维修用时：</string>
+    <string name="text_number">数量：</string>
 
     <string name="loading_login">登录中</string>
     <string name="loading_loading">加载中</string>

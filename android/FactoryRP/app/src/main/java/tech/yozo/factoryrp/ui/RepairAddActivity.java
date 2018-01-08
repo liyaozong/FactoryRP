@@ -14,11 +14,13 @@ import tech.yozo.factoryrp.ui.fragment.*;
 import tech.yozo.factoryrp.utils.BottomNavigationViewHelper;
 import tech.yozo.factoryrp.utils.Constant;
 import tech.yozo.factoryrp.utils.HttpClient;
+import tech.yozo.factoryrp.vo.resp.device.trouble.UsedSparePartsVo;
 import tech.yozo.factoryrp.vo.resp.device.trouble.WorkOrderDetailVo;
+import tech.yozo.factoryrp.vo.resp.device.trouble.WorkTimeVo;
 
 import java.util.List;
 
-public class RepairAddActivity extends AppCompatActivity implements HttpClient.OnHttpListener {
+public class RepairAddActivity extends AppCompatActivity implements HttpClient.OnHttpListener, RepairWorkloadFragment.OnFragmentInteractionListener, RepairPartsFragment.OnFragmentInteractionListener {
     private ViewPager mViewPageContianer;
     private BottomNavigationView mNavigation;
 
@@ -115,11 +117,15 @@ public class RepairAddActivity extends AppCompatActivity implements HttpClient.O
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_submit:
-                //TODO
+                attemptSaveRepair();
                 return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void attemptSaveRepair() {
+        //TODO
     }
 
     @Override
@@ -129,6 +135,16 @@ public class RepairAddActivity extends AppCompatActivity implements HttpClient.O
 
     @Override
     public void onFailure(int requestType) {
+
+    }
+
+    @Override
+    public void onModifyWorkTimes(List<WorkTimeVo> workTimes) {
+
+    }
+
+    @Override
+    public void onModifyParts(List<UsedSparePartsVo> parts) {
 
     }
 }

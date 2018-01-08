@@ -81,7 +81,7 @@
                 android:name=".ui.ValidateRepairActivity"
                 android:label="@string/title_repair_validate">
         </activity>
-        <activity android:name=".ui.MaintainerSelectActivity"
+        <activity android:name=".ui.EngineerSelectActivity"
                 android:label="@string/title_select_maintainer">
         </activity>
     </application>

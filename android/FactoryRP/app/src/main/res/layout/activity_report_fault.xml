@@ -94,7 +94,7 @@
                     android:layout_height="wrap_content" android:layout_marginTop="1dp" android:padding="4dp"
                     android:background="@android:color/background_light">
                 <TextView
-                        android:text="@string/text_device_using_status"
+                        android:text="@string/text_device_running_status"
                         android:layout_width="120dp"
                         android:layout_height="wrap_content"
                         android:id="@+id/textView45"
@@ -102,8 +102,10 @@
                 <Spinner
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:id="@+id/spinner_device_status"
-                        android:layout_weight="1"/>
+                        android:id="@+id/spinner_device_running_status"
+                        android:entries="@array/device_running_status"
+                        android:layout_weight="1"
+                        android:theme="@android:style/Widget.DeviceDefault.DropDownItem.Spinner"/>
             </LinearLayout>
             <LinearLayout
                     android:orientation="horizontal"
