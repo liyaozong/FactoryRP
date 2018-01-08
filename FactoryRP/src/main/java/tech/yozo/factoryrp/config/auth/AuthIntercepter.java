@@ -144,10 +144,16 @@ public class AuthIntercepter implements HandlerInterceptor {
     private boolean verifyToken(HttpServletRequest request,HttpServletResponse response){
         String token = request.getHeader("token");
 
+
+        //从请求头和从请求参数里面拿到token都可以
+        if(CheckParam.isNull(token)){
+          token = request.getParameter("token");
+        }
         if(CheckParam.isNull(token)){
             AuthWebUtil.needLogin(request,response);
             return false;
         }
+
 
         String authUser = stringRedisTemplate.opsForValue().get(authCachePrefix+token);
 
