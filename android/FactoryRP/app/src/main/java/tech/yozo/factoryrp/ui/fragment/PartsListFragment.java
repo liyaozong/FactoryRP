@@ -33,6 +33,7 @@ public class PartsListFragment extends BaseFragment implements HttpClient.OnHttp
     private int mParam_mode;
     private Long mParam_id;
 
+    private Context mContext;
     private ListView mPartsListView;
     private List<SparePartsResp> parts;
 
@@ -69,6 +70,15 @@ public class PartsListFragment extends BaseFragment implements HttpClient.OnHttp
             mParam_mode = getArguments().getInt(ARG_PARAM1);
             mParam_id = getArguments().getLong(ARG_PARAM2);
         }
+
+        if(mParam_mode == Constant.FOR_CHOICE_MODE) {
+            if (mContext instanceof OnFragmentInteractionListener) {
+                mListener = (OnFragmentInteractionListener) mContext;
+            } else {
+                throw new RuntimeException(mContext.toString()
+                        + " must implement OnFragmentInteractionListener");
+            }
+        }
     }
 
     @Override
@@ -103,15 +113,7 @@ public class PartsListFragment extends BaseFragment implements HttpClient.OnHttp
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-
-        if(mParam_mode == Constant.FOR_CHOICE_MODE) {
-            if (context instanceof OnFragmentInteractionListener) {
-                mListener = (OnFragmentInteractionListener) context;
-            } else {
-                throw new RuntimeException(context.toString()
-                        + " must implement OnFragmentInteractionListener");
-            }
-        }
+        mContext = context;
     }
 
     @Override
@@ -233,7 +235,6 @@ public class PartsListFragment extends BaseFragment implements HttpClient.OnHttp
             else {
                 holder = (ViewHolder)convertView.getTag();
             }
-            //TODO
             holder.name.setText(parts.get(i).getName());
             holder.code.setText(parts.get(i).getCode());
             holder.type.setText(parts.get(i).getSpecificationsAndodels());

@@ -1,71 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="device_using_dept">
-        <item>煅烧车间</item>
-        <item>成型车间</item>
-        <item>焙烧车间</item>
-        <item>组装车间</item>
-    </string-array>
-    <string-array name="device_status">
-        <item>在用</item>
-        <item>待检</item>
-        <item>待修</item>
-        <item>停用</item>
-        <item>报废</item>
-        <item>停用</item>
-        <item>未验收入账</item>
-    </string-array>
-    <string-array name="device_using_status">
+    <string-array name="device_running_status">
         <item>停机维修</item>
         <item>带病运行</item>
         <item>其他</item>
     </string-array>
-    <string-array name="device_defect_level">
-        <item>紧急</item>
-        <item>一般</item>
-        <item>其他</item>
+    <string-array name="parts_number">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
     </string-array>
-    <string-array name="device_fault_reason">
-        <item>自然磨损</item>
-        <item>违章操作</item>
-        <item>配件质量差</item>
-        <item>维护保养不到位</item>
-        <item>其他</item>
-    </string-array>
-    <string-array name="device_fault_type">
-        <item>机械故障</item>
-        <item>电气故障</item>
-        <item>物料原因故障</item>
-        <item>能源供给故障</item>
-        <item>其它故障</item>
-    </string-array>
-    <string-array name="device_indentify">
-        <item>重点设备</item>
-        <item>主要设备</item>
-        <item>一般设备</item>
-        <item>AAA类</item>
-        <item>B类</item>
-    </string-array>
-    <string-array name="device_type">
-        <item>切割类</item>
-        <item>钻孔类</item>
-        <item>砂磨类</item>
-        <item>铣削类</item>
-        <item>除尘类</item>
-        <item>组接类</item>
-        <item>制冷类</item>
-        <item>冲压类</item>
-        <item>加湿类</item>
-        <item>检测类</item>
-        <item>焊接类</item>
-        <item>辅助类</item>
-        <item>供电类</item>
-    </string-array>
-    <string-array name="repair_level">
-        <item>常见故障维修</item>
-        <item>突发性故障维修</item>
-        <item>计划项目维修</item>
-        <item>不正当使用维修</item>
+    <string-array name="work_time">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>6</item>
+        <item>8</item>
+        <item>12</item>
+        <item>16</item>
+        <item>24</item>
+        <item>48</item>
     </string-array>
     <string-array name="repair_status">
         <item>正在维修</item>
@@ -75,14 +37,5 @@
         <item>停机维修</item>
         <item>无法修复</item>
         <item>待转委外维修</item>
-    </string-array>
-    <string-array name="maintain_group">
-        <item>电气维修组</item>
-        <item>机械维修组</item>
-        <item>其他</item>
-    </string-array>
-    <string-array name="stop_for_repair">
-        <item>否</item>
-        <item>是</item>
     </string-array>
 </resources>

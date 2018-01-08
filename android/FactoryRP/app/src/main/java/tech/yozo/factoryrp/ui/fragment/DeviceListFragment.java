@@ -29,6 +29,7 @@ import java.util.List;
  */
 public class DeviceListFragment extends BaseFragment implements HttpClient.OnHttpListener {
 
+    private Context mContext;
     private ListView mListView;
     private DeviceListAdapter mListAdapter;
     private List<SimpleDeviceInfoResp> devices;
@@ -71,6 +72,15 @@ public class DeviceListFragment extends BaseFragment implements HttpClient.OnHtt
             mParam_mode = getArguments().getInt(ARG_PARAM1);
             mParam_id = getArguments().getString(ARG_PARAM2);
         }
+
+        if(mParam_mode == Constant.FOR_CHOICE_MODE) {
+            if (mContext instanceof OnFragmentInteractionListener) {
+                mListener = (OnFragmentInteractionListener) mContext;
+            } else {
+                throw new RuntimeException(mContext.toString()
+                        + " must implement OnFragmentInteractionListener");
+            }
+        }
     }
 
     @Override
@@ -108,15 +118,7 @@ public class DeviceListFragment extends BaseFragment implements HttpClient.OnHtt
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-
-        if(mParam_mode == Constant.FOR_CHOICE_MODE) {
-            if (context instanceof OnFragmentInteractionListener) {
-                mListener = (OnFragmentInteractionListener) context;
-            } else {
-                throw new RuntimeException(context.toString()
-                        + " must implement OnFragmentInteractionListener");
-            }
-        }
+        mContext = context;
     }
 
     @Override

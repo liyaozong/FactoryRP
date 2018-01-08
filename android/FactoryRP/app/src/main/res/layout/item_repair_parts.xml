@@ -1,52 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" android:background="@android:color/background_light">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent"
+              android:layout_height="wrap_content" android:background="@color/colorBackground"
+              android:orientation="vertical">
 
-    <TextView
-            android:text="TextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:layout_alignParentTop="true"
-            android:layout_alignParentStart="true"
-            android:id="@+id/tv_parts_name" android:layout_margin="4dp" android:textSize="20sp"
-            android:textColor="@color/colorHighlight"/>
-    <TextView
-            android:text="备件编号："
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:layout_below="@+id/tv_parts_name"
-            android:layout_alignStart="@+id/tv_parts_name" android:layout_marginTop="4dp"
-            android:id="@+id/textView33" android:textSize="16sp"/>
-    <TextView
-            android:text="规格型号："
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:layout_below="@+id/textView33"
-            android:layout_alignStart="@+id/textView33" android:layout_marginTop="4dp" android:id="@+id/textView34"
-            android:textSize="16sp"/>
-    <TextView
-            android:text="当前库存："
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:layout_below="@+id/textView34"
-            android:layout_alignStart="@+id/textView34" android:layout_marginTop="4dp" android:id="@+id/textView35"
-            android:textSize="16sp" android:layout_marginBottom="4dp" android:visibility="gone"/>
-    <TextView
-            android:text="TextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/tv_parts_no" android:layout_alignBaseline="@+id/textView33"
-            android:layout_alignBottom="@+id/textView33" android:layout_toEndOf="@+id/textView33"
-            android:textSize="16sp"/>
-    <TextView
-            android:text="TextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/tv_parts_type" android:layout_alignBaseline="@+id/textView34"
-            android:layout_alignBottom="@+id/textView34" android:layout_toEndOf="@+id/textView34"
-            android:textSize="16sp"/>
-    <TextView
-            android:text="TextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/tv_parts_stock" android:layout_alignBaseline="@+id/textView35"
-            android:layout_alignBottom="@+id/textView35" android:layout_toEndOf="@+id/textView35"
-            android:textSize="16sp" android:visibility="gone"/>
-</RelativeLayout>
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/background_light" android:padding="4dp">
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true"
+                android:id="@+id/tv_parts_name" android:layout_margin="4dp" android:textSize="20sp"
+                android:textColor="@color/colorHighlight" android:layout_weight="1"/>
+        <ImageButton
+                android:layout_width="50dp"
+                android:layout_height="35dp" app:srcCompat="@android:drawable/presence_busy"
+                android:id="@+id/ib_delete_part" android:background="@android:color/background_light"/>
+    </LinearLayout>
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:padding="6dp"
+            android:background="@android:color/background_light" android:layout_marginTop="1dp">
+        <TextView
+                android:text="备件编号："
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView33" android:textSize="16sp"/>
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_parts_no"
+                android:textSize="16sp" android:layout_weight="1"/>
+    </LinearLayout>
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:padding="6dp"
+            android:background="@android:color/background_light">
+        <TextView
+                android:text="规格型号："
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView34"
+                android:textSize="16sp"/>
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_parts_type"
+                android:textSize="16sp" android:layout_weight="1"/>
+    </LinearLayout>
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:padding="6dp"
+            android:background="@android:color/background_light" android:layout_marginBottom="2dp"
+            android:layout_gravity="center_vertical">
+        <TextView
+                android:text="@string/text_number"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content" android:id="@+id/textView49"/>
+        <Spinner
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_parts_num" android:layout_weight="1" android:entries="@array/parts_number"/>
+        <TextView
+                android:text="个"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/textView81"/>
+    </LinearLayout>
+</LinearLayout>

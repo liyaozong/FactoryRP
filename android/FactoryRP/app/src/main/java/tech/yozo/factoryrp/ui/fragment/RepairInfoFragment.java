@@ -17,9 +17,9 @@ import com.loopj.android.http.RequestParams;
 import tech.yozo.factoryrp.R;
 import tech.yozo.factoryrp.ui.ValidateRepairActivity;
 import tech.yozo.factoryrp.utils.HttpClient;
-import tech.yozo.factoryrp.vo.req.ValidateRepairReq;
 import tech.yozo.factoryrp.vo.resp.device.trouble.WorkOrderDetailVo;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
@@ -49,8 +49,8 @@ public class RepairInfoFragment extends BaseFragment implements HttpClient.OnHtt
     TextView tvDeviceDept;
     @BindView(R.id.tv_device_place)
     TextView tvDevicePlace;
-    @BindView(R.id.tv_device_status)
-    TextView tvDeviceStatus;
+    @BindView(R.id.tv_device_running_status)
+    TextView tvDeviceRunningStatus;
     @BindView(R.id.tv_happen_time)
     TextView tvHappenTime;
     @BindView(R.id.tv_repair_id)
@@ -69,6 +69,7 @@ public class RepairInfoFragment extends BaseFragment implements HttpClient.OnHtt
 
     private int mParam_mode;
     private WorkOrderDetailVo mParam_obj;
+    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日 HH时MM分");
 
     public RepairInfoFragment() {
         // Required empty public constructor
@@ -112,14 +113,34 @@ public class RepairInfoFragment extends BaseFragment implements HttpClient.OnHtt
         tvDeviceDept.setText(mParam_obj.getUseDept());
         tvDevicePlace.setText(mParam_obj.getInstallationAddress());
         //TODO
-        tvDeviceStatus.setText(String.valueOf(mParam_obj.getRepairStatus()));
-        tvHappenTime.setText(mParam_obj.getHappenTime().toString());
+        tvDeviceRunningStatus.setText("");
+        tvHappenTime.setText(sdf.format(mParam_obj.getHappenTime()));
         tvRepairId.setText(String.valueOf(mParam_obj.getTroubleRecordId()));
         tvDeviceOperator.setText(mParam_obj.getDeviceUser());
         tvOperatorPhone.setText(mParam_obj.getPhone());
         tvTroubleSubmitter.setText(mParam_obj.getCreateUser());
         tvMaintainer.setText(mParam_obj.getRepairUserName());
         tvTroubleDesc.setText(mParam_obj.getRemark());
+
+//        if(HttpClient.getInstance().getAuthUser().getUserName().contentEquals(mParam_obj.getRepairUserName())) {
+//            bIRepair.setVisibility(View.GONE);
+//        }
+
+        switch (mParam_mode) {
+            case HttpClient.REQUEST_TROUBLE_WAIT_REPAIR:
+                bValidateRepair.setVisibility(View.GONE);
+                break;
+            case HttpClient.REQUEST_TROUBLE_REPAIRING:
+            case HttpClient.REQUEST_TROUBLE_WAIT_AUDIT:
+                bValidateRepair.setVisibility(View.GONE);
+            case HttpClient.REQUEST_TROUBLE_WAIT_VALIDATE:
+                bINotRepair.setVisibility(View.GONE);
+                bIRepair.setVisibility(View.GONE);
+                break;
+            default:
+                break;
+        }
+
         return view;
     }
 
@@ -172,9 +193,13 @@ public class RepairInfoFragment extends BaseFragment implements HttpClient.OnHtt
         switch (requestType) {
             case HttpClient.REQUEST_REPAIR_GRAB_URL:
                 tvMaintainer.setText(HttpClient.getInstance().getAuthUser().getUserName());
+                bIRepair.setEnabled(false);
+                bINotRepair.setEnabled(true);
                 break;
             case HttpClient.REQUEST_REPAIR_GIVEUP_URL:
                 tvMaintainer.setText("");
+                bIRepair.setEnabled(true);
+                bINotRepair.setEnabled(false);
                 break;
             default:
                 break;

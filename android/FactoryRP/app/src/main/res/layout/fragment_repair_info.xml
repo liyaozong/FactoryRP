@@ -87,12 +87,12 @@
                     android:layout_height="match_parent" android:padding="8dp" android:layout_marginTop="6dp"
                     android:background="@android:color/background_light">
                 <TextView
-                        android:text="@string/text_device_using_status"
+                        android:text="@string/text_device_running_status"
                         android:layout_width="120dp"
                         android:layout_height="wrap_content" android:id="@+id/textView72"/>
                 <TextView
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" android:id="@+id/tv_device_status"
+                        android:layout_height="wrap_content" android:id="@+id/tv_device_running_status"
                         android:layout_weight="2"/>
             </LinearLayout>
             <LinearLayout
@@ -201,14 +201,15 @@
         <Button
                 android:text="@string/action_i_repair_it"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:id="@+id/b_i_repair"/>
+                android:layout_height="wrap_content" android:id="@+id/b_i_repair" android:layout_weight="1"/>
         <Button
                 android:text="@string/action_i_not_repair"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:id="@+id/b_i_not_repair"/>
+                android:layout_height="wrap_content" android:id="@+id/b_i_not_repair" android:layout_weight="1"/>
         <Button
                 android:text="@string/action_validate_repair"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:id="@+id/b_validate_repair" android:layout_weight="1"/>
+                android:layout_height="wrap_content" android:id="@+id/b_validate_repair" android:layout_weight="1"
+        />
     </LinearLayout>
 </RelativeLayout>

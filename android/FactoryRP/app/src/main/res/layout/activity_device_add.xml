@@ -91,7 +91,6 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:id="@+id/spinner_device_category"
-                        android:entries="@array/device_type"
                         android:layout_weight="1"/>
             </LinearLayout>
             <LinearLayout
@@ -109,7 +108,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:id="@+id/spinner_device_identify"
-                        android:layout_weight="1" android:entries="@array/device_indentify"/>
+                        android:layout_weight="1"/>
             </LinearLayout>
             <LinearLayout
                     android:orientation="horizontal"
@@ -118,7 +117,7 @@
                     android:background="@android:color/background_light" android:layout_marginTop="1dp"
                     android:padding="4dp">
                 <TextView
-                        android:text="@string/text_device_using_status"
+                        android:text="@string/text_device_status"
                         android:layout_width="120dp"
                         android:layout_height="wrap_content"
                         android:id="@+id/textView12"
@@ -127,7 +126,6 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:id="@+id/spinner_device_status"
-                        android:entries="@array/device_using_status"
                         android:layout_weight="1"/>
             </LinearLayout>
             <LinearLayout
@@ -145,7 +143,6 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:id="@+id/spinner_device_dept"
-                        android:entries="@array/device_using_dept"
                         android:layout_weight="1"/>
             </LinearLayout>
             <LinearLayout

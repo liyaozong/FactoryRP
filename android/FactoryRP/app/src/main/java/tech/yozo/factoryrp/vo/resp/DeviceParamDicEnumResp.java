@@ -13,7 +13,9 @@ import lombok.Data;
  */
 //@ApiModel
 @Data
-public class DeviceParamDicEnumResp{
+public class DeviceParamDicEnumResp {
+
+    private Long id;
 
 //    @ApiModelProperty(value = "设备字典code",required = true,notes = "设备字典code",example = "measuring_unit")
     private String code;

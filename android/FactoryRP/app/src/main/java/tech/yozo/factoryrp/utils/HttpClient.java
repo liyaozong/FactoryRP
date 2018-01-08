@@ -40,8 +40,8 @@ import java.util.List;
 
 
 public class HttpClient {
-    //    private static final String BASE_URL = "http://192.168.6.100:9550/";
-        private static final String BASE_URL = "http://factoryrp.yozo.tech:9550/";
+//    private static final String BASE_URL = "http://192.168.6.100:9550/";
+    private static final String BASE_URL = "http://factoryrp.yozo.tech:9550/";
 //    private static final String BASE_URL = "http://39.104.71.127:9550/";
 
     private static final String CONTENT_TYPE = "application/json";
@@ -446,8 +446,16 @@ public class HttpClient {
                             Toast.makeText(mContext, R.string.action_start_repair, Toast.LENGTH_SHORT).show();
                             mListener.onHttpSuccess(mRequestType, null, null);
                             break;
+                        case REQUEST_END_REPAIR_ACTION:
+                            Toast.makeText(mContext, R.string.action_finish_repair, Toast.LENGTH_SHORT).show();
+                            mListener.onHttpSuccess(mRequestType, null, null);
+                            break;
                         case REQUEST_SUBMIT_REPAIR_ACTION:
                             Toast.makeText(mContext, R.string.hint_finish_repair_success, Toast.LENGTH_SHORT).show();
+                            mListener.onHttpSuccess(mRequestType, null, null);
+                            break;
+                        case REQUEST_VALIDATE_REPAIR_ACTION:
+                            Toast.makeText(mContext, R.string.hint_finish_validate_success, Toast.LENGTH_SHORT).show();
                             mListener.onHttpSuccess(mRequestType, null, null);
                             break;
                         case REQUEST_DEVICE_LIST:

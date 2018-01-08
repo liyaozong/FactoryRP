@@ -22,11 +22,13 @@ import tech.yozo.factoryrp.ui.fragment.RepairWorkloadFragment;
 import tech.yozo.factoryrp.utils.BottomNavigationViewHelper;
 import tech.yozo.factoryrp.utils.HttpClient;
 import tech.yozo.factoryrp.vo.req.SubmitRepairReq;
+import tech.yozo.factoryrp.vo.resp.device.trouble.UsedSparePartsVo;
 import tech.yozo.factoryrp.vo.resp.device.trouble.WorkOrderDetailVo;
+import tech.yozo.factoryrp.vo.resp.device.trouble.WorkTimeVo;
 
 import java.util.List;
 
-public class RepairDetailActivity extends AppCompatActivity implements HttpClient.OnHttpListener {
+public class RepairDetailActivity extends AppCompatActivity implements HttpClient.OnHttpListener, RepairPartsFragment.OnFragmentInteractionListener, RepairWorkloadFragment.OnFragmentInteractionListener {
     public static final String TROUBLE_ID = "trouble_id";
     public static final String OPERATE_MODE = "operate_mode";
 
@@ -34,6 +36,8 @@ public class RepairDetailActivity extends AppCompatActivity implements HttpClien
     private BottomNavigationView mNavigation;
 
     private WorkOrderDetailVo detailVo;
+    private List<UsedSparePartsVo> modifyParts;
+    private List<WorkTimeVo> modifyWorkTimes;
     private int mode;
     private long id;
 
@@ -134,7 +138,9 @@ public class RepairDetailActivity extends AppCompatActivity implements HttpClien
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.repair_bar_submit, menu);
+        if(mode == HttpClient.REQUEST_TROUBLE_REPAIRING) {
+            getMenuInflater().inflate(R.menu.repair_bar_submit, menu);
+        }
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -142,33 +148,22 @@ public class RepairDetailActivity extends AppCompatActivity implements HttpClien
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_submit:
-                if(detailVo.getReplaceSpares() == null) {
+                if(modifyParts != null && modifyParts.size() != 0) {
+                    cancelForParts = false;
+                } else {
                     cancelForParts = true;
                     partsAlertDialog();
-                } else {
-                    cancelForParts = false;
                 }
-                if(detailVo.getWorkTimes() == null) {
+                if(modifyWorkTimes != null && modifyWorkTimes.size() != 0) {
+                    cancelForTimes = false;
+                } else {
                     cancelForTimes = true;
                     timesAlertDialog();
-                } else {
-                    cancelForTimes = false;
                 }
                 return true;
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    private void attemptSubmitRepair() {
-        if(!cancelForParts && !cancelForTimes) {
-            HttpClient client = HttpClient.getInstance();
-            SubmitRepairReq req = new SubmitRepairReq();
-            req.setTroubleRecordId(detailVo.getTroubleRecordId());
-            req.setReplaceSpares(detailVo.getReplaceSpares());
-            req.setWorkTimes(detailVo.getWorkTimes());
-            client.requestSubmitRepairTask(this, this, req);
-        }
     }
 
     private void partsAlertDialog() {
@@ -215,6 +210,17 @@ public class RepairDetailActivity extends AppCompatActivity implements HttpClien
         dialog.show();
     }
 
+    private void attemptSubmitRepair() {
+        if(!cancelForParts && !cancelForTimes) {
+            HttpClient client = HttpClient.getInstance();
+            SubmitRepairReq req = new SubmitRepairReq();
+            req.setTroubleRecordId(detailVo.getTroubleRecordId());
+            req.setReplaceSpares(modifyParts);
+            req.setWorkTimes(modifyWorkTimes);
+            client.requestSubmitRepairTask(this, this, req);
+        }
+    }
+
     @Override
     public void onHttpSuccess(int requestType, Object obj, List<?> list) {
         detailVo = (WorkOrderDetailVo) obj;
@@ -227,5 +233,15 @@ public class RepairDetailActivity extends AppCompatActivity implements HttpClien
     @Override
     public void onFailure(int requestType) {
 
+    }
+
+    @Override
+    public void onModifyParts(List<UsedSparePartsVo> parts) {
+        modifyParts = parts;
+    }
+
+    @Override
+    public void onModifyWorkTimes(List<WorkTimeVo> workTimes) {
+        modifyWorkTimes = workTimes;
     }
 }

@@ -61,8 +61,8 @@ public class ReportFaultActivity extends AppCompatActivity implements DatePicker
     Spinner spinnerFaultType;
     @BindView(R.id.spinner_repair_group)
     Spinner spinnerRepairGroup;
-    @BindView(R.id.spinner_device_status)
-    Spinner spinnerDeviceStatus;
+    @BindView(R.id.spinner_device_running_status)
+    Spinner spinnerDeviceRunningStatus;
     @BindView(R.id.et_operator)
     EditText etOperator;
     @BindView(R.id.et_phone_number)
@@ -93,21 +93,9 @@ public class ReportFaultActivity extends AppCompatActivity implements DatePicker
         etFaultTime.setText(sdf.format(now));
         etFaultTime.setTag(now);
 
-//        SharedPreferences sharedPreferences = getSharedPreferences("private_data", MODE_PRIVATE);
-//        List<DeviceParamDicEnumResp> deviceUseStatusDict = JSON.parseArray(sharedPreferences.getString("deviceUseStatusDict", ""), DeviceParamDicEnumResp.class);
-//        if(deviceUseStatusDict != null) {
-//            spinnerDeviceStatus.setAdapter(new DictSpinnerAdapter(this, android.R.layout.simple_list_item_1, deviceUseStatusDict));
-//        }
-
         HttpClient client = HttpClient.getInstance();
         if(client.getDictEnum(Constant.DICT_TROUBLE_LEVEL) == null) {
             client.requestDeviceDict(this, this, Constant.DICT_TROUBLE_LEVEL);
-        } else {
-            updateUI(HttpClient.REQUEST_DATA_DICT);
-        }
-
-        if(client.getDictEnum(Constant.DICT_DEVICE_STATUS) == null) {
-            client.requestDeviceDict(this, this, Constant.DICT_DEVICE_STATUS);
         } else {
             updateUI(HttpClient.REQUEST_DATA_DICT);
         }
@@ -169,7 +157,7 @@ public class ReportFaultActivity extends AppCompatActivity implements DatePicker
             reportReq.setTroubleLevel(spinnerFaultLevel.getSelectedItemId());
             reportReq.setTroubleType(spinnerFaultType.getSelectedItemId());
             reportReq.setRepairGroupId(spinnerRepairGroup.getSelectedItemId());
-            reportReq.setDeviceStatus(spinnerDeviceStatus.getSelectedItemId());
+            reportReq.setDeviceStatus(spinnerDeviceRunningStatus.getSelectedItemId());
             reportReq.setDeviceUser(etOperator.getText().toString());
             reportReq.setPhone(etPhoneNumber.getText().toString());
             reportReq.setDeviceAddress(etDevicePlace.getText().toString());
@@ -329,10 +317,6 @@ public class ReportFaultActivity extends AppCompatActivity implements DatePicker
                 finish();
                 break;
             case HttpClient.REQUEST_DATA_DICT:
-                List<DeviceParamDicEnumResp> deviceUseStatusDict = client.getDictEnum(Constant.DICT_DEVICE_STATUS);
-                if(deviceUseStatusDict != null) {
-                    spinnerDeviceStatus.setAdapter(new DictSpinnerAdapter(this, android.R.layout.simple_list_item_1, deviceUseStatusDict));
-                }
                 List<DeviceParamDicEnumResp> troubleLevelDict = client.getDictEnum(Constant.DICT_TROUBLE_LEVEL);
                 if(troubleLevelDict != null) {
                     spinnerFaultLevel.setAdapter(new DictSpinnerAdapter(this, android.R.layout.simple_list_item_1, troubleLevelDict));

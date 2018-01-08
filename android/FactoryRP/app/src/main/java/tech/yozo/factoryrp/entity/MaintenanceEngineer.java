@@ -1,4 +1,11 @@
 package tech.yozo.factoryrp.entity;
 
-public class MaintenanceEngineer {
+import lombok.Data;
+
+import java.io.Serializable;
+
+@Data
+public class MaintenanceEngineer implements Serializable{
+    private Long id;
+    private String name;
 }

@@ -142,7 +142,7 @@ public class DeviceInfoFragment extends BaseFragment implements HttpClient.OnHtt
         data.add(map);
 
         map = new HashMap<>();
-        map.put("name", "使用状态");
+        map.put("name", "设备状态");
         map.put("value", device.getUseStatus());
         data.add(map);
 
