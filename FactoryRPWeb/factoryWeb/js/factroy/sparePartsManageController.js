@@ -61,7 +61,7 @@ factoryParameterSettingApp.controller('sparePartsManageController',function ($sc
         };
 
         spareParts.contactCompanyList(ccReq).success(function (data) {
-            console.log('往来单位',data);
+            // console.log('往来单位',data);
             if(data.data.totalCount>=1){
                 $scope.paginationConf_CC.totalItems = data.data.totalCount;
                 // $scope.deviceListInfos=data.data.list

@@ -92,7 +92,7 @@ myApp.directive("deviceSparesList",["deviceSpares",'$compile','$filter',function
         restrict: 'A',
         compile: function(tEle, tAttrs, transcludeFn) {
             return function(scope, ele, attrs){
-                //查询设备类型列表
+                //查询备件类型列表
                 deviceSpares.list().success(function(data){
                     if(data.errorCode='000000'){
                         // console.log('data',data.data);
@@ -122,7 +122,7 @@ myApp.directive("deviceSparesList",["deviceSpares",'$compile','$filter',function
                             ele.html(html);
                         }else {
                             str+='<ul><li style="width: 100%;text-align: center;">暂无数据。。。请' +
-                                '<a href="javascript:void (0)" class="a_btn" ng-click="addSomeDS(\'\',-1,\'\',1)"> 添加设备类型 </a>' +
+                                '<a href="javascript:void (0)" class="a_btn" ng-click="addSomeDS(\'\',-1,\'\',1)"> 添加备件类型 </a>' +
                                 '</li></ul>';
                             var html1=$compile(str)(scope);
                             ele.html(html1);
@@ -215,7 +215,7 @@ myApp.directive("menuManageMentList",["userManageMent",'$compile','$filter',func
                                 ele.html(html);
                             }else {
                                 str+='<ul><li style="width: 100%;text-align: center;">暂无数据。。。请' +
-                                    '<a href="javascript:void (0)" class="a_btn" ng-click="addfunctionBalance(\'\',-1,\'\',1)"> 添加设备类型 </a>' +
+                                    '<a href="javascript:void (0)" class="a_btn" ng-click="addfunctionBalance(\'\',-1,\'\',1)"> 添加菜单 </a>' +
                                     '</li></ul>';
                                 var html1=$compile(str)(scope);
                                 ele.html(html1);

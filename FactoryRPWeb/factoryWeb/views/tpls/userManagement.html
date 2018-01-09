@@ -49,7 +49,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="userList in userLists | filter:QueryName | orderBy:userList.userId">
+                <tr ng-repeat="userList in userLists | filter:QueryName | orderBy:userList.userId" ng-if="userLists.length>0">
                     <td ng-bind="$index+1"></td>
                     <td ng-bind="userList.userName"></td>
                     <!--<td>-->
@@ -82,6 +82,9 @@
                             <b class="title">删除用户</b>
                         </a>
                     </td>
+                </tr>
+                <tr ng-if="userLists.length<=0||userLists.length==undefined">
+                    <td>暂无数据</td>
                 </tr>
                 </tbody>
                 <!--<tfoot>-->

@@ -79,3 +79,36 @@ myApp.factory("deviceSpares",["AppHttp","FF_API",function(AppHttp,FF_API){
 
     return deviceSpares;
 }]);
+
+//审核流程设置
+myApp.factory("deviceProcess",['$q',"AppHttp","FF_API",function($q,AppHttp,FF_API){
+    var deviceProcess={};
+    //分页查询
+    deviceProcess.list=function(data){
+        var d=$q.defer();
+        AppHttp({
+            method: 'post',
+            url: FF_API.base + FF_API.deviceProcessFindByPagePath,
+            data:data
+        }).success(function(data) {
+            d.resolve(data);
+        });
+
+        return d.promise;
+    };
+    //新增
+    deviceProcess.addDeviceProcess=function(data){
+        var d=$q.defer();
+        AppHttp({
+            method: 'post',
+            url: FF_API.base + FF_API.addDeviceProcessPath,
+            data:data
+        }).success(function(data) {
+            d.resolve(data);
+        });
+
+        return d.promise;
+    };
+
+    return deviceProcess;
+}]);
