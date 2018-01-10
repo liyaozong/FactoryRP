@@ -6,8 +6,8 @@ myApp.factory('AppHttp',['$http', '$timeout',"$rootScope",'$cookies',
     function($http, $timeout,$rootScope,$cookies) {
         return function(opt) {
             var token=$cookies.get('token')?$cookies.get('token'):'1';
-            // console.log($cookies.get('token'));
-            opt.headers={token:token};
+            // console.log(opt);
+            opt.headers={'token':token};
 
             return $http(opt)
                 .success(function (data, status, headers, config) {

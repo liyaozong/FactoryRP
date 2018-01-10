@@ -45,7 +45,9 @@ var myApp = angular.module('myApp', [
         deleteSparePartsByIdPath:'/api/spareParts/deleteSparePartsById' ,  //单个删除备件
         deleteSparePartsByIdsPath:'/api/spareParts/deleteSparePartsByIds' ,  //批量删除备件
         contactCompanyListPath:'/api/contactCompany/list',   //查询往来单位
-        findByCodePath:'/api/deviceParameterDictionary/findByCode'   //查询设备参数
+        findByCodePath:'/api/deviceParameterDictionary/findByCode'  , //查询设备参数
+        addDeviceProcessPath:'/api/deviceProcess/addDeviceProcess'  , //新增审核流程
+        deviceProcessFindByPagePath:'/api/deviceProcess/findByPage'   //分页查询审核流程
 
 
     })
@@ -214,6 +216,17 @@ var myApp = angular.module('myApp', [
                     'content@main':{
                         templateUrl:FF_API.baseTpl+'tpls/deviceSpares.html',
                         controller:'deviceSparesCtrl'
+                    }
+                }
+            })
+
+            // 审核流程设置
+            .state("main.deviceProcess",{
+                url:"/deviceProcess",
+                views:{
+                    'content@main':{
+                        templateUrl:FF_API.baseTpl+'tpls/deviceProcess.html',
+                        controller:'deviceProcessCtrl'
                     }
                 }
             })
