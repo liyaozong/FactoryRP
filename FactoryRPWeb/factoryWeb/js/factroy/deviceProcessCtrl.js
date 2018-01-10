@@ -1,6 +1,6 @@
 //参数设置
 // 审核流程设置
-myApp.controller('deviceProcessCtrl',['$filter','$rootScope','$location','$scope','deviceProcess','deviceType','departmentManageService',function($filter,$rootScope,$location,$scope,deviceProcess,deviceType,departmentManageService){
+myApp.controller('deviceProcessCtrl',['$filter','$rootScope','$location','$scope','deviceProcess','deviceType','departmentManageService','validate',function($filter,$rootScope,$location,$scope,deviceProcess,deviceType,departmentManageService,validate){
 
     //分页查询审核流程
     $scope.paginationConf = {
@@ -33,6 +33,73 @@ myApp.controller('deviceProcessCtrl',['$filter','$rootScope','$location','$scope
     //查询部门
     $scope.departmentList = departmentManageService.getOrderList();
 
+    //查询所有流程类型集合
+    deviceProcess.queryAllDecviceProcessType().success(function (data) {
+       // console.log(data);
+       $scope.deviceProcessTypeLists=data.data;
+    });
+
+    //流程类型选择事件
+    $scope.processTypeChange=function () {
+        // console.log($scope.formDeviceProcess.processType);
+        var id=$scope.formDeviceProcess.processType;
+        $scope.deviceProcessTypeLists.forEach(function (n,i) {
+            // console.log(i,n);
+            if(id==n.id){
+                $scope.deviceProcessPhaseLists=n.deviceProcessPhaseList;
+            }
+        });
+        $scope.formDeviceProcess.processStage='';
+        // console.log($scope.formDeviceProcess.processStage)
+    };
+
+    //触发条件改变事件
+    $scope.triggerConditionTypeChange=function () {
+      $scope.formDeviceProcess.triggerCondition='';
+    };
+
+    //下一步点击事件
+    $scope.addDeviceProcessNext=function () {
+        var flog;
+        var validateList={
+            processName:$scope.formDeviceProcess.processName,
+            processType:$scope.formDeviceProcess.processType,
+            processStage:$scope.formDeviceProcess.processStage,
+            triggerConditionType:$scope.formDeviceProcess.triggerConditionType
+        };
+        for(var i in validateList){
+            console.log(i,":",validateList[i]);
+            flog=validate.required(validateList[i]);
+            if(!flog){
+                break;
+            }
+        }
+        if(flog){
+            $scope.nextPop=true;
+        }else {
+            $scope.nextFlog=true;
+        }
+    };
+    // $scope.nextPop=true;popupDiv('addDeviceProcessPop');//
+    //上一步
+    $scope.addDeviceProcessProv=function () {
+        $scope.nextPop=false;
+    };
+
+    //新增审核人员组
+    $scope.addDeviceProcessDetail=function () {
+        $scope.deviceProcessDetail={
+            auditType:1,
+            handleDemandType:1
+        };
+        hideDiv('addDeviceProcessPop');popupDiv('addDeviceProcessDetailPop');
+    };
+
+    //打开审核人选择列表
+    $scope.openPA=function () {
+
+    };
+
     //新增审核流程
     $scope.addDeviceProcess=function () {
         popupDiv('addDeviceProcessPop');
@@ -46,6 +113,8 @@ myApp.controller('deviceProcessCtrl',['$filter','$rootScope','$location','$scope
         };
         $scope.sureFlog=1;
         $scope.errFlog=false;
+        $scope.nextFlog=false;
+        $scope.nextPop=false;
     };
     $scope.addDeviceProcessSure=function () {
         var addReq={

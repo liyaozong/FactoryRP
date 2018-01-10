@@ -93,7 +93,7 @@
         <span>新增流程</span>
         <img onClick="hideDiv('addDeviceProcessPop')" class="companyCloseImg" src="image/comm/diffClosed.png" width="22" height="22">
     </div>
-    <div style="padding: 30px 0 20px 0;width: 840px;max-height: 380px;height: auto;overflow-y: hidden; overflow: auto;" class="businessAuth">
+    <div style="padding: 30px 0 20px 0;width: 840px;max-height: 380px;height: auto;overflow-y: hidden; overflow: auto;" class="businessAuth" ng-hide="nextPop">
         <div class="titleDiv" id="addP">
             <span class="tips">流程基础设置</span>
             <p>
@@ -103,27 +103,27 @@
                 </label>
                 <label for="processType" >
                     <span style="width: 100px;text-align: right">流程类型:</span>
-                    <select id="processType" ng-model="formDeviceProcess.processType" ng-options="AllCompanyDetail.id as AllCompanyDetail.name for AllCompanyDetail in sparePartTypeLists">
+                    <select id="processType" ng-model="formDeviceProcess.processType" ng-options="AllCompanyDetail.id as AllCompanyDetail.deviceProcessType for AllCompanyDetail in deviceProcessTypeLists" ng-change="processTypeChange()">
                         <option value="">请选择流程类型</option>
                     </select>
                 </label>
                 <label for="processStage" >
                     <span style="width: 100px;text-align: right">对应阶段:</span>
-                    <select id="processStage" ng-model="formDeviceProcess.processStage" ng-options="deviceTypeListDetail.id as deviceTypeListDetail.name for deviceTypeListDetail in deviceTypeList">
-                        <option value="">默认针对所有类型</option>
+                    <select id="processStage" ng-model="formDeviceProcess.processStage" ng-options="deviceTypeListDetail.id as deviceTypeListDetail.deviceProcessPhase for deviceTypeListDetail in deviceProcessPhaseLists">
+                        <option value="">请选择对应阶段</option>
                     </select>
                 </label>
             </p>
             <p>
                 <label>
                     <span style="width: 100px;text-align: right">触发条件:</span>
-                    <input type="radio" ng-value="1" id="dt" ng-model="formDeviceProcess.triggerConditionType" name="triggerConditionType">
+                    <input type="radio" ng-value="1" id="dt" ng-model="formDeviceProcess.triggerConditionType" name="triggerConditionType" ng-change="triggerConditionTypeChange()">
                     <label for="dt" style="margin-right: 16px">设备类型</label>
 
-                    <input type="radio" id="je" ng-value="2" ng-model="formDeviceProcess.triggerConditionType" name="triggerConditionType">
+                    <input type="radio" id="je" ng-value="2" ng-model="formDeviceProcess.triggerConditionType" name="triggerConditionType" ng-change="triggerConditionTypeChange()">
                     <label for="je" style="margin-right: 16px">金额上限</label>
 
-                    <input type="radio" ng-value="3" id="bm" ng-model="formDeviceProcess.triggerConditionType" name="triggerConditionType">
+                    <input type="radio" ng-value="3" id="bm" ng-model="formDeviceProcess.triggerConditionType" name="triggerConditionType" ng-change="triggerConditionTypeChange()">
                     <label for="bm" style="margin-right: 16px">部门</label>
                 </label>
                 <label for="triggerCondition" >
@@ -144,15 +144,130 @@
                 </label>
             </p>
         </div>
-        <div class="errP" style="text-align: center" ng-show="errFlog">表单有空值!!!</div>
+        <div class="errP" style="text-align: center" ng-show="nextFlog">表单有空值!!!</div>
         <div class="submitBtn1" style="text-align: center;padding-left: 40px;">
-            <button type="button" ng-click="addDeviceProcessSure()" value="" class="btn">保存</button>
+            <button type="button" ng-click="addDeviceProcessNext()" value="" class="btn">下一步</button>
             <button type="button" value="" class="btn" onClick="hideDiv('addDeviceProcessPop')">取消</button>
+        </div>
+    </div>
+    <!--第二步 审核人员选择-->
+    <div style="padding: 30px 0 20px 0;width: 840px;max-height: 380px;height: auto;overflow-y: hidden; overflow: auto;" class="businessAuth" ng-show="nextPop">
+        <div class="titleDiv" id="addP">
+            <span class="tips">流程详情设置</span>
+            <div style="padding: 0;width: 100%" class="queryDiv" >
+                <ul>
+                    <li style="text-align: right;margin-bottom: 12px;margin-top: -8px;margin-right: 8px">
+                        <label>
+                            <button class="btn" ng-click="addDeviceProcessDetail()">新增</button>
+                        </label>
+                    </li>
+                </ul>
+            </div>
+            <div class="tableListDiv data-container jurisdiction" style="width: 100%;padding: 0 8px;box-sizing: border-box">
+                <table style="width: 100%;">
+                    <thead>
+                    <tr>
+                        <th style="min-width: 30px;">流程顺序</th>
+                        <th>审核用户组</th>
+                        <th>审核人</th>
+                        <th>处理要求</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="orderDetail in orderList | filter:QueryName | orderBy:orderDetail.orderNumber" ng-if="orderList.length>0">
+                        <td class="firstTd">{{$index+1}}</td>
+                        <td>{{orderDetail.name||'--'}}</td>
+                        <td>{{orderDetail.contactName||'--'}}</td>
+                        <td>{{orderDetail.contactPhone||'--'}}</td>
+                        <td>
+                            <a href="javascript:void(0)" class="resBtn editBtn" ng-click="editSparePartsFuc(orderDetail)">
+                                <img src="image/comm/resBtnEdit.png" alt="编辑"/>
+                                <b class="title">编辑</b>
+                            </a>
+                            <a href="javascript:void(0)" class="resBtn deleteBtn" ng-click="deleteContactCompanyBalance(orderDetail)">
+                                <img src="image/comm/resBtnDelete.png" alt="删除"/>
+                                <b class="title">删除</b>
+                            </a>
+                        </td>
+                    </tr>
+                    <tr ng-if="orderList.length<=0||orderList==''||orderList==null||orderList==undefined">
+                        <td colspan="5">暂无数据</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="submitBtn1" style="text-align: center;padding-left: 40px;">
+            <button type="button" ng-click="addDeviceProcessSure()" value="" class="btn">确定</button>
+            <button type="button" value="" class="btn" ng-click="addDeviceProcessProv()">上一步</button>
         </div>
     </div>
 </div>
 <!--新增流程 end-->
 
+<!--新增审核用户组-->
+<div class="ImportantNote addDeviceProcessDetailPop mainContain" id="contactCompanyListPop">
+    <div class="headline">
+        <span>审核流程：选择审核人</span>
+        <img onClick="hideDiv('addDeviceProcessDetailPop');popupDiv('addDeviceProcessPop');" class="companyCloseImg" src="image/comm/diffClosed.png" width="22" height="22">
+    </div>
+    <div style="max-height: 380px;height: auto;overflow-y: hidden; overflow: auto;" class="businessAuth">
+        <div class="titleDiv">
+            <span class="tips">审核组设置</span>
+            <p>
+                <label>
+                    <span style="width: 100px;text-align: right">指定审核人:</span>
+                    <input type="radio" ng-value="1" ng-model="deviceProcessDetail.auditType" name="auditType">
+                </label>
+                <label style="opacity: 0">
+                    <span style="width: 100px;text-align: right">指定审核人:</span>
+                    <input type="radio" ng-value="" ng-model="deviceProcessDetail.auditType" name="auditType">
+                </label>
+            </p>
+            <p>
+                <label>
+                    <span style="width: 100px;text-align: right">指定用户组:</span>
+                    <input type="radio" ng-value="2" ng-model="deviceProcessDetail.auditType" name="auditType">
+                </label>
+                <label style="opacity: 0">
+                    <span style="width: 100px;text-align: right">指定用户组:</span>
+                    <input type="radio" ng-value="" ng-model="deviceProcessDetail.auditType" name="auditType">
+                </label>
+            </p>
+            <p ng-if="deviceProcessDetail.auditType==2">
+                <label for="processAuditor" >
+                    <span style="width: 100px;text-align: right">审核组:</span>
+                    <select id="processAuditor" ng-model="deviceProcessDetail.processAuditor" ng-options="deviceTypeListDetail.id as deviceTypeListDetail.name for deviceTypeListDetail in deviceTypeList">
+                        <option value="">选择审核组</option>
+                    </select>
+                </label>
+            </p>
+            <p ng-if="deviceProcessDetail.auditType==1">
+                <label for="processAuditor1" style="position: relative;">
+                    <span style="width: 100px;text-align: right">审核人:</span>
+                    <input id="processAuditor1" ng-model="deviceProcessDetail.processAuditor" type="text" min="0" placeholder="请选择审核人" disabled/>
+                    <span class="changedDiv" ng-click="openPA()">...</span>
+                </label>
+            </p>
+            <p>
+                <label>
+                    <span style="width: 100px;text-align: right">处理要求:</span>
+                    <input ng-disabled="deviceProcessDetail.auditType==2" type="radio" ng-value="1" id="dt1" ng-model="deviceProcessDetail.handleDemandType" name="handleDemandType">
+                    <label for="dt1" style="margin-right: 16px">一个人签</label>
+
+                    <input ng-disabled="deviceProcessDetail.auditType==2" type="radio" id="je1" ng-value="2" ng-model="deviceProcessDetail.handleDemandType" name="handleDemandType">
+                    <label for="je1" style="margin-right: 16px">全部都签</label>
+                </label>
+            </p>
+        </div>
+    </div>
+
+    <div class="submitBtn1" style="text-align: center;padding-left: 40px;margin-bottom: 18px;">
+        <button type="button" ng-click="changeCCSure()" value="" class="btn">保存</button>
+        <button type="button" value="" class="btn" onClick="hideDiv('addDeviceProcessDetailPop');popupDiv('addDeviceProcessPop');">取消</button>
+    </div>
+</div>
 
 <!--保存成功start-->
 <div class="ImportantNote SaveSuccess">

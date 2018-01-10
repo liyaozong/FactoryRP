@@ -47,6 +47,7 @@ var myApp = angular.module('myApp', [
         contactCompanyListPath:'/api/contactCompany/list',   //查询往来单位
         findByCodePath:'/api/deviceParameterDictionary/findByCode'  , //查询设备参数
         addDeviceProcessPath:'/api/deviceProcess/addDeviceProcess'  , //新增审核流程
+        queryAllDecviceProcessTypePath:'/api/deviceProcess/queryAllDecviceProcessType'  , //查询所有流程类型集合
         deviceProcessFindByPagePath:'/api/deviceProcess/findByPage'   //分页查询审核流程
 
 

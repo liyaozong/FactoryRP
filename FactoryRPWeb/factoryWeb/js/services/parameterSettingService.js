@@ -110,5 +110,13 @@ myApp.factory("deviceProcess",['$q',"AppHttp","FF_API",function($q,AppHttp,FF_AP
         return d.promise;
     };
 
+    //查询所有流程类型集合
+    deviceProcess.queryAllDecviceProcessType=function(){
+        return AppHttp({
+            method: 'get',
+            url: FF_API.base + FF_API.queryAllDecviceProcessTypePath
+        });
+    };
+
     return deviceProcess;
 }]);
