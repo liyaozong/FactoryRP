@@ -8,11 +8,13 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import tech.yozo.factoryrp.entity.DeviceProcess;
 import tech.yozo.factoryrp.entity.DeviceProcessDetail;
+import tech.yozo.factoryrp.entity.DeviceProcessType;
 import tech.yozo.factoryrp.entity.SpareParts;
 import tech.yozo.factoryrp.exception.BussinessException;
 import tech.yozo.factoryrp.page.Pagination;
 import tech.yozo.factoryrp.repository.DeviceProcessDetailRepository;
 import tech.yozo.factoryrp.repository.DeviceProcessRepository;
+import tech.yozo.factoryrp.repository.DeviceProcessTypeRepository;
 import tech.yozo.factoryrp.service.ProcessService;
 import tech.yozo.factoryrp.utils.CheckParam;
 import tech.yozo.factoryrp.utils.ErrorCode;
@@ -46,6 +48,17 @@ public class ProcessServiceImpl implements ProcessService {
     @Resource
     private DeviceProcessDetailRepository deviceProcessDetailRepository;
 
+    @Resource
+    private DeviceProcessTypeRepository deviceProcessTypeRepository;
+
+    /**
+     * 查询所有流程类型集合
+     * @param corporateIdentify
+     * @return
+     */
+    public List<DeviceProcessType> queryAllDecviceProcessType(Long corporateIdentify){
+        return deviceProcessTypeRepository.findByCorporateIdentify(corporateIdentify);
+    }
 
     /**
      * 新增流程

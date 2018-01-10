@@ -2,13 +2,12 @@ package tech.yozo.factoryrp.api;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import tech.yozo.factoryrp.config.auth.UserAuthService;
 import tech.yozo.factoryrp.entity.DeviceProcess;
+import tech.yozo.factoryrp.entity.DeviceProcessType;
 import tech.yozo.factoryrp.page.Pagination;
 import tech.yozo.factoryrp.service.ProcessService;
 import tech.yozo.factoryrp.vo.base.ApiResponse;
@@ -20,6 +19,7 @@ import tech.yozo.factoryrp.vo.resp.process.DeviceProcessAddResp;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * 设备流程前端控制器
@@ -40,6 +40,16 @@ public class DeviceProcessController extends BaseController  {
     @Resource
     private UserAuthService userAuthService;
 
+    /**
+     * 查询所有流程类型集合
+     * @return
+     */
+    @ApiOperation(value = "查询所有流程类型集合",notes = "查询所有流程类型集合",httpMethod = "GET")
+    @GetMapping("/queryAllDecviceProcessType")
+    public ApiResponse<List<DeviceProcessType>> queryAllDecviceProcessType(HttpServletRequest request){
+        Long corporateIdentify = userAuthService.getCurrentUserCorporateIdentify(request);
+        return apiResponse(processService.queryAllDecviceProcessType(corporateIdentify));
+    }
 
     /**
      * 新增流程

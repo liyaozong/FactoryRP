@@ -40,7 +40,7 @@ public class BaseEntity implements Serializable{
     private Date updateTime = new Date();
 
     @Column(name="corporate_identify")
-    @ApiModelProperty(value = "企业唯一标识",notes ="企业唯一标识" )
+        @ApiModelProperty(value = "企业唯一标识",notes ="企业唯一标识" )
     private Long corporateIdentify;
 
     public Long getId() {

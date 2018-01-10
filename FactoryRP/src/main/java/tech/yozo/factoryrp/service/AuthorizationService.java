@@ -1,5 +1,6 @@
 package tech.yozo.factoryrp.service;
 
+import tech.yozo.factoryrp.entity.DeviceProcessType;
 import tech.yozo.factoryrp.entity.User;
 import tech.yozo.factoryrp.vo.req.*;
 import tech.yozo.factoryrp.vo.resp.auth.AuthUser;
@@ -19,6 +20,7 @@ import java.util.List;
  * @description 权限相关服务
  */
 public interface AuthorizationService {
+
 
 
     /**
