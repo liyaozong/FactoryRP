@@ -30,7 +30,9 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 流程相关服务
@@ -57,6 +59,16 @@ public class ProcessServiceImpl implements ProcessService {
      * @return
      */
     public List<DeviceProcessType> queryAllDecviceProcessType(Long corporateIdentify){
+
+        List<DeviceProcessType> deviceProcessTypeList = deviceProcessTypeRepository.findByCorporateIdentify(corporateIdentify);
+
+        if(!CheckParam.isNull(deviceProcessTypeList) && !deviceProcessTypeList.isEmpty()){
+            deviceProcessTypeList.stream().sorted((d1,d2) -> d1.getOrderNumber().compareTo(d2.getOrderNumber()));
+        }
+
+
+        System.out.println(JSON.toJSONString(deviceProcessTypeList));
+
         return deviceProcessTypeRepository.findByCorporateIdentify(corporateIdentify);
     }
 
