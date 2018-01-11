@@ -58,8 +58,8 @@ public class RepairRecord extends BaseEntity implements Serializable{
     private Integer stoped;
 
     @Column(name = "stoped_hour")
-    private String stopedHour;
+    private Integer stopedHour;
 
     @Column(name = "cost_hour")
-    private String costHour;
+    private Integer costHour;
 }
