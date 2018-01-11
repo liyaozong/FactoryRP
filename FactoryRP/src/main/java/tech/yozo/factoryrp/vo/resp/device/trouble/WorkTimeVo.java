@@ -25,5 +25,5 @@ public class WorkTimeVo implements Serializable{
     private String endTime;
 
     @ApiModelProperty(value = "维修耗时")
-    private String costHour;
+    private Integer costHour;
 }

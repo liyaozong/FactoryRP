@@ -36,5 +36,5 @@ public class WorkTime extends BaseEntity implements Serializable{
     private Date endTime;
 
     @Column(name = "cost_hour")
-    private String costHour;
+    private Integer costHour;
 }
