@@ -15,6 +15,7 @@ var myApp = angular.module('myApp', [
         base: 'http://47.96.28.88:9550',      //工程路径
         baseTpl: 'views/'                 ,      //模板路径
         queryCorporateAllUserPath:'/api/authorization/queryCorporateAllUser' ,  //查询所有企业用户
+        departmentListPath:'/api/department/list' ,  //查询所有企业用户
         addUserPath:'/api/authorization/addUser',   //添加企业用户
         addUserRolePath:'/api/authorization/addUserRole',   //为用户添加角色
         queryRoleByUserIdPath:'/api/authorization/queryRoleByUserId',   //为用户查询角色
