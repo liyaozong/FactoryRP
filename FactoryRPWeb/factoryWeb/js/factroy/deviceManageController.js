@@ -642,7 +642,7 @@ factoryParameterSettingApp.controller('deviceManageController',function ($scope,
         if($scope.dataAudit==''||$scope.dataAudit==null||$scope.dataAudit==undefined){
             alert('请至少选择一个设备');
         }else{
-            $scope.deviceTypes=1;//默认选择
+            $scope.deviceTypesEdit=1;//默认选择
             factoryParameterSettingService.queryOneDeviceListInfo({
                 id:$scope.dataAudit
             }, function(response){
