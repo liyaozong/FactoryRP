@@ -324,7 +324,18 @@ function hiddenParamJumpe(url,param) {
 
       }
   }
+function selAll1(obj) {
+    var o = document.getElementsByName("che1");
+    for (var i = 0; i < o.length; i++) {
+        if (obj.checked == true) {
+            o[i].checked = true;
+        }
+        else {
+            o[i].checked = false;
+        }
 
+    }
+}
 //复选框全选的方法*********************结束
 //每一个子集复选框全选的方法*********************开始
 function selAl(obj)

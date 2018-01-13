@@ -179,6 +179,54 @@ factoryParameterSettingApp.factory('factoryParameterSettingService', function($r
         });
     };
     /*查询设备类型列表 end*/
+    /*故障报修/故障提出接口 start*/
+    var _addTroubleRecords = function(Param,successFunc){
+        var addTroubleRecords = $resource(UrlService.getUrl('troubleRecordServe') + 'troubleRecord/add');
+        addTroubleRecords.save(Param,function (data) {
+            if (successFunc) {
+                successFunc(data);
+            }
+        }, function (err) {
+
+        });
+    };
+    /*故障报修/故障提出接口 end*/
+    /*批量删除故障信息 start*/
+    var _batchDeleteTroubleRecords = function(Param,successFunc){
+        var batchDeleteTroubleRecords = $resource(UrlService.getUrl('troubleRecordServe') + 'troubleRecord/batchDelete');
+        batchDeleteTroubleRecords.get(Param,function (data) {
+            if (successFunc) {
+                successFunc(data);
+            }
+        }, function (err) {
+
+        });
+    };
+    /*批量删除故障信息 end*/
+    /*设备对应的故障列表 start*/
+    var _queryTroubleRecordLists = function(Param,successFunc){
+        var queryTroubleRecordLists = $resource(UrlService.getUrl('troubleRecordServe') + 'troubleRecord/list');
+        queryTroubleRecordLists.save(Param,function (data) {
+            if (successFunc) {
+                successFunc(data);
+            }
+        }, function (err) {
+
+        });
+    };
+    /*设备对应的故障列表 end*/
+    /*查询所有故障类型类型 start*/
+    var _queryAlldDeviceTroubleType = function(Param,successFunc){
+        var queryAlldDeviceTroubleTypes = $resource(UrlService.getUrl('factoryServe') + 'deviceTroubleType/queryAlldDeviceTroubleType');
+        queryAlldDeviceTroubleTypes.get(Param,function (data) {
+            if (successFunc) {
+                successFunc(data);
+            }
+        }, function (err) {
+
+        });
+    };
+    /*查询所有故障类型类型 end*/
     return {
         saveContactCompany:_saveContactCompany,
         deleteContactCompany:_deleteContactCompany,
@@ -193,6 +241,10 @@ factoryParameterSettingApp.factory('factoryParameterSettingService', function($r
         queryDeviceDictionary:_queryDeviceDictionary,
         queryDeviceTypeList:_queryDeviceTypeList,
         queryOneDeviceListInfo:_queryOneDeviceListInfo,
+        addTroubleRecords:_addTroubleRecords,
+        batchDeleteTroubleRecords:_batchDeleteTroubleRecords,
+        queryTroubleRecordLists:_queryTroubleRecordLists,
+        queryAlldDeviceTroubleType:_queryAlldDeviceTroubleType,
         queryOrder: function(queryParam, successFunc) {
             queryOrder(queryParam, successFunc);
 

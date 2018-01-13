@@ -15,10 +15,38 @@ factoryParameterSettingApp.controller('deviceManageController',function ($scope,
         $("#menuLeft .leftmenu .modelToolsManage").addClass('hide');
         $("#menuLeft .leftmenu .modelToolsManage").siblings().removeClass('hide');
     }
+    var data =localStorage.getItem('dataAudit');
+    $scope.dataAudit=data;
+
     $scope.paginationConf = {
         currentPage: 1,
         itemsPerPage: 5
     };
+    $scope.paginationConf1 = {
+        currentPage: 1,
+        itemsPerPage: 5
+    };
+    /*查询设备故障信息列表 公用方法 start*/
+    $scope.queryTroubleRecordList=function(deviceId){
+        $scope.queryTroubleRecordListss = factoryParameterSettingService.queryTroubleRecordLists({
+            deviceId:deviceId,//设备ID
+            currentPage: $scope.paginationConf1.currentPage,
+            itemsPerPage: $scope.paginationConf1.itemsPerPage
+        }, function (response) {
+            if(response.data.totalCount>=1){
+                $scope.paginationConf1.totalItems = response.data.totalCount;
+                $scope.troubleRecordList=response.data.list;
+                console.log($scope.troubleRecordList)
+            }else{
+                $scope.paginationConf1.totalItems = 0;
+                $scope.troubleRecordList=[];
+            }
+        }, function (err) {
+            console.log(err);
+        });
+    };
+    $scope.queryTroubleRecordList($scope.dataAudit);
+    /*查询设备故障信息列表 公用方法 end*/
     /*查询设备信息 start*/
     $scope.onQuery=function () {
         factoryParameterSettingService.deviceListInfo({
@@ -68,7 +96,7 @@ factoryParameterSettingApp.controller('deviceManageController',function ($scope,
     $scope.queryDepartmentList();
 
     /*查询所有部门 end*/
-    /*查询使用状态，设备标志 start*/
+    /*查询使用状态，设备标志，设备状态 start*/
     $scope.queryUseStatus=function () {
         factoryParameterSettingService.queryDeviceDictionary({
             code:'device_use_status'
@@ -96,7 +124,31 @@ factoryParameterSettingApp.controller('deviceManageController',function ($scope,
         });
     };
     $scope.queryDeviceFlag();
-    /*查询使用状态，设备标志 end*/
+
+    $scope.queryDeviceStatus=function () {
+        factoryParameterSettingService.queryDeviceDictionary({
+            code:'device_status'
+        }, function(response){
+            if(response.data!=''&&response.data!=null&&response.data!=undefined&&response.errorCode=='000000'){
+                $scope.deviceStatusList=response.data;
+                console.log($scope.deviceStatusList);
+            }else{
+                console.log(response.errorMessage);
+            }
+        });
+    };
+    $scope.deviceStatusList=[{
+        type:1,
+        name:'停机待修'
+    },{
+        type:2,
+        name:'带病运行'
+    },{
+        type:3,
+        name:'其他'
+    }];
+    $scope.queryDeviceStatus();
+    /*查询使用状态，设备标志，设备状态 end*/
     /*查询设备类型 start*/
     $scope.queryDeviceTypeLists=function () {
         factoryParameterSettingService.queryDeviceTypeList({}, function(response){
@@ -110,6 +162,62 @@ factoryParameterSettingApp.controller('deviceManageController',function ($scope,
     };
     $scope.queryDeviceTypeLists();
     /*查询设备类型 end*/
+
+    /*查询故障等级 start*/
+    $scope.deviceTroubleLevels=function () {
+        factoryParameterSettingService.queryDeviceDictionary({
+            code:'device_trouble_level'//字典类型code
+        }, function(response){
+            if(response.errorCode=='000000'){
+                if(response.data!=null&&response.data!=''&&response.data!=undefined){
+                    $scope.deviceTroubleLevel=response.data;
+                }else{
+                    $scope.deviceTroubleLevel=[];
+                }
+            }else{
+                $scope.deviceTroubleLevel=[];
+            }
+        });
+    };
+    $scope.deviceTroubleLevels();
+    /*查询故障等级 end*/
+    /*查询维修工段/班组列表 start*/
+    $scope.queryRepairGroupLists=function() {
+        $scope.RepairGroupLists = factoryParameterSettingService.queryRepairGroupList({}, function (res) {
+            if (res.errorCode == '000000' && res.data!=''&& res.data!=null&& res.data!=undefined) {
+                $scope.repairGroupList=res.data;
+                console.log($scope.repairGroupList);
+            } else {
+//                hideDiv('deleteContactCompany');
+//                popupDiv('SaveSuccess');
+//                $('.SaveSuccess .Message').html(res.errorMessage);
+                console.log(res.errorMessage);
+            }
+        }, function (err) {
+            console.log(err);
+        });
+    };
+    $scope.queryRepairGroupLists();
+    /*查询维修工段/班组列表 end*/
+    /*查询所有故障类型列表 start*/
+
+    $scope.queryAlldDeviceTroubleTypes=function() {
+        $scope.queryAlldDeviceTroubleTypeList = factoryParameterSettingService.queryAlldDeviceTroubleType({}, function (res) {
+            if (res.errorCode == '000000' && res.data!=''&& res.data!=null&& res.data!=undefined) {
+                $scope.deviceTroubleTypeList=res.data;
+                console.log($scope.deviceTroubleTypeList);
+            } else {
+//                hideDiv('deleteContactCompany');
+//                popupDiv('SaveSuccess');
+//                $('.SaveSuccess .Message').html(res.errorMessage);
+                console.log(res.errorMessage);
+            }
+        }, function (err) {
+            console.log(err);
+        });
+    };
+    $scope.queryAlldDeviceTroubleTypes();
+    /*查询所有故障类型列表 end*/
     /*新增设备信息 start*/
     $scope.addContactCompany=function(){
         popupDiv('addContactBalance');
@@ -429,5 +537,217 @@ factoryParameterSettingApp.controller('deviceManageController',function ($scope,
         }
     };
     /*批量删除设备信息 end*/
+    /*查询设备对应的故障列表 start*/
+    $scope.deviceTroubleRecord=function ($event,deviceInfo) {
+        // $($event.target).parent().css('background','#FBF5E1');
+        // $($event.target).parent().siblings().css('background','#fff');
+        var dataId = $($event.target).parents('tr').data("appid");
+        localStorage.setItem('dataAudit',dataId);
+        var data =localStorage.getItem('dataAudit');
+        $scope.dataAudit=data;
+        $scope.queryTroubleRecordList(deviceInfo.id);
+    };
+    /*查询设备对应的故障列表 end*/
+    /*提出设备对应的故障 start*/
+    $scope.addTroubleRecord=function () {
+        if($scope.dataAudit==''||$scope.dataAudit==null||$scope.dataAudit==undefined){
+            alert('请至少选择一个设备');
+        }else{
+            $scope.deviceTypes=1;//默认选择
+            factoryParameterSettingService.queryOneDeviceListInfo({
+                id:$scope.dataAudit
+            }, function(response){
+                if(response.data!=''&&response.data!=null&&response.data!=undefined&&response.errorCode=='000000'){
+                    $scope.oneDeviceType=response.data;
+                    console.log($scope.oneDeviceType);
+                    $scope.deviceNameTrouble=$scope.oneDeviceType.name;
+                    $scope.deviceCodeTrouble=$scope.oneDeviceType.code;
+                    $scope.specificationTrouble=$scope.oneDeviceType.specification;
+
+                    // 设备类型
+                    $("#deviceTypeTrouble option").each(function(){
+                        if($(this).text()==$scope.oneDeviceType.deviceType){
+                            $(this).prop("selected",true);
+//                        $scope.deviceTypeEdit=$(this).val();
+                        }
+                    });
+
+                    // 使用部门
+                    $("#useDeptTrouble option").each(function(){
+                        if($(this).text()==$scope.oneDeviceType.useDept){
+                            $(this).prop("selected",true);
+//                        $scope.useDeptEdit=$(this).val();
+                        }
+                    });
+
+                }else{
+                    console.log(response.errorMessage);
+                }
+            });
+            popupDiv('addTroubleRecordBalance');
+            $scope.addTroubleRecordSure=function () {
+                if($scope.happendDate==''||$scope.happendDate==null||$scope.happendDate==undefined){
+                    $("#happendDate").focus()
+                }else if($scope.deviceUser==''||$scope.deviceUser==null||$scope.deviceUser==undefined){
+                    $("#deviceUser").focus()
+                }else if($scope.deviceUserPhone==''||$scope.deviceUserPhone==null||$scope.deviceUserPhone==undefined){
+                    $("#deviceUserPhone").focus()
+                }else if($scope.troubleLevel==''||$scope.troubleLevel==null||$scope.troubleLevel==undefined){
+                    $("#troubleLevel").focus()
+                }else if($scope.deviceStatus==''||$scope.deviceStatus==null||$scope.deviceStatus==undefined){
+                    $("#deviceStatus").focus()
+                }else if($scope.troubleType==''||$scope.troubleType==null||$scope.troubleType==undefined){
+                    $("#troubleType").focus()
+                }else if($scope.repairGroupId==''||$scope.repairGroupId==null||$scope.repairGroupId==undefined){
+                    $("#repairGroupId").focus()
+                }else if($scope.deviceAddress==''||$scope.deviceAddress==null||$scope.deviceAddress==undefined){
+                    $("#deviceAddress").focus()
+                }else if($scope.troubleAddRemark==''||$scope.troubleAddRemark==null||$scope.troubleAddRemark==undefined){
+                    $("#troubleAddRemark").focus()
+                }else{
+                    $scope.happenTimes=$filter('date')($scope.happenTime,'yyyy-MM-dd');
+                    var pa={
+                        deviceId:$scope.dataAudit,
+                        deviceStatus:$scope.deviceStatus,
+                        deviceUser:$scope.deviceUser,
+                        happenTime:$scope.happenTimes,
+                        phone:$scope.deviceUserPhone,
+                        remark:$scope.troubleAddRemark,
+                        repairGroupId:$scope.repairGroupId,
+                        // requestTime:$scope.deviceStatus,
+                        troubleLevel:$scope.troubleLevel,
+                        troubleType:$scope.troubleType
+                    };
+                    $scope.addTroubleRecord = factoryParameterSettingService.addTroubleRecords(pa, function (res) {
+                        if (res.errorCode == '000000' && res.data!=''&& res.data!=null&& res.data!=undefined) {
+                            hideDiv('addTroubleRecordBalance');
+                            popupDiv('SaveSuccess');
+                            $('.SaveSuccess .Message').html(res.errorMessage);
+                        } else {
+                            hideDiv('addTroubleRecordBalance');
+                            popupDiv('SaveSuccess');
+                            $('.SaveSuccess .Message').html(res.errorMessage);
+                            console.log(res.errorMessage);
+                        }
+                    }, function (err) {
+                        console.log(err);
+                    });
+                }
+            }
+        }
+    };
+    /*提出设备对应的故障 end*/
+    /*故障信息详情查询 start*/
+    $scope.editTroubleRecord=function (res) {
+        if($scope.dataAudit==''||$scope.dataAudit==null||$scope.dataAudit==undefined){
+            alert('请至少选择一个设备');
+        }else{
+            $scope.deviceTypes=1;//默认选择
+            factoryParameterSettingService.queryOneDeviceListInfo({
+                id:$scope.dataAudit
+            }, function(response){
+                if(response.data!=''&&response.data!=null&&response.data!=undefined&&response.errorCode=='000000'){
+                    $scope.oneDeviceType=response.data;
+                    console.log($scope.oneDeviceType);
+                    $scope.deviceNameTroubleEdit=$scope.oneDeviceType.name;
+                    $scope.deviceCodeTroubleEdit=$scope.oneDeviceType.code;
+                    $scope.specificationTroubleEdit=$scope.oneDeviceType.specification;
+
+                    // 设备类型
+                    $("#deviceTypeTroubleEdit option").each(function(){
+                        if($(this).text()==$scope.oneDeviceType.deviceType){
+                            $(this).prop("selected",true);
+//                        $scope.deviceTypeEdit=$(this).val();
+                        }
+                    });
+                    // 使用部门
+                    $("#useDeptTroubleEdit option").each(function(){
+                        if($(this).text()==$scope.oneDeviceType.useDept){
+                            $(this).prop("selected",true);
+//                        $scope.useDeptEdit=$(this).val();
+                        }
+                    });
+
+                }else{
+                    console.log(response.errorMessage);
+                }
+            });
+            // $scope.happendDateEdit=$filter('date')(res.happenTime,'yyyy-MM-dd');//发生时间
+            $("#happendDateEdit").val($filter('date')(res.happenTime,'yyyy-MM-dd'));//发生时间
+            $scope.deviceUserEdit=res.deviceUser;//操作者
+            $scope.deviceUserPhoneEdit=res.phone;//操作者电话
+            $scope.deviceAddressEdit=res.deviceAddress;//设备位置
+            $scope.troubleAddRemarkEdits=res.remark;//故障描述
+            // $scope.troubleLevelEdit=res.troubleLevel;
+            // $scope.deviceStatusEdit=res.deviceStatus;
+            // $scope.troubleTypeEdit=res.troubleType;
+            // $scope.repairGroupIdEdit=res.repairGroupId;
+            // 故障等级
+            $("#troubleLevelEdit option").each(function(){
+                if($(this).text()==res.troubleLevel){
+                    $(this).prop("selected",true);
+                    console.log($(this).text())
+                }
+            });
+            // 设备状态
+            $("#deviceStatusEdit option").each(function(){
+                if($(this).text()==res.deviceStatus){
+                    $(this).prop("selected",true);
+                    console.log($(this).text())
+                }
+            });
+            // 故障类别
+            $("#troubleTypeEdit option").each(function(){
+                if($(this).text()==res.troubleType){
+                    $(this).prop("selected",true);
+                    console.log($(this).text())
+                }
+            });
+            // 故障类别
+            $("#repairGroupIdEdit option").each(function(){
+                if($(this).text()==res.repairGroupId){
+                    $(this).prop("selected",true);
+                    console.log($(this).text())
+                }
+            });
+            popupDiv('editTroubleRecordBalance');
+        }
+    };
+    /*故障信息详情查询 end*/
+    /*批量删除故障 start*/
+    $scope.deleteAllTroubleRecords=function(){
+        if($(".tableListDiv tr td input[name='che1']:checked").length<1){
+            popupDiv('SaveSuccess');
+            $('.SaveSuccess .Message').html('请至少选中一个需要删除的故障');
+        }else{
+            popupDiv('deleteTroubleRecords');
+            $scope.ids='';
+            $(".tableListDiv tr td input[name='che1']:checked").each(function(){
+                var sfruit=$(this).val();
+                $scope.ids +=','+sfruit;
+            });
+            $scope.ids=$scope.ids.substr(1,$scope.ids.length);
+            console.log($scope.ids);
+            $scope.deleteTroubleRecordSure=function(){
+                $scope.deleteTroubleRecords = factoryParameterSettingService.batchDeleteTroubleRecords({
+                    ids:$scope.ids
+                }, function (res) {
+                    if (res.errorCode == '000000' && res.data!=''&& res.data!=null&& res.data!=undefined) {
+                        hideDiv('deleteTroubleRecords');
+                        popupDiv('SaveSuccess');
+                        $('.SaveSuccess .Message').html(res.errorMessage);
+                    } else {
+                        hideDiv('deleteTroubleRecords');
+                        popupDiv('SaveSuccess');
+                        $('.SaveSuccess .Message').html(res.errorMessage);
+                        console.log(res.errorMessage);
+                    }
+                }, function (err) {
+                    console.log(err);
+                });
+            }
+        }
+    };
+    /*批量删除故障 end*/
     $scope.$watch('paginationConf.currentPage + paginationConf.itemsPerPage', $scope.onQuery);
 });

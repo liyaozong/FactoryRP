@@ -24,49 +24,9 @@
     .mainContain .tableListDiv{
         margin-bottom: 0;
     }
-    #tabWarp{
-        width: 97%;
-        height: auto;
-        border: 1px solid #e6e6e6;
-        margin: auto;
-        padding: 0 10px;
+    .ImportantNote .titleDiv p select{
+        width: 135px;
     }
-    #tabMenu{
-        width: 100%;
-        height: 27px;
-        overflow: hidden;
-        border-bottom: 1px solid #e6e6e6;
-        margin-top: 5px;
-        line-height: 0;
-    }
-    #tabMenu ul{height: 26px;}
-    #tabMenu ul li{
-        width:auto;
-        float:left;
-        list-style:none;
-        font-size:12px;
-        line-height:25px;
-        height:25px;
-        text-align:center;
-        color:#0066CC;
-        cursor:pointer;
-        border-left:1px solid #e6e6e6;
-        border-right:1px solid #e6e6e6;
-        border-top:1px solid #e6e6e6;
-        margin:0px;
-        padding: 0 5px;
-        -webkit-transition:all .2s linear;
-        -moz-transition:all .2s linear;
-        -ms-transition:all .2s linear;
-        transition:all .2s linear;
-    }
-    #tabMenu ul li:hover{
-        background:#FBF5E1; font-weight:bold; color:#FF6600;
-    }
-    #tabMenu ul li.curent{background:#FBF5E1; font-weight:bold; color:#FF6600;}
-    #tabContent{ width:100%; height:auto;font-size:12px;}
-    #tabContent .hide{ display:none;}
-    #tabContent .tableListDiv{padding: 0}
 </style>
 <div class="place">
     <span>位置：</span>
@@ -154,7 +114,7 @@
             </tr>
             </thead>
             <tbody id="apply_infos_table">
-            <tr ng-repeat="orderDetail in deviceListInfos">
+            <tr ng-click="deviceTroubleRecord($event,orderDetail)" data-appid = "{{orderDetail.id}}" ng-class="{'':dataAudit=='','bg-gray':orderDetail.id == dataAudit}"  ng-repeat="orderDetail in deviceListInfos">
                 <td class="firstTd">{{$index+1}}<input style="margin-left: 5px;vertical-align: middle;" type="checkbox" name="che"  value="{{orderDetail.id}}"/></td>
                 <!--<td>{{orderDetail.code||'--'}}</td>-->
                 <td>{{orderDetail.name||'--'}}</td>
@@ -235,67 +195,57 @@
                 <table>
                     <thead>
                     <tr>
-                        <th style="text-align: left" colspan="17">设备列表</th>
+                        <th style="text-align: left" colspan="17">
+                            <a ng-click="addTroubleRecord()" href="javascript:void(0)" class="smallButton">故障提出</a>
+                            <a ng-click="dealTroubleRecord()" href="javascript:void(0)" class="smallButton">故障处理</a>
+                            <a ng-click="deleteTroubleRecord()" href="javascript:void(0)" class="smallButton">故障删除</a>
+                            <a ng-click="importTroubleRecord()" href="javascript:void(0)" class="smallButton">导出EXCEL</a>
+                        </th>
                     </tr>
                     <tr>
-                        <th style="min-width:50px;">全选<input style="vertical-align: middle;margin-left: 5px" type="checkbox" value="1" onclick="selAll(this)" id="allSelected"/></th>
+                        <th style="min-width:50px;">全选<input style="vertical-align: middle;margin-left: 5px" type="checkbox" value="1" onclick="selAll1(this)" id="allSelected"/></th>
                         <!--<th>设备编号</th>-->
-                        <th>设备名称</th>
-                        <th>使用部门</th>
-                        <th>规格型号</th>
-                        <th>安装地点</th>
-                        <th>操作人员</th>
-                        <th>使用情况</th>
-                        <th>购买时间</th>
-                        <th>资产负责人</th>
-                        <th>设备类别</th>
-                        <th>供应商</th>
-                        <th>生产厂商</th>
-                        <th>设备标记</th>
-                        <th>资产原值</th>
-                        <th>备注</th>
+                        <th>故障状态</th>
+                        <th>发现时间</th>
+                        <th>记录时间</th>
+                        <th>故障等级</th>
+                        <th>故障描述</th>
+                        <th>记录人</th>
+                        <th>维修班组</th>
                         <th>操作</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="orderDetail in deviceListInfos">
-                        <td class="firstTd">{{$index+1}}<input style="margin-left: 5px;vertical-align: middle;" type="checkbox" name="che"  value="{{orderDetail.id}}"/></td>
-                        <!--<td>{{orderDetail.code||'--'}}</td>-->
-                        <td>{{orderDetail.name||'--'}}</td>
-                        <td>{{orderDetail.useDept||'--'}}</td>
-                        <td>{{orderDetail.specification||'--'}}</td>
-                        <td>{{orderDetail.installationAddress||'--'}}</td>
-                        <td>{{orderDetail.operator||'--'}}</td>
-                        <td>{{orderDetail.useStatus||'--'}}</td>
-                        <td>{{orderDetail.buyDate|date:'yyyy-MM-dd'||'--'}}</td>
-                        <td>{{orderDetail.head||'--'}}</td>
-                        <td>{{orderDetail.deviceType||'--'}}</td>
-                        <td>{{orderDetail.supplier||'--'}}</td>
-                        <td>{{orderDetail.manufacturer||'--'}}</td>
-                        <td>{{orderDetail.deviceFlag||'--'}}</td>
-                        <td>{{orderDetail.sourcePrice||'--'}}</td>
+                    <tr ng-repeat="orderDetail in troubleRecordList">
+                        <td class="firstTd">{{$index+1}}<input style="margin-left: 5px;vertical-align: middle;" type="checkbox" name="che1"  value="{{orderDetail.id}}"/></td>
+                        <td>{{orderDetail.status||'--'}}</td>
+                        <td>{{orderDetail.happenTime||'--'|date:'yyyy-MM-dd'}}</td>
+                        <td>{{orderDetail.createTime||'--'|date:'yyyy-MM-dd'}}</td>
+                        <td>{{orderDetail.troubleLevel||'--'}}</td>
                         <td>{{orderDetail.remark||'--'}}</td>
+                        <td>{{orderDetail.createUser||'--'}}</td>
+                        <td>{{orderDetail.repairGroupName||'--'}}</td>
                         <td>
-                            <a href="javascript:void(0)" class="resBtn editBtn" ng-click="editContactCompanyBalance(orderDetail)">
+                            <a href="javascript:void(0)" class="resBtn editBtn" ng-click="editTroubleRecord(orderDetail)">
                                 <img src="image/comm/resBtnEdit.png" alt="编辑"/>
-                                <b class="title">编辑</b>
+                                <b class="title">详细</b>
                             </a>
-                            <!--<a href="javascript:void(0)" class="resBtn deleteBtn" ng-click="deleteContactCompanyBalance(orderDetail)">-->
-                            <!--<img src="image/comm/resBtnDelete.png" alt="删除"/>-->
-                            <!--<b class="title">删除</b>-->
-                            <!--</a>-->
+                            <a href="javascript:void(0)" class="resBtn deleteBtn" ng-click="dealTroubleRecord(orderDetail)">
+                                <img src="image/comm/resBtnEdit.png" alt="删除"/>
+                                <b class="title">执行维修</b>
+                            </a>
                         </td>
                     </tr>
                     </tbody>
                     <tfoot>
                     <tr>
                         <td>
-                            <a href="javascript:void(0)" class="resBtn deleteBtn" ng-click="deleteContactCompanyBalance(orderDetail)">
+                            <a href="javascript:void(0)" class="resBtn deleteBtn" ng-click="deleteAllTroubleRecords(orderDetail)">
                                 <img src="image/comm/resBtnDelete.png" alt="删除"/>
                                 <b class="title">删除</b>
                             </a>
                         </td>
-                        <td style="text-align: center" colspan="17"><tm-pagination conf="paginationConf"></tm-pagination></td>
+                        <td style="text-align: center" colspan="17"><tm-pagination conf="paginationConf1"></tm-pagination></td>
                     </tr>
                     </tfoot>
                 </table>
@@ -767,6 +717,303 @@
         <div class="submitBtn1" style="text-align: center;">
             <input type="button" value="删除"  class="btn" ng-click="deleteDeviceSure()"/>
             <input type="button" value="取消" class="btn" onClick="hideDiv('deleteContactCompany')">
+        </div>
+    </div>
+</div>
+<!--单个删除弹出框end-->
+<!--添加故障记录 start-->
+<div class="ImportantNote addTroubleRecordBalance">
+    <div class="headline">
+        <span>添加故障记录</span>
+        <img onClick="hideDiv('addTroubleRecordBalance')" class="companyCloseImg" src="image/comm/diffClosed.png" width="22" height="22">
+    </div>
+    <div style="padding: 30px 0 20px 0;width: 840px;max-height: 380px;height: auto;overflow-y: hidden; overflow: auto;" class="businessAuth">
+        <div class="titleDiv">
+            <span class="tips">设备信息</span>
+            <p>
+                <label for="deviceType">
+                    <span style="width: 100px;text-align: right">设备信息:</span>
+                    <b style="width: 617px;display: inline-block;text-align: left;font-weight: 100">
+                        <input style="vertical-align: middle;margin-top: -2px;" ng-model="deviceTypes" value="1" type="radio" name="deviceTypes"/>
+                        <span>选择设备报修</span>
+                        <input style="vertical-align: middle;margin-top: -2px;margin-left: 87px;" ng-model="deviceTypes" value="2" type="radio" name="deviceTypes"/>
+                        <span>其他报修（手工输入设备）</span>
+                    </b>
+                </label>
+            </p>
+            <p>
+                <label for="deviceTypeTrouble" >
+                    <span style="width: 100px;text-align: right">设备类型:</span>
+                    <select ng-disabled="deviceTypes=='1'" id="deviceTypeTrouble" ng-model="deviceTypeTrouble" ng-options="deviceTypeListDetail.id as deviceTypeListDetail.name for deviceTypeListDetail in deviceTypeList">
+                        <option value="">请选择设备类型</option>
+                        <option value="1">呵呵</option>
+                    </select>
+                </label>
+                <label for="deviceCodeTrouble">
+                    <span style="width: 100px;text-align: right">设备编号:<i>*</i></span>
+                    <input ng-disabled="deviceTypes=='1'" id="deviceCodeTrouble" ng-model="deviceCodeTrouble" type="text" placeholder="请输入设备编号"/>
+                </label>
+                <label style="opacity: 1">
+                    <span style="width: 100px;text-align: right">选择设备:</span>
+                    <button style="width: 135px;font-size: 12px;" class="btn">选择设备</button>
+                </label>
+            </p>
+            <p>
+                <label for="deviceNameTrouble">
+                    <span style="width: 100px;text-align: right">设备名称:<i>*</i></span>
+                    <input ng-disabled="deviceTypes=='1'" id="deviceNameTrouble" ng-model="deviceNameTrouble" type="text" placeholder="请输入设备名称"/>
+                </label>
+
+                <label for="specificationTrouble">
+                    <span style="width: 100px;text-align: right">规格型号:</span>
+                    <input ng-disabled="deviceTypes=='1'" id="specificationTrouble" ng-model="specificationTrouble" type="text" placeholder="请输入规格型号"/>
+                </label>
+                <label for="useDeptTrouble">
+                    <span style="width: 100px;text-align: right">所在部门:</span>
+                    <select ng-disabled="deviceTypes=='1'" id="useDeptTrouble" ng-model="useDeptTrouble" ng-options="departmentListDetail.id as departmentListDetail.name for departmentListDetail in departmentList">
+                        <option value="">请选择使用部门</option>
+                        <option value="1">呵呵</option>
+                    </select>
+                </label>
+            </p>
+        </div>
+
+        <div class="titleDiv">
+            <span class="tips">故障信息</span>
+            <p>
+                <label for="happendDate" >
+                    <span style="width: 100px;text-align: right">发生时间:<i>*</i></span>
+                    <input type="date" id="happendDate" placeholder="yyyy-MM-dd" min="20160601 | date:'yyyyMMdd" max="20201231 | date:'yyyyMMdd" required="" ng-model="happendDate">
+                </label>
+                <label for="deviceUser">
+                    <span style="width: 100px;text-align: right">操作者:</span>
+                    <input id="deviceUser" ng-model="deviceUser" type="text" placeholder="请输入操作者"/>
+                </label>
+                <label for="deviceUserPhone">
+                    <span style="width: 100px;text-align: right">操作者电话:</span>
+                    <input id="deviceUserPhone" ng-model="deviceUserPhone" type="text" placeholder="请输入操作者电话"/>
+                </label>
+            </p>
+            <p>
+                <label for="troubleLevel">
+                    <span style="width: 100px;text-align: right">故障等级:</span>
+                    <select id="troubleLevel" ng-model="troubleLevel" ng-options="deviceTroubleLevelDetail.type as deviceTroubleLevelDetail.name for deviceTroubleLevelDetail in deviceTroubleLevel">
+                        <option value="">请选择故障等级</option>
+                        <option value="1">呵呵</option>
+                    </select>
+                </label>
+                <label for="deviceStatus">
+                    <span style="width: 100px;text-align: right">设备状态:<i>*</i></span>
+                    <select id="deviceStatus" ng-model="deviceStatus" ng-options="deviceStatusDetail.type as deviceStatusDetail.name for deviceStatusDetail in deviceStatusList">
+                        <option value="">请选择设备状态</option>
+                        <option value="1">呵呵</option>
+                    </select>
+                </label>
+                <label for="troubleType">
+                    <span style="width: 100px;text-align: right">故障类别:</span>
+                    <select id="troubleType" ng-model="troubleType" ng-options="deviceTroubleType.id as deviceTroubleType.name for deviceTroubleType in deviceTroubleTypeList">
+                        <option value="">请选择故障类别</option>
+                        <option value="1">呵呵</option>
+                    </select>
+                </label>
+            </p>
+            <p>
+                <label for="repairGroupId">
+                    <span style="width: 100px;text-align: right">维修班组:</span>
+                    <select id="repairGroupId" ng-model="repairGroupId" ng-options="repairGroupDetail.id as repairGroupDetail.name for repairGroupDetail in repairGroupList">
+                        <option value="">请选择维修班组</option>
+                        <option value="1">呵呵</option>
+                    </select>
+                </label>
+                <label for="deviceAddress">
+                    <span style="width: 100px;text-align: right">设备位置:</span>
+                    <input style="width: 375px;" id="deviceAddress" ng-model="deviceAddress" type="text" placeholder="请输入设备位置"/>
+                </label>
+            </p>
+            <p>
+                <label for="troubleAddRemark">
+                    <span style="width: 100px;text-align: right">故障描述:<i>*</i></span>
+                    <textarea placeholder="请输入故障描述" name="troubleAddRemark" id="troubleAddRemark" ng-model="troubleAddRemark"></textarea>
+                </label>
+            </p>
+        </div>
+        <div class="titleDiv">
+            <span class="tips">故障图片</span>
+            <p>
+                <label for="remarkEdit">
+                    <span style="width: 100px;text-align: right">图片上传:</span>
+                    <input style="width: 553px;border: 1px solid #e6e6e6;height: 30px;line-height: 30px;" type="file" placeholder="选择上传的图片">
+                    <button style="font-size: 12px;" class="btn">上传</button>
+                </label>
+            </p>
+            <p>
+                <label for="remarkEdit">
+                    <span style="width: 100px;text-align: right">已上传图片:</span>
+                    <b style="    display: inline-block;width: 636px;height: auto;min-height: 85px;border: 1px solid #e6e6e6;vertical-align: top;">
+
+                    </b>
+                </label>
+            </p>
+        </div>
+        <div class="submitBtn1" style="text-align: center;padding-left: 40px;">
+            <button type="button" ng-click="addTroubleRecordSure()" value="" class="btn">保存</button>
+            <button type="button" value="" class="btn" onClick="hideDiv('addTroubleRecordBalance')">取消</button>
+        </div>
+    </div>
+</div>
+<!--添加故障记录 end-->
+<!--查询故障记录详情 start-->
+<div class="ImportantNote editTroubleRecordBalance">
+    <div class="headline">
+        <span>故障信息详情</span>
+        <img onClick="hideDiv('editTroubleRecordBalance')" class="companyCloseImg" src="image/comm/diffClosed.png" width="22" height="22">
+    </div>
+    <div style="padding: 30px 0 20px 0;width: 840px;max-height: 380px;height: auto;overflow-y: hidden; overflow: auto;" class="businessAuth">
+        <div class="titleDiv">
+            <span class="tips">设备信息</span>
+            <p>
+                <label for="deviceType">
+                    <span style="width: 100px;text-align: right">设备信息:</span>
+                    <b style="width: 617px;display: inline-block;text-align: left;font-weight: 100">
+                        <input style="vertical-align: middle;margin-top: -2px;" ng-model="deviceTypes" value="1" type="radio" name="deviceTypes"/>
+                        <span>选择设备报修</span>
+                        <input style="vertical-align: middle;margin-top: -2px;margin-left: 87px;" ng-model="deviceTypes" value="2" type="radio" name="deviceTypes"/>
+                        <span>其他报修（手工输入设备）</span>
+                    </b>
+                </label>
+            </p>
+            <p>
+                <label for="deviceTypeTroubleEdit" >
+                    <span style="width: 100px;text-align: right">设备类型:</span>
+                    <select ng-disabled="deviceTypes=='1'" id="deviceTypeTroubleEdit" ng-model="deviceTypeTroubleEdit" ng-options="deviceTypeListDetail.id as deviceTypeListDetail.name for deviceTypeListDetail in deviceTypeList">
+                        <option value="">请选择设备类型</option>
+                        <option value="1">呵呵</option>
+                    </select>
+                </label>
+                <label for="deviceCodeTroubleEdit">
+                    <span style="width: 100px;text-align: right">设备编号:<i>*</i></span>
+                    <input ng-disabled="deviceTypes=='1'" id="deviceCodeTroubleEdit" ng-model="deviceCodeTroubleEdit" type="text" placeholder="请输入设备编号"/>
+                </label>
+                <label style="opacity: 1">
+                    <span style="width: 100px;text-align: right">选择设备:</span>
+                    <button style="width: 135px;font-size: 12px;" class="btn">选择设备</button>
+                </label>
+            </p>
+            <p>
+                <label for="deviceNameTroubleEdit">
+                    <span style="width: 100px;text-align: right">设备名称:<i>*</i></span>
+                    <input ng-disabled="deviceTypes=='1'" id="deviceNameTroubleEdit" ng-model="deviceNameTroubleEdit" type="text" placeholder="请输入设备名称"/>
+                </label>
+
+                <label for="specificationTroubleEdit">
+                    <span style="width: 100px;text-align: right">规格型号:</span>
+                    <input ng-disabled="deviceTypes=='1'" id="specificationTroubleEdit" ng-model="specificationTroubleEdit" type="text" placeholder="请输入规格型号"/>
+                </label>
+                <label for="useDeptTroubleEdit">
+                    <span style="width: 100px;text-align: right">所在部门:</span>
+                    <select ng-disabled="deviceTypes=='1'" id="useDeptTroubleEdit" ng-model="useDeptTroubleEdit" ng-options="departmentListDetail.id as departmentListDetail.name for departmentListDetail in departmentList">
+                        <option value="">请选择使用部门</option>
+                        <option value="1">呵呵</option>
+                    </select>
+                </label>
+            </p>
+        </div>
+
+        <div class="titleDiv">
+            <span class="tips">故障信息</span>
+            <p>
+                <label for="happendDateEdit" >
+                    <span style="width: 100px;text-align: right">发生时间:<i>*</i></span>
+                    <input type="date" id="happendDateEdit" placeholder="yyyy-MM-dd" min="20160601 | date:'yyyyMMdd" max="20201231 | date:'yyyyMMdd" required="" ng-model="happendDateEdit">
+                </label>
+                <label for="deviceUserEdit">
+                    <span style="width: 100px;text-align: right">操作者:</span>
+                    <input id="deviceUserEdit" ng-model="deviceUserEdit" type="text" placeholder="请输入操作者"/>
+                </label>
+                <label for="deviceUserPhoneEdit">
+                    <span style="width: 100px;text-align: right">操作者电话:</span>
+                    <input id="deviceUserPhoneEdit" ng-model="deviceUserPhoneEdit" type="text" placeholder="请输入操作者电话"/>
+                </label>
+            </p>
+            <p>
+                <label for="troubleLevelEdit">
+                    <span style="width: 100px;text-align: right">故障等级:</span>
+                    <select id="troubleLevelEdit" ng-model="troubleLevelEdit" ng-options="deviceTroubleLevelDetail.type as deviceTroubleLevelDetail.name for deviceTroubleLevelDetail in deviceTroubleLevel">
+                        <option value="">请选择故障等级</option>
+                        <option value="1">呵呵</option>
+                    </select>
+                </label>
+                <label for="deviceStatusEdit">
+                    <span style="width: 100px;text-align: right">设备状态:<i>*</i></span>
+                    <select id="deviceStatusEdit" ng-model="deviceStatusEdit" ng-options="deviceStatusDetail.type as deviceStatusDetail.name for deviceStatusDetail in deviceStatusList">
+                        <option value="">请选择设备状态</option>
+                        <option value="1">呵呵</option>
+                    </select>
+                </label>
+                <label for="troubleTypeEdit">
+                    <span style="width: 100px;text-align: right">故障类别:</span>
+                    <select id="troubleTypeEdit" ng-model="troubleTypeEdit" ng-options="deviceTroubleType.id as deviceTroubleType.name for deviceTroubleType in deviceTroubleTypeList">
+                        <option value="">请选择故障类别</option>
+                        <option value="1">呵呵</option>
+                    </select>
+                </label>
+            </p>
+            <p>
+                <label for="repairGroupIdEdit">
+                    <span style="width: 100px;text-align: right">维修班组:</span>
+                    <select id="repairGroupIdEdit" ng-model="repairGroupIdEdit" ng-options="repairGroupDetail.id as repairGroupDetail.name for repairGroupDetail in repairGroupList">
+                        <option value="">请选择维修班组</option>
+                        <option value="1">呵呵</option>
+                    </select>
+                </label>
+                <label for="deviceAddressEdit">
+                    <span style="width: 100px;text-align: right">设备位置:</span>
+                    <input style="width: 375px;" id="deviceAddressEdit" ng-model="deviceAddressEdit" type="text" placeholder="请输入设备位置"/>
+                </label>
+            </p>
+            <p>
+                <label for="troubleAddRemarkEdit">
+                    <span style="width: 100px;text-align: right">故障描述:<i>*</i></span>
+                    <textarea placeholder="请输入故障描述" name="troubleAddRemarkEdit" id="troubleAddRemarkEdit" ng-model="troubleAddRemark"></textarea>
+                </label>
+            </p>
+        </div>
+        <div class="titleDiv">
+            <span class="tips">故障图片</span>
+            <p>
+                <label for="remarkEdit">
+                    <span style="width: 100px;text-align: right">图片上传:</span>
+                    <input style="width: 553px;border: 1px solid #e6e6e6;height: 30px;line-height: 30px;" type="file" placeholder="选择上传的图片">
+                    <button style="font-size: 12px;" class="btn">上传</button>
+                </label>
+            </p>
+            <p>
+                <label for="remarkEdit">
+                    <span style="width: 100px;text-align: right">已上传图片:</span>
+                    <b style="    display: inline-block;width: 636px;height: auto;min-height: 85px;border: 1px solid #e6e6e6;vertical-align: top;">
+
+                    </b>
+                </label>
+            </p>
+        </div>
+        <div class="submitBtn1" style="text-align: center;padding-left: 40px;">
+            <button type="button" ng-click="editTroubleRecordSure()" value="" class="btn">保存</button>
+            <button type="button" value="" class="btn" onClick="hideDiv('editTroubleRecordBalance')">取消</button>
+        </div>
+    </div>
+</div>
+<!--查询故障记录详情 end-->
+<!--单个删除弹出框start-->
+<div class="ImportantNote deleteTroubleRecords">
+    <div class="headline">
+        <span>删除故障信息</span>
+        <img onClick="hideDiv('deleteTroubleRecords')" class="companyCloseImg" src="image/comm/diffClosed.png" width="22" height="22">
+    </div>
+    <div class="businessAuth">
+        <p><img src="image/comm/attentionPlease.png" alt="注意："/>确认删除选中的故障信息？</p>
+        <div class="submitBtn1" style="text-align: center;">
+            <input type="button" value="删除"  class="btn" ng-click="deleteTroubleRecordSure()"/>
+            <input type="button" value="取消" class="btn" onClick="hideDiv('deleteTroubleRecords')">
         </div>
     </div>
 </div>
