@@ -12,9 +12,11 @@ var myApp = angular.module('myApp', [
 ])
 /*服务端接口地址*/
     .constant('FF_API', {
+        // base: 'http://47.96.28.88:9550',      //工程路径
         base: 'http://39.104.71.127:9550',      //工程路径
         baseTpl: 'views/'                 ,      //模板路径
         queryCorporateAllUserPath:'/api/authorization/queryCorporateAllUser' ,  //查询所有企业用户
+        departmentListPath:'/api/department/list' ,  //查询所有企业用户
         addUserPath:'/api/authorization/addUser',   //添加企业用户
         addUserRolePath:'/api/authorization/addUserRole',   //为用户添加角色
         queryRoleByUserIdPath:'/api/authorization/queryRoleByUserId',   //为用户查询角色
@@ -45,11 +47,14 @@ var myApp = angular.module('myApp', [
         deleteSparePartsByIdPath:'/api/spareParts/deleteSparePartsById' ,  //单个删除备件
         deleteSparePartsByIdsPath:'/api/spareParts/deleteSparePartsByIds' ,  //批量删除备件
         contactCompanyListPath:'/api/contactCompany/list',   //查询往来单位
-        findByCodePath:'/api/deviceParameterDictionary/findByCode'   //查询设备参数
+        findByCodePath:'/api/deviceParameterDictionary/findByCode'  , //查询设备参数
+        addDeviceProcessPath:'/api/deviceProcess/addDeviceProcess'  , //新增审核流程
+        queryAllDecviceProcessTypePath:'/api/deviceProcess/queryAllDecviceProcessType'  , //查询所有流程类型集合
+        deviceProcessFindByPagePath:'/api/deviceProcess/findByPage'   //分页查询审核流程
 
 
     })
-.run(['$rootScope', '$window', '$location', '$log','$injector', function ($rootScope, $window, $location, $log, $injector) {
+    .run(['$rootScope', '$window', '$location', '$log','$injector','crumbNav', function ($rootScope, $window, $location, $log, $injector,crumbNav) {
 
         $rootScope.$on('$stateNotFound',
             function(event, unfoundState, fromState, fromParams){
@@ -58,12 +63,15 @@ var myApp = angular.module('myApp', [
                 console.log(unfoundState.options); // {inherit:false} + default options
             });
 
-        $rootScope.$on('$stateChangeStart',
-            function(event, toState, toParams, fromState, fromParams){
-              //  $rootScope.$state.go("login");
-             //   event.preventDefault();
-                // transitionTo() promise will be rejected with
-                // a 'transition prevented' error
+        $rootScope.$on('$locationChangeStart',
+            function(event, next){
+                var routerArr=crumbNav.getList();
+                var stateUrl=$location.$$url.split('/')[2];
+                routerArr.forEach(function (n,i) {
+                    if(stateUrl==n.stateUrl){
+                        $rootScope.urlLists=n.nameArr;
+                    }
+                })
             });
 
         $rootScope.$on('$stateChangeSuccess',
@@ -101,12 +109,12 @@ var myApp = angular.module('myApp', [
 
             });
 
-}])
-.config(function ($stateProvider, $urlRouterProvider) {
-  $urlRouterProvider.when("", "/main/home");
-  $urlRouterProvider.otherwise("/main/home");
-})
-.config(function ($stateProvider, $urlRouterProvider,FF_API) {
+    }])
+    .config(function ($stateProvider, $urlRouterProvider) {
+        $urlRouterProvider.when("", "/main/home");
+        $urlRouterProvider.otherwise("/main/home");
+    })
+    .config(function ($stateProvider, $urlRouterProvider,FF_API) {
         $stateProvider
             .state("login", {
                 url: "/login",
@@ -135,6 +143,9 @@ var myApp = angular.module('myApp', [
                     'leftMenu@main':{
                         templateUrl:FF_API.baseTpl+'tpls/leftMenu.html'
                     },
+                    'crumbNav@main':{
+                        templateUrl:FF_API.baseTpl+'tpls/crumbNav.html'
+                    },
                     'mainBody@main':{
                         templateUrl:FF_API.baseTpl+'tpls/content.html'
 
@@ -159,7 +170,7 @@ var myApp = angular.module('myApp', [
 //                 controller: 'HomeController'
             })
             //用户管理
-                //用户／用户组
+            //用户／用户组
             .state("main.userManagements",{
                 showName:"用户管理",
                 tabShow:true,
@@ -218,72 +229,93 @@ var myApp = angular.module('myApp', [
                 }
             })
 
+            // 审核流程设置
+            .state("main.deviceProcess",{
+                url:"/deviceProcess",
+                views:{
+                    'content@main':{
+                        templateUrl:FF_API.baseTpl+'tpls/deviceProcess.html',
+                        controller:'deviceProcessCtrl'
+                    }
+                }
+            })
+
+            //故障类型设置
+            .state("main.deviceTroubleType",{
+                url:"/deviceProcess",
+                views:{
+                    'content@main':{
+                        templateUrl:FF_API.baseTpl+'tpls/deviceProcess.html',
+                        controller:'deviceProcessCtrl'
+                    }
+                }
+            })
+
     })
-.config(['$resourceProvider', function ($resourceProvider) {
-      $resourceProvider.defaults.actions = {
-        post: {method: 'POST', responseType: 'json', timeout:10000},
-        get:    {method: 'GET', responseType: 'json',  timeout:10000},
-        getAll: {method: 'GET', isArray:true, responseType: 'json', timeout:10000},
-        update: {method: 'PUT', responseType: 'json',  timeout:10000},
-        delete: {method: 'DELETE', responseType: 'json', timeout:10000},
-        save: {method: 'POST', responseType: 'json', timeout:10000},
-        query: {method: 'GET', isArray: true, responseType: 'json', timeout:10000},
-        remove: {method: 'DELETE', responseType: 'json',  timeout:10000}
-      };
+    .config(['$resourceProvider', function ($resourceProvider) {
+        $resourceProvider.defaults.actions = {
+            post: {method: 'POST', responseType: 'json', timeout:10000},
+            get:    {method: 'GET', responseType: 'json',  timeout:10000},
+            getAll: {method: 'GET', isArray:true, responseType: 'json', timeout:10000},
+            update: {method: 'PUT', responseType: 'json',  timeout:10000},
+            delete: {method: 'DELETE', responseType: 'json', timeout:10000},
+            save: {method: 'POST', responseType: 'json', timeout:10000},
+            query: {method: 'GET', isArray: true, responseType: 'json', timeout:10000},
+            remove: {method: 'DELETE', responseType: 'json',  timeout:10000}
+        };
     }])
-// Angular File Upload module does not include this directive
-// Only for example
+    // Angular File Upload module does not include this directive
+    // Only for example
 
 
-/**
- * The ng-thumb directive
- * @author: nerv
- * @version: 0.1.2, 2014-01-09
- */
-.directive('ngThumb', ['$window', function($window) {
-    var helper = {
-        support: !!($window.FileReader && $window.CanvasRenderingContext2D),
-        isFile: function(item) {
-            return angular.isObject(item) && item instanceof $window.File;
-        },
-        isImage: function(file) {
-            var type =  '|' + file.type.slice(file.type.lastIndexOf('/') + 1) + '|';
-            return '|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1;
-        }
-    };
+    /**
+     * The ng-thumb directive
+     * @author: nerv
+     * @version: 0.1.2, 2014-01-09
+     */
+    .directive('ngThumb', ['$window', function($window) {
+        var helper = {
+            support: !!($window.FileReader && $window.CanvasRenderingContext2D),
+            isFile: function(item) {
+                return angular.isObject(item) && item instanceof $window.File;
+            },
+            isImage: function(file) {
+                var type =  '|' + file.type.slice(file.type.lastIndexOf('/') + 1) + '|';
+                return '|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1;
+            }
+        };
 
-    return {
-        restrict: 'A',
-        template: '<canvas/>',
-        link: function(scope, element, attributes) {
-            if (!helper.support) return;
+        return {
+            restrict: 'A',
+            template: '<canvas/>',
+            link: function(scope, element, attributes) {
+                if (!helper.support) return;
 
-            var params = scope.$eval(attributes.ngThumb);
+                var params = scope.$eval(attributes.ngThumb);
 
-            if (!helper.isFile(params.file)) return;
-            if (!helper.isImage(params.file)) return;
+                if (!helper.isFile(params.file)) return;
+                if (!helper.isImage(params.file)) return;
 
-            var canvas = element.find('canvas');
-            var reader = new FileReader();
+                var canvas = element.find('canvas');
+                var reader = new FileReader();
 
-            reader.onload = onLoadFile;
-            reader.readAsDataURL(params.file);
+                reader.onload = onLoadFile;
+                reader.readAsDataURL(params.file);
 
-            function onLoadFile(event) {
-                var img = new Image();
-                img.onload = onLoadImage;
-                img.src = event.target.result;
+                function onLoadFile(event) {
+                    var img = new Image();
+                    img.onload = onLoadImage;
+                    img.src = event.target.result;
 //                console.log("图片路径为>>>>");
 //                console.log(img.src);
-            }
+                }
 
-            function onLoadImage() {
-                var width = params.width || this.width / this.height * params.height;
-                var height = params.height || this.height / this.width * params.width;
-                canvas.attr({ width: width, height: height });
-                canvas[0].getContext('2d').drawImage(this, 0, 0, width, height);
+                function onLoadImage() {
+                    var width = params.width || this.width / this.height * params.height;
+                    var height = params.height || this.height / this.width * params.width;
+                    canvas.attr({ width: width, height: height });
+                    canvas[0].getContext('2d').drawImage(this, 0, 0, width, height);
+                }
             }
-        }
-    };
-}]);
-
+        };
+    }]);

@@ -13,6 +13,7 @@ var myApp = angular.module('myApp', [
 /*服务端接口地址*/
     .constant('FF_API', {
         base: 'http://47.96.28.88:9550',      //工程路径
+        // base: 'http://39.104.71.127:9550',      //工程路径
         baseTpl: 'views/'                 ,      //模板路径
         queryCorporateAllUserPath:'/api/authorization/queryCorporateAllUser' ,  //查询所有企业用户
         departmentListPath:'/api/department/list' ,  //查询所有企业用户
@@ -53,7 +54,7 @@ var myApp = angular.module('myApp', [
 
 
     })
-.run(['$rootScope', '$window', '$location', '$log','$injector', function ($rootScope, $window, $location, $log, $injector) {
+.run(['$rootScope', '$window', '$location', '$log','$injector','crumbNav', function ($rootScope, $window, $location, $log, $injector,crumbNav) {
 
         $rootScope.$on('$stateNotFound',
             function(event, unfoundState, fromState, fromParams){
@@ -62,12 +63,15 @@ var myApp = angular.module('myApp', [
                 console.log(unfoundState.options); // {inherit:false} + default options
             });
 
-        $rootScope.$on('$stateChangeStart',
-            function(event, toState, toParams, fromState, fromParams){
-              //  $rootScope.$state.go("login");
-             //   event.preventDefault();
-                // transitionTo() promise will be rejected with
-                // a 'transition prevented' error
+        $rootScope.$on('$locationChangeStart',
+            function(event, next){
+                var routerArr=crumbNav.getList();
+                var stateUrl=$location.$$url.split('/')[2];
+                routerArr.forEach(function (n,i) {
+                    if(stateUrl==n.stateUrl){
+                        $rootScope.urlLists=n.nameArr;
+                    }
+                })
             });
 
         $rootScope.$on('$stateChangeSuccess',
@@ -138,6 +142,9 @@ var myApp = angular.module('myApp', [
                     },
                     'leftMenu@main':{
                         templateUrl:FF_API.baseTpl+'tpls/leftMenu.html'
+                    },
+                    'crumbNav@main':{
+                        templateUrl:FF_API.baseTpl+'tpls/crumbNav.html'
                     },
                     'mainBody@main':{
                         templateUrl:FF_API.baseTpl+'tpls/content.html'
@@ -233,6 +240,17 @@ var myApp = angular.module('myApp', [
                 }
             })
 
+            //故障类型设置
+            .state("main.deviceTroubleType",{
+                url:"/deviceProcess",
+                views:{
+                    'content@main':{
+                        templateUrl:FF_API.baseTpl+'tpls/deviceProcess.html',
+                        controller:'deviceProcessCtrl'
+                    }
+                }
+            })
+
     })
 .config(['$resourceProvider', function ($resourceProvider) {
       $resourceProvider.defaults.actions = {
@@ -301,4 +319,3 @@ var myApp = angular.module('myApp', [
         }
     };
 }]);
-
