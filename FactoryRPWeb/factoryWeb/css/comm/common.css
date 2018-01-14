@@ -181,6 +181,7 @@ input:focus{
 }
 .ImportantNote .businessAuth .titleDiv span,input{
     font-size: 12px !important;
+    vertical-align: middle;
 }
 .addOtherInfo .imgDiv label select{
     height: 35px;
