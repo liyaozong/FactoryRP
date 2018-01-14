@@ -118,5 +118,13 @@ myApp.factory("deviceProcess",['$q',"AppHttp","FF_API",function($q,AppHttp,FF_AP
         });
     };
 
+    //查询所有部门
+    deviceProcess.departmentGetList=function(){
+        return AppHttp({
+            method: 'get',
+            url: FF_API.base + FF_API.departmentListPath
+        });
+    };
+
     return deviceProcess;
 }]);
