@@ -46,7 +46,6 @@ public class ProcessServiceImpl implements ProcessService {
     @Resource
     private DeviceProcessRepository deviceProcessRepository;
 
-
     @Resource
     private DeviceProcessDetailRepository deviceProcessDetailRepository;
 
@@ -66,8 +65,6 @@ public class ProcessServiceImpl implements ProcessService {
             deviceProcessTypeList.stream().sorted((d1,d2) -> d1.getOrderNumber().compareTo(d2.getOrderNumber()));
         }
 
-
-        System.out.println(JSON.toJSONString(deviceProcessTypeList));
 
         return deviceProcessTypeRepository.findByCorporateIdentify(corporateIdentify);
     }

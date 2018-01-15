@@ -1,6 +1,7 @@
 package tech.yozo.factoryrp.api;
 
 import tech.yozo.factoryrp.enums.device.DeviceParamDicEnum;
+import tech.yozo.factoryrp.enums.device.DeviceStatusEnum;
 import tech.yozo.factoryrp.utils.ErrorCode;
 import tech.yozo.factoryrp.utils.UUIDSequenceWorker;
 import tech.yozo.factoryrp.vo.base.ApiResponse;
@@ -58,6 +59,23 @@ public class MainController extends BaseController{
         apiResponse.setErrorCode(ErrorCode.SUCCESS.getCode());
         apiResponse.setErrorMessage(ErrorCode.SUCCESS.getCode());
         apiResponse.setData(DeviceParamDicEnum.getAllCodesAndName());
+        apiResponse.setRequestSeqNo(UUIDSequenceWorker.uniqueSequenceId().toString());
+        return apiResponse;
+    }
+
+
+    /**
+     * 查询所有设备状态
+     * @return
+     */
+    @ApiOperation(value = "查询所有设备状态",notes = "查询所有设备状态",httpMethod = "GET")
+    @RequestMapping(value = "/queryAllDeviceStatus",method = RequestMethod.GET)
+    @ResponseBody
+    public ApiResponse<List<DeviceParamDicEnumResp>> queryAllDeviceStatus(){
+        ApiResponse<List<DeviceParamDicEnumResp>> apiResponse = new ApiResponse<>();
+        apiResponse.setErrorCode(ErrorCode.SUCCESS.getCode());
+        apiResponse.setErrorMessage(ErrorCode.SUCCESS.getCode());
+        apiResponse.setData(DeviceStatusEnum.getAllCodesAndName());
         apiResponse.setRequestSeqNo(UUIDSequenceWorker.uniqueSequenceId().toString());
         return apiResponse;
     }
