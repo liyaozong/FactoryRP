@@ -2,6 +2,7 @@ package tech.yozo.factoryrp.ui;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.*;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -22,6 +23,8 @@ public class ValidateRepairActivity extends AppCompatActivity implements HttpCli
     EditText editTextComment;
     @BindView(R.id.comment_star)
     RatingBar commentStar;
+    @BindView(R.id.ll_repair_again)
+    LinearLayout llRepairAgain;
 
 
     @Override
@@ -30,6 +33,22 @@ public class ValidateRepairActivity extends AppCompatActivity implements HttpCli
 
         setContentView(R.layout.validate_repair_dialog);
         ButterKnife.bind(this);
+
+        rgRepairSuecss.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                switch (i) {
+                    case R.id.radioButton_yes:
+                        llRepairAgain.setVisibility(View.GONE);
+                        break;
+                    case R.id.radioButton_no:
+                        llRepairAgain.setVisibility(View.VISIBLE);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        });
     }
 
     @Override
@@ -66,8 +85,11 @@ public class ValidateRepairActivity extends AppCompatActivity implements HttpCli
             default:
                 break;
         }
-        //TODO
-//        req.setRepairAgain(checkBoxAgain.isChecked());
+        if (checkBoxAgain.isChecked()) {
+            req.setNeedRepair(1);
+        } else {
+            req.setNeedRepair(0);
+        }
         req.setSuggest(editTextComment.getText().toString());
         req.setStarLevel((int) commentStar.getRating());
         client.requestValidateRepairTask(this, this, req);

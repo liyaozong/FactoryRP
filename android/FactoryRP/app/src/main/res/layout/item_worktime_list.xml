@@ -2,25 +2,27 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
-              android:layout_height="wrap_content" android:background="@android:color/background_light">
+              android:layout_height="wrap_content" android:background="@android:color/background_light"
+>
 
     <TextView
             android:layout_width="120dp"
-            android:layout_height="wrap_content" android:id="@+id/tv_engineer_name" android:layout_margin="4dp"
+            android:layout_height="wrap_content" android:id="@+id/tv_engineer_name"
             android:textSize="16sp"/>
-    <Spinner
+    <EditText
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:id="@+id/spinner_worktime"
-            android:textSize="16sp" android:layout_margin="4dp" android:entries="@array/work_time"
-            android:layout_weight="1"/>
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:ems="10"
+            android:id="@+id/editText_worktime" android:layout_weight="1" android:textAlignment="center"/>
     <TextView
             android:text="小时"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" android:id="@+id/textView85"
-            android:layout_margin="4dp" android:textSize="16sp"/>
+            android:textSize="16sp"/>
     <ImageButton
-            android:layout_width="35dp"
-            android:layout_height="35dp" app:srcCompat="@android:drawable/presence_busy"
+            android:layout_width="42dp"
+            android:layout_height="42dp" app:srcCompat="@android:drawable/presence_busy"
             android:id="@+id/ib_delete_engineer"
             android:background="@android:color/background_light"/>
 </LinearLayout>

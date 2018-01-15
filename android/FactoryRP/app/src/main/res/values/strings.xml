@@ -20,13 +20,14 @@
     <string name="failure_get">获取内容失败</string>
     <string name="failure_get_device">没有该设备的记录</string>
     <string name="failure_login">登录失败</string>
-    <string name="failure_data_parse">相关的数据不存在，请先添加数据</string>
+    <string name="failure_data_parse">没有查询到相关的信息或数据</string>
     <string name="failure_network">网络不可用，请检查网络设置</string>
     <string name="failure_request">请求错误，请查看手机网络或服务器状态</string>
     <string name="failure_camera_permission">没有授权，无法使用照相机</string>
 
     <string name="hint_parts_count">最多只能添加10个。</string>
     <string name="hint_image_count">只能添加3张照片。</string>
+    <string name="hint_is_exist">已经添加过了。</string>
     <string name="hint_device_save_success">设备保存成功。</string>
     <string name="hint_report_fault_success">故障上报成功。</string>
     <string name="hint_select_a_device">请选择一个设备</string>

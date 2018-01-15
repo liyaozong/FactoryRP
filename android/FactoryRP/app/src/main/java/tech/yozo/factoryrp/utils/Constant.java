@@ -15,6 +15,7 @@ public class Constant {
     public static final int DICT_REPAIR_LEVEL = 0x220004;
     public static final int DICT_MAINTAIN_LEVEL = 0x220005;
     public static final int DICT_VERIFY_COMMENT = 0x220006;
+    public static final int DICT_DEVICE_RUNNING_STATUS = 0x220007;
 
     /* 相机请求码 */
     public static final int REQUEST_SCAN_PERMISSION = 0x3000;

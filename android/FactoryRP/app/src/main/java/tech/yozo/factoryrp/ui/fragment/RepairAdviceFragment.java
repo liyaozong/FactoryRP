@@ -167,12 +167,20 @@ public class RepairAdviceFragment extends BaseFragment implements HttpClient.OnH
             } else {
                 rgNeedStop.check(R.id.rb_stop_no);
             }
-            editTextStopTime.setText(mParam_obj.getStopedHour());
+            if(mParam_obj.getStopedHour() != null) {
+                editTextStopTime.setText(String.valueOf(mParam_obj.getStopedHour()));
+            } else {
+                editTextStopTime.setText("0");
+            }
             editTextRepairCost.setText(mParam_obj.getRepairAmount());
             editTextRepairDesc.setText(mParam_obj.getWorkRemark());
             tvStartTime.setText(mParam_obj.getStartTime());
             tvEndTime.setText(mParam_obj.getEndTime());
-            editTextTotalTime.setText(mParam_obj.getCostHour());
+            if(mParam_obj.getCostHour() != null) {
+                editTextTotalTime.setText(String.valueOf(mParam_obj.getCostHour()));
+            } else {
+                editTextTotalTime.setText("0");
+            }
         }
     }
 
@@ -260,7 +268,7 @@ public class RepairAdviceFragment extends BaseFragment implements HttpClient.OnH
                 switch (rgNeedStop.getCheckedRadioButtonId()) {
                     case R.id.rb_stop_yes:
                         req.setStoped(1);
-                        req.setStopedHour(editTextStopTime.getText().toString());
+                        req.setStopedHour(Integer.decode(editTextStopTime.getText().toString()));
                         break;
                     case R.id.rb_stop_no:
                         req.setStoped(0);
@@ -271,7 +279,7 @@ public class RepairAdviceFragment extends BaseFragment implements HttpClient.OnH
                 req.setRepairAmount(editTextRepairCost.getText().toString());
                 req.setEndTime(tvEndTime.getText().toString());
                 req.setWorkRemark(editTextRepairDesc.getText().toString());
-                req.setCostHour(editTextTotalTime.getText().toString());
+                req.setCostHour(Integer.decode(editTextTotalTime.getText().toString()));
                 client.requestEndRepairTask(getContext(), this, req);
                 break;
             }

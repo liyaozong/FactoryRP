@@ -29,7 +29,7 @@
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" android:padding="4dp" android:gravity="center_vertical"
-            android:layout_marginTop="1dp">
+            android:layout_marginTop="1dp" android:id="@+id/ll_repair_again" android:visibility="gone">
         <TextView
                 android:text="是否重新修复"
                 android:layout_width="120dp"

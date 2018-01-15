@@ -104,35 +104,27 @@ public class RepairRecordListFragment extends BaseFragment implements HttpClient
     @Override
     protected void buildUI() {
         HttpClient client = HttpClient.getInstance();
-        switch (param_mode) {
-            case Constant.FOR_DEVICE_ID:
-                //TODO
-                break;
-            default:
-                troubles = client.getRepairList(param_mode);
-                if(troubles == null) {
-                    LoadingDialog.Builder builder = new LoadingDialog.Builder(getContext())
-                            .setMessage(R.string.loading_loading);
-                    dialog = builder.create();
-                    dialog.show();
-                    if(Constant.FOR_DEVICE_ID == param_mode) {
-                        client.requestRepairList(getContext(), this, param_mode, param_id);
-                    } else {
-                        client.requestRepairList(getContext(), this, param_mode);
-                    }
-                } else {
-                    mRepairRecordListAdapter.notifyDataSetChanged();
-                }
-                break;
+        troubles = client.getRepairList(param_mode);
+        if(troubles == null) {
+            LoadingDialog.Builder builder = new LoadingDialog.Builder(getContext())
+                    .setMessage(R.string.loading_loading);
+            dialog = builder.create();
+            dialog.show();
+            if(Constant.FOR_DEVICE_ID == param_mode) {
+                client.requestRepairList(getContext(), this, HttpClient.REQUEST_TROUBLE_LIST_BY_DEVICEID, param_id);
+            } else {
+                client.requestRepairList(getContext(), this, param_mode);
+            }
+        } else {
+            mRepairRecordListAdapter.notifyDataSetChanged();
         }
     }
 
     @Override
     public void onHttpSuccess(int requestType, Object obj, List<?> list) {
         dialog.dismiss();
-        HttpClient client = HttpClient.getInstance();
-        troubles = client.getRepairList(param_mode);
-        if(troubles != null) {
+        if(list != null && !list.isEmpty() && list.get(0) instanceof WaitAuditWorkOrderVo) {
+            troubles = (List<WaitAuditWorkOrderVo>) list;
             mRepairRecordListAdapter.notifyDataSetChanged();
         }
     }

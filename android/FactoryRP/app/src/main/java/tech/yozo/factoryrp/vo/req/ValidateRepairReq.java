@@ -19,6 +19,9 @@ public class ValidateRepairReq implements Serializable{
 //    @ApiModelProperty(value = "故障是否修复，0：否；1：是")
     private Integer repaired;
 
+//    @ApiModelProperty(value = "是否重新修复，0：否；1：是")
+    private Integer needRepair;
+
 //    @ApiModelProperty(value = "评价或建议")
     private String suggest;
 

@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -160,7 +162,7 @@ public class RepairWorkloadFragment extends BaseFragment {
             for(WorkTimeVo p : modifyWorkTimes) {
                 if(p.getRepairUserId().equals(param.getId())) {
                     exist = true;
-                    Toast.makeText(getContext(), R.string.hint_parts_count, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), R.string.hint_is_exist, Toast.LENGTH_SHORT).show();
                     break;
                 }
             }
@@ -168,7 +170,7 @@ public class RepairWorkloadFragment extends BaseFragment {
                 WorkTimeVo obj = new WorkTimeVo();
                 obj.setRepairUserId(param.getId());
                 obj.setRepairUserName(param.getName());
-                obj.setCostHour("1");
+                obj.setCostHour(1);
                 modifyWorkTimes.add(obj);
             }
             mListAdapter.notifyDataSetChanged();
@@ -178,7 +180,7 @@ public class RepairWorkloadFragment extends BaseFragment {
     private static class ViewHolder
     {
         TextView name;
-        Spinner number;
+        EditText number;
         ImageButton delete;
     }
 
@@ -215,7 +217,7 @@ public class RepairWorkloadFragment extends BaseFragment {
                 holder = new ViewHolder();
                 convertView = mInflater.inflate(R.layout.item_worktime_list, null);
                 holder.name = (TextView) convertView.findViewById(R.id.tv_engineer_name);
-                holder.number = (Spinner) convertView.findViewById(R.id.spinner_worktime);
+                holder.number = (EditText) convertView.findViewById(R.id.editText_worktime);
                 holder.delete = (ImageButton) convertView.findViewById(R.id.ib_delete_engineer);
                 convertView.setTag(holder);
             }
@@ -223,16 +225,22 @@ public class RepairWorkloadFragment extends BaseFragment {
                 holder = (ViewHolder)convertView.getTag();
             }
             holder.name.setText(modifyWorkTimes.get(i).getRepairUserName());
-            holder.number.setSelection(Integer.decode(modifyWorkTimes.get(i).getCostHour()) -1 , false);
-            holder.number.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            holder.number.setText(String.valueOf(modifyWorkTimes.get(i).getCostHour()));
+            holder.number.addTextChangedListener(new TextWatcher() {
                 @Override
-                public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-                    modifyWorkTimes.get(i).setCostHour(String.valueOf(position));
-                }
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
 
                 @Override
-                public void onNothingSelected(AdapterView<?> adapterView) {
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
 
+                @Override
+                public void afterTextChanged(Editable editable) {
+                    if(editable.length() > 0) {
+                        int num = Integer.decode(editable.toString());
+                        if (num != modifyWorkTimes.get(i).getCostHour()) {
+                            modifyWorkTimes.get(i).setCostHour(num);
+                        }
+                    }
                 }
             });
             holder.delete.setOnClickListener(new View.OnClickListener() {

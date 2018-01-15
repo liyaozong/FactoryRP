@@ -103,7 +103,6 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:id="@+id/spinner_device_running_status"
-                        android:entries="@array/device_running_status"
                         android:layout_weight="1"
                         android:theme="@android:style/Widget.DeviceDefault.DropDownItem.Spinner"/>
             </LinearLayout>

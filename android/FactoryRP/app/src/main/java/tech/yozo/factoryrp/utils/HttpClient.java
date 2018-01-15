@@ -73,6 +73,7 @@ public class HttpClient {
     private static final String PARTS_TYPE_URL = "api/deviceSparesType/queryAllDeviceSparesType"; //备件类型字典
     private static final String DEPARTMENT_LIST_URL = "api/department/list"; //部门列表
     private static final String DEVICE_GET_BY_CODE = "api/deviceInfo/getByCode"; //根据条形码查询设备
+    private static final String TROUBLE_LIST_BY_DEVICEID = "troubleRecord/list"; //根据设备ID获取故障列表
 
     public static final int REQUEST_LOGIN = 1;
     public static final int REQUEST_DATA_DICT = 2;
@@ -101,6 +102,7 @@ public class HttpClient {
     public static final int REQUEST_PARTS_TYPE_URL = 26;
     public static final int REQUEST_DEPARTMENT_LIST_URL = 27;
     public static final int REQUEST_DEVICE_GET_BY_CODE = 28;
+    public static final int REQUEST_TROUBLE_LIST_BY_DEVICEID = 29;
 
     private AsyncHttpClient client;
     private List<Header> headers = new ArrayList<>();
@@ -152,6 +154,8 @@ public class HttpClient {
     private List<Department> departmentList;
 
     private List<DeviceParamDicEnumResp> deviceUseStatusDict;
+
+    private List<DeviceParamDicEnumResp> deviceRunningStatusDict;
 
     private List<DeviceParamDicEnumResp> deviceIdentifyDict;
 
@@ -223,6 +227,9 @@ public class HttpClient {
             case Constant.DICT_VERIFY_COMMENT:
                 params.add("code", "device_bad_review_reason");
                 break;
+            case Constant.DICT_DEVICE_RUNNING_STATUS:
+                params.add("code", "device_running_status");
+                break;
             default:
                 return;
         }
@@ -246,6 +253,8 @@ public class HttpClient {
                 return repairLevelDict;
             case Constant.DICT_VERIFY_COMMENT:
                 return verifyCommentDict;
+            case Constant.DICT_DEVICE_RUNNING_STATUS:
+                return deviceRunningStatusDict;
             default:
                 return null;
         }
@@ -254,7 +263,7 @@ public class HttpClient {
     public void requestContactCompany(Context context, OnHttpListener listener) {
         ContactCompanyReq req = new ContactCompanyReq();
         req.setCurrentPage(1);
-        req.setItemsPerPage(100);
+        req.setItemsPerPage(1000);
         StringEntity params = new StringEntity(JSON.toJSONString(req), Charset.forName("UTF-8"));
         client.post(context, getAbsoluteUrl(CONTACT_COMPANY), headers.toArray(new Header[headers.size()]), params, CONTENT_TYPE, new FactoryHttpResponseHandler(context, listener, REQUEST_CONTACT_COMPANY));
     }
@@ -290,7 +299,7 @@ public class HttpClient {
     public void requestDeviceList(Context context, OnHttpListener listener) {
         DeviceInfoReq req = new DeviceInfoReq();
         req.setCurrentPage(0);
-        req.setItemsPerPage(100);
+        req.setItemsPerPage(1000);
 
         StringEntity param = new StringEntity(JSON.toJSONString(req), Charset.forName("UTF-8"));
         client.post(context, getAbsoluteUrl(DEVICE_LIST), headers.toArray(new Header[headers.size()]), param, CONTENT_TYPE, new FactoryHttpResponseHandler(context, listener, REQUEST_DEVICE_LIST));
@@ -303,7 +312,7 @@ public class HttpClient {
     public void requestPartsList(Context context, OnHttpListener listener) {
         SparePartsQueryReq req = new SparePartsQueryReq();
         req.setCurrentPage(0);
-        req.setItemsPerPage(100);
+        req.setItemsPerPage(1000);
 
         StringEntity param = new StringEntity(JSON.toJSONString(req), Charset.forName("UTF-8"));
         client.post(context, getAbsoluteUrl(PARTS_LIST), headers.toArray(new Header[headers.size()]), param, CONTENT_TYPE, new FactoryHttpResponseHandler(context, listener, REQUEST_PARTS_LIST));
@@ -326,7 +335,7 @@ public class HttpClient {
     public void requestRepairList(Context context, OnHttpListener listener, int requestType, long deviceId) {
         TroubleListReq req = new TroubleListReq();
         req.setCurrentPage(0);
-        req.setItemsPerPage(100);
+        req.setItemsPerPage(1000);
 
         String url = null;
         switch (requestType) {
@@ -342,8 +351,10 @@ public class HttpClient {
             case REQUEST_TROUBLE_WAIT_VALIDATE:
                 url = TROUBLE_WAIT_VALIDATE;
                 break;
-            case Constant.FOR_DEVICE_ID:
+            case REQUEST_TROUBLE_LIST_BY_DEVICEID:
                 req.setDeviceId(deviceId);
+                url = TROUBLE_LIST_BY_DEVICEID;
+                break;
             default:
                 break;
         }
@@ -504,6 +515,10 @@ public class HttpClient {
                             waitVerifyWorkOrderVoList = JSONArray.parseArray(response.getJSONObject("data").getString("list"), WaitAuditWorkOrderVo.class);
                             mListener.onHttpSuccess(mRequestType, null, waitVerifyWorkOrderVoList);
                             break;
+                        case REQUEST_TROUBLE_LIST_BY_DEVICEID:
+                            List<WaitAuditWorkOrderVo> list = JSONArray.parseArray(response.getJSONObject("data").getString("list"), WaitAuditWorkOrderVo.class);
+                            mListener.onHttpSuccess(mRequestType, null, list);
+                            break;
                         case REQUEST_REPAIR_GROUP_URL:
                             repairGroupList = JSONArray.parseArray(response.getString("data"), RepairGroup.class);
                             mListener.onHttpSuccess(mRequestType, null, repairGroupList);
@@ -554,6 +569,9 @@ public class HttpClient {
                                     break;
                                 case Constant.DICT_VERIFY_COMMENT:
                                     verifyCommentDict = JSON.parseArray(response.getString("data"), DeviceParamDicEnumResp.class);
+                                    break;
+                                case Constant.DICT_DEVICE_RUNNING_STATUS:
+                                    deviceRunningStatusDict = JSON.parseArray(response.getString("data"), DeviceParamDicEnumResp.class);
                                     break;
                                 default:
                                     break;

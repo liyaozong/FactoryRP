@@ -111,6 +111,12 @@ public class ReportFaultActivity extends AppCompatActivity implements DatePicker
         } else {
             updateUI(HttpClient.REQUEST_DEVICE_TROUBLE_TYPE_URL);
         }
+
+        if(client.getDictEnum(Constant.DICT_DEVICE_RUNNING_STATUS) == null) {
+            client.requestDeviceDict(this, this, Constant.DICT_DEVICE_RUNNING_STATUS);
+        } else {
+            updateUI(HttpClient.REQUEST_DATA_DICT);
+        }
     }
 
     @Override
@@ -320,6 +326,11 @@ public class ReportFaultActivity extends AppCompatActivity implements DatePicker
                 List<DeviceParamDicEnumResp> troubleLevelDict = client.getDictEnum(Constant.DICT_TROUBLE_LEVEL);
                 if(troubleLevelDict != null) {
                     spinnerFaultLevel.setAdapter(new DictSpinnerAdapter(this, android.R.layout.simple_list_item_1, troubleLevelDict));
+                }
+
+                List<DeviceParamDicEnumResp> deviceRunningStatus = client.getDictEnum(Constant.DICT_DEVICE_RUNNING_STATUS);
+                if(deviceRunningStatus != null) {
+                    spinnerDeviceRunningStatus.setAdapter(new DictSpinnerAdapter(this, android.R.layout.simple_list_item_1, deviceRunningStatus));
                 }
                 break;
             case HttpClient.REQUEST_DEVICE_TROUBLE_TYPE_URL:

@@ -77,7 +77,7 @@ public class WorkOrderDetailVo implements Serializable{
     private Integer stoped;
 
 //    @ApiModelProperty(value = "停机时间")
-    private String stopedHour;
+    private Integer stopedHour;
 
 //    @ApiModelProperty(value = "维修费用")
     private String repairAmount;
@@ -92,7 +92,7 @@ public class WorkOrderDetailVo implements Serializable{
     private String endTime;
 
 //    @ApiModelProperty(value = "维修耗时")
-    private String costHour;
+    private Integer costHour;
 
 //    @ApiModelProperty(value = "工作量")
     private List<WorkTimeVo> workTimes;
