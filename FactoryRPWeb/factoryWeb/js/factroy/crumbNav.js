@@ -47,6 +47,15 @@ myApp.factory('crumbNav',[function(){
             name:'备件类型设置'
         }]
     },{
+        stateUrl:'deviceTroubleType',
+        nameArr:[{
+            name:'参数设置'
+        },{
+            name:'设备参数设置'
+        },{
+            name:'故障类型设置'
+        }]
+    },{
         stateUrl:'deviceProcess',
         nameArr:[{
             name:'参数设置'

@@ -46,6 +46,11 @@ var myApp = angular.module('myApp', [
         editSparePartsPath:'/api/spareParts/editSpareParts' ,  //编辑备件
         deleteSparePartsByIdPath:'/api/spareParts/deleteSparePartsById' ,  //单个删除备件
         deleteSparePartsByIdsPath:'/api/spareParts/deleteSparePartsByIds' ,  //批量删除备件
+        queryAlldDeviceTroubleTypePath:'/api/deviceTroubleType/queryAlldDeviceTroubleType' ,  //查询所有故障类型
+        addSameDeviceTroubleTypePath:'/api/deviceTroubleType/addSameDeviceTroubleType' ,  //添加同级故障类型
+        addSubDeviceTroubleTypePath:'/api/deviceTroubleType/addSubDeviceTroubleType' ,  //添加下级故障类型
+        deleteDeviceTroubleTypePath:'/api/deviceTroubleType/deleteDeviceTroubleType' ,  //删除故障类型
+        updateDeviceTroubleTypePath:'/api/deviceTroubleType/updateDeviceTroubleType' ,  //修改故障类型
         contactCompanyListPath:'/api/contactCompany/list',   //查询往来单位
         findByCodePath:'/api/deviceParameterDictionary/findByCode'  , //查询设备参数
         addDeviceProcessPath:'/api/deviceProcess/addDeviceProcess'  , //新增审核流程
@@ -242,11 +247,11 @@ var myApp = angular.module('myApp', [
 
             //故障类型设置
             .state("main.deviceTroubleType",{
-                url:"/deviceProcess",
+                url:"/deviceTroubleType",
                 views:{
                     'content@main':{
-                        templateUrl:FF_API.baseTpl+'tpls/deviceProcess.html',
-                        controller:'deviceProcessCtrl'
+                        templateUrl:FF_API.baseTpl+'tpls/deviceTroubleType.html',
+                        controller:'deviceTroubleTypeCtrl'
                     }
                 }
             })

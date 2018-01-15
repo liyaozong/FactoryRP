@@ -128,3 +128,46 @@ myApp.factory("deviceProcess",['$q',"AppHttp","FF_API",function($q,AppHttp,FF_AP
 
     return deviceProcess;
 }]);
+
+
+//故障类型设置
+myApp.factory("deviceTroubleType",["AppHttp","FF_API",function(AppHttp,FF_API){
+    var deviceTroubleType={};
+    deviceTroubleType.list=function(){
+        return AppHttp({
+            method: 'get',
+            url: FF_API.base + FF_API.queryAlldDeviceTroubleTypePath
+        });
+    };
+    //添加同级
+    deviceTroubleType.addSameDeviceTroubleType=function(data){
+        return AppHttp({
+            method: 'post',
+            url: FF_API.base + FF_API.addSameDeviceTroubleTypePath,
+            data:data
+        });
+    };
+    //添加下级
+    deviceTroubleType.addSubDeviceTroubleType=function(data){
+        return AppHttp({
+            method: 'post',
+            url: FF_API.base + FF_API.addSubDeviceTroubleTypePath,
+            data:data
+        });
+    };
+    deviceTroubleType.deleteDeviceTroubleType=function(data){
+        return AppHttp({
+            method: 'get',
+            url: FF_API.base + FF_API.deleteDeviceTroubleTypePath+'?id='+data
+        });
+    };
+    deviceTroubleType.updateDeviceTroubleType=function(data){
+        return AppHttp({
+            method: 'post',
+            url: FF_API.base + FF_API.updateDeviceTroubleTypePath,
+            data:data
+        });
+    };
+
+    return deviceTroubleType;
+}]);
