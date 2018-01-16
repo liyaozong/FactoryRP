@@ -114,6 +114,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 
     /**
      * 删除指定角色下面指定的菜单信息
+     * 需要删除子菜单信息
      * @param menuRoleDeleteReq
      * @param corporateIdentify
      */
@@ -125,7 +126,6 @@ public class AuthorizationServiceImpl implements AuthorizationService {
         if(!CheckParam.isNull(menuRoleList) && !menuRoleList.isEmpty()){
             menuRoleRepository.deleteInBatch(menuRoleList);
         }
-
 
     }
 
