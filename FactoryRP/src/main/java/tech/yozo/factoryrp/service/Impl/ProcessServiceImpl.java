@@ -6,24 +6,19 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-import tech.yozo.factoryrp.entity.DeviceProcess;
-import tech.yozo.factoryrp.entity.DeviceProcessDetail;
-import tech.yozo.factoryrp.entity.DeviceProcessType;
-import tech.yozo.factoryrp.entity.SpareParts;
+import tech.yozo.factoryrp.entity.*;
 import tech.yozo.factoryrp.exception.BussinessException;
 import tech.yozo.factoryrp.page.Pagination;
 import tech.yozo.factoryrp.repository.DeviceProcessDetailRepository;
 import tech.yozo.factoryrp.repository.DeviceProcessRepository;
 import tech.yozo.factoryrp.repository.DeviceProcessTypeRepository;
+import tech.yozo.factoryrp.repository.UserRepository;
 import tech.yozo.factoryrp.service.ProcessService;
 import tech.yozo.factoryrp.utils.CheckParam;
 import tech.yozo.factoryrp.utils.ErrorCode;
 import tech.yozo.factoryrp.vo.req.DeviceProcessAddReq;
 import tech.yozo.factoryrp.vo.req.DeviceProcessQueryReq;
-import tech.yozo.factoryrp.vo.resp.process.CreateProcessInstanceResp;
-import tech.yozo.factoryrp.vo.resp.process.DeviceProcessAddResp;
-import tech.yozo.factoryrp.vo.resp.process.DeviceProcessDetailWarpResp;
-import tech.yozo.factoryrp.vo.resp.process.ProcessStatusQueryResp;
+import tech.yozo.factoryrp.vo.resp.process.*;
 
 import javax.annotation.Resource;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -33,6 +28,8 @@ import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -52,6 +49,9 @@ public class ProcessServiceImpl implements ProcessService {
 
     @Resource
     private DeviceProcessTypeRepository deviceProcessTypeRepository;
+
+    @Resource
+    private UserRepository userRepository;
 
     /**
      * 查询所有流程类型集合
@@ -89,6 +89,8 @@ public class ProcessServiceImpl implements ProcessService {
 
             List<DeviceProcessDetail> processDetailList = deviceProcessDetailRepository.findByProcessIdAndAndCorporateIdentify(deviceProcess.getId(), corporateIdentify);
 
+            List<Long> userIdList =  new ArrayList<>();
+
             processDetailList.stream().forEach(p1 ->{
 
                 DeviceProcessDetailWarpResp  deviceProcessDetailWarpResp = new DeviceProcessDetailWarpResp();
@@ -97,14 +99,39 @@ public class ProcessServiceImpl implements ProcessService {
                 deviceProcessDetailWarpResp.setHandleDemandType(p1.getHandleDemandType());
 
                 String processAuditor = p1.getProcessAuditor(); //处理处理人的逻辑
-                deviceProcessDetailWarpResp.setHandlerList(JSON.parseObject(processAuditor,List.class));
+                List<Long> userIds = JSON.parseObject(processAuditor, List.class);
 
+                List<DeviceProcessHandlerResp> deviceProcessHandlerRespList = new ArrayList<>();
+
+                userIds.stream().forEach(u1 -> {
+                    DeviceProcessHandlerResp deviceProcessHandlerResp = new DeviceProcessHandlerResp();
+                    deviceProcessHandlerResp.setUserId(u1);
+
+                    deviceProcessHandlerRespList.add(deviceProcessHandlerResp);
+                });
+
+                deviceProcessDetailWarpResp.setHandlerList(deviceProcessHandlerRespList);
 
                 deviceProcessDetailWarpResp.setProcessStep(p1.getProcessStep());
+
+                userIdList.addAll(userIds);
 
                 warpRespList.add(deviceProcessDetailWarpResp);
 
             });
+
+            if(null != userIdList && !userIdList.isEmpty()){
+                List<User> userList = userRepository.findByCorporateIdentifyAndUserIdIn(corporateIdentify, userIdList);
+
+                Map<Long, User> userMap = userList.stream().collect(Collectors.toMap(User::getUserId, Function.identity()));
+
+                warpRespList.stream().forEach(p1 -> {
+                    p1.getHandlerList().stream().forEach(h1 -> {
+                        h1.setName(String.valueOf(userMap.get(h1.getUserId())));
+                    });
+                });
+
+            }
 
             return warpRespList;
         }

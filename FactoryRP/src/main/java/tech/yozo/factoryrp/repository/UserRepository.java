@@ -77,4 +77,14 @@ public interface UserRepository extends BaseRepository<User,Long>{
      */
     User findByUserName(String userName);
 
+
+    /**
+     * 根据企业唯一标识和userId进行in查询
+     * @param corporateIdentify
+     * @param userIdList
+     * @return
+     */
+    @Query(value = "select u from User u where u.userId in :userIdList and u.corporateCode = :corporateCode")
+    List<User> findByCorporateIdentifyAndUserIdIn(@Param("corporateIdentify") Long corporateIdentify,@Param("userIdList") List<Long> userIdList);
+
 }
