@@ -316,6 +316,10 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 
         User user = userRepository.findByUserIdAndCorporateIdentify(userRoleReq.getUserId(), corporateIdentify);
 
+        if(CheckParam.isNull(user)){
+            throw new BussinessException(ErrorCode.CORPORATE_USER__NOTEXIST_ERROR.getCode(),ErrorCode.CORPORATE_USER__NOTEXIST_ERROR.getMessage());
+        }
+
         List<UserRole> userRoles = new ArrayList<>();
         roleIdList.stream().forEach(r1 -> {
             UserRole userRole = new UserRole();
