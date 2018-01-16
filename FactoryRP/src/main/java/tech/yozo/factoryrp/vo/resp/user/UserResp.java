@@ -21,7 +21,7 @@ public class UserResp implements Serializable {
      * 用户ID 工具类生成
      */
     @ApiModelProperty(value = "用户ID",required = true,notes = "用户ID",example = "1")
-    private Long userId;
+    private String userId;
 
     /**
      * 登陆用户名

@@ -81,7 +81,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 
             role.getUserList().stream().forEach(r1 -> {
                 UserResp userResp = new UserResp();
-                userResp.setUserId(r1.getId());
+                userResp.setUserId(String.valueOf(r1.getId()));
                 userResp.setUserName(r1.getUserName());
 
                 userRespList.add(userResp);
@@ -270,7 +270,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
         List<UserResp> userRespList = new ArrayList<>();
         userList.stream().forEach(u1 ->{
             UserResp userResp = new UserResp();
-            userResp.setUserId(u1.getUserId());
+            userResp.setUserId(String.valueOf(u1.getUserId()));
             userResp.setUserName(u1.getUserName());
 
             userRespList.add(userResp);

@@ -9,6 +9,7 @@ import tech.yozo.factoryrp.vo.req.DeviceProcessAddReq;
 import tech.yozo.factoryrp.vo.req.DeviceProcessQueryReq;
 import tech.yozo.factoryrp.vo.resp.process.CreateProcessInstanceResp;
 import tech.yozo.factoryrp.vo.resp.process.DeviceProcessAddResp;
+import tech.yozo.factoryrp.vo.resp.process.DeviceProcessDetailWarpResp;
 import tech.yozo.factoryrp.vo.resp.process.ProcessStatusQueryResp;
 
 import java.util.List;
@@ -29,7 +30,7 @@ public interface ProcessService {
      * @param corporateIdentify
      * @return
      */
-    public List<DeviceProcessDetail> queryProcessAduitInfo(Long processType, Long processStage, Long corporateIdentify);
+    List<DeviceProcessDetailWarpResp> queryProcessAduitInfo(Long processType, Long processStage, Long corporateIdentify);
 
     /**
      * 查询所有流程类型集合

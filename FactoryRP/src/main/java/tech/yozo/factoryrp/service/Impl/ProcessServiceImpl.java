@@ -22,6 +22,7 @@ import tech.yozo.factoryrp.vo.req.DeviceProcessAddReq;
 import tech.yozo.factoryrp.vo.req.DeviceProcessQueryReq;
 import tech.yozo.factoryrp.vo.resp.process.CreateProcessInstanceResp;
 import tech.yozo.factoryrp.vo.resp.process.DeviceProcessAddResp;
+import tech.yozo.factoryrp.vo.resp.process.DeviceProcessDetailWarpResp;
 import tech.yozo.factoryrp.vo.resp.process.ProcessStatusQueryResp;
 
 import javax.annotation.Resource;
@@ -77,14 +78,35 @@ public class ProcessServiceImpl implements ProcessService {
      * @param corporateIdentify
      * @return
      */
-    public List<DeviceProcessDetail> queryProcessAduitInfo(Long processType,Long processStage,Long corporateIdentify){
+    public List<DeviceProcessDetailWarpResp> queryProcessAduitInfo(Long processType, Long processStage, Long corporateIdentify){
 
         DeviceProcess deviceProcess = deviceProcessRepository.findByProcessTypeAndProcessStageAndCorporateIdentify(processType,
                 processStage, corporateIdentify);
 
         if(CheckParam.isNull(deviceProcess)){
 
-            return deviceProcessDetailRepository.findByProcessIdAndAndCorporateIdentify(deviceProcess.getId(),corporateIdentify);
+            List<DeviceProcessDetailWarpResp> warpRespList =  new ArrayList<>();
+
+            List<DeviceProcessDetail> processDetailList = deviceProcessDetailRepository.findByProcessIdAndAndCorporateIdentify(deviceProcess.getId(), corporateIdentify);
+
+            processDetailList.stream().forEach(p1 ->{
+
+                DeviceProcessDetailWarpResp  deviceProcessDetailWarpResp = new DeviceProcessDetailWarpResp();
+
+                deviceProcessDetailWarpResp.setAuditType(p1.getAuditType());
+                deviceProcessDetailWarpResp.setHandleDemandType(p1.getHandleDemandType());
+
+                String processAuditor = p1.getProcessAuditor(); //处理处理人的逻辑
+                deviceProcessDetailWarpResp.setHandlerList(JSON.parseObject(processAuditor,List.class));
+
+
+                deviceProcessDetailWarpResp.setProcessStep(p1.getProcessStep());
+
+                warpRespList.add(deviceProcessDetailWarpResp);
+
+            });
+
+            return warpRespList;
         }
 
         return null;
