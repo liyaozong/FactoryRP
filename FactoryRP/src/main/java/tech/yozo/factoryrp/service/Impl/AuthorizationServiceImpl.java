@@ -314,13 +314,15 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 
         }
 
+        User user = userRepository.findByUserIdAndCorporateIdentify(userRoleReq.getUserId(), corporateIdentify);
+
         List<UserRole> userRoles = new ArrayList<>();
         roleIdList.stream().forEach(r1 -> {
             UserRole userRole = new UserRole();
 
             userRole.setRoleId(r1);
             userRole.setCorporateIdentify(corporateIdentify);
-            userRole.setUserId(userRoleReq.getUserId());
+            userRole.setUserId(user.getId());
 
             userRoles.add(userRole);
         });

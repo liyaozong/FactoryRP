@@ -38,7 +38,7 @@ public class DeviceProcessDetail extends BaseEntity implements Serializable {
     /**
      * 审核人 这个流程审核关联表的id 多个用逗号分隔
      */
-    @Column(name = "process_auditor",length = 20)
+    @Column(name = "process_auditor")
     private String processAuditor;
 
 

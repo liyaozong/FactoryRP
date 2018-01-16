@@ -69,6 +69,14 @@ public class ProcessServiceImpl implements ProcessService {
         return deviceProcessTypeRepository.findByCorporateIdentify(corporateIdentify);
     }
 
+
+
+    public DeviceProcess queryProcessAduitInfo(Long processType,Long processStage,Long corporateIdentify){
+
+
+        return null;
+    }
+
     /**
      * 新增流程
      * @param deviceProcessAddReq
