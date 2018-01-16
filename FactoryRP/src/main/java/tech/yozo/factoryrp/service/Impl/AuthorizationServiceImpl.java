@@ -87,7 +87,6 @@ public class AuthorizationServiceImpl implements AuthorizationService {
                 userRespList.add(userResp);
             });
 
-
             userRespWarpResp.setUserRespList(userRespList);
 
             return userRespWarpResp;
@@ -133,6 +132,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 
     /**
      * 删除菜单 需要删除菜单信息 删除菜单和角色关联信息
+     * 还需要删除子菜单
      * @param menuId
      * @param authUser
      */
@@ -150,6 +150,12 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 
         if(null != menuRoleList && !menuRoleList.isEmpty()){
             menuRoleRepository.deleteInBatch(menuRoleList);
+        }
+
+        List<Menu> menuList = menuRepository.findByAndCorporateIdentifyAndParentId(authUser.getCorporateIdentify(), menuId);
+
+        if(null != menuList && !menuList.isEmpty()){
+            menuRepository.deleteInBatch(menuList);
         }
 
         menuRepository.delete(menu);

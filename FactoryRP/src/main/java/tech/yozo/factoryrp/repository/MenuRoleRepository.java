@@ -57,4 +57,6 @@ public interface MenuRoleRepository extends BaseRepository<MenuRole,Long>{
     List<MenuRole> findByRoleIdAndCorporateIdentifyAndRoleIdIn(@Param("roleId") Long roleId, @Param("corporateIdentify")Long corporateIdentify, @Param("menuIdList")List<Long> menuIdList);
 
 
+
+
 }
