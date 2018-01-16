@@ -1,5 +1,6 @@
 package tech.yozo.factoryrp.repository;
 
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import tech.yozo.factoryrp.entity.DeviceProcess;
 
@@ -12,6 +13,7 @@ import tech.yozo.factoryrp.entity.DeviceProcess;
  */
 @Repository
 public interface DeviceProcessRepository extends BaseRepository<DeviceProcess,Long> {
+
 
 
     /**

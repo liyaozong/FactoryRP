@@ -1,6 +1,7 @@
 package tech.yozo.factoryrp.service;
 
 import tech.yozo.factoryrp.entity.DeviceProcess;
+import tech.yozo.factoryrp.entity.DeviceProcessDetail;
 import tech.yozo.factoryrp.entity.DeviceProcessType;
 import tech.yozo.factoryrp.exception.BussinessException;
 import tech.yozo.factoryrp.page.Pagination;
@@ -20,6 +21,15 @@ import java.util.List;
  */
 public interface ProcessService {
 
+
+    /**
+     * 查询流程详细信息
+     * @param processType
+     * @param processStage
+     * @param corporateIdentify
+     * @return
+     */
+    public List<DeviceProcessDetail> queryProcessAduitInfo(Long processType, Long processStage, Long corporateIdentify);
 
     /**
      * 查询所有流程类型集合

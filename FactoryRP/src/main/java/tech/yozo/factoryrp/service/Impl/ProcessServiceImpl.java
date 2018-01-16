@@ -70,9 +70,22 @@ public class ProcessServiceImpl implements ProcessService {
     }
 
 
+    /**
+     * 查询流程详细信息
+     * @param processType
+     * @param processStage
+     * @param corporateIdentify
+     * @return
+     */
+    public List<DeviceProcessDetail> queryProcessAduitInfo(Long processType,Long processStage,Long corporateIdentify){
 
-    public DeviceProcess queryProcessAduitInfo(Long processType,Long processStage,Long corporateIdentify){
+        DeviceProcess deviceProcess = deviceProcessRepository.findByProcessTypeAndProcessStageAndCorporateIdentify(processType,
+                processStage, corporateIdentify);
 
+        if(CheckParam.isNull(deviceProcess)){
+
+            return deviceProcessDetailRepository.findByProcessIdAndAndCorporateIdentify(deviceProcess.getId(),corporateIdentify);
+        }
 
         return null;
     }
