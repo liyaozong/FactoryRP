@@ -4,6 +4,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.transaction.annotation.Transactional;
 import tech.yozo.factoryrp.entity.*;
 import tech.yozo.factoryrp.enums.RepairStatusEnum;
+import tech.yozo.factoryrp.enums.TroubleDealPhaseEnum;
 import tech.yozo.factoryrp.enums.TroubleLevelEnum;
 import tech.yozo.factoryrp.enums.TroubleStatusEnum;
 import tech.yozo.factoryrp.exception.BussinessException;
@@ -46,6 +47,9 @@ public class TroubleRecordServiceImpl implements TroubleRecordService {
     private WorkTimeRepository workTimeRepository;
     @Autowired
     private RepairRecordSparePartRelRepository repairRecordSparePartRelRepository;
+    @Autowired
+    private TroubleRecordUserRelRepository troubleRecordUserRelRepository;
+
     @Override
     public void addTroubleRecord(AddTroubleRecordReq param,Long corporateIdentify,AuthUser user) {
         TroubleRecord troubleRecord = new TroubleRecord();
@@ -59,6 +63,13 @@ public class TroubleRecordServiceImpl implements TroubleRecordService {
         troubleRecord.setStatus(TroubleStatusEnum.WAIT_AUDIT.getCode());
         troubleRecord.setOrderNo("WX"+new Date().getTime());
         troubleRecord = troubleRecordRepository.save(troubleRecord);
+        //生成对应的审核人员记录
+        TroubleRecordUserRel troubleRecordUserRel = new TroubleRecordUserRel();
+        troubleRecordUserRel.setTroubleRecordId(troubleRecord.getId());
+        troubleRecordUserRel.setDealPhase(TroubleDealPhaseEnum.WAIT_AUDIT.getCode());
+        troubleRecordUserRel.setDealStatus(troubleRecord.getStatus());
+        troubleRecordUserRel.setCorporateIdentify(corporateIdentify);
+
     }
 
     @Override
