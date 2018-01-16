@@ -796,7 +796,7 @@
                 </label>
                 <label for="deviceStatus">
                     <span style="width: 100px;text-align: right">设备状态:<i>*</i></span>
-                    <select id="deviceStatus" ng-model="deviceStatus" ng-options="deviceStatusDetail.type as deviceStatusDetail.name for deviceStatusDetail in deviceStatusList">
+                    <select id="deviceStatus" ng-model="deviceStatus" ng-options="deviceStatusDetail.code as deviceStatusDetail.name for deviceStatusDetail in deviceStatusList">
                         <option value="">请选择设备状态</option>
                         <option value="1">呵呵</option>
                     </select>
@@ -966,7 +966,7 @@
             <p>
                 <label for="troubleAddRemarkEdit">
                     <span style="width: 100px;text-align: right">故障描述:<i>*</i></span>
-                    <textarea placeholder="请输入故障描述" name="troubleAddRemarkEdit" id="troubleAddRemarkEdit" ng-model="troubleAddRemark"></textarea>
+                    <textarea placeholder="请输入故障描述" name="troubleAddRemarkEdit" id="troubleAddRemarkEdit" ng-model="troubleAddRemarkEdit"></textarea>
                 </label>
             </p>
         </div>

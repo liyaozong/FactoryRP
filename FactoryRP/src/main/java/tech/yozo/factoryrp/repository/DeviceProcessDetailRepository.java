@@ -3,6 +3,8 @@ package tech.yozo.factoryrp.repository;
 import org.springframework.stereotype.Repository;
 import tech.yozo.factoryrp.entity.DeviceProcessDetail;
 
+import java.util.List;
+
 /**
  * 流程详情Repository
  * @author created by Singer email:313402703@qq.com
@@ -23,5 +25,12 @@ public interface DeviceProcessDetailRepository extends BaseRepository<DeviceProc
     DeviceProcessDetail findByProcessIdAndProcessStepAndCorporateIdentify(Long processId,Integer processStep,Long corporateIdentify);
 
 
+    /**
+     * 根据流程id和企业唯一标识进行查找
+     * @param processId
+     * @param corporateIdentify
+     * @return
+     */
+    List<DeviceProcessDetail> findByProcessIdAndAndCorporateIdentify(Long processId, Long corporateIdentify);
 
 }
