@@ -5,16 +5,16 @@
 myApp.factory('AppHttp',['$http', '$timeout',"$rootScope",'$cookies',
     function($http, $timeout,$rootScope,$cookies) {
         return function(opt) {
-            var token=$cookies.get('token')?$cookies.get('token'):null;
-            // console.log(opt);
-            // opt.headers={'token':token};
-            if(opt.data)
-            {
-                opt.data.token=token;
-            }else{
-                opt.data={};
-                opt.data.token=token;
-            }
+            // var token=$cookies.get('token')?$cookies.get('token'):null;
+            // // console.log(opt);
+            // // opt.headers={'token':token};
+            // if(opt.data)
+            // {
+            //     opt.data.token=token;
+            // }else{
+            //     opt.data={};
+            //     opt.data.token=token;
+            // }
 
             return $http(opt)
                 .success(function (data, status, headers, config) {

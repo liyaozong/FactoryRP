@@ -227,6 +227,18 @@ factoryParameterSettingApp.factory('factoryParameterSettingService', function($r
         });
     };
     /*查询所有故障类型类型 end*/
+    /* 查询所有设备状态 start*/
+    var _queryAllDeviceStatus = function(Param,successFunc){
+        var queryAllDeviceStatus = $resource(UrlService.getUrl('mainServe') + 'queryAllDeviceStatus');
+        queryAllDeviceStatus.get(Param,function (data) {
+            if (successFunc) {
+                successFunc(data);
+            }
+        }, function (err) {
+
+        });
+    };
+    /* 查询所有设备状态 end*/
     return {
         saveContactCompany:_saveContactCompany,
         deleteContactCompany:_deleteContactCompany,
@@ -245,6 +257,7 @@ factoryParameterSettingApp.factory('factoryParameterSettingService', function($r
         batchDeleteTroubleRecords:_batchDeleteTroubleRecords,
         queryTroubleRecordLists:_queryTroubleRecordLists,
         queryAlldDeviceTroubleType:_queryAlldDeviceTroubleType,
+        queryAllDeviceStatus:_queryAllDeviceStatus,
         queryOrder: function(queryParam, successFunc) {
             queryOrder(queryParam, successFunc);
 

@@ -126,9 +126,7 @@ factoryParameterSettingApp.controller('deviceManageController',function ($scope,
     $scope.queryDeviceFlag();
 
     $scope.queryDeviceStatus=function () {
-        factoryParameterSettingService.queryDeviceDictionary({
-            code:'device_status'
-        }, function(response){
+        factoryParameterSettingService.queryAllDeviceStatus({}, function(response){
             if(response.data!=''&&response.data!=null&&response.data!=undefined&&response.errorCode=='000000'){
                 $scope.deviceStatusList=response.data;
                 console.log($scope.deviceStatusList);
@@ -137,16 +135,16 @@ factoryParameterSettingApp.controller('deviceManageController',function ($scope,
             }
         });
     };
-    $scope.deviceStatusList=[{
-        type:1,
-        name:'停机待修'
-    },{
-        type:2,
-        name:'带病运行'
-    },{
-        type:3,
-        name:'其他'
-    }];
+    // $scope.deviceStatusList=[{
+    //     type:1,
+    //     name:'停机待修'
+    // },{
+    //     type:2,
+    //     name:'带病运行'
+    // },{
+    //     type:3,
+    //     name:'其他'
+    // }];
     $scope.queryDeviceStatus();
     /*查询使用状态，设备标志，设备状态 end*/
     /*查询设备类型 start*/
@@ -677,7 +675,7 @@ factoryParameterSettingApp.controller('deviceManageController',function ($scope,
             $scope.deviceUserEdit=res.deviceUser;//操作者
             $scope.deviceUserPhoneEdit=res.phone;//操作者电话
             $scope.deviceAddressEdit=res.deviceAddress;//设备位置
-            $scope.troubleAddRemarkEdits=res.remark;//故障描述
+            $scope.troubleAddRemarkEdit=res.remark;//故障描述
             // $scope.troubleLevelEdit=res.troubleLevel;
             // $scope.deviceStatusEdit=res.deviceStatus;
             // $scope.troubleTypeEdit=res.troubleType;
