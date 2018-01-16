@@ -4,104 +4,91 @@
     <dl class="leftmenu">
         <dd>
             <div class="title">
-                <span><img src="images/leftico01.png" /></span>用户管理
+                <span><img src="images/leftico01.png" /></span>{{liMenu}}
             </div>
             <ul class="menuson">
-                <li class="active"><cite></cite><a href="#/main/userManagements" ui-sref="main.userManagements" ui-sref-active="active">用户/用户组</a><i></i></li>
+                <li ng-class="{active:  twoItem.url== stateUrlLi}" ng-repeat="twoItem in publicTwoMenu"><cite></cite><a ng-href="{{'#/main/'+twoItem.url}}" ui-sref="{{'main.'+twoItem.url}}">{{twoItem.name}}</a><i></i></li>
                 <!--<li><cite></cite><a href="#/main/parameterSetting" ui-sref="main.parameterSetting" ui-sref-active="active">在线用户管理</a><i></i></li>-->
-                <li><cite></cite><a href="#/main/roleManagements" ui-sref="main.roleManagements" ui-sref-active="active">角色管理</a><i></i></li>
-                <li><cite></cite><a href="#/main/menuManagements" ui-sref="main.menuManagements" ui-sref-active="active">菜单管理</a><i></i></li>
+                <!--<li><cite></cite><a href="#/main/roleManagements" ui-sref="main.roleManagements" ui-sref-active="active">角色管理</a><i></i></li>-->
+                <!--<li><cite></cite><a href="#/main/menuManagements" ui-sref="main.menuManagements" ui-sref-active="active">菜单管理</a><i></i></li>-->
             </ul>
         </dd>
-        <dd>
-            <div class="title">
-                <span><img src="images/leftico02.png" /></span>通用设置
-            </div>
-            <ul class="menuson">
-                <li><cite></cite><a href="#/main/departmentManage" ui-sref="main.departmentManage" ui-sref-active="active">部门设置</a><i></i></li>
-                <li><cite></cite><a href="#/main/contactCompany" ui-sref="main.contactCompany" ui-sref-active="active">往来单位</a><i></i></li>
-                <li><cite></cite><a href="#/main/repairGroup" ui-sref="main.repairGroup" ui-sref-active="active">维修工段/班组</a><i></i></li>
-            </ul>
-        </dd>
-        <dd>
-            <div class="title">
-                <span><img src="images/leftico03.png" /></span>设备参数设置
-            </div>
-            <ul class="menuson">
-                <!--<li><cite></cite><a href="#/main/home" ui-sref="main.home" ui-sref-active="active">全局设置</a><i></i></li>-->
-                <li><cite></cite><a href="#/main/deviceType" ui-sref="main.deviceType" ui-sref-active="active">设备类型设置</a><i></i></li>
-                <li><cite></cite><a href="#/main/deviceSpares" ui-sref="main.deviceSpares" ui-sref-active="active">备件类型设置</a><i></i></li>
-                <li><cite></cite><a href="#/main/deviceTroubleType" ui-sref="main.deviceTroubleType" ui-sref-active="active">故障类型设置</a><i></i></li>
-                <!--<li><cite></cite><a href="imgtable.html" target="rightFrame">工装类型设置</a><i></i></li>-->
-                <!--<li><cite></cite><a href="form.html" target="rightFrame">扩展技术参数</a><i></i></li>-->
-                <li><cite></cite><a href="#/main/deviceProcess" ui-sref="main.deviceProcess" ui-sref-active="active">审核流程设置</a><i></i></li>
-                <li><cite></cite><a href="#/main/otherOptionsSetting" ui-sref="main.otherOptionsSetting" ui-sref-active="active">其他选项设置</a><i></i></li>
-                <!--<li><cite></cite><a href="tools.html" target="rightFrame">自定义字段设置</a><i></i></li>-->
-                <!--<li><cite></cite><a href="filelist.html" target="rightFrame">文档类型设置</a><i></i></li>-->
-                <!--<li><cite></cite><a href="tab.html" target="rightFrame">设备列表隐藏/显示</a><i></i></li>-->
-                <!--<li><cite></cite><a href="error.html" target="rightFrame">404页面</a><i></i></li>-->
-            </ul>
-        </dd>
+
         <!--<dd>-->
             <!--<div class="title">-->
-                <!--<span><img src="images/leftico02.png" /></span>其他设置-->
+                <!--<span><img src="images/leftico01.png" /></span>用户管理-->
             <!--</div>-->
             <!--<ul class="menuson">-->
-                <!--<li><cite></cite><a href="#">编辑内容</a><i></i></li>-->
-                <!--<li><cite></cite><a href="#">发布信息</a><i></i></li>-->
-                <!--<li><cite></cite><a href="#">档案列表显示</a><i></i></li>-->
+                <!--<li class="active"><cite></cite><a href="#/main/userManagements" ui-sref="main.userManagements" ui-sref-active="active">用户/用户组</a><i></i></li>-->
+                <!--&lt;!&ndash;<li><cite></cite><a href="#/main/parameterSetting" ui-sref="main.parameterSetting" ui-sref-active="active">在线用户管理</a><i></i></li>&ndash;&gt;-->
+                <!--<li><cite></cite><a href="#/main/roleManagements" ui-sref="main.roleManagements" ui-sref-active="active">角色管理</a><i></i></li>-->
+                <!--<li><cite></cite><a href="#/main/menuManagements" ui-sref="main.menuManagements" ui-sref-active="active">菜单管理</a><i></i></li>-->
             <!--</ul>-->
         <!--</dd>-->
-        <!--<dd><div class="title"><span><img src="images/leftico03.png" /></span>编辑器</div>-->
+        <!--<dd>-->
+            <!--<div class="title">-->
+                <!--<span><img src="images/leftico02.png" /></span>通用设置-->
+            <!--</div>-->
             <!--<ul class="menuson">-->
-                <!--<li><cite></cite><a href="#">自定义</a><i></i></li>-->
-                <!--<li><cite></cite><a href="#">常用资料</a><i></i></li>-->
-                <!--<li><cite></cite><a href="#">信息列表</a><i></i></li>-->
-                <!--<li><cite></cite><a href="#">其他</a><i></i></li>-->
+                <!--<li><cite></cite><a href="#/main/departmentManage" ui-sref="main.departmentManage" ui-sref-active="active">部门设置</a><i></i></li>-->
+                <!--<li><cite></cite><a href="#/main/contactCompany" ui-sref="main.contactCompany" ui-sref-active="active">往来单位</a><i></i></li>-->
+                <!--<li><cite></cite><a href="#/main/repairGroup" ui-sref="main.repairGroup" ui-sref-active="active">维修工段/班组</a><i></i></li>-->
             <!--</ul>-->
         <!--</dd>-->
-        <!--<dd><div class="title"><span><img src="images/leftico04.png" /></span>日期管理</div>-->
+        <!--<dd>-->
+            <!--<div class="title">-->
+                <!--<span><img src="images/leftico03.png" /></span>设备参数设置-->
+            <!--</div>-->
             <!--<ul class="menuson">-->
-                <!--<li><cite></cite><a href="#">自定义</a><i></i></li>-->
-                <!--<li><cite></cite><a href="#">常用资料</a><i></i></li>-->
-                <!--<li><cite></cite><a href="#">信息列表</a><i></i></li>-->
-                <!--<li><cite></cite><a href="#">其他</a><i></i></li>-->
+                <!--&lt;!&ndash;<li><cite></cite><a href="#/main/home" ui-sref="main.home" ui-sref-active="active">全局设置</a><i></i></li>&ndash;&gt;-->
+                <!--<li><cite></cite><a href="#/main/deviceType" ui-sref="main.deviceType" ui-sref-active="active">设备类型设置</a><i></i></li>-->
+                <!--<li><cite></cite><a href="#/main/deviceSpares" ui-sref="main.deviceSpares" ui-sref-active="active">备件类型设置</a><i></i></li>-->
+                <!--<li><cite></cite><a href="#/main/deviceTroubleType" ui-sref="main.deviceTroubleType" ui-sref-active="active">故障类型设置</a><i></i></li>-->
+                <!--&lt;!&ndash;<li><cite></cite><a href="imgtable.html" target="rightFrame">工装类型设置</a><i></i></li>&ndash;&gt;-->
+                <!--&lt;!&ndash;<li><cite></cite><a href="form.html" target="rightFrame">扩展技术参数</a><i></i></li>&ndash;&gt;-->
+                <!--<li><cite></cite><a href="#/main/deviceProcess" ui-sref="main.deviceProcess" ui-sref-active="active">审核流程设置</a><i></i></li>-->
+                <!--<li><cite></cite><a href="#/main/otherOptionsSetting" ui-sref="main.otherOptionsSetting" ui-sref-active="active">其他选项设置</a><i></i></li>-->
+                <!--&lt;!&ndash;<li><cite></cite><a href="tools.html" target="rightFrame">自定义字段设置</a><i></i></li>&ndash;&gt;-->
+                <!--&lt;!&ndash;<li><cite></cite><a href="filelist.html" target="rightFrame">文档类型设置</a><i></i></li>&ndash;&gt;-->
+                <!--&lt;!&ndash;<li><cite></cite><a href="tab.html" target="rightFrame">设备列表隐藏/显示</a><i></i></li>&ndash;&gt;-->
+                <!--&lt;!&ndash;<li><cite></cite><a href="error.html" target="rightFrame">404页面</a><i></i></li>&ndash;&gt;-->
             <!--</ul>-->
         <!--</dd>-->
-        <dd class="deviceManage hide">
-            <div class="title">
-                <span><img src="images/leftico01.png" /></span>设备管理
-            </div>
-            <ul class="menuson">
-                <li class="active"><cite></cite><a href="#/main/deviceManage" ui-sref="main.deviceManage" ui-sref-active="active">设备台账</a><i></i></li>
-                <li><cite></cite><a href="#/main/deviceManage" ui-sref="main.deviceManage" ui-sref-active="active">保养/维修</a><i></i></li>
-                <li><cite></cite><a href="#/main/deviceManage" ui-sref="main.deviceManage" ui-sref-active="active">业务管理</a><i></i></li>
-                <li><cite></cite><a href="#/main/deviceManage" ui-sref="main.deviceManage" ui-sref-active="active">分析统计</a><i></i></li>
-                <li><cite></cite><a href="#/main/deviceManage" ui-sref="main.deviceManage" ui-sref-active="active">文档管理</a><i></i></li>
-            </ul>
-        </dd>
-        <dd class="sparePartsManage hide">
-            <div class="title">
-                <span><img src="images/leftico01.png" /></span>备件仓库
-            </div>
-            <ul class="menuson">
-                <li class="active"><cite></cite><a href="#/main/sparePartsManage" ui-sref="main.sparePartsManage" ui-sref-active="active">配件台账</a><i></i></li>
-                <li><cite></cite><a href="#/main/sparePartsManage" ui-sref="main.sparePartsManage" ui-sref-active="active">采购申请</a><i></i></li>
-                <li><cite></cite><a href="#/main/sparePartsManage" ui-sref="main.sparePartsManage" ui-sref-active="active">领用申请</a><i></i></li>
-                <li><cite></cite><a href="#/main/sparePartsManage" ui-sref="main.sparePartsManage" ui-sref-active="active">出入库单据</a><i></i></li>
-                <li><cite></cite><a href="#/main/sparePartsManage" ui-sref="main.sparePartsManage" ui-sref-active="active">分析统计</a><i></i></li>
-            </ul>
-        </dd>
-        <dd class="modelToolsManage hide">
-            <div class="title">
-                <span><img src="images/leftico01.png" /></span>工装模具
-            </div>
-            <ul class="menuson">
-                <li class="active"><cite></cite><a href="#/main/modelToolsManage" ui-sref="main.modelToolsManage" ui-sref-active="active">工装工具总账</a><i></i></li>
-                <li><cite></cite><a href="#/main/modelToolsManage" ui-sref="main.modelToolsManage" ui-sref-active="active">工装工具明细账</a><i></i></li>
-                <li><cite></cite><a href="#/main/modelToolsManage" ui-sref="main.modelToolsManage" ui-sref-active="active">历史记录</a><i></i></li>
-            </ul>
-        </dd>
+        <!---->
+        <!--<dd class="deviceManage hide">-->
+            <!--<div class="title">-->
+                <!--<span><img src="images/leftico01.png" /></span>设备管理-->
+            <!--</div>-->
+            <!--<ul class="menuson">-->
+                <!--<li class="active"><cite></cite><a href="#/main/deviceManage" ui-sref="main.deviceManage" ui-sref-active="active">设备台账</a><i></i></li>-->
+                <!--<li><cite></cite><a href="#/main/deviceManage" ui-sref="main.deviceManage" ui-sref-active="active">保养/维修</a><i></i></li>-->
+                <!--<li><cite></cite><a href="#/main/deviceManage" ui-sref="main.deviceManage" ui-sref-active="active">业务管理</a><i></i></li>-->
+                <!--<li><cite></cite><a href="#/main/deviceManage" ui-sref="main.deviceManage" ui-sref-active="active">分析统计</a><i></i></li>-->
+                <!--<li><cite></cite><a href="#/main/deviceManage" ui-sref="main.deviceManage" ui-sref-active="active">文档管理</a><i></i></li>-->
+            <!--</ul>-->
+        <!--</dd>-->
+        <!--<dd class="sparePartsManage hide">-->
+            <!--<div class="title">-->
+                <!--<span><img src="images/leftico01.png" /></span>备件仓库-->
+            <!--</div>-->
+            <!--<ul class="menuson">-->
+                <!--<li class="active"><cite></cite><a href="#/main/sparePartsManage" ui-sref="main.sparePartsManage" ui-sref-active="active">配件台账</a><i></i></li>-->
+                <!--<li><cite></cite><a href="#/main/sparePartsManage" ui-sref="main.sparePartsManage" ui-sref-active="active">采购申请</a><i></i></li>-->
+                <!--<li><cite></cite><a href="#/main/sparePartsManage" ui-sref="main.sparePartsManage" ui-sref-active="active">领用申请</a><i></i></li>-->
+                <!--<li><cite></cite><a href="#/main/sparePartsManage" ui-sref="main.sparePartsManage" ui-sref-active="active">出入库单据</a><i></i></li>-->
+                <!--<li><cite></cite><a href="#/main/sparePartsManage" ui-sref="main.sparePartsManage" ui-sref-active="active">分析统计</a><i></i></li>-->
+            <!--</ul>-->
+        <!--</dd>-->
+        <!--<dd class="modelToolsManage hide">-->
+            <!--<div class="title">-->
+                <!--<span><img src="images/leftico01.png" /></span>工装模具-->
+            <!--</div>-->
+            <!--<ul class="menuson">-->
+                <!--<li class="active"><cite></cite><a href="#/main/modelToolsManage" ui-sref="main.modelToolsManage" ui-sref-active="active">工装工具总账</a><i></i></li>-->
+                <!--<li><cite></cite><a href="#/main/modelToolsManage" ui-sref="main.modelToolsManage" ui-sref-active="active">工装工具明细账</a><i></i></li>-->
+                <!--<li><cite></cite><a href="#/main/modelToolsManage" ui-sref="main.modelToolsManage" ui-sref-active="active">历史记录</a><i></i></li>-->
+            <!--</ul>-->
+        <!--</dd>-->
     </dl>
 </div>
 

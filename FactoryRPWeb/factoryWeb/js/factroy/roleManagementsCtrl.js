@@ -4,7 +4,7 @@ myApp.controller('roleManagementsCtrl',['$filter','$rootScope','$location','$sco
 
     var requestSeqNo=$cookies.get('corporateIdentify');
     userManageMent.queryRoles(requestSeqNo).success(function (data) {
-        console.log(data.data);
+        // console.log(data.data);
         $scope.roleLists=data.data;
     });
 
@@ -35,6 +35,58 @@ myApp.controller('roleManagementsCtrl',['$filter','$rootScope','$location','$sco
         }
     };
 
+    //添加菜单选择事件
+    $scope.chengedRole=function (id) {
+        var str='';
+        console.log('changeRole',id);
+        var flog=$('#'+id).is(':checked');
+        var thisId=$('#'+id).attr('id');
+        // console.log(thisId);
+        if(flog){
+            str+='<div class="subRoleDiv">';
+            $scope.menuRoleLists.forEach(function (n) {
+                // console.log(n.parentId==thisId);
+                if(n.parentId==thisId){
+                    console.log(n);
+                    str+='<li class="userRoleLi">';
+                    str+='<input ng-change="chengedRole('+n.id+')"  ng-model="'+n.modelN+'"  type="checkbox" roleId="'+n.id+'" id="'+n.id+'" class="menuRoleCheckBox">';
+                    str+='<label for="'+n.id+'">'+n.name+'</label>';
+                    str+='</li>';
+                }
+            });
+            str+='</div>';
+            $('#'+id).parent().append(str);
+        }else {
+            $('#'+id).parent().find('div').remove();
+        }
+    };
+
+    //角色删除菜单选择事件
+    $scope.chengedRoleDel=function (id) {
+        var str='';
+        console.log('changeRole',id);
+        var flog=$('#'+id).is(':checked');
+        var thisId=$('#'+id).attr('id');
+        // console.log(thisId);
+        if(flog){
+            str+='<div class="subRoleDiv">';
+            $scope.delmenuRoleLists.forEach(function (n) {
+                // console.log(n.parentId==thisId);
+                if(n.parentId==thisId){
+                    console.log(n);
+                    str+='<li class="userRoleLi">';
+                    str+='<input ng-change="chengedRoleDel('+n.id+')"  ng-model="'+n.modelN+'"  type="checkbox" roleId="'+n.id+'" id="'+n.id+'" class="delmenuRoleCheckBox">';
+                    str+='<label for="'+n.id+'">'+n.name+'</label>';
+                    str+='</li>';
+                }
+            });
+            str+='</div>';
+            $('#'+id).parent().append(str);
+        }else {
+            $('#'+id).parent().find('div').remove();
+        }
+    };
+
     //为角色添加菜单
     $scope.addMenuRole=function (id,name) {
         // console.log(id,name);
@@ -42,13 +94,16 @@ myApp.controller('roleManagementsCtrl',['$filter','$rootScope','$location','$sco
         //每次进入获取角色菜单列表
         userManageMent.queryCorporateMenu().success((function (data) {
             $scope.menuRoleLists=data.data;
+            // console.log($scope.menuRoleLists);
+            $scope.menuRoleLists.forEach(function (n) {
+                $scope.menuRoleLists.modelN='model'+n.id;
+            });
             popupDiv('addMenuRolePop');
         }));
         var arr=[];
         $scope.addMenuRoleSure=function () {
             $('.menuRoleCheckBox:checked').each(function (i,n) {
-                // console.log(i,$(n).prop('id'));
-                arr.push($(n).prop('id'));
+                arr.push($(n).attr('id'));
             });
 
             var po={
@@ -78,13 +133,15 @@ myApp.controller('roleManagementsCtrl',['$filter','$rootScope','$location','$sco
         //每次进入获取角色菜单列表
         userManageMent.queryByRoleId(id).success((function (data) {
             $scope.delmenuRoleLists=data.data.menuList;
+            $scope.delmenuRoleLists.forEach(function (n) {
+                $scope.delmenuRoleLists.modelN='model'+n.id;
+            });
             popupDiv('delMenuRolePop');
         }));
         var arr=[];
         $scope.delMenuRoleSure=function () {
             $('.delmenuRoleCheckBox:checked').each(function (i,n) {
-                // console.log(i,$(n).prop('id'));
-                arr.push($(n).prop('id'));
+                arr.push($(n).attr('id'));
             });
 
             var po={

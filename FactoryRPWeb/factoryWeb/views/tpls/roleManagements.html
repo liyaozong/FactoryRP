@@ -146,9 +146,9 @@
             <img onClick="hideDiv('addMenuRolePop')" class="companyCloseImg" src="image/comm/diffClosed.png" width="22" height="22">
         </div>
         <div style="padding: 20px 40px 20px 0;" class="businessAuth">
-            <ul class="checkBoxUl">
-                <li ng-repeat="menuRoleList in menuRoleLists" class="userRoleLi">
-                    <input type="checkbox" roleId="{{menuRoleList.id}}" id="{{menuRoleList.id}}" class="menuRoleCheckBox">
+            <ul class="checkBoxUl checkBoxUlRole">
+                <li ng-repeat="menuRoleList in menuRoleLists" class="userRoleLi" ng-if="menuRoleList.parentId==''||menuRoleList.parentId==null||menuRoleList.parentId==undefined||menuRoleList.parentId=='-1'||menuRoleList.parentId==0">
+                    <input type="checkbox" roleId="{{menuRoleList.id}}" ng-model="menuRoleList.modelN" ng-change="chengedRole(menuRoleList.id)" class="menuRoleCheckBox" id="{{menuRoleList.id}}">
                     <label for="{{menuRoleList.id}}" ng-bind="menuRoleList.name"></label>
                 </li>
                 <p style="margin-bottom: 20px;">
@@ -166,15 +166,19 @@
     </div>
 
     <!--  为角色删除菜单-->
-    <div class="ImportantNote delMenuRolePop" style="max-width: 760px;min-width: 300px">
+    <div class="ImportantNote delMenuRolePop" style="max-width: 760px;min-width: 450px">
         <div class="headline">
-            <span>{{delMenuRoleName}}添加菜单</span>
+            <span>{{delMenuRoleName}}删除菜单</span>
             <img onClick="hideDiv('delMenuRolePop')" class="companyCloseImg" src="image/comm/diffClosed.png" width="22" height="22">
         </div>
-        <div style="padding: 20px 40px 20px 0;" class="businessAuth"><div style="padding-left: 36px;box-sizing: border-box;text-align: center" ng-if="delmenuRoleLists.length<=0||delmenuRoleLists==undefined||delmenuRoleLists==null">该用户暂无角色</div>
-            <ul class="checkBoxUl" ng-if="delmenuRoleLists.length>0">
-                <li ng-repeat="menuRoleList in delmenuRoleLists" class="userRoleLi">
-                    <input type="checkbox" roleId="{{menuRoleList.id}}" id="{{menuRoleList.id}}" class="delmenuRoleCheckBox">
+        <div style="padding: 20px 40px 20px 0;" class="businessAuth"><div style="padding-left: 36px;box-sizing: border-box;text-align: center" ng-if="delmenuRoleLists.length<=0||delmenuRoleLists==undefined||delmenuRoleLists==null">该角色暂无菜单</div>
+            <ul class="checkBoxUl checkBoxUlRole" ng-if="delmenuRoleLists.length>0">
+                <!--<li ng-repeat="menuRoleList in delmenuRoleLists" class="userRoleLi">-->
+                    <!--<input type="checkbox" roleId="{{menuRoleList.id}}" id="{{menuRoleList.id}}" class="delmenuRoleCheckBox">-->
+                    <!--<label for="{{menuRoleList.id}}" ng-bind="menuRoleList.name"></label>-->
+                <!--</li>-->
+                <li ng-repeat="menuRoleList in delmenuRoleLists" class="userRoleLi" ng-if="menuRoleList.parentId==''||menuRoleList.parentId==null||menuRoleList.parentId==undefined||menuRoleList.parentId=='-1'||menuRoleList.parentId==0">
+                    <input type="checkbox" roleId="{{menuRoleList.id}}" ng-model="menuRoleList.modelN" ng-change="chengedRoleDel(menuRoleList.id)" class="delmenuRoleCheckBox" id="{{menuRoleList.id}}">
                     <label for="{{menuRoleList.id}}" ng-bind="menuRoleList.name"></label>
                 </li>
             </ul>

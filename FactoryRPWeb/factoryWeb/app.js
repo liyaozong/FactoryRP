@@ -59,7 +59,7 @@ var myApp = angular.module('myApp', [
 
 
     })
-.run(['$rootScope', '$window', '$location', '$log','$injector','crumbNav', function ($rootScope, $window, $location, $log, $injector,crumbNav) {
+.run(['$rootScope', '$window', '$location', '$log','$injector','crumbNav','$cookies','$state', function ($rootScope, $window, $location, $log, $injector,crumbNav,$cookies,$state) {
 
         $rootScope.$on('$stateNotFound',
             function(event, unfoundState, fromState, fromParams){
@@ -72,11 +72,53 @@ var myApp = angular.module('myApp', [
             function(event, next){
                 var routerArr=crumbNav.getList();
                 var stateUrl=$location.$$url.split('/')[2];
+                // console.log($location.$$url.split('/')[1]);
+                var loginUrl=$location.$$url.split('/')[1];
+                $rootScope.stateUrlLi=stateUrl;
                 routerArr.forEach(function (n,i) {
                     if(stateUrl==n.stateUrl){
                         $rootScope.urlLists=n.nameArr;
                     }
-                })
+                });
+                var AuthUserMenu=$rootScope.publicMenu?$rootScope.publicMenu:angular.fromJson($cookies.get('menu'));
+                // console.log(angular.fromJson($cookies.get('menu')));
+                $rootScope.publicMenu=AuthUserMenu;
+                var flog=true;
+                // console.log(AuthUserMenu);
+                if(AuthUserMenu!=undefined&&loginUrl!='login'){
+                    if(stateUrl=='home'){
+                        $rootScope.publicTwoMenu=AuthUserMenu[1].twoMenu;
+                        $rootScope.liMenu=AuthUserMenu[1].name;
+                        $rootScope.topMenuLi='home';
+                        AuthUserMenu.forEach(function (n,i) {
+                            if(n.url==stateUrl){
+                                flog=false;
+                            }
+
+                        });
+                        if(flog){
+                            $state.go('main.'+AuthUserMenu[0].url)
+                        }
+                    }else {
+                        AuthUserMenu.forEach(function (n,i) {
+                            n.twoMenu.forEach(function (v,k) {
+                                if(n.url==stateUrl||v.url==stateUrl) {
+                                    $rootScope.publicTwoMenu=n.twoMenu;
+                                    $rootScope.liMenu=n.name;
+                                    $rootScope.topMenuLi=n.twoMenu[0].url;
+                                }
+                                if(v.url==stateUrl){
+                                    flog=false;
+                                }
+                            });
+
+                        });
+                        if(flog){
+                            $state.go('main.'+AuthUserMenu[0].url)
+                        }
+                    }
+                }
+                // console.log($rootScope.publicTwoMenu)
             });
 
         $rootScope.$on('$stateChangeSuccess',

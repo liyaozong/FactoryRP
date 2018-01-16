@@ -214,8 +214,27 @@ myApp.controller('deviceProcessCtrl',['$timeout','$filter','$rootScope','$locati
         };
         $scope.reqList.push(req);
         $scope.processStep++;
-        console.log($scope.reqList);
+        // console.log($scope.reqList);
         hideDiv('addDeviceProcessDetailPop');popupDiv('addDeviceProcessPop');
+    };
+
+    //删除当前审核流程审核人员
+    $scope.deleteProcessUserBalance=function (obj) {
+        // console.log(obj);
+        var arr=[];
+        $scope.reqList.forEach(function (n,i) {
+            if(obj.processStep==n.processStep){
+
+            }else {
+                if(n.processStep>obj.processStep){
+                    n.processStep=n.processStep-1;
+                }
+                arr.push(n);
+            }
+        });
+        $scope.processStep--;
+        $scope.reqList=arr;
+        console.log($scope.reqList)
     };
 
     //新增审核流程

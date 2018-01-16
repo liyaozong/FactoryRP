@@ -85,16 +85,26 @@
 .checkBoxUl{
     padding-left: 20px;
     box-sizing: border-box;
+    max-height: 400px;
+    overflow: auto;
 
+}
+.subRoleDiv{
+    padding-left: 30px;
+    box-sizing: border-box;
 }
 .checkBoxUl li{
     display: inline-block;
     width: auto;
-    height: 30px;
+    /*height: 30px;*/
     line-height: 30px;
     padding: 5px;
     margin-right: 16px;
 }
+.checkBoxUlRole li{
+    display: block;
+}
+
 .checkBoxUl li input[type='checkbox']{
     margin-right: 8px;
 }

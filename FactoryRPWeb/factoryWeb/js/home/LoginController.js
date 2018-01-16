@@ -29,6 +29,8 @@ myApp.controller("LoginController", function($rootScope,UrlService,$cookies,$sta
                 password:$("#password").val(),
                 corporateCode:$("#corporateCode").val()
             },function(data){
+                // console.log('loginData',data);
+                // $rootScope.AuthUserMenu=data.AuthUserMenu;
                 if(data != null && (data.errorCode == '000000' && data.errorMessage=="成功")){
                     $scope.userNick = data.data.userName;
                 }else{

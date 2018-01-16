@@ -192,6 +192,7 @@ myApp.directive("menuManageMentList",["userManageMent",'$compile','$filter',func
                             scope.orderList=data.data;
                             scope.hierarchy=0;
                             var str='';
+                            // console.log(scope.deviceTypeList,'---');
                             if(scope.deviceTypeList.length>0){
                                 scope.deviceTypeList.forEach(function (n,i) {
                                     // console.log(n,i);
@@ -200,7 +201,7 @@ myApp.directive("menuManageMentList",["userManageMent",'$compile','$filter',func
                                         str+='<li class="emptyTd">' +
                                             '<a href="javascript:void (0)" ng-click="subShowDP('+n.id+',$event)"> + </a> ' +
                                             '</li>';
-                                        str+='<li class="menuCF">'+n.orderNumber+'</li>';
+                                        str+='<li class="menuCF">'+(i+1)+'</li>';
                                         str+='<li class="menuCM">'+n.name+'</li>';
                                         str+='<li class="menuCE">'+n.url+'</li>';
                                         str+='<li class="ccc">';
@@ -238,7 +239,7 @@ myApp.directive("menuManageMentList",["userManageMent",'$compile','$filter',func
                             str+='<li class="emptyTd" style="left: '+hp*32+'px">' +
                                 '<a href="javascript:void (0)" ng-click="subShowDP('+n.id+',$event)"> + </a> ' +
                                 '</li>';
-                            str+='<li class="menuCF" style="width: '+(200-hp*32)+'px">'+n.orderNumber+'</li>';
+                            str+='<li class="menuCF" style="width: '+(200-hp*32)+'px">'+(i+1)+'</li>';
                             str+='<li class="menuCM">'+n.name+'</li>';
                             str+='<li class="menuCE">'+n.url+'</li>';
                             str+='<li class="ccc">';

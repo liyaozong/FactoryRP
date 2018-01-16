@@ -40,12 +40,49 @@ myApp.factory('HttpInterceptor', function($rootScope,$q,$window,$cookies,$inject
                     if(rootScope.stateBeforeLogin && rootScope.stateBeforeLogin.current &&  rootScope.stateBeforeLogin.current.name != 'login'){
                         stateService.go(rootScope.stateBeforeLogin.current, rootScope.stateBeforeLogin.params);
                     } else {
+                        var AuthUserMenu=response.data.data.authUserMenuList;
+
+                        // console.log($rootScope.AuthUserMenu,'+++++++++');
+                        $rootScope.publicMenu=[];
+                        AuthUserMenu.forEach(function (n,i) {
+                            var menu={};
+                            if(n.parentId==null||n.parentId==''||n.parentId==undefined){
+                                menu={
+                                    name:n.name,
+                                    id:n.id,
+                                    url:n.url,
+                                    remark:n.remark,
+                                    twoMenu:[]
+                                };
+                                AuthUserMenu.forEach(function (m,k) {
+                                    var q={};
+                                    // console.log(n.id,m.parentId,'=======');
+                                    if(n.id==m.parentId){
+                                        q={
+                                            id:m.id,
+                                            name:m.name,
+                                            url:m.url,
+                                            remark:m.remark,
+                                            parentId:m.parentId
+                                        };
+                                        menu.twoMenu.push(q);
+                                    }
+
+                                });
+                                $rootScope.publicMenu.push(menu);
+                            }
+                        });
+                        var str11=angular.toJson($rootScope.publicMenu);
+                        $cookies.put('menu',str11);
+                        // console.log('$rootScope.publicMenu',$rootScope.publicMenu)
+                        // console.log('response',$rootScope.AuthUserMenu);
                         stateService.go("main.home");
                     }
                     rootScope.stateBeforeLogin = null;
                 } else if(response && response.data && response.data.errorCode == '000667' && response.data.errorMessage == '请登录'){
                     $cookies.remove('token');
                     $cookies.remove('username');
+                    $cookies.remove('menu');
 
                     var rootScope = $injector.get('$rootScope');
                     if($injector.get('$rootScope').$state && $injector.get('$rootScope').$state.current && $injector.get('$rootScope').$state.current.name != 'login'){
@@ -57,7 +94,7 @@ myApp.factory('HttpInterceptor', function($rootScope,$q,$window,$cookies,$inject
                     var rootScope = $injector.get('$rootScope');
                     rootScope.alertMsg = response.data.message;
                 }else{
-                   console.log(1)
+                   // console.log(1)
                 }
 
                 if($rootScope.loading > 1) {

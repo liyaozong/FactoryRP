@@ -87,4 +87,10 @@ myApp.controller("HomeController", function($rootScope,UrlService,$cookies,$stat
             $scope.alertMsg ='';
         }, 1000);
     });
+
+    // console.log('$rootScope.publicMenu',$rootScope.publicMenu);
+
+
+
+
 });

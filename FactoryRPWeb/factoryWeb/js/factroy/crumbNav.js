@@ -33,16 +33,12 @@ myApp.factory('crumbNav',[function(){
         nameArr:[{
             name:'参数设置'
         },{
-            name:'设备参数设置'
-        },{
             name:'设备类型设置'
         }]
     },{
         stateUrl:'deviceSpares',
         nameArr:[{
             name:'参数设置'
-        },{
-            name:'设备参数设置'
         },{
             name:'备件类型设置'
         }]
@@ -51,16 +47,12 @@ myApp.factory('crumbNav',[function(){
         nameArr:[{
             name:'参数设置'
         },{
-            name:'设备参数设置'
-        },{
             name:'故障类型设置'
         }]
     },{
         stateUrl:'deviceProcess',
         nameArr:[{
             name:'参数设置'
-        },{
-            name:'设备参数设置'
         },{
             name:'审核流程设置'
         }]
@@ -69,16 +61,12 @@ myApp.factory('crumbNav',[function(){
         nameArr:[{
             name:'参数设置'
         },{
-            name:'设备参数设置'
-        },{
             name:'其他选项设置'
         }]
     },{
         stateUrl:'departmentManage',
         nameArr:[{
             name:'参数设置'
-        },{
-            name:'通用设置'
         },{
             name:'部门设置'
         }]
@@ -87,16 +75,12 @@ myApp.factory('crumbNav',[function(){
         nameArr:[{
             name:'参数设置'
         },{
-            name:'通用设置'
-        },{
             name:'往来单位'
         }]
     },{
         stateUrl:'repairGroup',
         nameArr:[{
             name:'参数设置'
-        },{
-            name:'通用设置'
         },{
             name:'维修工段/班组'
         }]

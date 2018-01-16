@@ -71,8 +71,7 @@ myApp.controller('userManagementCtrl',['$filter','$rootScope','$location','$scop
         var arr=[];
         $scope.addUserRoleSure=function () {
             $('.userRoleCheckBox:checked').each(function (i,n) {
-                // console.log(i,$(n).prop('id'));
-                arr.push($(n).prop('id'));
+                arr.push($(n).attr('id'));
 
             });
 
@@ -107,8 +106,7 @@ myApp.controller('userManagementCtrl',['$filter','$rootScope','$location','$scop
         var arr=[];
         $scope.delUserRoleSure=function () {
             $('.userRoleCheckBoxDel:checked').each(function (i,n) {
-                // console.log(i,$(n).prop('id'));
-                arr.push($(n).prop('id'));
+                arr.push($(n).attr('id'));
 
             });
 

@@ -48,7 +48,17 @@ myApp.controller('menuManagementsCtrl',['$filter','$http','$location','$scope','
     };
     /*编辑 功能点 end editfunctionBalance*/
     /*新增 功能点 start addfunctionBalance*/
-    $scope.addType='group';//默认类型为组
+    $scope.addType='group';//
+    $scope.addMenu=function () {
+        // $scope.corporateIdentify='';
+        $scope.addName='';
+        $scope.addSortValue='';
+        $scope.addParentsNode='';
+        $scope.menuRemark='';
+        // $scope.requestSeqNo='';
+        $scope.addUrl='';
+        popupDiv('functionBalance');
+    };
     $scope.addfunctionBalance=function(){
         if($scope.addName==null||$scope.addName==''||$scope.addName==undefined){
             $("#addName").focus();
