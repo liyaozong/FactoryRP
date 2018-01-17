@@ -438,22 +438,24 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 
         List<Long> menuIdList = menuRoleReq.getMenuIdList();
 
-        /**
-         * 此处查询出来的roleId必定全部都是相同的 排除重复的关系
-         */
-        List<MenuRole> menuRoleList = menuRoleRepository.findByRoleIdAndCorporateIdentifyAndRoleIdIn(menuRoleReq.getRoleId(),
-                corporateIdentify, menuIdList);
 
-        if(null != menuRoleList && !menuRoleList.isEmpty()){
+        if(!CheckParam.isNull(menuIdList) && !menuIdList.isEmpty()){
+            /**
+             * 此处查询出来的roleId必定全部都是相同的 排除重复的关系
+             */
+            List<MenuRole> menuRoleList = menuRoleRepository.findByRoleIdAndCorporateIdentifyAndRoleIdIn(menuRoleReq.getRoleId(),
+                    corporateIdentify, menuIdList);
 
-            //形成以菜单id为键的Map
-            Map<Long, MenuRole> menuRoleMap = menuRoleList.stream().collect(Collectors.toMap(MenuRole::getRoleId, Function.identity()));
+            if(null != menuRoleList && !menuRoleList.isEmpty()){
 
-            //过滤掉在以角色ID为键的Map种存在的角色id
-            menuIdList = menuIdList.stream().filter(r1 -> CheckParam.isNull(menuRoleMap.get(r1))).collect(Collectors.toList());
+                //形成以菜单id为键的Map
+                Map<Long, MenuRole> menuRoleMap = menuRoleList.stream().collect(Collectors.toMap(MenuRole::getRoleId, Function.identity()));
 
+                //过滤掉在以角色ID为键的Map种存在的角色id
+                menuIdList = menuIdList.stream().filter(r1 -> CheckParam.isNull(menuRoleMap.get(r1))).collect(Collectors.toList());
+
+            }
         }
-
 
         List<MenuRole> menuRoles = new ArrayList<>();
 
