@@ -63,7 +63,6 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 
     private static Logger logger = LoggerFactory.getLogger(AuthorizationServiceImpl.class);
 
-
     /**
      * 根据角色code查询用户信息
      * @param roleCode

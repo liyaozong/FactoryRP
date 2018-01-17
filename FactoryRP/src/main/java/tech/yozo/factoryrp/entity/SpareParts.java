@@ -30,7 +30,7 @@ public class SpareParts extends BaseEntity implements Serializable {
     private Long sparePartType;
 
     @ApiModelProperty(value = "备件名称",notes ="备件名称" )
-    @Column(name = "name",length = 20)
+    @Column(name = "name",length = 50)
     private String name;
 
     @ApiModelProperty(value = "备件编号",notes ="备件编号" )
