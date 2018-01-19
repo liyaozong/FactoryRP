@@ -6,7 +6,6 @@ import lombok.Data;
 import tech.yozo.factoryrp.vo.base.ApiRequest;
 import tech.yozo.factoryrp.vo.validation.NotEmpty;
 
-import javax.persistence.Column;
 import java.io.Serializable;
 import java.util.Date;
 

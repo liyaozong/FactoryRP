@@ -22,12 +22,12 @@ public class DeviceProcessDetailWarpResp implements Serializable {
     /**
      * 流程步骤 对于同一个流程，依次递增
      */
-    private Long processStep;
+    private Integer processStep;
 
     /**
      * 审核类型 标识是指定审核人还是指定审核组 1审核人2审核组
      */
-    private Long auditType;
+    private Integer auditType;
 
     /**
      * 处理要求类型 1单人签署生效2多人签署生效

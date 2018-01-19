@@ -1,6 +1,5 @@
 package tech.yozo.factoryrp.entity;
 
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.persistence.Column;
@@ -26,13 +25,13 @@ public class DeviceProcessDetail extends BaseEntity implements Serializable {
      * 流程步骤 对于同一个流程，依次递增
      */
     @Column(name = "process_step",length = 20)
-    private Long processStep;
+    private Integer processStep;
 
     /**
-     * 审核类型 标识是指定审核人还是指定审核组
+     * 审核类型 标识是指定审核人还是指定审核组 1审核人2审核组 默认审核人
      */
-    @Column(name = "process_type",length = 20)
-    private Long auditType;
+    @Column(name = "process_audit_type",length = 20)
+    private Integer auditType = 1;
 
 
     /**

@@ -23,13 +23,13 @@ public class DeviceProcessDetailAddReq implements Serializable{
      * 流程步骤 对于同一个流程，依次递增
      */
     @ApiModelProperty(value = "流程步骤 对于同一个流程，依次递增",notes ="流程步骤 对于同一个流程，依次递增" )
-    private Long processStep;
+    private Integer processStep;
 
     /**
      * 审核类型 标识是指定审核人还是指定审核组
      */
     @ApiModelProperty(value = "审核类型 标识是指定审核人还是指定审核组",notes ="审核类型 标识是指定审核人还是指定审核组" )
-    private Long auditType;
+    private Integer auditType;
 
 
     /**
