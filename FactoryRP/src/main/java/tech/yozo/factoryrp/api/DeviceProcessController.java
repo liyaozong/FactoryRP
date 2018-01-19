@@ -15,6 +15,7 @@ import tech.yozo.factoryrp.vo.req.DeviceParameterDicBatchAddReq;
 import tech.yozo.factoryrp.vo.req.DeviceProcessAddReq;
 import tech.yozo.factoryrp.vo.req.DeviceProcessQueryReq;
 import tech.yozo.factoryrp.vo.resp.process.DeviceProcessAddResp;
+import tech.yozo.factoryrp.vo.resp.process.DeviceProcessDetailQueryWarpResp;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -39,6 +40,21 @@ public class DeviceProcessController extends BaseController  {
 
     @Resource
     private UserAuthService userAuthService;
+
+
+    /**
+     * 查询流程详情-->前端画图所需要的数据
+     * @param processId
+     * @return
+     */
+    @ApiOperation(value = "查询流程详情-->前端画图所需要的数据",notes = "查询流程详情-->前端画图所需要的数据",httpMethod = "GET")
+    @GetMapping("/queryProcessDetail")
+    @ApiImplicitParam(dataType = "processId" ,name = "processId", paramType = "VO" ,
+            value = "流程ID",required = true)
+    public ApiResponse<DeviceProcessDetailQueryWarpResp> queryProcessDetail(Long processId,HttpServletRequest request){
+        Long corporateIdentify = userAuthService.getCurrentUserCorporateIdentify(request);
+        return apiResponse(processService.queryProcessDetail(processId,corporateIdentify));
+    }
 
     /**
      * 查询所有流程类型集合

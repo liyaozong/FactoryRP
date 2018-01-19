@@ -1,6 +1,8 @@
 package tech.yozo.factoryrp.service.Impl;
 
 import com.alibaba.fastjson.JSON;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -25,10 +27,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -52,6 +51,83 @@ public class ProcessServiceImpl implements ProcessService {
 
     @Resource
     private UserRepository userRepository;
+
+    private static Logger logger = LoggerFactory.getLogger(ProcessServiceImpl.class);
+
+    /**
+     * 查询流程详情-->前端画图所需要的数据
+     * @param processId
+     * @param corporateIdentify
+     * @return
+     */
+    public DeviceProcessDetailQueryWarpResp queryProcessDetail(Long processId,Long corporateIdentify){
+
+
+        DeviceProcess deviceProcess = deviceProcessRepository.findOne(processId);
+
+        if(!CheckParam.isNull(deviceProcess)){
+
+            DeviceProcessDetailQueryWarpResp deviceProcessDetailQueryWarpResp = new DeviceProcessDetailQueryWarpResp();
+
+            List<DeviceProcessDetail> deviceProcessDetailList = deviceProcessDetailRepository.findByProcessIdAndAndCorporateIdentify(processId, corporateIdentify);
+
+            List<DeciceProcessDetailQueryResp> processDetailList = new ArrayList<>();
+
+            List<Long> userIds = new ArrayList<>();
+
+            deviceProcessDetailList.stream().forEach(d1 -> {
+                DeciceProcessDetailQueryResp deciceProcessDetailQueryResp = new DeciceProcessDetailQueryResp();
+
+                deciceProcessDetailQueryResp.setAuditType(d1.getAuditType());
+                deciceProcessDetailQueryResp.setHandleDemandType(d1.getHandleDemandType());
+
+                List<Long> auditorList = JSON.parseArray(d1.getProcessAuditor(), Long.class);
+
+                //设置审核人的名称所用
+                userIds.addAll(auditorList);
+
+                deciceProcessDetailQueryResp.setProcessAuditorList(JSON.parseArray(d1.getProcessAuditor(), String.class));
+                deciceProcessDetailQueryResp.setProcessId(d1.getProcessId());
+                deciceProcessDetailQueryResp.setProcessStep(d1.getProcessStep());
+
+                processDetailList.add(deciceProcessDetailQueryResp);
+            });
+
+            //去重操作，真正用来查询的用户集合
+            List<Long> userIdList = userIds.stream().distinct().collect(Collectors.toList());
+
+           /* List<Long> userIdList = new ArrayList<>();
+
+            for (Long l:userIds) {
+                userIdList.add(l);
+            }*/
+
+            List<User> userList = userRepository.findByCorporateIdentifyAndUserIdIn(corporateIdentify, userIdList);
+            //List<User> userList = userRepository.findByUserIdIn(userIdList);
+
+            //查询出来的用户集合变成可以用来定位数据的Map
+            Map<Long, User> userMap = userList.stream().collect(Collectors.toMap(User::getUserId, Function.identity()));
+
+            processDetailList.stream().forEach(d1 -> {
+                if(null != d1.getProcessAuditorList() && !d1.getProcessAuditorList().isEmpty()){
+                    List<String> userNameList = new ArrayList<>();
+                    d1.getProcessAuditorList().stream().forEach(p1 -> {
+                        userNameList.add(userMap.get(Long.valueOf(p1)).getUserName());
+                    });
+                    d1.setProcessAuditorList(userNameList);
+                }
+
+
+
+            });
+
+            deviceProcessDetailQueryWarpResp.setProcessDetailList(processDetailList);
+
+            return deviceProcessDetailQueryWarpResp;
+        }
+
+        return null;
+    }
 
     /**
      * 查询所有流程类型集合

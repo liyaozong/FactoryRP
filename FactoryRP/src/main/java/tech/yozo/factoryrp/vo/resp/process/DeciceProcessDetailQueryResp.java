@@ -4,7 +4,6 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import javax.persistence.Column;
 import java.io.Serializable;
 import java.util.List;
 
@@ -24,35 +23,33 @@ public class DeciceProcessDetailQueryResp implements Serializable {
      * 流程步骤 对于同一个流程，依次递增
      */
     @ApiModelProperty(value = "流程步骤 对于同一个流程，依次递增",required = true,notes = "流程步骤 对于同一个流程，依次递增",example = "processStep")
-    private Long processStep;
+    private Integer processStep;
 
     /**
-     * 审核类型 标识是指定审核人还是指定审核组
+     * 审核类型 标识是指定审核人还是指定审核组 1审核人2审核组 默认审核人
      */
-    @ApiModelProperty(value = "审核类型 标识是指定审核人还是指定审核组",required = true,notes = "审核类型 标识是指定审核人还是指定审核组",example = "auditType")
-    @Column(name = "process_type",length = 20)
-    private Long auditType;
+    @ApiModelProperty(value = "审核类型 标识是指定审核人还是指定审核组 1审核人2审核组 默认审核人",required = true,notes = "审核类型 标识是指定审核人还是指定审核组 1审核人2审核组 默认审核人",example = "auditType")
+    private Integer auditType;
 
 
     /**
      * 审核人姓名集合
      */
-    @ApiModelProperty(value = "流程步骤 对于同一个流程，依次递增",required = true,notes = "流程步骤 对于同一个流程，依次递增",example = "processStep")
-    @Column(name = "process_auditor")
+    @ApiModelProperty(value = "审核人姓名集合",required = true,notes = "审核人姓名集合",example = "processAuditorList")
     private List<String> processAuditorList;
 
 
     /**
      * 处理要求类型 1单人签署生效2多人签署生效
      */
-    @ApiModelProperty(value = "流程步骤 对于同一个流程，依次递增",required = true,notes = "流程步骤 对于同一个流程，依次递增",example = "processStep")
+    @ApiModelProperty(value = "处理要求类型 1单人签署生效2多人签署生效",required = true,notes = "处理要求类型 1单人签署生效2多人签署生效",example = "handleDemandType")
     private Integer handleDemandType;
 
 
     /**
      * 流程id
      */
-    @ApiModelProperty(value = "流程步骤 对于同一个流程，依次递增",required = true,notes = "流程步骤 对于同一个流程，依次递增",example = "processStep")
+    @ApiModelProperty(value = "流程id",required = true,notes = "流程id",example = "processId")
     private Long processId;
 
 

@@ -56,7 +56,7 @@ public class User extends BaseEntity implements Serializable{
     @JoinTable(name="system_user_role",
       joinColumns={@JoinColumn(name="user_id", referencedColumnName="id")},
       inverseJoinColumns={@JoinColumn(name="role_id", referencedColumnName="id")})
-    @ManyToMany(cascade = { CascadeType.PERSIST }, targetEntity = Role.class, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = { CascadeType.PERSIST }, targetEntity = Role.class, fetch = FetchType.LAZY)
     private List<Role> roleList;
 
     public Long getUserId() {

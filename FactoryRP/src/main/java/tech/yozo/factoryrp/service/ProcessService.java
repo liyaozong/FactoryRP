@@ -7,10 +7,7 @@ import tech.yozo.factoryrp.exception.BussinessException;
 import tech.yozo.factoryrp.page.Pagination;
 import tech.yozo.factoryrp.vo.req.DeviceProcessAddReq;
 import tech.yozo.factoryrp.vo.req.DeviceProcessQueryReq;
-import tech.yozo.factoryrp.vo.resp.process.CreateProcessInstanceResp;
-import tech.yozo.factoryrp.vo.resp.process.DeviceProcessAddResp;
-import tech.yozo.factoryrp.vo.resp.process.DeviceProcessDetailWarpResp;
-import tech.yozo.factoryrp.vo.resp.process.ProcessStatusQueryResp;
+import tech.yozo.factoryrp.vo.resp.process.*;
 
 import java.util.List;
 
@@ -22,6 +19,14 @@ import java.util.List;
  */
 public interface ProcessService {
 
+
+    /**
+     * 查询流程详情-->前端画图所需要的数据
+     * @param processId
+     * @param corporateIdentify
+     * @return
+     */
+    DeviceProcessDetailQueryWarpResp queryProcessDetail(Long processId, Long corporateIdentify);
 
     /**
      * 查询流程详细信息

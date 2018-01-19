@@ -84,7 +84,17 @@ public interface UserRepository extends BaseRepository<User,Long>{
      * @param userIdList
      * @return
      */
-    @Query(value = "select u from User u where u.userId in :userIdList and u.corporateIdentify =            :corporateIdentify")
+    @Query(value = "select u from User u where u.corporateIdentify = :corporateIdentify and  u.userId in :userIdList")
     List<User> findByCorporateIdentifyAndUserIdIn(@Param("corporateIdentify") Long corporateIdentify,@Param("userIdList") List<Long> userIdList);
+
+
+    /**
+     * 根据userId进行in查询
+     * @param userIdList
+     * @return
+     */
+    @Query(value = "select u from User u where u.userId in :userIdList")
+    List<User> findByUserIdIn(@Param("userIdList") List<Long> userIdList);
+
 
 }
