@@ -69,6 +69,10 @@ public class TroubleRecordServiceImpl implements TroubleRecordService {
         troubleRecordUserRel.setDealPhase(TroubleDealPhaseEnum.WAIT_AUDIT.getCode());
         troubleRecordUserRel.setDealStatus(troubleRecord.getStatus());
         troubleRecordUserRel.setCorporateIdentify(corporateIdentify);
+        troubleRecordUserRel.setDealUserId(1l);
+        troubleRecordUserRel.setDealUserName("张三");
+        troubleRecordUserRel.setExecuteType(1);
+        troubleRecordUserRelRepository.save(troubleRecordUserRel);
 
     }
 
@@ -164,6 +168,12 @@ public class TroubleRecordServiceImpl implements TroubleRecordService {
     }
 
     @Override
+    public Pagination<WaitAuditWorkOrderVo> findWaitAuditWorkOrder(WorkOrderListReq req, Long corporateIdentify, AuthUser user) {
+
+        return null;
+    }
+
+    @Override
     public WorkOrderCountVo getCount(Long corporateIdentify, AuthUser user) {
         Long waitAudtiCount = troubleRecordRepository.count(new Specification<TroubleRecord>() {
             @Override
@@ -235,7 +245,7 @@ public class TroubleRecordServiceImpl implements TroubleRecordService {
     public void cancelOrder(Long id, AuthUser user) {
         TroubleRecord old = troubleRecordRepository.findOne(id);
         if (null!=old && old.getStatus() == TroubleStatusEnum.NEED_REPAIR.getCode()){
-            if (old.getRepairUserId() != user.getUserId()){
+            if (Long.compare(old.getRepairUserId(),user.getUserId())!=0){
                 BussinessException biz = new BussinessException("10001","不是本人工单，无权限操作");
                 throw biz;
             }
@@ -253,7 +263,7 @@ public class TroubleRecordServiceImpl implements TroubleRecordService {
     public void startRepair(StartRepairReq param, AuthUser user) {
         TroubleRecord old = troubleRecordRepository.findOne(param.getTroubleRecordId());
         if (null!=old && old.getStatus() == TroubleStatusEnum.NEED_REPAIR.getCode()){
-            if (old.getRepairUserId() != user.getUserId()){
+            if (Long.compare(old.getRepairUserId(),user.getUserId())!=0){
                 BussinessException biz = new BussinessException("10001","不是本人工单，无权限操作");
                 throw biz;
             }
@@ -297,7 +307,7 @@ public class TroubleRecordServiceImpl implements TroubleRecordService {
     public void endRepair(EndRepairReq param, AuthUser user) {
         TroubleRecord old = troubleRecordRepository.findOne(param.getTroubleRecordId());
         if (null!=old && old.getStatus() == TroubleStatusEnum.REPAIRING.getCode()){
-            if (old.getRepairUserId() != user.getUserId()){
+            if (Long.compare(old.getRepairUserId(),user.getUserId())!=0){
                 BussinessException biz = new BussinessException("10001","不是本人工单，无权限操作");
                 throw biz;
             }
@@ -343,7 +353,7 @@ public class TroubleRecordServiceImpl implements TroubleRecordService {
     public void submitRepair(SubmitRepairReq param, AuthUser user) {
         TroubleRecord old = troubleRecordRepository.findOne(param.getTroubleRecordId());
         if (null!=old && old.getStatus() == TroubleStatusEnum.REPAIRING.getCode()){
-            if (old.getRepairUserId() != user.getUserId()){
+            if (Long.compare(old.getRepairUserId(),user.getUserId())!=0){
                 BussinessException biz = new BussinessException("10001","不是本人工单，无权限操作");
                 throw biz;
             }
@@ -506,7 +516,7 @@ public class TroubleRecordServiceImpl implements TroubleRecordService {
     public void validate(ValidateRepairReq param, AuthUser user) {
         TroubleRecord old = troubleRecordRepository.findOne(param.getTroubleRecordId());
         if (null!=old && old.getStatus() == TroubleStatusEnum.REPAIRED.getCode()){
-            if (old.getValidateUserId() != user.getUserId()){
+            if (Long.compare(old.getValidateUserId(),user.getUserId())!=0){
                 BussinessException biz = new BussinessException("10001","不是本人工单，无权限操作");
                 throw biz;
             }

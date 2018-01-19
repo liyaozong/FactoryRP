@@ -45,6 +45,12 @@ public interface TroubleRecordService {
                                                                 Integer status,AuthUser user);
 
     /**
+     * 查询当前人员待审核工单
+     * @return
+     */
+    public Pagination<WaitAuditWorkOrderVo> findWaitAuditWorkOrder(WorkOrderListReq req, Long corporateIdentify,AuthUser user);
+
+    /**
      * 工单统计
      * @param corporateIdentify
      * @param user

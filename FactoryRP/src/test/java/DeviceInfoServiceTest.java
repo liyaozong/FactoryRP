@@ -53,10 +53,10 @@ public class DeviceInfoServiceTest {
     @Test
     public void dealWorkOrderTest(){
         StartRepairReq req = new StartRepairReq();
-        req.setTroubleRecordId(3l);
+        req.setTroubleRecordId(19l);
         AuthUser user = new AuthUser();
-        user.setUserId(1l);
-        user.setUserName("王浩");
+        user.setUserId(943113773294551041l);
+        user.setUserName("李四");
         troubleRecordService.startRepair(req,user);
     }
 }
