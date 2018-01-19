@@ -64,7 +64,7 @@ myApp.controller('roleManagementsCtrl',['$filter','$rootScope','$location','$sco
     //角色删除菜单选择事件
     $scope.chengedRoleDel=function (id) {
         var str='';
-        console.log('changeRole',id);
+        // console.log('changeRole',id);
         var flog=$('#'+id).is(':checked');
         var thisId=$('#'+id).attr('id');
         // console.log(thisId);
@@ -73,7 +73,7 @@ myApp.controller('roleManagementsCtrl',['$filter','$rootScope','$location','$sco
             $scope.delmenuRoleLists.forEach(function (n) {
                 // console.log(n.parentId==thisId);
                 if(n.parentId==thisId){
-                    console.log(n);
+                    // console.log(n);
                     str+='<li class="userRoleLi">';
                     str+='<input ng-change="chengedRoleDel('+n.id+')"  ng-model="'+n.modelN+'"  type="checkbox" roleId="'+n.id+'" id="'+n.id+'" class="delmenuRoleCheckBox">';
                     str+='<label for="'+n.id+'">'+n.name+'</label>';
@@ -165,7 +165,7 @@ myApp.controller('roleManagementsCtrl',['$filter','$rootScope','$location','$sco
 
     //删除用户
     $scope.deleteRole=function(id,name){
-        console.log(id);
+        // console.log(id);
         $scope.deleteName=name;
         popupDiv('deleteRolePop');
         $scope.deleteRoleSure=function(){
