@@ -96,14 +96,7 @@ public class ProcessServiceImpl implements ProcessService {
             //去重操作，真正用来查询的用户集合
             List<Long> userIdList = userIds.stream().distinct().collect(Collectors.toList());
 
-           /* List<Long> userIdList = new ArrayList<>();
-
-            for (Long l:userIds) {
-                userIdList.add(l);
-            }*/
-
             List<User> userList = userRepository.findByCorporateIdentifyAndUserIdIn(corporateIdentify, userIdList);
-            //List<User> userList = userRepository.findByUserIdIn(userIdList);
 
             //查询出来的用户集合变成可以用来定位数据的Map
             Map<Long, User> userMap = userList.stream().collect(Collectors.toMap(User::getUserId, Function.identity()));
@@ -112,7 +105,9 @@ public class ProcessServiceImpl implements ProcessService {
                 if(null != d1.getProcessAuditorList() && !d1.getProcessAuditorList().isEmpty()){
                     List<String> userNameList = new ArrayList<>();
                     d1.getProcessAuditorList().stream().forEach(p1 -> {
-                        userNameList.add(userMap.get(Long.valueOf(p1)).getUserName());
+                        if(!CheckParam.isNull(userMap.get(Long.valueOf(p1)))){
+                            userNameList.add(userMap.get(Long.valueOf(p1)).getUserName());
+                        }
                     });
                     d1.setProcessAuditorList(userNameList);
                 }
