@@ -1,5 +1,7 @@
 package tech.yozo.factoryrp.repository;
 
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import tech.yozo.factoryrp.entity.DeviceProcessDetail;
 
@@ -32,5 +34,24 @@ public interface DeviceProcessDetailRepository extends BaseRepository<DeviceProc
      * @return
      */
     List<DeviceProcessDetail> findByProcessIdAndAndCorporateIdentify(Long processId, Long corporateIdentify);
+
+
+    /**
+     * 根据流程id和企业唯一标识进行查找最小的详细流程步骤
+     * @param processId
+     * @param corporateIdentify
+     * @return
+     */
+    @Query(value = "select min(p.processStep) from DeviceProcessDetail p where p.processId = :processId and p.corporateIdentify = :corporateIdentify")
+    DeviceProcessDetail findMinProcessStepByProcessIdAndAndCorporateIdentify(@Param("processId") Long processId,@Param("corporateIdentify") Long corporateIdentify);
+
+    /**
+     * 根据流程id,企业唯一标识,步数进行查找
+     * @param processId
+     * @param corporateIdentify
+     * @param processStep
+     * @return
+     */
+    DeviceProcessDetail findByProcessIdAndAndCorporateIdentifyAndProcessStep(Long processId, Long corporateIdentify,Integer processStep);
 
 }

@@ -19,6 +19,27 @@ import java.util.List;
  */
 public interface ProcessService {
 
+    /**
+     * 流程部署查询
+     * 业务逻辑: 不给步数就返回第一步和返回下一步的ID
+     *          没有下一步ID就是空
+     * @param processType 流程类型
+     * @param processStage 流程状态
+     * @param processStep 流程步数 可为空
+     * @param corporateIdentify 企业唯一标识
+     * @return
+     */
+    DeviceProcessStepQueryResp processStepQuery(Long processType, Long processStage,Integer processStep, Long corporateIdentify);
+
+    /**
+     * 分步查询流程详细信息
+     * @param processType  流程类型
+     * @param processStage 流程状态
+     * @param corporateIdentify 企业唯一标识
+     * @param processStep 步数ID
+     * @return
+     */
+    DeviceProcessDetailWarpResp queryProcessAduitInfoByStep(Long processType, Long processStage,Integer processStep, Long corporateIdentify);
 
     /**
      * 查询流程详情-->前端画图所需要的数据

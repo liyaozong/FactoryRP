@@ -5,7 +5,7 @@ import lombok.Data;
 import java.io.Serializable;
 
 /**
- * 流程处理返回VO
+ * 流程步骤查询处理返回VO
  * @author created by Singer email:313402703@qq.com
  * @time 2018/1/16
  * @description

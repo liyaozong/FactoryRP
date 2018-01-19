@@ -54,6 +54,70 @@ public class ProcessServiceImpl implements ProcessService {
 
     private static Logger logger = LoggerFactory.getLogger(ProcessServiceImpl.class);
 
+
+    /**
+     * 流程部署查询
+     * 业务逻辑: 不给步数就返回第一步和返回下一步的ID
+     *          没有下一步ID就是空
+     * @param processType 流程类型
+     * @param processStage 流程状态
+     * @param processStep 流程步数 可为空
+     * @param corporateIdentify 企业唯一标识
+     * @return
+     */
+    public DeviceProcessStepQueryResp processStepQuery(Long processType, Long processStage,Integer processStep, Long corporateIdentify){
+
+        //先查询流程表的数据
+        DeviceProcess deviceProcess = deviceProcessRepository.findByProcessTypeAndProcessStageAndCorporateIdentify(processType,
+                processStage, corporateIdentify);
+
+        if(!CheckParam.isNull(deviceProcess)){
+
+            //不给步数就返回第一步和返回下一步的ID
+            if(CheckParam.isNull(processStep)){
+
+                //查询最小流程步数ID,此处必定是第一步，且值在业务上来说不可能为空
+                DeviceProcessDetail minProcessDetail = deviceProcessDetailRepository.findMinProcessStepByProcessIdAndAndCorporateIdentify(deviceProcess.getId(), corporateIdentify);
+
+                //下一步流程的步骤
+                Integer nextProcessStep = minProcessDetail.getProcessStep() + 1;
+
+                DeviceProcessDetail nextPeocessDetail = deviceProcessDetailRepository.findByProcessIdAndAndCorporateIdentifyAndProcessStep(deviceProcess.getId(), corporateIdentify, nextProcessStep);
+
+                DeviceProcessStepQueryResp deviceProcessStepQueryResp = new DeviceProcessStepQueryResp();
+
+                deviceProcessStepQueryResp.setCurrentProcessStep(minProcessDetail.getId());
+                deviceProcessStepQueryResp.setNextProcessStep(CheckParam.isNull(nextPeocessDetail) ? null : nextPeocessDetail.getId());
+
+                return deviceProcessStepQueryResp;
+            }else{
+
+                DeviceProcessDetail currentProcessStep = deviceProcessDetailRepository.findByProcessIdAndAndCorporateIdentifyAndProcessStep(deviceProcess.getId(), corporateIdentify, processStep);
+
+                if(CheckParam.isNull(currentProcessStep)){
+                    return null;
+                }
+
+                //下一步流程的步骤
+                Integer nextProcessStep = currentProcessStep.getProcessStep();
+
+                DeviceProcessDetail nextProcessDetail = deviceProcessDetailRepository.findByProcessIdAndAndCorporateIdentifyAndProcessStep(deviceProcess.getId(), corporateIdentify, nextProcessStep);
+
+                DeviceProcessStepQueryResp deviceProcessStepQueryResp = new DeviceProcessStepQueryResp();
+
+                deviceProcessStepQueryResp.setCurrentProcessStep(currentProcessStep.getId());
+                deviceProcessStepQueryResp.setNextProcessStep(nextProcessDetail.getId());
+
+                return deviceProcessStepQueryResp;
+            }
+
+        }
+
+        return null;
+    }
+
+
+
     /**
      * 查询流程详情-->前端画图所需要的数据
      * @param processId
@@ -112,8 +176,6 @@ public class ProcessServiceImpl implements ProcessService {
                     d1.setProcessAuditorList(userNameList);
                 }
 
-
-
             });
 
             deviceProcessDetailQueryWarpResp.setProcessDetailList(processDetailList);
@@ -143,6 +205,72 @@ public class ProcessServiceImpl implements ProcessService {
 
 
     /**
+     * 分步查询流程详细信息
+     * @param processType  流程类型
+     * @param processStage 流程状态
+     * @param corporateIdentify 企业唯一标识
+     * @param processStep 步数ID
+     * @return
+     */
+    public  DeviceProcessDetailWarpResp queryProcessAduitInfoByStep(Long processType, Long processStage,Integer processStep, Long corporateIdentify){
+
+        DeviceProcess deviceProcess = deviceProcessRepository.findByProcessTypeAndProcessStageAndCorporateIdentify(processType,
+                processStage, corporateIdentify);
+
+        if(!CheckParam.isNull(deviceProcess)){
+
+            //流程详情内容，此处只可能返回一个，因为是根据步骤查询的
+            DeviceProcessDetail deviceProcessDetail = deviceProcessDetailRepository.findByProcessIdAndAndCorporateIdentifyAndProcessStep(deviceProcess.getId(), corporateIdentify,processStep);
+
+                if(!CheckParam.isNull(deviceProcessDetail)){
+                    List<Long> userIdList =  new ArrayList<>();
+
+                    DeviceProcessDetailWarpResp  deviceProcessDetailWarpResp = new DeviceProcessDetailWarpResp();
+
+                    deviceProcessDetailWarpResp.setAuditType(deviceProcessDetail.getAuditType());
+                    deviceProcessDetailWarpResp.setHandleDemandType(deviceProcessDetail.getHandleDemandType());
+
+                    String processAuditor = deviceProcessDetail.getProcessAuditor(); //处理处理人的逻辑
+                    List<Long> userIds = JSON.parseObject(processAuditor, List.class);
+
+                    List<DeviceProcessHandlerResp> deviceProcessHandlerRespList = new ArrayList<>();
+
+                    //格式化用户ID
+                    userIds.stream().forEach(u1 -> {
+                        DeviceProcessHandlerResp deviceProcessHandlerResp = new DeviceProcessHandlerResp();
+                        deviceProcessHandlerResp.setUserId(u1);
+
+                        //添加进处理人集合
+                        deviceProcessHandlerRespList.add(deviceProcessHandlerResp);
+
+                        userIdList.addAll(userIds);
+                    });
+
+                    deviceProcessDetailWarpResp.setHandlerList(deviceProcessHandlerRespList);
+                    deviceProcessDetailWarpResp.setProcessStep(deviceProcessDetail.getProcessStep());
+
+                    if(null != userIdList && !userIdList.isEmpty()){
+                        List<User> userList = userRepository.findByCorporateIdentifyAndUserIdIn(corporateIdentify, userIdList);
+
+                        //形成键为userId，值为User对象的Map结构，方便接下来定位数据
+                        Map<Long, User> userMap = userList.stream().collect(Collectors.toMap(User::getUserId, Function.identity()));
+
+                        //处理流程处理人姓名
+                        deviceProcessDetailWarpResp.getHandlerList().stream().forEach(h1 -> {
+                            h1.setName(String.valueOf(userMap.get(h1.getUserId())));
+                        });
+
+                    }
+
+                    return deviceProcessDetailWarpResp;
+                }
+
+        }
+
+        return null;
+    }
+
+    /**
      * 查询流程详细信息
      * @param processType
      * @param processStage
@@ -154,7 +282,7 @@ public class ProcessServiceImpl implements ProcessService {
         DeviceProcess deviceProcess = deviceProcessRepository.findByProcessTypeAndProcessStageAndCorporateIdentify(processType,
                 processStage, corporateIdentify);
 
-        if(CheckParam.isNull(deviceProcess)){
+        if(!CheckParam.isNull(deviceProcess)){
 
             List<DeviceProcessDetailWarpResp> warpRespList =  new ArrayList<>();
 
@@ -177,7 +305,6 @@ public class ProcessServiceImpl implements ProcessService {
                 userIds.stream().forEach(u1 -> {
                     DeviceProcessHandlerResp deviceProcessHandlerResp = new DeviceProcessHandlerResp();
                     deviceProcessHandlerResp.setUserId(u1);
-
                     deviceProcessHandlerRespList.add(deviceProcessHandlerResp);
                 });
 
