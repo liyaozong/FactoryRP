@@ -24,6 +24,7 @@ import tech.yozo.factoryrp.vo.resp.user.UserRespWarpResp;
 import tech.yozo.factoryrp.vo.resp.user.UserRoleResp;
 
 import javax.annotation.Resource;
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -36,6 +37,7 @@ import java.util.stream.Collectors;
  * @description 权限相关服务
  */
 @Service("authorizationService")
+@Transactional
 public class AuthorizationServiceImpl implements AuthorizationService {
 
 
@@ -80,7 +82,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 
             role.getUserList().stream().forEach(r1 -> {
                 UserResp userResp = new UserResp();
-                userResp.setUserId(String.valueOf(r1.getId()));
+                userResp.setUserId(r1.getId());
                 userResp.setUserName(r1.getUserName());
 
                 userRespList.add(userResp);
@@ -269,7 +271,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
         List<UserResp> userRespList = new ArrayList<>();
         userList.stream().forEach(u1 ->{
             UserResp userResp = new UserResp();
-            userResp.setUserId(String.valueOf(u1.getUserId()));
+            userResp.setUserId(u1.getUserId());
             userResp.setUserName(u1.getUserName());
 
             userRespList.add(userResp);

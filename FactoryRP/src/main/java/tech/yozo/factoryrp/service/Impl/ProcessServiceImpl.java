@@ -27,6 +27,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.transaction.Transactional;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -38,6 +39,7 @@ import java.util.stream.Collectors;
  * @description
  */
 @Service
+@Transactional
 public class ProcessServiceImpl implements ProcessService {
 
     @Resource
@@ -198,7 +200,6 @@ public class ProcessServiceImpl implements ProcessService {
         if(!CheckParam.isNull(deviceProcessTypeList) && !deviceProcessTypeList.isEmpty()){
             deviceProcessTypeList.stream().sorted((d1,d2) -> d1.getOrderNumber().compareTo(d2.getOrderNumber()));
         }
-
 
         return deviceProcessTypeRepository.findByCorporateIdentify(corporateIdentify);
     }

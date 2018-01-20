@@ -1,5 +1,8 @@
 package tech.yozo.factoryrp.utils;
 
+import com.alibaba.dubbo.common.json.JSON;
+import tech.yozo.factoryrp.entity.User;
+
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.TimeUnit;
@@ -119,37 +122,17 @@ public class UUIDSequenceWorker {
      */
     public static Long uniqueSequenceId(){
         UUIDSequenceWorker u = new UUIDSequenceWorker();
-        return u.nextId();
+        return u.nextId() >> 39;
     }
 
     public static void main(String[] args) {
-        test2();
+        /*System.out.println(954589177876316160L >> 36);
+        System.out.println(uniqueSequenceId());*/
+
+        User user = new User();
+
+        System.out.println(user.getUserId());
     }
 
-    public static void test2(){
-        final UUIDSequenceWorker w = new UUIDSequenceWorker(1,2);
-        final CyclicBarrier cdl = new CyclicBarrier(100);
-
-        for(int i = 0; i < 100; i++){
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        cdl.await();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    } catch (BrokenBarrierException e) {
-                        e.printStackTrace();
-                    }
-                    System.out.println(w.nextId());}
-            }).start();
-        }
-        try {
-            TimeUnit.SECONDS.sleep(5);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-    }
 
 }

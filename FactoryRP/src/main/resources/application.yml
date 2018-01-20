@@ -43,6 +43,7 @@ spring:
       druidMonitorPassword: 1
   jpa:
     show-sql: true
+    open-in-view: true
     properties:
       hibernate:
         generate_statistics: true  # 打开hibernate统计信息

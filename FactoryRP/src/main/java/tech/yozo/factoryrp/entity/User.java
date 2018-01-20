@@ -26,7 +26,7 @@ public class User extends BaseEntity implements Serializable{
      * 用户ID 工具类生成
      */
     @Column(name = "user_id")
-    private Long userId = new UUIDSequenceWorker().nextId();
+    private Long userId = new UUIDSequenceWorker().uniqueSequenceId();
 
     /**
      * 登陆用户名
@@ -56,7 +56,7 @@ public class User extends BaseEntity implements Serializable{
     @JoinTable(name="system_user_role",
       joinColumns={@JoinColumn(name="user_id", referencedColumnName="id")},
       inverseJoinColumns={@JoinColumn(name="role_id", referencedColumnName="id")})
-    @ManyToMany(cascade = { CascadeType.PERSIST }, targetEntity = Role.class, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = { CascadeType.PERSIST }, targetEntity = Role.class, fetch = FetchType.EAGER)
     private List<Role> roleList;
 
     public Long getUserId() {
