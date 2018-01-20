@@ -210,7 +210,67 @@ public class ProcessServiceImpl implements ProcessService {
 
 
     /**
-     * 分步查询流程详细信息
+     * 根据流程详情ID查询流程审核人员数据
+     * @param processStepId
+     * @return 流程详情ID
+     */
+    public  DeviceProcessDetailWarpResp queryProcessAduitInfoByStep(Long processStepId){
+
+
+        DeviceProcessDetail processDetail = deviceProcessDetailRepository.findOne(processStepId);
+
+        if(!CheckParam.isNull(processDetail)){
+            {
+                List<Long> userIdList =  new ArrayList<>();
+
+                DeviceProcessDetailWarpResp  deviceProcessDetailWarpResp = new DeviceProcessDetailWarpResp();
+
+                deviceProcessDetailWarpResp.setAuditType(processDetail.getAuditType());
+                deviceProcessDetailWarpResp.setHandleDemandType(processDetail.getHandleDemandType());
+
+                String processAuditor = processDetail.getProcessAuditor(); //处理处理人的逻辑
+                List<Long> userIds = JSON.parseArray(processAuditor, Long.class);
+
+                List<DeviceProcessHandlerResp> deviceProcessHandlerRespList = new ArrayList<>();
+
+                //格式化用户ID
+                userIds.stream().forEach(u1 -> {
+                    DeviceProcessHandlerResp deviceProcessHandlerResp = new DeviceProcessHandlerResp();
+                    deviceProcessHandlerResp.setUserId(u1);
+
+                    //添加进处理人集合
+                    deviceProcessHandlerRespList.add(deviceProcessHandlerResp);
+
+                    userIdList.addAll(userIds);
+                });
+
+                deviceProcessDetailWarpResp.setHandlerList(deviceProcessHandlerRespList);
+                deviceProcessDetailWarpResp.setProcessStep(processDetail.getProcessStep());
+
+                if(null != userIdList && !userIdList.isEmpty()){
+                    List<User> userList = userRepository.findByCorporateIdentifyAndUserIdIn(processDetail.getCorporateIdentify(), userIdList);
+
+                    //形成键为userId，值为User对象的Map结构，方便接下来定位数据
+                    Map<Long, User> userMap = userList.stream().collect(Collectors.toMap(User::getUserId, Function.identity()));
+
+                    //处理流程处理人姓名
+                    deviceProcessDetailWarpResp.getHandlerList().stream().forEach(h1 -> {
+                        if(!CheckParam.isNull(userMap.get(h1.getUserId()))) {
+                            h1.setName(userMap.get(h1.getUserId()).getUserName());
+                        }
+                    });
+
+                }
+                return deviceProcessDetailWarpResp;
+            }
+
+        }
+
+        return null;
+    }
+
+    /**
+     * 分步查询流程审核人员详细信息
      * @param processType  流程类型
      * @param processStage 流程状态
      * @param corporateIdentify 企业唯一标识
@@ -236,7 +296,7 @@ public class ProcessServiceImpl implements ProcessService {
                     deviceProcessDetailWarpResp.setHandleDemandType(deviceProcessDetail.getHandleDemandType());
 
                     String processAuditor = deviceProcessDetail.getProcessAuditor(); //处理处理人的逻辑
-                    List<Long> userIds = JSON.parseObject(processAuditor, List.class);
+                    List<Long> userIds = JSON.parseArray(processAuditor, Long.class);
 
                     List<DeviceProcessHandlerResp> deviceProcessHandlerRespList = new ArrayList<>();
 
@@ -262,7 +322,9 @@ public class ProcessServiceImpl implements ProcessService {
 
                         //处理流程处理人姓名
                         deviceProcessDetailWarpResp.getHandlerList().stream().forEach(h1 -> {
-                            h1.setName(String.valueOf(userMap.get(h1.getUserId())));
+                            if(!CheckParam.isNull(userMap.get(h1.getUserId()))){
+                                h1.setName(userMap.get(h1.getUserId()).getUserName());
+                            }
                         });
 
                     }

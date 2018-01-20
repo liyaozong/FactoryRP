@@ -16,6 +16,7 @@ import tech.yozo.factoryrp.vo.req.DeviceProcessAddReq;
 import tech.yozo.factoryrp.vo.req.DeviceProcessQueryReq;
 import tech.yozo.factoryrp.vo.resp.process.DeviceProcessAddResp;
 import tech.yozo.factoryrp.vo.resp.process.DeviceProcessDetailQueryWarpResp;
+import tech.yozo.factoryrp.vo.resp.process.DeviceProcessDetailWarpResp;
 import tech.yozo.factoryrp.vo.resp.process.DeviceProcessStepQueryResp;
 
 import javax.annotation.Resource;
@@ -42,6 +43,43 @@ public class DeviceProcessController extends BaseController  {
     @Resource
     private UserAuthService userAuthService;
 
+    /**
+     * 分步查询流程审核人员详细信息
+     * @param processType  流程类型
+     * @param processStage 流程状态
+     * @param processStep 步数ID
+     * @return
+     */
+    @ApiOperation(value = "分步查询流程审核人员详细信息-->内部接口，测试用",notes = "分步查询流程审核人员详细信息-->内部接口，测试用",httpMethod = "GET")
+    @GetMapping("/queryProcessAduitInfoByStep")
+    @ApiImplicitParams({
+            @ApiImplicitParam(dataType = "Long" ,name = "processType", paramType = "query" ,
+                    value = "流程类型",required = true,defaultValue = "1"),
+            @ApiImplicitParam(dataType = "Long" ,name = "processStage", paramType = "query" ,
+                    value = "流程状态",required = true,defaultValue = "1"),
+            @ApiImplicitParam(dataType = "Integer" ,name = "processStep", paramType = "query" ,
+                    value = "流程步数",required = true,defaultValue = "1")
+    })
+    public  ApiResponse<DeviceProcessDetailWarpResp> queryProcessAduitInfoByStep(@RequestParam(name = "processType") Long processType,@RequestParam(name = "processStage") Long processStage,@RequestParam(name = "processStep") Integer processStep, HttpServletRequest request){
+        Long corporateIdentify = userAuthService.getCurrentUserCorporateIdentify(request);
+        return apiResponse(processService.queryProcessAduitInfoByStep(processType,processStage,processStep,corporateIdentify));
+    }
+
+
+    /**
+     * 根据流程详情ID查询流程审核人员数据
+     * @param processStepId
+     * @return 流程详情ID
+     */
+    @ApiOperation(value = "根据流程详情ID查询流程审核人员数据-->内部接口，测试用",notes = "根据流程详情ID查询流程审核人员数据-->内部接口，测试用",httpMethod = "GET")
+    @GetMapping("/queryProcessAduitInfoByStepId")
+    @ApiImplicitParams({
+            @ApiImplicitParam(dataType = "Long" ,name = "processStepId", paramType = "query" ,
+                    value = "流程类型",required = true,defaultValue = "1"),
+    })
+    public ApiResponse<DeviceProcessDetailWarpResp> queryProcessAduitInfoByStepId(Long processStepId){
+        return apiResponse(processService.queryProcessAduitInfoByStep(processStepId));
+    }
 
     /**
      * 流程步骤查询

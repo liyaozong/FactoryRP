@@ -32,7 +32,14 @@ public interface ProcessService {
     DeviceProcessStepQueryResp processStepQuery(Long processType, Long processStage,Integer processStep, Long corporateIdentify);
 
     /**
-     * 分步查询流程详细信息
+     * 根据流程详情ID查询流程审核人员数据
+     * @param processStepId 流程详情ID
+     * @return
+     */
+    DeviceProcessDetailWarpResp queryProcessAduitInfoByStep(Long processStepId);
+
+    /**
+     * 分步查询流程审核人员详细信息
      * @param processType  流程类型
      * @param processStage 流程状态
      * @param corporateIdentify 企业唯一标识
