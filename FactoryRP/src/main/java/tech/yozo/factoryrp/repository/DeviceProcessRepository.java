@@ -1,5 +1,6 @@
 package tech.yozo.factoryrp.repository;
 
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import tech.yozo.factoryrp.entity.DeviceProcess;
@@ -34,4 +35,14 @@ public interface DeviceProcessRepository extends BaseRepository<DeviceProcess,Lo
      */
     DeviceProcess findByProcessTypeAndProcessStageAndCorporateIdentify(Long processType,Long processStage,Long corporateIdentify);
 
+
+    /**
+     * 根据流程类型，对应阶段,企业唯一标识,流程名称以及进行查询
+     * @param processType
+     * @param processStage
+     * @param corporateIdentify
+     * @param processName
+     * @return
+     */
+    DeviceProcess findByProcessTypeAndProcessStageAndCorporateIdentifyAndProcessName(Long processType,Long processStage,Long corporateIdentify,String processName);
 }

@@ -42,17 +42,6 @@ public class AuthorizationController extends BaseController{
     private UserAuthService userAuthService;
 
 
-    /*@Value("${spring.redis.host}")
-    private String host;
-
-    @Resource
-    private RedisTemplate redisTemplate;
-
-
-    @Resource
-    private StringRedisTemplate stringRedisTemplate;*/
-
-
     /**
      * 根据角色code查询用户信息
      * @param roleCode

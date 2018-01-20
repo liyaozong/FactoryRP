@@ -58,7 +58,7 @@ public class ProcessServiceImpl implements ProcessService {
 
 
     /**
-     * 流程部署查询
+     * 流程步骤查询
      * 业务逻辑: 不给步数就返回第一步和返回下一步的ID
      *          没有下一步ID就是空
      * @param processType 流程类型
@@ -78,13 +78,16 @@ public class ProcessServiceImpl implements ProcessService {
             //不给步数就返回第一步和返回下一步的ID
             if(CheckParam.isNull(processStep)){
 
-                //查询最小流程步数ID,此处必定是第一步，且值在业务上来说不可能为空
-                DeviceProcessDetail minProcessDetail = deviceProcessDetailRepository.findMinProcessStepByProcessIdAndAndCorporateIdentify(deviceProcess.getId(), corporateIdentify);
+                List<DeviceProcessDetail> deviceProcessDetailList = deviceProcessDetailRepository.findByProcessIdAndAndCorporateIdentify(deviceProcess.getId(), corporateIdentify);
+
+
+                //算出流程最小值,业务上来说不可能为空
+                DeviceProcessDetail minProcessDetail = deviceProcessDetailList.stream().collect(Collectors.minBy((d1, d2) -> d1.getProcessStep() - d2.getProcessStep())).get();
 
                 //下一步流程的步骤
                 Integer nextProcessStep = minProcessDetail.getProcessStep() + 1;
 
-                DeviceProcessDetail nextPeocessDetail = deviceProcessDetailRepository.findByProcessIdAndAndCorporateIdentifyAndProcessStep(deviceProcess.getId(), corporateIdentify, nextProcessStep);
+                DeviceProcessDetail nextPeocessDetail = deviceProcessDetailList.stream().filter(d1 -> d1.getProcessStep() == nextProcessStep).collect(Collectors.minBy((d1, d2) -> d1.getProcessStep() - d2.getProcessStep())).get();
 
                 DeviceProcessStepQueryResp deviceProcessStepQueryResp = new DeviceProcessStepQueryResp();
 
@@ -101,15 +104,16 @@ public class ProcessServiceImpl implements ProcessService {
                 }
 
                 //下一步流程的步骤
-                Integer nextProcessStep = currentProcessStep.getProcessStep();
+                Integer nextProcessStep = currentProcessStep.getProcessStep() + 1;
 
                 DeviceProcessDetail nextProcessDetail = deviceProcessDetailRepository.findByProcessIdAndAndCorporateIdentifyAndProcessStep(deviceProcess.getId(), corporateIdentify, nextProcessStep);
 
                 DeviceProcessStepQueryResp deviceProcessStepQueryResp = new DeviceProcessStepQueryResp();
 
                 deviceProcessStepQueryResp.setCurrentProcessStep(currentProcessStep.getId());
-                deviceProcessStepQueryResp.setNextProcessStep(nextProcessDetail.getId());
+                deviceProcessStepQueryResp.setNextProcessStep(CheckParam.isNull(nextProcessDetail) ? null : nextProcessDetail.getId());
 
+                logger.info(JSON.toJSONString(deviceProcessStepQueryResp));
                 return deviceProcessStepQueryResp;
             }
 
@@ -346,8 +350,9 @@ public class ProcessServiceImpl implements ProcessService {
      */
     public DeviceProcessAddResp addDeviceProcess(DeviceProcessAddReq deviceProcessAddReq,Long corporateIdentify){
 
-        DeviceProcess deviceProcess = deviceProcessRepository.findByProcessNameAndCorporateIdentify(deviceProcessAddReq.getProcessName(), corporateIdentify);
+        //DeviceProcess deviceProcess = null;
 
+      DeviceProcess deviceProcess = deviceProcessRepository.findByProcessTypeAndProcessStageAndCorporateIdentifyAndProcessName(deviceProcessAddReq.getProcessType(),deviceProcessAddReq.getProcessStage(), corporateIdentify,deviceProcessAddReq.getProcessName());
 
         if(!CheckParam.isNull(deviceProcess)){
             throw new BussinessException(ErrorCode.PROCESS_NAME_REPET_ERROR.getCode(),ErrorCode.PROCESS_NAME_REPET_ERROR.getMessage());

@@ -16,6 +16,7 @@ import tech.yozo.factoryrp.vo.req.DeviceProcessAddReq;
 import tech.yozo.factoryrp.vo.req.DeviceProcessQueryReq;
 import tech.yozo.factoryrp.vo.resp.process.DeviceProcessAddResp;
 import tech.yozo.factoryrp.vo.resp.process.DeviceProcessDetailQueryWarpResp;
+import tech.yozo.factoryrp.vo.resp.process.DeviceProcessStepQueryResp;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -41,6 +42,30 @@ public class DeviceProcessController extends BaseController  {
     @Resource
     private UserAuthService userAuthService;
 
+
+    /**
+     * 流程步骤查询
+     * 业务逻辑: 不给步数就返回第一步和返回下一步的ID
+     *          没有下一步ID就是空
+     * @param processType 流程类型
+     * @param processStage 流程状态
+     * @param processStep 流程步数 可为空
+     * @return
+     */
+    @ApiOperation(value = "流程步骤查询-->内部接口，测试用",notes = "流程步骤查询-->内部接口，测试用",httpMethod = "GET")
+    @GetMapping("/processStepQuery")
+    @ApiImplicitParams({
+                 @ApiImplicitParam(dataType = "Long" ,name = "processType", paramType = "query" ,
+                            value = "流程类型",required = true,defaultValue = "1"),
+                 @ApiImplicitParam(dataType = "Long" ,name = "processStage", paramType = "query" ,
+                    value = "流程状态",required = true,defaultValue = "1"),
+                 @ApiImplicitParam(dataType = "Integer" ,name = "processStep", paramType = "query" ,
+                    value = "流程步数",required = true,defaultValue = "1")
+    })
+    public ApiResponse<DeviceProcessStepQueryResp> processStepQuery(Long processType, Long processStage, Integer processStep,HttpServletRequest request){
+        Long corporateIdentify = userAuthService.getCurrentUserCorporateIdentify(request);
+        return apiResponse(processService.processStepQuery(processType,processStage,processStep,corporateIdentify));
+    }
 
     /**
      * 查询流程详情-->前端画图所需要的数据

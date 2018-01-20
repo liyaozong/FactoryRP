@@ -20,7 +20,7 @@ import java.util.List;
 public interface ProcessService {
 
     /**
-     * 流程部署查询
+     * 流程步骤查询
      * 业务逻辑: 不给步数就返回第一步和返回下一步的ID
      *          没有下一步ID就是空
      * @param processType 流程类型
