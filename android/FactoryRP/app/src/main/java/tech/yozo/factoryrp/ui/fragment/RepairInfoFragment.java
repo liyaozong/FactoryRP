@@ -1,6 +1,7 @@
 package tech.yozo.factoryrp.ui.fragment;
 
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -32,6 +33,8 @@ public class RepairInfoFragment extends BaseFragment implements HttpClient.OnHtt
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "mode";
     private static final String ARG_PARAM2 = "obj";
+
+    private static final int VALIDATE_REPAIR = 110;
 
     @BindView(R.id.b_i_repair)
     Button bIRepair;
@@ -180,11 +183,18 @@ public class RepairInfoFragment extends BaseFragment implements HttpClient.OnHtt
             case R.id.b_validate_repair: {
                 Intent intent = new Intent(getActivity(), ValidateRepairActivity.class);
                 intent.putExtra("id", mParam_obj.getTroubleRecordId());
-                startActivity(intent);
+                startActivityForResult(intent, VALIDATE_REPAIR);
                 break;
             }
             default:
                 break;
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == VALIDATE_REPAIR && resultCode == Activity.RESULT_OK) {
+            bValidateRepair.setEnabled(false);
         }
     }
 

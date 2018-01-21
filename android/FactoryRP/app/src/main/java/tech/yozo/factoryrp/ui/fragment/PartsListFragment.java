@@ -128,7 +128,7 @@ public class PartsListFragment extends BaseFragment implements HttpClient.OnHttp
         switch (mParam_mode) {
             case Constant.FOR_BROWE_MODE:
             case Constant.FOR_CHOICE_MODE:
-                if(client.getSparePartsRespList() == null) {
+                if(client.getSparePartsList() == null) {
                     LoadingDialog.Builder builder = new LoadingDialog.Builder(getContext())
                             .setMessage(R.string.loading_loading);
                     dialog = builder.create();
@@ -153,7 +153,7 @@ public class PartsListFragment extends BaseFragment implements HttpClient.OnHttp
         switch (mParam_mode) {
             case Constant.FOR_BROWE_MODE:
             case Constant.FOR_CHOICE_MODE:
-                parts = client.getSparePartsRespList();
+                parts = client.getSparePartsList();
                 mListAdapter.notifyDataSetChanged();
                 break;
             case Constant.FOR_DEVICE_ID:
@@ -169,7 +169,7 @@ public class PartsListFragment extends BaseFragment implements HttpClient.OnHttp
     public void onHttpSuccess(int requestType, Object obj, List<?> list) {
         if(requestType == HttpClient.REQUEST_PARTS_LIST) {
             HttpClient client = HttpClient.getInstance();
-            parts = client.getSparePartsRespList();
+            parts = client.getSparePartsList();
             mListAdapter.notifyDataSetChanged();
             dialog.dismiss();
         }

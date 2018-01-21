@@ -53,6 +53,7 @@ public class ValidateRepairActivity extends AppCompatActivity implements HttpCli
 
     @Override
     public void onHttpSuccess(int requestType, Object obj, List<?> list) {
+        setResult(RESULT_OK);
         finish();
     }
 

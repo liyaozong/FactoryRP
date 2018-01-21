@@ -15,10 +15,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 import com.loopj.android.http.RequestParams;
 import tech.yozo.factoryrp.R;
-import tech.yozo.factoryrp.ui.fragment.RepairAdviceFragment;
-import tech.yozo.factoryrp.ui.fragment.RepairInfoFragment;
-import tech.yozo.factoryrp.ui.fragment.RepairPartsFragment;
-import tech.yozo.factoryrp.ui.fragment.RepairWorkloadFragment;
+import tech.yozo.factoryrp.ui.fragment.*;
 import tech.yozo.factoryrp.utils.BottomNavigationViewHelper;
 import tech.yozo.factoryrp.utils.HttpClient;
 import tech.yozo.factoryrp.vo.req.SubmitRepairReq;
@@ -41,8 +38,8 @@ public class RepairDetailActivity extends AppCompatActivity implements HttpClien
     private int mode;
     private long id;
 
-    private boolean cancelForParts;
-    private boolean cancelForTimes;
+    private boolean cancelForParts = true;
+    private boolean cancelForTimes = true;
 
     private String[] fragments = new String[]{
             RepairInfoFragment.class.getName(),
@@ -150,12 +147,14 @@ public class RepairDetailActivity extends AppCompatActivity implements HttpClien
             case R.id.action_submit:
                 if(modifyParts != null && modifyParts.size() != 0) {
                     cancelForParts = false;
+                    attemptSubmitRepair();
                 } else {
                     cancelForParts = true;
                     partsAlertDialog();
                 }
                 if(modifyWorkTimes != null && modifyWorkTimes.size() != 0) {
                     cancelForTimes = false;
+                    attemptSubmitRepair();
                 } else {
                     cancelForTimes = true;
                     timesAlertDialog();
@@ -223,11 +222,18 @@ public class RepairDetailActivity extends AppCompatActivity implements HttpClien
 
     @Override
     public void onHttpSuccess(int requestType, Object obj, List<?> list) {
-        detailVo = (WorkOrderDetailVo) obj;
-        mViewPageContianer = (ViewPager) findViewById(R.id.container_repair);
-        mViewPageContianer.setAdapter(mFragmentPagerAdapter);
-        mViewPageContianer.setOnPageChangeListener(mOnPageChangeListener);
-        mViewPageContianer.setCurrentItem(mCurrentFragment);
+        switch (requestType) {
+            case HttpClient.REQUEST_REPAIR_DETAIL_URL:
+                detailVo = (WorkOrderDetailVo) obj;
+                mViewPageContianer = (ViewPager) findViewById(R.id.container_repair);
+                mViewPageContianer.setAdapter(mFragmentPagerAdapter);
+                mViewPageContianer.setOnPageChangeListener(mOnPageChangeListener);
+                mViewPageContianer.setCurrentItem(mCurrentFragment);
+                break;
+            case HttpClient.REQUEST_SUBMIT_REPAIR_ACTION:
+                finish();
+                break;
+        }
     }
 
     @Override

@@ -46,4 +46,10 @@ public class RepairRecordListActivity extends AppCompatActivity {
 
         fragment.setUserVisibleHint(true);
     }
+
+    @Override
+    public void onBackPressed() {
+        setResult(RESULT_OK);
+        super.onBackPressed();
+    }
 }

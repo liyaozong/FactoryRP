@@ -1,5 +1,6 @@
 package tech.yozo.factoryrp.ui.fragment;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -21,7 +22,9 @@ import tech.yozo.factoryrp.ui.ReportFaultActivity;
 import tech.yozo.factoryrp.utils.HttpClient;
 import tech.yozo.factoryrp.vo.resp.device.trouble.WorkOrderCountVo;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -34,6 +37,8 @@ public class WorkBenchFragment extends BaseFragment implements HttpClient.OnHttp
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "mode";
     private static final String ARG_PARAM2 = "id";
+
+    private static final int UPDATE_COUNT = 110;
 
     @BindView(R.id.button_ask_repair)
     Button buttonAskRepair;
@@ -111,15 +116,12 @@ public class WorkBenchFragment extends BaseFragment implements HttpClient.OnHttp
 
     @Override
     protected void loadData() {
-        HttpClient client = HttpClient.getInstance();
-        if(client.getMTroubleCount() == null) {
-            client.requestTroubleCount(getContext(), this);
-        }
+
     }
 
     @Override
     protected void buildUI() {
-        updateUI();
+        HttpClient.getInstance().requestTroubleCount(getContext(), this);
     }
 
     @OnClick({R.id.button_ask_repair, R.id.button_add_repair, R.id.button_add_device, R.id.textView_waitto_audit, R.id.textView_waitto_exec, R.id.textView_executing, R.id.textView_waitto_verify})
@@ -127,7 +129,7 @@ public class WorkBenchFragment extends BaseFragment implements HttpClient.OnHttp
         switch (view.getId()) {
             case R.id.button_ask_repair: {
                 Intent intent = new Intent(getContext(), ReportFaultActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, UPDATE_COUNT);
                 break;
             }
             case R.id.button_add_repair: {
@@ -143,63 +145,77 @@ public class WorkBenchFragment extends BaseFragment implements HttpClient.OnHttp
             case R.id.textView_waitto_audit: {
                 Intent intent = new Intent(getContext(), RepairRecordListActivity.class);
                 intent.putExtra(RepairRecordListActivity.RECORD_CATEGORY, HttpClient.REQUEST_TROUBLE_WAIT_AUDIT);
-                startActivity(intent);
+                startActivityForResult(intent, UPDATE_COUNT);
                 break;
             }
             case R.id.textView_waitto_exec: {
                 Intent intent = new Intent(getContext(), RepairRecordListActivity.class);
                 intent.putExtra(RepairRecordListActivity.RECORD_CATEGORY, HttpClient.REQUEST_TROUBLE_WAIT_REPAIR);
-                startActivity(intent);
+                startActivityForResult(intent, UPDATE_COUNT);
                 break;
             }
             case R.id.textView_executing: {
                 Intent intent = new Intent(getContext(), RepairRecordListActivity.class);
                 intent.putExtra(RepairRecordListActivity.RECORD_CATEGORY, HttpClient.REQUEST_TROUBLE_REPAIRING);
-                startActivity(intent);
+                startActivityForResult(intent, UPDATE_COUNT);
                 break;
             }
             case R.id.textView_waitto_verify: {
                 Intent intent = new Intent(getContext(), RepairRecordListActivity.class);
                 intent.putExtra(RepairRecordListActivity.RECORD_CATEGORY, HttpClient.REQUEST_TROUBLE_WAIT_VALIDATE);
-                startActivity(intent);
+                startActivityForResult(intent, UPDATE_COUNT);
                 break;
             }
         }
     }
 
-    private void updateUI() {
-        WorkOrderCountVo mTroubleCount = HttpClient.getInstance().getMTroubleCount();
-        if (mTroubleCount != null) {
-            textViewWaittoAudit.setText(String.valueOf(mTroubleCount.getWaitAuditNum()));
-            if(mTroubleCount.getWaitAuditNum() <= 0) {
-                textViewWaittoAudit.setEnabled(false);
-            } else {
-                textViewWaittoAudit.setEnabled(true);
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == UPDATE_COUNT && resultCode == Activity.RESULT_OK) {
+            HttpClient.getInstance().requestTroubleCount(getContext(), this);
+        }
+    }
+
+    private void updateUI(int requestType, Object obj, List<?> list) {
+        switch (requestType) {
+            case HttpClient.REQUEST_TROUBLE_COUNT: {
+                WorkOrderCountVo mTroubleCount = (WorkOrderCountVo) obj;
+                if (mTroubleCount != null) {
+                    textViewWaittoAudit.setText(String.valueOf(mTroubleCount.getWaitAuditNum()));
+                    if(mTroubleCount.getWaitAuditNum() <= 0) {
+                        textViewWaittoAudit.setEnabled(false);
+                    } else {
+                        textViewWaittoAudit.setEnabled(true);
+                    }
+                    textViewWaittoExec.setText(String.valueOf(mTroubleCount.getWaitRepairNum()));
+                    if(mTroubleCount.getWaitRepairNum() <= 0) {
+                        textViewWaittoExec.setEnabled(false);
+                    } else {
+                        textViewWaittoExec.setEnabled(true);
+                    }
+                    textViewExecuting.setText(String.valueOf(mTroubleCount.getRepairingNum()));
+                    if(mTroubleCount.getRepairingNum() <= 0) {
+                        textViewExecuting.setEnabled(false);
+                    } else {
+                        textViewExecuting.setEnabled(true);
+                    }
+                    textViewWaittoVerify.setText(String.valueOf(mTroubleCount.getWaitValidateNum()));
+                    if(mTroubleCount.getWaitValidateNum() <= 0) {
+                        textViewWaittoVerify.setEnabled(false);
+                    } else {
+                        textViewWaittoVerify.setEnabled(true);
+                    }
+                }
+                break;
             }
-            textViewWaittoExec.setText(String.valueOf(mTroubleCount.getWaitRepairNum()));
-            if(mTroubleCount.getWaitRepairNum() <= 0) {
-                textViewWaittoExec.setEnabled(false);
-            } else {
-                textViewWaittoExec.setEnabled(true);
-            }
-            textViewExecuting.setText(String.valueOf(mTroubleCount.getRepairingNum()));
-            if(mTroubleCount.getRepairingNum() <= 0) {
-                textViewExecuting.setEnabled(false);
-            } else {
-                textViewExecuting.setEnabled(true);
-            }
-            textViewWaittoVerify.setText(String.valueOf(mTroubleCount.getWaitValidateNum()));
-            if(mTroubleCount.getWaitValidateNum() <= 0) {
-                textViewWaittoVerify.setEnabled(false);
-            } else {
-                textViewWaittoVerify.setEnabled(true);
-            }
+            default:
+                break;
         }
     }
 
     @Override
     public void onHttpSuccess(int requestType, Object obj, List<?> list) {
-        updateUI();
+        updateUI(requestType, obj, list);
     }
 
     @Override

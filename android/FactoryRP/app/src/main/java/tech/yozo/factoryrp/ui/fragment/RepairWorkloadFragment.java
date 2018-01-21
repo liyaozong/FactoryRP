@@ -16,13 +16,19 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import com.alibaba.fastjson.JSONArray;
 import tech.yozo.factoryrp.R;
 import tech.yozo.factoryrp.entity.MaintenanceEngineer;
 import tech.yozo.factoryrp.ui.EngineerSelectActivity;
+import tech.yozo.factoryrp.ui.dialog.EditWorkLoadDialog;
+import tech.yozo.factoryrp.ui.dialog.TimePickerDialog;
 import tech.yozo.factoryrp.vo.resp.device.trouble.WorkOrderDetailVo;
 import tech.yozo.factoryrp.vo.resp.device.trouble.WorkTimeVo;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -50,6 +56,9 @@ public class RepairWorkloadFragment extends BaseFragment {
     private WorkOrderDetailVo mParam_obj;
     private List<WorkTimeVo> modifyWorkTimes;
     private WorkTimesAdapter mListAdapter;
+
+    private SimpleDateFormat df = new SimpleDateFormat("yyyy年MM月dd日 HH:mm");
+    private TimePickerDialog mTimePickerDialog;
 
     public RepairWorkloadFragment() {
         // Required empty public constructor
@@ -119,8 +128,14 @@ public class RepairWorkloadFragment extends BaseFragment {
         unbinder = ButterKnife.bind(this, view);
 
         mListAdapter = new WorkTimesAdapter(getContext());
-        lvRepairWorkload.addHeaderView(inflater.inflate(R.layout.item_worktime_head, null));
         lvRepairWorkload.setAdapter(mListAdapter);
+//        lvRepairWorkload.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+//                EditWorkLoadDialog dialog = new EditWorkLoadDialog(getContext());
+//                dialog.show();
+//            }
+//        });
         return view;
     }
 
@@ -157,21 +172,22 @@ public class RepairWorkloadFragment extends BaseFragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(resultCode == Activity.RESULT_OK && requestCode == REQUEST_ADD_MEMBER) {
-            MaintenanceEngineer param = (MaintenanceEngineer) data.getSerializableExtra(EngineerSelectActivity.ENGINEER);
+            List<MaintenanceEngineer> params = JSONArray.parseArray(data.getStringExtra(EngineerSelectActivity.ENGINEER), MaintenanceEngineer.class);
             boolean exist = false;
-            for(WorkTimeVo p : modifyWorkTimes) {
-                if(p.getRepairUserId().equals(param.getId())) {
-                    exist = true;
-                    Toast.makeText(getContext(), R.string.hint_is_exist, Toast.LENGTH_SHORT).show();
-                    break;
+            for(MaintenanceEngineer param : params) {
+                for(WorkTimeVo p : modifyWorkTimes) {
+                    if (p.getRepairUserId().equals(param.getUserId())) {
+                        exist = true;
+                        break;
+                    }
                 }
-            }
-            if(!exist) {
-                WorkTimeVo obj = new WorkTimeVo();
-                obj.setRepairUserId(param.getId());
-                obj.setRepairUserName(param.getName());
-                obj.setCostHour(1);
-                modifyWorkTimes.add(obj);
+                if(!exist) {
+                    WorkTimeVo obj = new WorkTimeVo();
+                    obj.setRepairUserId(param.getUserId());
+                    obj.setRepairUserName(param.getUserName());
+                    obj.setCostHour(0);
+                    modifyWorkTimes.add(obj);
+                }
             }
             mListAdapter.notifyDataSetChanged();
         }
@@ -180,7 +196,9 @@ public class RepairWorkloadFragment extends BaseFragment {
     private static class ViewHolder
     {
         TextView name;
-        EditText number;
+        TextView startTime;
+        TextView endTime;
+        TextView number;
         ImageButton delete;
     }
 
@@ -212,12 +230,14 @@ public class RepairWorkloadFragment extends BaseFragment {
 
         @Override
         public View getView(final int i, View convertView, ViewGroup viewGroup) {
-            ViewHolder holder;
+            final ViewHolder holder;
             if(convertView == null) {
                 holder = new ViewHolder();
                 convertView = mInflater.inflate(R.layout.item_worktime_list, null);
                 holder.name = (TextView) convertView.findViewById(R.id.tv_engineer_name);
-                holder.number = (EditText) convertView.findViewById(R.id.editText_worktime);
+                holder.startTime = (TextView) convertView.findViewById(R.id.editText_starttime);
+                holder.endTime = (TextView) convertView.findViewById(R.id.editText_endtime);
+                holder.number = (TextView) convertView.findViewById(R.id.editText_worktime);
                 holder.delete = (ImageButton) convertView.findViewById(R.id.ib_delete_engineer);
                 convertView.setTag(holder);
             }
@@ -225,24 +245,61 @@ public class RepairWorkloadFragment extends BaseFragment {
                 holder = (ViewHolder)convertView.getTag();
             }
             holder.name.setText(modifyWorkTimes.get(i).getRepairUserName());
-            holder.number.setText(String.valueOf(modifyWorkTimes.get(i).getCostHour()));
-            holder.number.addTextChangedListener(new TextWatcher() {
+            holder.startTime.setText(modifyWorkTimes.get(i).getStartTime());
+            holder.startTime.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
-
-                @Override
-                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
-
-                @Override
-                public void afterTextChanged(Editable editable) {
-                    if(editable.length() > 0) {
-                        int num = Integer.decode(editable.toString());
-                        if (num != modifyWorkTimes.get(i).getCostHour()) {
-                            modifyWorkTimes.get(i).setCostHour(num);
+                public void onClick(View view) {
+                    mTimePickerDialog = new TimePickerDialog(getContext(), new TimePickerDialog.TimePickerDialogInterface() {
+                        @Override
+                        public void positiveListener() {
+                            StringBuffer buffer = new StringBuffer();
+                            buffer.append(mTimePickerDialog.getYear()).append("年")
+                                    .append(mTimePickerDialog.getMonth()).append("月")
+                                    .append(mTimePickerDialog.getDay()).append("日 ")
+                                    .append(mTimePickerDialog.getHour()).append(":")
+                                    .append(mTimePickerDialog.getMinute());
+                            holder.startTime.setText(buffer);
+                            modifyWorkTimes.get(i).setStartTime(buffer.toString());
+                            calcWorkTime(holder.startTime.getText(), holder.endTime.getText(), holder.number, i);
                         }
-                    }
+
+                        @Override
+                        public void negativeListener() {
+
+                        }
+                    });
+                    mTimePickerDialog.showDateAndTimePickerDialog();
                 }
             });
+            holder.endTime.setText(modifyWorkTimes.get(i).getEndTime());
+            holder.endTime.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mTimePickerDialog = new TimePickerDialog(getContext(), new TimePickerDialog.TimePickerDialogInterface() {
+                        @Override
+                        public void positiveListener() {
+                            StringBuffer buffer = new StringBuffer();
+                            buffer.append(mTimePickerDialog.getYear()).append("年")
+                                    .append(mTimePickerDialog.getMonth()).append("月")
+                                    .append(mTimePickerDialog.getDay()).append("日 ")
+                                    .append(mTimePickerDialog.getHour()).append(":")
+                                    .append(mTimePickerDialog.getMinute());
+                            holder.endTime.setText(buffer);
+                            modifyWorkTimes.get(i).setEndTime(buffer.toString());
+                            calcWorkTime(holder.startTime.getText(), holder.endTime.getText(), holder.number, i);
+                        }
+
+                        @Override
+                        public void negativeListener() {
+
+                        }
+                    });
+                    mTimePickerDialog.showDateAndTimePickerDialog();
+                }
+            });
+            if(modifyWorkTimes.get(i).getCostHour() != null) {
+                holder.number.setText(String.valueOf(modifyWorkTimes.get(i).getCostHour()));
+            }
             holder.delete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -252,6 +309,25 @@ public class RepairWorkloadFragment extends BaseFragment {
             });
 
             return convertView;
+        }
+
+        private void calcWorkTime(CharSequence start, CharSequence end, TextView editTextWorktime, int postion) {
+            Date hasStart = null;
+            Date hasEnd = null;
+            try {
+                hasStart = df.parse(start.toString());
+                hasEnd = df.parse(end.toString());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            if(hasStart != null && hasEnd != null) {
+                long useTime = (hasEnd.getTime() - hasStart.getTime())/3600000;
+                if(useTime/24 > 0) {
+                    useTime = useTime - 14*useTime/24;
+                }
+                editTextWorktime.setText(String.valueOf(useTime));
+                modifyWorkTimes.get(postion).setCostHour((int) useTime);
+            }
         }
     }
 }

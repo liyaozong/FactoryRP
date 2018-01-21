@@ -1,7 +1,6 @@
 package tech.yozo.factoryrp.ui;
 
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -30,7 +29,6 @@ import tech.yozo.factoryrp.utils.BottomNavigationViewHelper;
 import tech.yozo.factoryrp.utils.Constant;
 import tech.yozo.factoryrp.utils.HttpClient;
 import tech.yozo.factoryrp.vo.resp.device.info.FullDeviceInfoResp;
-import tech.yozo.factoryrp.vo.resp.device.info.SimpleDeviceInfoResp;
 
 import java.util.List;
 
@@ -179,7 +177,7 @@ public class MainActivity extends AppCompatActivity implements HttpClient.OnHttp
                     boolean needNet = true;
                     String code = data.getStringExtra(Intents.Scan.RESULT);
                     HttpClient client = HttpClient.getInstance();
-                    List<FullDeviceInfoResp> list = client.getFullDeviceInfoRespList();
+                    List<FullDeviceInfoResp> list = client.getFullDeviceInfoList();
                     for(FullDeviceInfoResp device : list) {
                         if (code.contentEquals(device.getCode())) {
                             Intent intent = new Intent(this, DeviceDetailActivity.class);

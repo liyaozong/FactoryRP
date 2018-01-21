@@ -130,7 +130,7 @@ public class DeviceListFragment extends BaseFragment implements HttpClient.OnHtt
     @Override
     protected void loadData() {
         HttpClient client = HttpClient.getInstance();
-        devices = client.getSimpleDeviceList();
+        devices = client.getSimpleDeviceInfoList();
         if(devices == null) {
             LoadingDialog.Builder builder = new LoadingDialog.Builder(getContext())
                     .setMessage(R.string.loading_loading);
@@ -143,7 +143,7 @@ public class DeviceListFragment extends BaseFragment implements HttpClient.OnHtt
     @Override
     protected void buildUI() {
         HttpClient client = HttpClient.getInstance();
-        devices = client.getSimpleDeviceList();
+        devices = client.getSimpleDeviceInfoList();
         mListAdapter.notifyDataSetChanged();
     }
 
@@ -151,7 +151,7 @@ public class DeviceListFragment extends BaseFragment implements HttpClient.OnHtt
     public void onHttpSuccess(int requestType, Object obj, List<?> list) {
         if(requestType == HttpClient.REQUEST_DEVICE_LIST) {
             HttpClient client = HttpClient.getInstance();
-            devices = client.getSimpleDeviceList();
+            devices = client.getSimpleDeviceInfoList();
             mListAdapter.notifyDataSetChanged();
             dialog.dismiss();
         }

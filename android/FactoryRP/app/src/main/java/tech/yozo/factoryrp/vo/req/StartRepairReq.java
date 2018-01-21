@@ -44,7 +44,4 @@ public class StartRepairReq {
 
 //    @ApiModelProperty(value = "开始时间，格式yyyy-MM-dd HH:mm:ss")
     private String startTime;
-
-//    @ApiModelProperty(value = "维修耗时")
-    private String costHour;
 }

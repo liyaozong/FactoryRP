@@ -6,10 +6,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.RadioGroup;
-import android.widget.Spinner;
+import android.widget.*;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -24,6 +21,9 @@ import tech.yozo.factoryrp.vo.resp.DeviceParamDicEnumResp;
 import tech.yozo.factoryrp.vo.resp.device.trouble.DeviceTroubleTypeVo;
 import tech.yozo.factoryrp.vo.resp.device.trouble.WorkOrderDetailVo;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -60,9 +60,9 @@ public class RepairAdviceFragment extends BaseFragment implements HttpClient.OnH
     @BindView(R.id.editText_repair_desc)
     EditText editTextRepairDesc;
     @BindView(R.id.tv_start_time)
-    Button tvStartTime;
+    TextView tvStartTime;
     @BindView(R.id.tv_end_time)
-    Button tvEndTime;
+    TextView tvEndTime;
     @BindView(R.id.editText_total_time)
     EditText editTextTotalTime;
     Unbinder unbinder;
@@ -70,6 +70,7 @@ public class RepairAdviceFragment extends BaseFragment implements HttpClient.OnH
     private int mParam_mode;
     private WorkOrderDetailVo mParam_obj;
 
+    private SimpleDateFormat df = new SimpleDateFormat("yyyy年MM月dd日 HH:mm");
     private TimePickerDialog mTimePickerDialog;
 
     public RepairAdviceFragment() {
@@ -149,6 +150,12 @@ public class RepairAdviceFragment extends BaseFragment implements HttpClient.OnH
             updateUI(HttpClient.REQUEST_DATA_DICT);
         }
 
+        if (client.getDictEnum(Constant.DICT_REPAIR_STATUS) == null) {
+            client.requestDeviceDict(getContext(), this, Constant.DICT_REPAIR_STATUS);
+        } else {
+            updateUI(HttpClient.REQUEST_DATA_DICT);
+        }
+
         if (client.getRepairGroupList() == null) {
             client.requestRepairGroup(getContext(), this);
         } else {
@@ -194,50 +201,16 @@ public class RepairAdviceFragment extends BaseFragment implements HttpClient.OnH
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_start_time:
-                mTimePickerDialog = new TimePickerDialog(getContext(), new TimePickerDialog.TimePickerDialogInterface() {
-                    @Override
-                    public void positiveListener() {
-                        StringBuffer buffer = new StringBuffer();
-                        buffer.append(mTimePickerDialog.getYear()).append("年")
-                                .append(mTimePickerDialog.getMonth()).append("月")
-                                .append(mTimePickerDialog.getDay()).append("日 ")
-                                .append(mTimePickerDialog.getHour()).append(":")
-                                .append(mTimePickerDialog.getMinute());
-                        tvStartTime.setText(buffer);
-                    }
-
-                    @Override
-                    public void negativeListener() {
-
-                    }
-                });
-                mTimePickerDialog.showDateAndTimePickerDialog();
-                break;
             case R.id.tv_end_time:
-                mTimePickerDialog = new TimePickerDialog(getContext(), new TimePickerDialog.TimePickerDialogInterface() {
-                    @Override
-                    public void positiveListener() {
-                        StringBuffer buffer = new StringBuffer();
-                        buffer.append(mTimePickerDialog.getYear()).append("年")
-                                .append(mTimePickerDialog.getMonth()).append("月")
-                                .append(mTimePickerDialog.getDay()).append("日 ")
-                                .append(mTimePickerDialog.getHour()).append(":")
-                                .append(mTimePickerDialog.getMinute());
-                        tvEndTime.setText(buffer);
-                    }
-
-                    @Override
-                    public void negativeListener() {
-
-                    }
-                });
-                mTimePickerDialog.showDateAndTimePickerDialog();
+                openDateDialog(view.getId());
                 break;
             case R.id.b_start_repair: {
                 HttpClient client = HttpClient.getInstance();
                 StartRepairReq req = new StartRepairReq();
-                //TODO
                 req.setTroubleRecordId(mParam_obj.getTroubleRecordId());
+                req.setRepairGroupId(tvRepairGroup.getSelectedItemId());
+                req.setRepairStatus((int) spinnerRepairStatus.getSelectedItemId());
+                req.setTroubleTypeId(spinnerTroubleType.getSelectedItemId());
                 req.setTroubleReason((int) spinnerTroubleReason.getSelectedItemId());
                 req.setRepairLevel((int) spinnerRepairLevel.getSelectedItemId());
                 switch (rgNeedStop.getCheckedRadioButtonId()) {
@@ -260,8 +233,8 @@ public class RepairAdviceFragment extends BaseFragment implements HttpClient.OnH
             case R.id.b_finish_repair: {
                 HttpClient client = HttpClient.getInstance();
                 EndRepairReq req = new EndRepairReq();
-                //TODO
                 req.setTroubleRecordId(mParam_obj.getTroubleRecordId());
+                req.setRepairGroupId(tvRepairGroup.getSelectedItemId());
                 req.setTroubleTypeId(spinnerTroubleType.getSelectedItemId());
                 req.setTroubleReason((int) spinnerTroubleReason.getSelectedItemId());
                 req.setRepairLevel((int) spinnerRepairLevel.getSelectedItemId());
@@ -285,6 +258,53 @@ public class RepairAdviceFragment extends BaseFragment implements HttpClient.OnH
             }
             default:
                 break;
+        }
+    }
+
+    private void openDateDialog(final int id) {
+        mTimePickerDialog = new TimePickerDialog(getContext(), new TimePickerDialog.TimePickerDialogInterface() {
+            @Override
+            public void positiveListener() {
+                StringBuffer buffer = new StringBuffer();
+                buffer.append(mTimePickerDialog.getYear()).append("年")
+                        .append(mTimePickerDialog.getMonth()).append("月")
+                        .append(mTimePickerDialog.getDay()).append("日 ")
+                        .append(mTimePickerDialog.getHour()).append(":")
+                        .append(mTimePickerDialog.getMinute());
+                switch (id) {
+                    case R.id.tv_start_time:
+                        tvStartTime.setText(buffer);
+                        calcWorkTime(tvStartTime.getText(), tvEndTime.getText());
+                        break;
+                    case R.id.tv_end_time:
+                        tvEndTime.setText(buffer);
+                        calcWorkTime(tvStartTime.getText(), tvEndTime.getText());
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            @Override
+            public void negativeListener() {
+
+            }
+        });
+        mTimePickerDialog.showDateAndTimePickerDialog();
+    }
+
+    private void calcWorkTime(CharSequence start, CharSequence end) {
+        Date hasStart = null;
+        Date hasEnd = null;
+        try {
+            hasStart = df.parse(start.toString());
+            hasEnd = df.parse(end.toString());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        if(hasStart != null && hasEnd != null) {
+            long useTime = (hasEnd.getTime() - hasStart.getTime())/3600000;
+            editTextTotalTime.setText(String.valueOf(useTime));
         }
     }
 
@@ -326,6 +346,18 @@ public class RepairAdviceFragment extends BaseFragment implements HttpClient.OnH
                         }
                     }
                 }
+                List<DeviceParamDicEnumResp> repairStatus = client.getDictEnum(Constant.DICT_REPAIR_STATUS);
+                if (repairStatus != null) {
+                    spinnerRepairStatus.setAdapter(new DictSpinnerAdapter(getContext(), android.R.layout.simple_list_item_1, repairStatus));
+                    if(mParam_obj != null) {
+                        for (int i = 0; i < repairStatus.size(); i++) {
+                            if (repairStatus.get(i).getId().equals(mParam_obj.getRepairStatus())) {
+                                spinnerRepairStatus.setSelection(i, false);
+                                break;
+                            }
+                        }
+                    }
+                }
                 break;
             case HttpClient.REQUEST_DEVICE_TROUBLE_TYPE_URL:
                 List<DeviceTroubleTypeVo> troubleTypeVoList = client.getTroubleTypeVoList();
@@ -357,6 +389,7 @@ public class RepairAdviceFragment extends BaseFragment implements HttpClient.OnH
                 break;
             case HttpClient.REQUEST_START_REPAIR_ACTION:
                 bStartRepair.setEnabled(false);
+                getActivity().finish();
                 break;
             case HttpClient.REQUEST_END_REPAIR_ACTION:
                 bFinishRepair.setEnabled(false);

@@ -86,7 +86,7 @@ public class DeviceInfoFragment extends BaseFragment implements HttpClient.OnHtt
         HttpClient client = HttpClient.getInstance();
 
         boolean exist = false;
-        for (FullDeviceInfoResp device : client.getFullDeviceInfoRespList()) {
+        for (FullDeviceInfoResp device : client.getFullDeviceInfoList()) {
             if (mParam_id == device.getId()) {
                 exist = true;
                 getData(device);
@@ -174,7 +174,7 @@ public class DeviceInfoFragment extends BaseFragment implements HttpClient.OnHtt
     private void updateUI() {
         HttpClient client = HttpClient.getInstance();
 
-        for (FullDeviceInfoResp device : client.getFullDeviceInfoRespList()) {
+        for (FullDeviceInfoResp device : client.getFullDeviceInfoList()) {
             if (device.getId().equals(mParam_id)) {
                 getData(device);
                 adapter.notifyDataSetChanged();

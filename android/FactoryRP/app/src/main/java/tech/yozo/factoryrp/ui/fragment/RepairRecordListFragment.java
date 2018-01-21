@@ -1,6 +1,7 @@
 package tech.yozo.factoryrp.ui.fragment;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -103,20 +104,22 @@ public class RepairRecordListFragment extends BaseFragment implements HttpClient
 
     @Override
     protected void buildUI() {
-        HttpClient client = HttpClient.getInstance();
-        troubles = client.getRepairList(param_mode);
-        if(troubles == null) {
-            LoadingDialog.Builder builder = new LoadingDialog.Builder(getContext())
-                    .setMessage(R.string.loading_loading);
-            dialog = builder.create();
-            dialog.show();
-            if(Constant.FOR_DEVICE_ID == param_mode) {
-                client.requestRepairList(getContext(), this, HttpClient.REQUEST_TROUBLE_LIST_BY_DEVICEID, param_id);
-            } else {
-                client.requestRepairList(getContext(), this, param_mode);
-            }
+//        if(troubles == null) {
+            requestList();
+//        } else {
+//            mRepairRecordListAdapter.notifyDataSetChanged();
+//        }
+    }
+
+    private void requestList() {
+        LoadingDialog.Builder builder = new LoadingDialog.Builder(getContext())
+                .setMessage(R.string.loading_loading);
+        dialog = builder.create();
+        dialog.show();
+        if(Constant.FOR_DEVICE_ID == param_mode) {
+            HttpClient.getInstance().requestRepairList(getContext(), this, HttpClient.REQUEST_TROUBLE_LIST_BY_DEVICEID, param_id);
         } else {
-            mRepairRecordListAdapter.notifyDataSetChanged();
+            HttpClient.getInstance().requestRepairList(getContext(), this, param_mode);
         }
     }
 
@@ -189,7 +192,6 @@ public class RepairRecordListFragment extends BaseFragment implements HttpClient
             else {
                 holder = (ViewHolder)convertView.getTag();
             }
-            //TODO
             holder.name.setText(troubles.get(i).getName());
             holder.code.setText(troubles.get(i).getCode());
             holder.time.setText(sdf.format(troubles.get(i).getHappenTime()));

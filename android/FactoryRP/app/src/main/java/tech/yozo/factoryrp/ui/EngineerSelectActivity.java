@@ -1,30 +1,35 @@
 package tech.yozo.factoryrp.ui;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.*;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import com.alibaba.fastjson.JSON;
+import com.loopj.android.http.RequestParams;
 import tech.yozo.factoryrp.R;
 import tech.yozo.factoryrp.entity.MaintenanceEngineer;
 import tech.yozo.factoryrp.utils.HttpClient;
-import tech.yozo.factoryrp.vo.resp.sparepars.SparePartsResp;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-public class EngineerSelectActivity extends AppCompatActivity {
+public class EngineerSelectActivity extends AppCompatActivity implements HttpClient.OnHttpListener {
     public static final String ENGINEER = "engineer";
 
     @BindView(R.id.lv_maintainer)
     ListView lvMaintainer;
+    @BindView(R.id.button_selected)
+    Button buttonSelected;
 
-    List<Map<String, Object>> list;
+    private List<MaintenanceEngineer> engineerList;
+    private List<MaintenanceEngineer> checkBoxSelected = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,57 +38,100 @@ public class EngineerSelectActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         HttpClient client = HttpClient.getInstance();
-        //TODO
-
-        lvMaintainer.setAdapter(new SimpleAdapter(this, getData(),
-                R.layout.item_info_list, new String[] { "title", "info" },
-                new int[] { R.id.tv_name, R.id.tv_value }));
-        lvMaintainer.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                Intent intent = new Intent();
-                MaintenanceEngineer engineer = new MaintenanceEngineer();
-                engineer.setId((Long) list.get(position).get("title"));
-                engineer.setName(list.get(position).get("info").toString());
-                intent.putExtra(ENGINEER, engineer);
-                setResult(RESULT_OK, intent);
-                finish();
-            }
-        });
+        RequestParams params = new RequestParams();
+        params.put("roleCode", "MAINTENANCE_PERSONNEL");
+        client.requestMemberByRole(this, this, params);
     }
 
-    private List<Map<String, Object>> getData() {
-        list = new ArrayList<>();
-        Map<String, Object> map = new HashMap<>();
-        map.put("title", 1L);
-        map.put("info", "电台DJ");
-        list.add(map);
+    @Override
+    public void onHttpSuccess(int requestType, Object obj, List<?> list) {
+        if (requestType == HttpClient.REQUEST_MEMBER_LIST_BY_ROLE) {
+            engineerList = (List<MaintenanceEngineer>) list;
+            lvMaintainer.setAdapter(new EngineerListAdapter(this));
+            lvMaintainer.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    LinearLayout view1 = (LinearLayout) adapterView.getChildAt(i);
+                    CheckBox box = (CheckBox) view1.getChildAt(2);
+                    box.setChecked(!box.isChecked());
+                }
+            });
+        }
+    }
 
-        map = new HashMap<>();
-        map.put("title", 2L);
-        map.put("info", "四大美女");
-        list.add(map);
+    @Override
+    public void onFailure(int requestType) {
 
-        map = new HashMap<>();
-        map.put("title", 3L);
-        map.put("info", "清纯妹妹");
-        list.add(map);
+    }
 
-        map = new HashMap<>();
-        map.put("title", 4L);
-        map.put("info", "小狗");
-        list.add(map);
+    @OnClick(R.id.button_selected)
+    public void onViewClicked() {
+        if(checkBoxSelected.size() > 0) {
+            Intent intent = new Intent();
+            intent.putExtra(ENGINEER, JSON.toJSONString(checkBoxSelected));
+            setResult(RESULT_OK, intent);
+        }
+        finish();
+    }
 
-        map = new HashMap<>();
-        map.put("title", 5L);
-        map.put("info", "进修工程师");
-        list.add(map);
+    class ViewHolder {
+        TextView number;
+        TextView name;
+        CheckBox isSelected;
+    }
 
-        map = new HashMap<>();
-        map.put("title", 6L);
-        map.put("info", "阿卡德工程师");
-        list.add(map);
+    private class EngineerListAdapter extends BaseAdapter {
+        private LayoutInflater mInflater;
 
-        return list;
+        private EngineerListAdapter(Context context) {
+            this.mInflater = LayoutInflater.from(context);
+        }
+
+        @Override
+        public int getCount() {
+            if (engineerList != null) {
+                return engineerList.size();
+            }
+            return 0;
+        }
+
+        @Override
+        public Object getItem(int i) {
+            return null;
+        }
+
+        @Override
+        public long getItemId(int i) {
+            return 0;
+        }
+
+        @Override
+        public View getView(final int i, View convertView, ViewGroup viewGroup) {
+            ViewHolder holder;
+            if (convertView == null) {
+                holder = new ViewHolder();
+                convertView = mInflater.inflate(R.layout.item_engineer_select, null);
+                holder.number = (TextView) convertView.findViewById(R.id.textView_number);
+                holder.name = (TextView) convertView.findViewById(R.id.textView_name);
+                holder.isSelected = (CheckBox) convertView.findViewById(R.id.checkBox_isSelected);
+                convertView.setTag(holder);
+            } else {
+                holder = (ViewHolder) convertView.getTag();
+            }
+            holder.number.setText(String.valueOf(i + 1));
+            holder.name.setText(engineerList.get(i).getUserName());
+            holder.isSelected.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                    if (b) {
+                        checkBoxSelected.add(engineerList.get(i));
+                    } else {
+                        checkBoxSelected.remove(engineerList.get(i));
+                    }
+                }
+            });
+
+            return convertView;
+        }
     }
 }

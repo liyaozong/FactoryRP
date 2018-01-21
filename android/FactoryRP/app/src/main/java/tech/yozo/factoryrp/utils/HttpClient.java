@@ -20,6 +20,7 @@ import org.json.JSONObject;
 import tech.yozo.factoryrp.R;
 import tech.yozo.factoryrp.entity.Department;
 import tech.yozo.factoryrp.entity.DeviceType;
+import tech.yozo.factoryrp.entity.MaintenanceEngineer;
 import tech.yozo.factoryrp.entity.RepairGroup;
 import tech.yozo.factoryrp.vo.req.*;
 import tech.yozo.factoryrp.vo.resp.ContactCompany;
@@ -41,8 +42,8 @@ import java.util.List;
 
 public class HttpClient {
 //    private static final String BASE_URL = "http://192.168.6.100:9550/";
-    private static final String BASE_URL = "http://factoryrp.yozo.tech:9550/";
-//    private static final String BASE_URL = "http://39.104.71.127:9550/";
+    private static final String BASE_URL = "http://factoryrp.yozo.tech:9550/";  //研发环境
+//    private static final String BASE_URL = "http://39.104.71.127:9550/";  //银河灵动测试环境
 
     private static final String CONTENT_TYPE = "application/json";
 
@@ -74,6 +75,7 @@ public class HttpClient {
     private static final String DEPARTMENT_LIST_URL = "api/department/list"; //部门列表
     private static final String DEVICE_GET_BY_CODE = "api/deviceInfo/getByCode"; //根据条形码查询设备
     private static final String TROUBLE_LIST_BY_DEVICEID = "troubleRecord/list"; //根据设备ID获取故障列表
+    private static final String MEMBER_LIST_BY_ROLE = "api/authorization/queryUserByRoleCode"; //根据角色查询员工列表
 
     public static final int REQUEST_LOGIN = 1;
     public static final int REQUEST_DATA_DICT = 2;
@@ -103,6 +105,7 @@ public class HttpClient {
     public static final int REQUEST_DEPARTMENT_LIST_URL = 27;
     public static final int REQUEST_DEVICE_GET_BY_CODE = 28;
     public static final int REQUEST_TROUBLE_LIST_BY_DEVICEID = 29;
+    public static final int REQUEST_MEMBER_LIST_BY_ROLE = 30;
 
     private AsyncHttpClient client;
     private List<Header> headers = new ArrayList<>();
@@ -110,29 +113,29 @@ public class HttpClient {
     @Getter
     private AuthUser authUser;
 
-    @Getter
-    @Setter
-    private WorkOrderCountVo mTroubleCount;
+//    @Getter
+//    @Setter
+//    private WorkOrderCountVo mTroubleCount;
 
     @Getter
     @Setter
-    private List<SimpleDeviceInfoResp> simpleDeviceList;
+    private List<SimpleDeviceInfoResp> simpleDeviceInfoList;
 
     @Getter
     @Setter
-    private List<SparePartsResp> sparePartsRespList;
+    private List<FullDeviceInfoResp> fullDeviceInfoList = new ArrayList<>();
 
     @Getter
     @Setter
-    private List<FullDeviceInfoResp> fullDeviceInfoRespList = new ArrayList<>();
+    private List<SparePartsResp> sparePartsList;
 
-    private List<WaitAuditWorkOrderVo> waitAuditWorkOrderVoList;
-
-    private List<WaitAuditWorkOrderVo> waitRepairWorkOrderVoList;
-
-    private List<WaitAuditWorkOrderVo> repairingWorkOrderVoList;
-
-    private List<WaitAuditWorkOrderVo> waitVerifyWorkOrderVoList;
+//    private List<WaitAuditWorkOrderVo> waitAuditWorkOrderVoList;
+//
+//    private List<WaitAuditWorkOrderVo> waitRepairWorkOrderVoList;
+//
+//    private List<WaitAuditWorkOrderVo> repairingWorkOrderVoList;
+//
+//    private List<WaitAuditWorkOrderVo> waitVerifyWorkOrderVoList;
 
     @Getter
     @Setter
@@ -169,6 +172,7 @@ public class HttpClient {
 
     private List<DeviceParamDicEnumResp> verifyCommentDict;
 
+    private List<DeviceParamDicEnumResp> repairStatusDict;
 
     private HttpClient() {
         client = new AsyncHttpClient();
@@ -230,6 +234,9 @@ public class HttpClient {
             case Constant.DICT_DEVICE_RUNNING_STATUS:
                 params.add("code", "device_running_status");
                 break;
+            case Constant.DICT_REPAIR_STATUS:
+                params.add("code", "repair_status");
+                break;
             default:
                 return;
         }
@@ -255,6 +262,8 @@ public class HttpClient {
                 return verifyCommentDict;
             case Constant.DICT_DEVICE_RUNNING_STATUS:
                 return deviceRunningStatusDict;
+            case Constant.DICT_REPAIR_STATUS:
+                return repairStatusDict;
             default:
                 return null;
         }
@@ -294,6 +303,10 @@ public class HttpClient {
 
     public void requestTroubleCount(Context context, OnHttpListener listener) {
         client.get(context, getAbsoluteUrl(TROUBLE_COUNT), headers.toArray(new Header[headers.size()]), null, new FactoryHttpResponseHandler(context, listener, REQUEST_TROUBLE_COUNT));
+    }
+
+    public void requestMemberByRole(Context context, OnHttpListener listener, RequestParams params) {
+        client.get(context, getAbsoluteUrl(MEMBER_LIST_BY_ROLE), headers.toArray(new Header[headers.size()]), params, new FactoryHttpResponseHandler(context, listener, REQUEST_MEMBER_LIST_BY_ROLE));
     }
 
     public void requestDeviceList(Context context, OnHttpListener listener) {
@@ -362,20 +375,20 @@ public class HttpClient {
         client.post(context, getAbsoluteUrl(url), headers.toArray(new Header[headers.size()]), param, CONTENT_TYPE, new FactoryHttpResponseHandler(context, listener, requestType));
     }
 
-    public List<WaitAuditWorkOrderVo> getRepairList(int requestType) {
-        switch (requestType) {
-            case REQUEST_TROUBLE_WAIT_AUDIT:
-                return waitAuditWorkOrderVoList;
-            case REQUEST_TROUBLE_WAIT_REPAIR:
-                return waitRepairWorkOrderVoList;
-            case REQUEST_TROUBLE_REPAIRING:
-                return repairingWorkOrderVoList;
-            case REQUEST_TROUBLE_WAIT_VALIDATE:
-                return waitVerifyWorkOrderVoList;
-            default:
-                return null;
-        }
-    }
+//    public List<WaitAuditWorkOrderVo> getRepairList(int requestType) {
+//        switch (requestType) {
+//            case REQUEST_TROUBLE_WAIT_AUDIT:
+//                return waitAuditWorkOrderVoList;
+//            case REQUEST_TROUBLE_WAIT_REPAIR:
+//                return waitRepairWorkOrderVoList;
+//            case REQUEST_TROUBLE_REPAIRING:
+//                return repairingWorkOrderVoList;
+//            case REQUEST_TROUBLE_WAIT_VALIDATE:
+//                return waitVerifyWorkOrderVoList;
+//            default:
+//                return null;
+//        }
+//    }
 
     public void requestRepairDetail(Context context, OnHttpListener listener, RequestParams params) {
         client.get(context, getAbsoluteUrl(REPAIR_DETAIL_URL), headers.toArray(new Header[headers.size()]), params, new FactoryHttpResponseHandler(context, listener, REQUEST_REPAIR_DETAIL_URL));
@@ -470,8 +483,8 @@ public class HttpClient {
                             mListener.onHttpSuccess(mRequestType, null, null);
                             break;
                         case REQUEST_DEVICE_LIST:
-                            simpleDeviceList = JSONArray.parseArray(response.getJSONObject("data").getString("list"), SimpleDeviceInfoResp.class);
-                            mListener.onHttpSuccess(mRequestType, null, simpleDeviceList);
+                            simpleDeviceInfoList = JSONArray.parseArray(response.getJSONObject("data").getString("list"), SimpleDeviceInfoResp.class);
+                            mListener.onHttpSuccess(mRequestType, null, simpleDeviceInfoList);
                             break;
                         case REQUEST_TROUBLE_ADD:
                             Toast.makeText(mContext, R.string.hint_report_fault_success, Toast.LENGTH_SHORT).show();
@@ -486,33 +499,37 @@ public class HttpClient {
                             mListener.onHttpSuccess(mRequestType, null, null);
                             break;
                         case REQUEST_TROUBLE_COUNT:
-                            mTroubleCount = JSON.parseObject(response.getString("data"), WorkOrderCountVo.class);
+                            WorkOrderCountVo mTroubleCount = JSON.parseObject(response.getString("data"), WorkOrderCountVo.class);
                             mListener.onHttpSuccess(mRequestType, mTroubleCount, null);
                             break;
                         case REQUEST_PARTS_LIST:
-                            sparePartsRespList = JSONArray.parseArray(response.getJSONObject("data").getString("list"), SparePartsResp.class);
-                            mListener.onHttpSuccess(mRequestType, null, sparePartsRespList);
+                            sparePartsList = JSONArray.parseArray(response.getJSONObject("data").getString("list"), SparePartsResp.class);
+                            mListener.onHttpSuccess(mRequestType, null, sparePartsList);
+                            break;
+                        case REQUEST_MEMBER_LIST_BY_ROLE:
+                            List<MaintenanceEngineer> users = JSONArray.parseArray(response.getJSONObject("data").getString("userRespList"), MaintenanceEngineer.class);
+                            mListener.onHttpSuccess(mRequestType, null, users);
                             break;
                         case REQUEST_DEVICE_GET:
                         case REQUEST_DEVICE_GET_BY_CODE:
                             FullDeviceInfoResp device = JSON.parseObject(response.getString("data"), FullDeviceInfoResp.class);
-                            fullDeviceInfoRespList.add(device);
+                            fullDeviceInfoList.add(device);
                             mListener.onHttpSuccess(mRequestType, device, null);
                             break;
                         case REQUEST_TROUBLE_WAIT_AUDIT:
-                            waitAuditWorkOrderVoList = JSONArray.parseArray(response.getJSONObject("data").getString("list"), WaitAuditWorkOrderVo.class);
+                            List<WaitAuditWorkOrderVo> waitAuditWorkOrderVoList = JSONArray.parseArray(response.getJSONObject("data").getString("list"), WaitAuditWorkOrderVo.class);
                             mListener.onHttpSuccess(mRequestType, null, waitAuditWorkOrderVoList);
                             break;
                         case REQUEST_TROUBLE_WAIT_REPAIR:
-                            waitRepairWorkOrderVoList = JSONArray.parseArray(response.getJSONObject("data").getString("list"), WaitAuditWorkOrderVo.class);
+                            List<WaitAuditWorkOrderVo> waitRepairWorkOrderVoList = JSONArray.parseArray(response.getJSONObject("data").getString("list"), WaitAuditWorkOrderVo.class);
                             mListener.onHttpSuccess(mRequestType, null, waitRepairWorkOrderVoList);
                             break;
                         case REQUEST_TROUBLE_REPAIRING:
-                            repairingWorkOrderVoList = JSONArray.parseArray(response.getJSONObject("data").getString("list"), WaitAuditWorkOrderVo.class);
+                            List<WaitAuditWorkOrderVo> repairingWorkOrderVoList = JSONArray.parseArray(response.getJSONObject("data").getString("list"), WaitAuditWorkOrderVo.class);
                             mListener.onHttpSuccess(mRequestType, null, repairingWorkOrderVoList);
                             break;
                         case REQUEST_TROUBLE_WAIT_VALIDATE:
-                            waitVerifyWorkOrderVoList = JSONArray.parseArray(response.getJSONObject("data").getString("list"), WaitAuditWorkOrderVo.class);
+                            List<WaitAuditWorkOrderVo> waitVerifyWorkOrderVoList = JSONArray.parseArray(response.getJSONObject("data").getString("list"), WaitAuditWorkOrderVo.class);
                             mListener.onHttpSuccess(mRequestType, null, waitVerifyWorkOrderVoList);
                             break;
                         case REQUEST_TROUBLE_LIST_BY_DEVICEID:
@@ -572,6 +589,9 @@ public class HttpClient {
                                     break;
                                 case Constant.DICT_DEVICE_RUNNING_STATUS:
                                     deviceRunningStatusDict = JSON.parseArray(response.getString("data"), DeviceParamDicEnumResp.class);
+                                    break;
+                                case Constant.DICT_REPAIR_STATUS:
+                                    repairStatusDict = JSON.parseArray(response.getString("data"), DeviceParamDicEnumResp.class);
                                     break;
                                 default:
                                     break;

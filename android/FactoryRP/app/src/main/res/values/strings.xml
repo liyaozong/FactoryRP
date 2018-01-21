@@ -31,6 +31,7 @@
     <string name="hint_device_save_success">设备保存成功。</string>
     <string name="hint_report_fault_success">故障上报成功。</string>
     <string name="hint_select_a_device">请选择一个设备</string>
+    <string name="hint_error_time">时间错误</string>
 
     <string name="title_home">首页</string>
     <string name="title_device">设备</string>
@@ -131,6 +132,4 @@
     <string name="submit_positive_2">继续提交</string>
     <string name="submit_negative">返回填写</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

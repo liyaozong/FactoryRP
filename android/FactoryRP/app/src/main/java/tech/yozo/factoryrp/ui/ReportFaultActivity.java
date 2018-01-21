@@ -1,6 +1,5 @@
 package tech.yozo.factoryrp.ui;
 
-import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -24,6 +23,7 @@ import tech.yozo.factoryrp.entity.RepairGroup;
 import tech.yozo.factoryrp.scan.Intents;
 import tech.yozo.factoryrp.scan.ScanActivity;
 import tech.yozo.factoryrp.ui.dialog.LoadingDialog;
+import tech.yozo.factoryrp.ui.dialog.TimePickerDialog;
 import tech.yozo.factoryrp.utils.*;
 import tech.yozo.factoryrp.vo.req.AddTroubleRecordReq;
 import tech.yozo.factoryrp.vo.resp.DeviceParamDicEnumResp;
@@ -31,16 +31,17 @@ import tech.yozo.factoryrp.vo.resp.device.info.FullDeviceInfoResp;
 import tech.yozo.factoryrp.vo.resp.device.info.SimpleDeviceInfoResp;
 import tech.yozo.factoryrp.vo.resp.device.trouble.DeviceTroubleTypeVo;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-public class ReportFaultActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, HttpClient.OnHttpListener {
+public class ReportFaultActivity extends AppCompatActivity implements HttpClient.OnHttpListener {
     private static final int REQUEST_CODE_SCAN = 0x900;
     private static final int REQUEST_CODE_DEVICE = 0x901;
     private static final int REQUEST_CODE_CAMERA = 0x902;
 
     @BindView(R.id.b_select_device)
-    Button bSelectDevice;
+    TextView bSelectDevice;
     @BindView(R.id.iv_select_device)
     ImageView ivSelectDevice;
     @BindView(R.id.tl_select_device)
@@ -54,7 +55,7 @@ public class ReportFaultActivity extends AppCompatActivity implements DatePicker
     @BindView(R.id.tv_device_using_dept)
     TextView tvDeviceUsingDept;
     @BindView(R.id.et_fault_time)
-    Button etFaultTime;
+    TextView etFaultTime;
     @BindView(R.id.spinner_fault_level)
     Spinner spinnerFaultLevel;
     @BindView(R.id.spinner_fault_type)
@@ -80,8 +81,8 @@ public class ReportFaultActivity extends AppCompatActivity implements DatePicker
 
     private LoadingDialog dialog;
     private int mImageCount;
-    private DatePickerDialog dateDialog;
-    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日 HH时MM分");
+    private TimePickerDialog dateDialog;
+    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日 HH:mm");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -151,6 +152,15 @@ public class ReportFaultActivity extends AppCompatActivity implements DatePicker
             etFaultDesc.setError(getString(R.string.error_field_required));
         }
 
+        Date happenTime = null;
+        try {
+            happenTime = sdf.parse(etFaultTime.getText().toString());
+        } catch (ParseException e) {
+            cancel = true;
+            Toast.makeText(this, R.string.hint_error_time, Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+        }
+
         if (cancel) {
             if (focusView != null) {
                 focusView.requestFocus();
@@ -159,7 +169,7 @@ public class ReportFaultActivity extends AppCompatActivity implements DatePicker
             HttpClient client = HttpClient.getInstance();
             AddTroubleRecordReq reportReq = new AddTroubleRecordReq();
             reportReq.setDeviceId(selectedDeviceId);
-            reportReq.setHappenTime((Date) etFaultTime.getTag());
+            reportReq.setHappenTime(happenTime);
             reportReq.setTroubleLevel(spinnerFaultLevel.getSelectedItemId());
             reportReq.setTroubleType(spinnerFaultType.getSelectedItemId());
             reportReq.setRepairGroupId(spinnerRepairGroup.getSelectedItemId());
@@ -197,7 +207,7 @@ public class ReportFaultActivity extends AppCompatActivity implements DatePicker
                     break;
                 case REQUEST_CODE_SCAN:
                     if (data != null) {
-                        List<SimpleDeviceInfoResp> list = HttpClient.getInstance().getSimpleDeviceList();
+                        List<SimpleDeviceInfoResp> list = HttpClient.getInstance().getSimpleDeviceInfoList();
                         if(list != null) {
                             for (SimpleDeviceInfoResp device : list) {
                                 if (device.getCode().contentEquals(data.getStringExtra(Intents.Scan.RESULT))) {
@@ -250,13 +260,25 @@ public class ReportFaultActivity extends AppCompatActivity implements DatePicker
             }
             case R.id.et_fault_time: {
                 if (dateDialog == null) {
-                    final Calendar calendar = Calendar.getInstance();
-                    int year = calendar.get(Calendar.YEAR);
-                    int month = calendar.get(Calendar.MONTH);
-                    int day = calendar.get(Calendar.DAY_OF_MONTH);
-                    dateDialog = new DatePickerDialog(this, this, year, month, day);
+                    dateDialog = new TimePickerDialog(this, new TimePickerDialog.TimePickerDialogInterface() {
+                        @Override
+                        public void positiveListener() {
+                            StringBuffer buffer = new StringBuffer();
+                            buffer.append(dateDialog.getYear()).append("年")
+                                    .append(dateDialog.getMonth()).append("月")
+                                    .append(dateDialog.getDay()).append("日 ")
+                                    .append(dateDialog.getHour()).append(":")
+                                    .append(dateDialog.getMinute());
+                            etFaultTime.setText(buffer.toString());
+                        }
+
+                        @Override
+                        public void negativeListener() {
+
+                        }
+                    });
                 }
-                dateDialog.show();
+                dateDialog.showDateAndTimePickerDialog();
                 break;
             }
         }
@@ -269,14 +291,6 @@ public class ReportFaultActivity extends AppCompatActivity implements DatePicker
         tvDeviceType.setText(device.getSpecification());
         tvDeviceUsingDept.setText(device.getUseDept());
         tlSelectDevice.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(year, month, day);
-        etFaultTime.setTag(calendar.getTime());
-        etFaultTime.setText(sdf.format(calendar.getTime()));
     }
 
     @Override
@@ -320,6 +334,7 @@ public class ReportFaultActivity extends AppCompatActivity implements DatePicker
         HttpClient client = HttpClient.getInstance();
         switch (requestType) {
             case HttpClient.REQUEST_TROUBLE_ADD:
+                setResult(RESULT_OK);
                 finish();
                 break;
             case HttpClient.REQUEST_DATA_DICT:

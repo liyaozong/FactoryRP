@@ -4,7 +4,6 @@ package tech.yozo.factoryrp.ui.fragment;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -20,6 +19,7 @@ import tech.yozo.factoryrp.R;
 import tech.yozo.factoryrp.scan.Intents;
 import tech.yozo.factoryrp.scan.ScanActivity;
 import tech.yozo.factoryrp.ui.DeviceSelectActivity;
+import tech.yozo.factoryrp.ui.dialog.TimePickerDialog;
 import tech.yozo.factoryrp.utils.Constant;
 import tech.yozo.factoryrp.utils.HttpClient;
 import tech.yozo.factoryrp.vo.resp.device.info.FullDeviceInfoResp;
@@ -34,8 +34,7 @@ import java.util.List;
  * Use the {@link RepairAddFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class RepairAddFragment extends Fragment implements DatePickerDialog.OnDateSetListener, HttpClient.OnHttpListener{
-    // TODO: Rename parameter arguments, choose names that match
+public class RepairAddFragment extends Fragment implements HttpClient.OnHttpListener{
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -44,7 +43,7 @@ public class RepairAddFragment extends Fragment implements DatePickerDialog.OnDa
     private static final int REQUEST_CODE_DEVICE = 0x901;
 
     @BindView(R.id.b_select_device)
-    Button bSelectDevice;
+    TextView bSelectDevice;
     @BindView(R.id.iv_select_device)
     ImageView ivSelectDevice;
     @BindView(R.id.tv_device_name)
@@ -58,17 +57,16 @@ public class RepairAddFragment extends Fragment implements DatePickerDialog.OnDa
     @BindView(R.id.tl_select_device)
     TableLayout tlSelectDevice;
     @BindView(R.id.et_fault_time)
-    Button etFaultTime;
+    TextView etFaultTime;
     @BindView(R.id.et_fault_desc)
     EditText etFaultDesc;
     Unbinder unbinder;
 
-    // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
-    private DatePickerDialog dateDialog;
-    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日 HH时MM分");
+    private TimePickerDialog dateDialog;
+    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日 HH:mm");
 
     public RepairAddFragment() {
         // Required empty public constructor
@@ -82,7 +80,6 @@ public class RepairAddFragment extends Fragment implements DatePickerDialog.OnDa
      * @param param2 Parameter 2.
      * @return A new instance of fragment RepairAddFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static RepairAddFragment newInstance(String param1, String param2) {
         RepairAddFragment fragment = new RepairAddFragment();
         Bundle args = new Bundle();
@@ -132,13 +129,25 @@ public class RepairAddFragment extends Fragment implements DatePickerDialog.OnDa
                 break;
             case R.id.et_fault_time:
                 if (dateDialog == null) {
-                    final Calendar calendar = Calendar.getInstance();
-                    int year = calendar.get(Calendar.YEAR);
-                    int month = calendar.get(Calendar.MONTH);
-                    int day = calendar.get(Calendar.DAY_OF_MONTH);
-                    dateDialog = new DatePickerDialog(getContext(), this, year, month, day);
+                    dateDialog = new TimePickerDialog(getContext(), new TimePickerDialog.TimePickerDialogInterface() {
+                        @Override
+                        public void positiveListener() {
+                            StringBuffer buffer = new StringBuffer();
+                            buffer.append(dateDialog.getYear()).append("年")
+                                    .append(dateDialog.getMonth()).append("月")
+                                    .append(dateDialog.getDay()).append("日 ")
+                                    .append(dateDialog.getHour()).append(":")
+                                    .append(dateDialog.getMinute());
+                            etFaultTime.setText(buffer.toString());
+                        }
+
+                        @Override
+                        public void negativeListener() {
+
+                        }
+                    });
                 }
-                dateDialog.show();
+                dateDialog.showDateAndTimePickerDialog();
                 break;
         }
     }
@@ -150,7 +159,7 @@ public class RepairAddFragment extends Fragment implements DatePickerDialog.OnDa
             switch (requestCode) {
                 case REQUEST_CODE_SCAN:
                     if (data != null) {
-                        List<SimpleDeviceInfoResp> list = HttpClient.getInstance().getSimpleDeviceList();
+                        List<SimpleDeviceInfoResp> list = HttpClient.getInstance().getSimpleDeviceInfoList();
                         if(list != null) {
                             for (SimpleDeviceInfoResp device : list) {
                                 if (device.getCode().contentEquals(data.getStringExtra(Intents.Scan.RESULT))) {
@@ -174,14 +183,6 @@ public class RepairAddFragment extends Fragment implements DatePickerDialog.OnDa
                     break;
             }
         }
-    }
-
-    @Override
-    public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(year, month, day);
-        etFaultTime.setTag(calendar.getTime());
-        etFaultTime.setText(sdf.format(calendar.getTime()));
     }
 
     private void showSelectedDevice(SimpleDeviceInfoResp device) {
