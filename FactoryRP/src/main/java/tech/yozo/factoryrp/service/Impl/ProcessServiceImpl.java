@@ -9,12 +9,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import tech.yozo.factoryrp.entity.*;
+import tech.yozo.factoryrp.enums.process.DeviceProcessTypeEnum;
 import tech.yozo.factoryrp.exception.BussinessException;
 import tech.yozo.factoryrp.page.Pagination;
-import tech.yozo.factoryrp.repository.DeviceProcessDetailRepository;
-import tech.yozo.factoryrp.repository.DeviceProcessRepository;
-import tech.yozo.factoryrp.repository.DeviceProcessTypeRepository;
-import tech.yozo.factoryrp.repository.UserRepository;
+import tech.yozo.factoryrp.repository.*;
 import tech.yozo.factoryrp.service.ProcessService;
 import tech.yozo.factoryrp.utils.CheckParam;
 import tech.yozo.factoryrp.utils.ErrorCode;
@@ -54,6 +52,9 @@ public class ProcessServiceImpl implements ProcessService {
     @Resource
     private UserRepository userRepository;
 
+    @Resource
+    private DeviceProcessPhaseRepository deviceProcessPhaseRepository;
+
     private static Logger logger = LoggerFactory.getLogger(ProcessServiceImpl.class);
 
 
@@ -67,7 +68,7 @@ public class ProcessServiceImpl implements ProcessService {
      * @param corporateIdentify 企业唯一标识
      * @return
      */
-    public DeviceProcessStepQueryResp processStepQuery(Long processType, Long processStage,Integer processStep, Long corporateIdentify){
+    public DeviceProcessStepQueryResp processStepQuery(String processType, String processStage,Integer processStep, Long corporateIdentify){
 
         //先查询流程表的数据
         DeviceProcess deviceProcess = deviceProcessRepository.findByProcessTypeAndProcessStageAndCorporateIdentify(processType,
@@ -277,7 +278,7 @@ public class ProcessServiceImpl implements ProcessService {
      * @param processStep 步数ID
      * @return
      */
-    public  DeviceProcessDetailWarpResp queryProcessAduitInfoByStep(Long processType, Long processStage,Integer processStep, Long corporateIdentify){
+    public  DeviceProcessDetailWarpResp queryProcessAduitInfoByStep(String processType, String processStage,Integer processStep, Long corporateIdentify){
 
         DeviceProcess deviceProcess = deviceProcessRepository.findByProcessTypeAndProcessStageAndCorporateIdentify(processType,
                 processStage, corporateIdentify);
@@ -344,7 +345,7 @@ public class ProcessServiceImpl implements ProcessService {
      * @param corporateIdentify
      * @return
      */
-    public List<DeviceProcessDetailWarpResp> queryProcessAduitInfo(Long processType, Long processStage, Long corporateIdentify){
+    public List<DeviceProcessDetailWarpResp> queryProcessAduitInfo(String processType, String processStage, Long corporateIdentify){
 
         DeviceProcess deviceProcess = deviceProcessRepository.findByProcessTypeAndProcessStageAndCorporateIdentify(processType,
                 processStage, corporateIdentify);
@@ -412,9 +413,10 @@ public class ProcessServiceImpl implements ProcessService {
      */
     public DeviceProcessAddResp addDeviceProcess(DeviceProcessAddReq deviceProcessAddReq,Long corporateIdentify){
 
-        //DeviceProcess deviceProcess = null;
+        DeviceProcessType deviceProcessType = deviceProcessTypeRepository.findOne(deviceProcessAddReq.getProcessType());
+        DeviceProcessPhase deviceProcessPhase = deviceProcessPhaseRepository.findOne(deviceProcessAddReq.getProcessStage());
 
-      DeviceProcess deviceProcess = deviceProcessRepository.findByProcessTypeAndProcessStageAndCorporateIdentifyAndProcessName(deviceProcessAddReq.getProcessType(),deviceProcessAddReq.getProcessStage(), corporateIdentify,deviceProcessAddReq.getProcessName());
+        DeviceProcess deviceProcess = deviceProcessRepository.findByProcessTypeAndProcessStageAndCorporateIdentifyAndProcessName(CheckParam             .isNull(deviceProcessType) ? null : deviceProcessType.getCode(),CheckParam.isNull(deviceProcessPhase) ? null : deviceProcessType            .getCode(), corporateIdentify,deviceProcessAddReq.getProcessName());
 
         if(!CheckParam.isNull(deviceProcess)){
             throw new BussinessException(ErrorCode.PROCESS_NAME_REPET_ERROR.getCode(),ErrorCode.PROCESS_NAME_REPET_ERROR.getMessage());
@@ -424,14 +426,14 @@ public class ProcessServiceImpl implements ProcessService {
 
         deviceProcess.setProcessName(deviceProcessAddReq.getProcessName());
         deviceProcess.setProcessRemark(deviceProcessAddReq.getProcessRemark());
-        deviceProcess.setProcessType(deviceProcessAddReq.getProcessType());
         deviceProcess.setTriggerCondition(deviceProcessAddReq.getTriggerCondition());
         deviceProcess.setTriggerConditionType(deviceProcessAddReq.getTriggerConditionType());
-        deviceProcess.setProcessStage(deviceProcessAddReq.getProcessStage());
         deviceProcess.setCorporateIdentify(corporateIdentify);
 
-        deviceProcessRepository.save(deviceProcess);
+        deviceProcess.setProcessType(CheckParam.isNull(deviceProcessType) ? null : deviceProcessType.getCode());
+        deviceProcess.setProcessStage(CheckParam.isNull(deviceProcessPhase) ? null : deviceProcessPhase.getCode());
 
+        deviceProcessRepository.save(deviceProcess);
 
         if(!CheckParam.isNull(deviceProcessAddReq.getList()) && !deviceProcessAddReq.getList().isEmpty()){
             List<DeviceProcessDetail> deviceProcessDetailList = new ArrayList<>();

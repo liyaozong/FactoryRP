@@ -35,7 +35,7 @@ public class DeviceProcess extends BaseEntity implements Serializable {
      */
     @Column(name = "process_type",length = 20)
     @ApiModelProperty(value = "流程类型",notes = "流程类型",example = "1")
-    private Long processType;
+    private String processType;
 
 
     /**
@@ -43,7 +43,7 @@ public class DeviceProcess extends BaseEntity implements Serializable {
      */
     @Column(name = "process_stage",length = 20)
     @ApiModelProperty(value = "流程阶段",notes = "流程阶段",example = "1")
-    private Long processStage;
+    private String processStage;
 
     /**
      * 触发条件类型 对应设备类型 金额上限 部门等

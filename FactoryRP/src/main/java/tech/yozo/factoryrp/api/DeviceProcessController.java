@@ -4,6 +4,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.*;
 import tech.yozo.factoryrp.config.auth.UserAuthService;
 import tech.yozo.factoryrp.entity.DeviceProcess;
@@ -53,14 +54,14 @@ public class DeviceProcessController extends BaseController  {
     @ApiOperation(value = "分步查询流程审核人员详细信息-->内部接口，测试用",notes = "分步查询流程审核人员详细信息-->内部接口，测试用",httpMethod = "GET")
     @GetMapping("/queryProcessAduitInfoByStep")
     @ApiImplicitParams({
-            @ApiImplicitParam(dataType = "Long" ,name = "processType", paramType = "query" ,
-                    value = "流程类型",required = true,defaultValue = "1"),
-            @ApiImplicitParam(dataType = "Long" ,name = "processStage", paramType = "query" ,
-                    value = "流程状态",required = true,defaultValue = "1"),
-            @ApiImplicitParam(dataType = "Integer" ,name = "processStep", paramType = "query" ,
+            @ApiImplicitParam(dataType = "String" ,name = "processType", paramType = "query" ,
+                    value = "流程类型",required = true,defaultValue = "device_process_type_receive"),
+            @ApiImplicitParam(dataType = "String" ,name = "processStage", paramType = "query" ,
+                    value = "流程状态",required = true,defaultValue = "device_process_phase_application_approval"),
+            @ApiImplicitParam(dataType = "String" ,name = "processStep", paramType = "query" ,
                     value = "流程步数",required = true,defaultValue = "1")
     })
-    public  ApiResponse<DeviceProcessDetailWarpResp> queryProcessAduitInfoByStep(@RequestParam(name = "processType") Long processType,@RequestParam(name = "processStage") Long processStage,@RequestParam(name = "processStep") Integer processStep, HttpServletRequest request){
+    public  ApiResponse<DeviceProcessDetailWarpResp> queryProcessAduitInfoByStep(@RequestParam(name = "processType") String processType,@RequestParam(name = "processStage") String processStage,@RequestParam(name = "processStep") Integer processStep, HttpServletRequest request){
         Long corporateIdentify = userAuthService.getCurrentUserCorporateIdentify(request);
         return apiResponse(processService.queryProcessAduitInfoByStep(processType,processStage,processStep,corporateIdentify));
     }
@@ -93,14 +94,14 @@ public class DeviceProcessController extends BaseController  {
     @ApiOperation(value = "流程步骤查询-->内部接口，测试用",notes = "流程步骤查询-->内部接口，测试用",httpMethod = "GET")
     @GetMapping("/processStepQuery")
     @ApiImplicitParams({
-                 @ApiImplicitParam(dataType = "Long" ,name = "processType", paramType = "query" ,
-                            value = "流程类型",required = true,defaultValue = "1"),
-                 @ApiImplicitParam(dataType = "Long" ,name = "processStage", paramType = "query" ,
-                    value = "流程状态",required = true,defaultValue = "1"),
+                 @ApiImplicitParam(dataType = "String" ,name = "processType", paramType = "query" ,
+                            value = "流程类型",required = true,defaultValue = "device_process_type_receive"),
+                 @ApiImplicitParam(dataType = "String" ,name = "processStage", paramType = "query" ,
+                    value = "流程状态",required = true,defaultValue = "device_process_phase_application_approval"),
                  @ApiImplicitParam(dataType = "Integer" ,name = "processStep", paramType = "query" ,
                     value = "流程步数",required = true,defaultValue = "1")
     })
-    public ApiResponse<DeviceProcessStepQueryResp> processStepQuery(Long processType, Long processStage, Integer processStep,HttpServletRequest request){
+    public ApiResponse<DeviceProcessStepQueryResp> processStepQuery(@RequestParam("processType") String processType,@RequestParam("processStage")  String processStage, @RequestParam("processStep") Integer processStep, HttpServletRequest request){
         Long corporateIdentify = userAuthService.getCurrentUserCorporateIdentify(request);
         return apiResponse(processService.processStepQuery(processType,processStage,processStep,corporateIdentify));
     }

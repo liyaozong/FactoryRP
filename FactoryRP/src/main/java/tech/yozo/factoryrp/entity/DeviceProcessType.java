@@ -37,6 +37,12 @@ public class DeviceProcessType extends BaseEntity implements Serializable {
     @Column(name = "order_number",length = 11)
     private Integer orderNumber;
 
+    /**
+     * 类型枚举代码
+     */
+    @ApiModelProperty(value = "类型枚举代码",notes ="类型枚举代码",example = "device_process_give_back")
+    @Column(name = "code",length = 50)
+    private String code;
 
     /**
      * 对应流程阶段的单向一对多级联

@@ -33,7 +33,7 @@ public interface DeviceProcessRepository extends BaseRepository<DeviceProcess,Lo
      * @param corporateIdentify
      * @return
      */
-    DeviceProcess findByProcessTypeAndProcessStageAndCorporateIdentify(Long processType,Long processStage,Long corporateIdentify);
+    DeviceProcess findByProcessTypeAndProcessStageAndCorporateIdentify(String processType,String processStage,Long corporateIdentify);
 
 
     /**
@@ -44,5 +44,5 @@ public interface DeviceProcessRepository extends BaseRepository<DeviceProcess,Lo
      * @param processName
      * @return
      */
-    DeviceProcess findByProcessTypeAndProcessStageAndCorporateIdentifyAndProcessName(Long processType,Long processStage,Long corporateIdentify,String processName);
+    DeviceProcess findByProcessTypeAndProcessStageAndCorporateIdentifyAndProcessName(String processType,String processStage,Long corporateIdentify,String processName);
 }

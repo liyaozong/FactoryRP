@@ -21,4 +21,5 @@ public interface DeviceProcessTypeRepository extends BaseRepository<DeviceProces
      * @return
      */
     List<DeviceProcessType> findByCorporateIdentify(Long corporateIdentify);
+
 }

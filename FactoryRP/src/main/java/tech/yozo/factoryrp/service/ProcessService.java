@@ -29,7 +29,7 @@ public interface ProcessService {
      * @param corporateIdentify 企业唯一标识
      * @return
      */
-    DeviceProcessStepQueryResp processStepQuery(Long processType, Long processStage,Integer processStep, Long corporateIdentify);
+    DeviceProcessStepQueryResp processStepQuery(String processType, String processStage,Integer processStep, Long corporateIdentify);
 
     /**
      * 根据流程详情ID查询流程审核人员数据
@@ -46,7 +46,7 @@ public interface ProcessService {
      * @param processStep 步数ID
      * @return
      */
-    DeviceProcessDetailWarpResp queryProcessAduitInfoByStep(Long processType, Long processStage,Integer processStep, Long corporateIdentify);
+    DeviceProcessDetailWarpResp queryProcessAduitInfoByStep(String processType, String processStage,Integer processStep, Long corporateIdentify);
 
     /**
      * 查询流程详情-->前端画图所需要的数据
@@ -54,7 +54,7 @@ public interface ProcessService {
      * @param corporateIdentify
      * @return
      */
-    DeviceProcessDetailQueryWarpResp queryProcessDetail(Long processId, Long corporateIdentify);
+    DeviceProcessDetailQueryWarpResp queryProcessDetail(Long processId,Long corporateIdentify);
 
     /**
      * 查询流程详细信息
@@ -63,7 +63,7 @@ public interface ProcessService {
      * @param corporateIdentify
      * @return
      */
-    List<DeviceProcessDetailWarpResp> queryProcessAduitInfo(Long processType, Long processStage, Long corporateIdentify);
+    List<DeviceProcessDetailWarpResp> queryProcessAduitInfo(String processType, String processStage, Long corporateIdentify);
 
     /**
      * 查询所有流程类型集合
