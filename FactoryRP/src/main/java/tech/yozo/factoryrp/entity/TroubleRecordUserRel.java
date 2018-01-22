@@ -23,8 +23,12 @@ public class TroubleRecordUserRel extends BaseEntity{
     private String dealUserName;
     @Column(name = "deal_phase")
     private Integer dealPhase;
+    @Column(name = "deal_step")
+    private Integer dealStep;
     @Column(name = "execute_type")
     private Integer executeType;
     @Column(name = "deal_status")
     private Integer dealStatus;
+    @Column(name = "deal_step_status")
+    private Integer dealStepStatus;
 }

@@ -7,9 +7,12 @@ import tech.yozo.factoryrp.enums.RepairStatusEnum;
 import tech.yozo.factoryrp.enums.TroubleDealPhaseEnum;
 import tech.yozo.factoryrp.enums.TroubleLevelEnum;
 import tech.yozo.factoryrp.enums.TroubleStatusEnum;
+import tech.yozo.factoryrp.enums.process.DeviceProcessPhaseEnum;
+import tech.yozo.factoryrp.enums.process.DeviceProcessTypeEnum;
 import tech.yozo.factoryrp.exception.BussinessException;
 import tech.yozo.factoryrp.page.Pagination;
 import tech.yozo.factoryrp.repository.*;
+import tech.yozo.factoryrp.service.ProcessService;
 import tech.yozo.factoryrp.service.TroubleRecordService;
 import tech.yozo.factoryrp.utils.CheckParam;
 import tech.yozo.factoryrp.utils.DateTimeUtil;
@@ -23,6 +26,8 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import tech.yozo.factoryrp.vo.resp.auth.AuthUser;
 import tech.yozo.factoryrp.vo.resp.device.trouble.*;
+import tech.yozo.factoryrp.vo.resp.process.DeviceProcessDetailWarpResp;
+import tech.yozo.factoryrp.vo.resp.process.DeviceProcessHandlerResp;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -49,8 +54,11 @@ public class TroubleRecordServiceImpl implements TroubleRecordService {
     private RepairRecordSparePartRelRepository repairRecordSparePartRelRepository;
     @Autowired
     private TroubleRecordUserRelRepository troubleRecordUserRelRepository;
+    @Autowired
+    private ProcessService processService;
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void addTroubleRecord(AddTroubleRecordReq param,Long corporateIdentify,AuthUser user) {
         TroubleRecord troubleRecord = new TroubleRecord();
         BeanUtils.copyProperties(param,troubleRecord);
@@ -62,17 +70,48 @@ public class TroubleRecordServiceImpl implements TroubleRecordService {
         troubleRecord.setCreateUserId(user.getUserId());
         troubleRecord.setStatus(TroubleStatusEnum.WAIT_AUDIT.getCode());
         troubleRecord.setOrderNo("WX"+new Date().getTime());
+
+        List<DeviceProcessDetailWarpResp> listPd = processService.queryProcessAduitInfo(DeviceProcessTypeEnum.DEVICE_PROCESS_MALFUNCTION_REPAIR.getCode(),
+                DeviceProcessPhaseEnum.DEVICE_PROCESS_PHASE_APPLICATION_APPROVAL.getCode(),corporateIdentify);
+        if (null==listPd || listPd.size()<=0){
+            BussinessException biz = new BussinessException("10001","请先设置故障报修审核流程");
+            throw biz;
+        }
+
         troubleRecord = troubleRecordRepository.save(troubleRecord);
+        Long trId = troubleRecord.getId();
+        Integer trStatus = troubleRecord.getStatus();
         //生成对应的审核人员记录
-        TroubleRecordUserRel troubleRecordUserRel = new TroubleRecordUserRel();
-        troubleRecordUserRel.setTroubleRecordId(troubleRecord.getId());
-        troubleRecordUserRel.setDealPhase(TroubleDealPhaseEnum.WAIT_AUDIT.getCode());
-        troubleRecordUserRel.setDealStatus(troubleRecord.getStatus());
-        troubleRecordUserRel.setCorporateIdentify(corporateIdentify);
-        troubleRecordUserRel.setDealUserId(1l);
-        troubleRecordUserRel.setDealUserName("张三");
-        troubleRecordUserRel.setExecuteType(1);
-        troubleRecordUserRelRepository.save(troubleRecordUserRel);
+        List<TroubleRecordUserRel> troubleRecordUserRels = new ArrayList<>();
+        listPd.stream().forEach(deviceProcessDetailWarpResp -> {
+            List<DeviceProcessHandlerResp> users = deviceProcessDetailWarpResp.getHandlerList();
+            if (!CheckParam.isNull(users)){
+                users.stream().forEach(au->{
+                    TroubleRecordUserRel troubleRecordUserRel = new TroubleRecordUserRel();
+                    troubleRecordUserRel.setTroubleRecordId(trId);
+                    troubleRecordUserRel.setDealPhase(TroubleDealPhaseEnum.WAIT_AUDIT.getCode());
+                    troubleRecordUserRel.setDealStatus(trStatus);
+                    troubleRecordUserRel.setCorporateIdentify(corporateIdentify);
+                    troubleRecordUserRel.setDealStep(deviceProcessDetailWarpResp.getProcessStep());
+                    troubleRecordUserRel.setDealUserId(au.getUserId());
+                    troubleRecordUserRel.setDealUserName(au.getName());
+                    troubleRecordUserRel.setExecuteType(deviceProcessDetailWarpResp.getHandleDemandType());
+                    if (deviceProcessDetailWarpResp.getProcessStep()==1){
+                        //第一步设置成处理中
+                        troubleRecordUserRel.setDealStepStatus(0);
+                    }else {
+                        //其它步骤设置成等待处理
+                        troubleRecordUserRel.setDealStepStatus(1);
+                    }
+                    troubleRecordUserRels.add(troubleRecordUserRel);
+                });
+            }
+        });
+        if (null==troubleRecordUserRels || troubleRecordUserRels.size()<=0){
+            BussinessException biz = new BussinessException("10001","请先设置故障报修审核流程对应的审核人员");
+            throw biz;
+        }
+        troubleRecordUserRelRepository.save(troubleRecordUserRels);
 
     }
 
