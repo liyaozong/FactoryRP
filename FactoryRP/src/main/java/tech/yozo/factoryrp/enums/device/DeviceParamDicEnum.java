@@ -26,7 +26,9 @@ public enum DeviceParamDicEnum {
     DEVICE_PARAM_DEVICE_FLAG("device_device_flag","设备标识"),
     DEVICE_PARAM_BAD_REVIEW_REASON("device_bad_review_reason","设备差评理由"),
     DEVICE_PARAMMATERIAL_PROPERTIES("device_material_properties","设备物料属性"),
-    DEVICE_PROCESS_TYPE("device_process_type","设备流程类型");
+    DEVICE_PROCESS_TYPE("device_process_type","设备流程类型"),
+    DEVICE_RUNNING_STATUS("device_running_status","设备运行状态"),
+    REPAIR_STATUS("repair_status","设备状态");
     private String code;
     private String name;
 
