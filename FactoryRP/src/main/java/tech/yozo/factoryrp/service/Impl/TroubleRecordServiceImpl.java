@@ -437,9 +437,11 @@ public class TroubleRecordServiceImpl implements TroubleRecordService {
                 vo.setSpecification(deviceInfo.getSpecification());
                 vo.setDeviceCode(deviceInfo.getCode());
                 vo.setInstallationAddress(deviceInfo.getInstallationAddress());
-                Department department =  departmentRepository.findOne(deviceInfo.getUseDept());
-                if (null!=department){
-                    vo.setUseDept(department.getName());
+                if (null!=deviceInfo.getUseDept()){
+                    Department department =  departmentRepository.findOne(deviceInfo.getUseDept());
+                    if (null!=department){
+                        vo.setUseDept(department.getName());
+                    }
                 }
             }
             //故障信息
