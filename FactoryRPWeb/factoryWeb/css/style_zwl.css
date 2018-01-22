@@ -143,6 +143,9 @@ input[type="number"]{
 #contactCompanyListPop .ccTr:hover{
     background: #ff6f09;!important;
 }
+#deviceAddressPop .ccTr:hover{
+    background: #ff6f09;!important;
+}
 .changedDiv{
     position: absolute;
     right: 5px;

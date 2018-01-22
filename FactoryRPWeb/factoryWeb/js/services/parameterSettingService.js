@@ -126,6 +126,14 @@ myApp.factory("deviceProcess",['$q',"AppHttp","FF_API",function($q,AppHttp,FF_AP
         });
     };
 
+    //查询当前审核流程详情
+    deviceProcess.queryProcessDetail=function(id){
+        return AppHttp({
+            method: 'get',
+            url: FF_API.base + FF_API.queryProcessDetailPath+'?processId='+id
+        });
+    };
+
     return deviceProcess;
 }]);
 
