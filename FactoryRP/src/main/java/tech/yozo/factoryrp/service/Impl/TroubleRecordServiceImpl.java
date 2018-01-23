@@ -196,8 +196,16 @@ public class TroubleRecordServiceImpl implements TroubleRecordService {
                 v.setCode(troubleRecord.getDeviceInfo().getCode());
                 v.setHappenTime(troubleRecord.getHappenTime());
                 v.setOrderNo(troubleRecord.getOrderNo());
-                v.setTroubleLevel(TroubleLevelEnum.getByCode(troubleRecord.getTroubleLevel()).getName());
-                v.setStatus(TroubleStatusEnum.getByCode(troubleRecord.getStatus()).getName());
+                if (null!=troubleRecord.getTroubleLevel()){
+                    if (null!=TroubleLevelEnum.getByCode(troubleRecord.getTroubleLevel())){
+                        v.setTroubleLevel(TroubleLevelEnum.getByCode(troubleRecord.getTroubleLevel()).getName());
+                    }
+                }
+                if (null!=troubleRecord.getStatus()){
+                    if (null!=TroubleStatusEnum.getByCode(troubleRecord.getStatus())){
+                        v.setStatus(TroubleStatusEnum.getByCode(troubleRecord.getStatus()).getName());
+                    }
+                }
                 v.setRepairUser(troubleRecord.getRepairUserName());
                 list.add(v);
             });
@@ -208,8 +216,57 @@ public class TroubleRecordServiceImpl implements TroubleRecordService {
 
     @Override
     public Pagination<WaitAuditWorkOrderVo> findWaitAuditWorkOrder(WorkOrderListReq req, Long corporateIdentify, AuthUser user) {
+        Integer currentPage = req.getCurrentPage();
+        Integer itemsPerPage = req.getItemsPerPage();
+        if(null==currentPage){
+            currentPage=0;
+        }
+        if (null==itemsPerPage){
+            itemsPerPage=10;
+        }
+        if (currentPage > 0) {
+            currentPage-=1;
+        }
+        Pageable p = new PageRequest(currentPage, itemsPerPage,new Sort(Sort.Direction.DESC,"createTime"));
+        Page<TroubleRecordUserRel> page = troubleRecordUserRelRepository.
+                findByDealUserIdAndDealStepStatusAndCorporateIdentifyAndDealStatus(user.getUserId(),0,corporateIdentify,TroubleStatusEnum.WAIT_AUDIT.getCode(),p);
+        Pagination<WaitAuditWorkOrderVo> res = new Pagination(currentPage+1,itemsPerPage,page.getTotalElements());
+        if (page.hasContent()){
+            List<Long> troubleRecordIds = new ArrayList<>();
+            page.getContent().stream().forEach(troubleRecordUserRel -> {
+                troubleRecordIds.add(troubleRecordUserRel.getTroubleRecordId());
+            });
 
-        return null;
+            if (null!=troubleRecordIds && troubleRecordIds.size()>0){
+                List<TroubleRecord> tl =troubleRecordRepository.findAll(troubleRecordIds);
+                if (null!=tl && tl.size()>0){
+                    List<WaitAuditWorkOrderVo> list = new ArrayList<>();
+                    tl.stream().forEach(troubleRecord -> {
+                        WaitAuditWorkOrderVo v = new WaitAuditWorkOrderVo();
+                        v.setId(troubleRecord.getId());
+                        v.setName(troubleRecord.getDeviceInfo().getName());
+                        v.setSpecification(troubleRecord.getDeviceInfo().getSpecification());
+                        v.setCode(troubleRecord.getDeviceInfo().getCode());
+                        v.setHappenTime(troubleRecord.getHappenTime());
+                        v.setOrderNo(troubleRecord.getOrderNo());
+                        if (null!=troubleRecord.getTroubleLevel()){
+                            if (null!=TroubleLevelEnum.getByCode(troubleRecord.getTroubleLevel())){
+                                v.setTroubleLevel(TroubleLevelEnum.getByCode(troubleRecord.getTroubleLevel()).getName());
+                            }
+                        }
+                        if (null!=troubleRecord.getStatus()){
+                            if (null!=TroubleStatusEnum.getByCode(troubleRecord.getStatus())){
+                                v.setStatus(TroubleStatusEnum.getByCode(troubleRecord.getStatus()).getName());
+                            }
+                        }
+                        v.setRepairUser(troubleRecord.getRepairUserName());
+                        list.add(v);
+                    });
+                    res.setList(list);
+                }
+            }
+        }
+        return res;
     }
 
     @Override

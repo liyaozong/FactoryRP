@@ -56,10 +56,11 @@ public class TroubleRecordController extends BaseController{
      * @return
      */
     @RequestMapping("waitAuditList")
-    @ApiOperation(value = "查询待审核的故障列表--Mobile",notes = "查询待审核的故障列表--Mobile",httpMethod = "POST")
+    @ApiOperation(value = "查询本人待审核的故障列表--Mobile",notes = "查询本人待审核的故障列表--Mobile",httpMethod = "POST")
     public ApiResponse waitAudtiList(HttpServletRequest request,@RequestBody WorkOrderListReq req){
         Long corporateIdentify =userAuthService.getCurrentUserCorporateIdentify(request);
-        return apiResponse(troubleRecordService.findWorkOrderByPage(req,corporateIdentify, TroubleStatusEnum.WAIT_AUDIT.getCode(),null));
+        AuthUser user = userAuthService.getCurrentUser(request);
+        return apiResponse(troubleRecordService.findWaitAuditWorkOrder(req,corporateIdentify,user));
     }
 
     /**

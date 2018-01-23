@@ -2,9 +2,10 @@ package tech.yozo.factoryrp.repository;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.Query;
 import tech.yozo.factoryrp.entity.TroubleRecord;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * @author chenxiang
