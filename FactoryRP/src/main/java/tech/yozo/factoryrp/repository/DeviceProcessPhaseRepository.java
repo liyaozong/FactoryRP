@@ -1,5 +1,6 @@
 package tech.yozo.factoryrp.repository;
 
+import org.springframework.stereotype.Repository;
 import tech.yozo.factoryrp.entity.DeviceProcessPhase;
 
 /**
@@ -8,5 +9,6 @@ import tech.yozo.factoryrp.entity.DeviceProcessPhase;
  * @time 2018/1/22
  * @description
  */
+@Repository
 public interface DeviceProcessPhaseRepository extends BaseRepository<DeviceProcessPhase,Long> {
 }

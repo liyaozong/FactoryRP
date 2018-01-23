@@ -491,10 +491,10 @@ public class ProcessServiceImpl implements ProcessService {
                 list.add(criteriaBuilder.like(root.get("processName").as(String.class), "%" + deviceProcessQueryReq.getProcessName() + "%"));
             }
             if (!CheckParam.isNull(deviceProcessQueryReq.getProcessType())) { //流程类型
-                list.add(criteriaBuilder.equal(root.get("processType").as(Long.class), deviceProcessQueryReq.getProcessType()));
+                list.add(criteriaBuilder.equal(root.get("processType").as(String.class), deviceProcessQueryReq.getProcessType()));
             }
             if (!CheckParam.isNull(deviceProcessQueryReq.getProcessStage())) { //流程阶段
-                list.add(criteriaBuilder.equal(root.get("processStage").as(Long.class), deviceProcessQueryReq.getProcessStage()));
+                list.add(criteriaBuilder.equal(root.get("processStage").as(String.class), deviceProcessQueryReq.getProcessStage()));
             }
             if (!CheckParam.isNull(deviceProcessQueryReq.getTriggerConditionType())) { //触发条件类型
                 list.add(criteriaBuilder.equal(root.get("triggerConditionType").as(Long.class), deviceProcessQueryReq.getTriggerConditionType()));
