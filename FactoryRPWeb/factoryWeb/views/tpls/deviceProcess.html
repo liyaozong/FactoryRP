@@ -23,7 +23,7 @@
             </li>
         </ul>
     </div>
-    <div style="max-height: 400px;overflow: auto;" class="tableListDiv data-container jurisdiction">
+    <div style="max-height: 400px;overflow: auto;" class="tableListDiv data-container jurisdiction" id="deviceAddressPop">
         <table>
             <thead>
             <tr>
@@ -38,7 +38,7 @@
             </tr>
             </thead>
             <tbody id="apply_infos_table" ng-if="deviceProcessLists.length>0">
-            <tr ng-repeat="orderDetail in deviceProcessLists" >
+            <tr ng-repeat="orderDetail in deviceProcessLists" class="prossTr" ng-click="changeCavans(orderDetail.id,$event)">
                 <td ng-bind="$index+1"></td>
                 <td ng-bind="orderDetail.processName"></td>
                 <td ng-bind="orderDetail.deviceProcessTypeName"></td>
@@ -84,6 +84,14 @@
             <input name="" type="button"  class="sure" value="确定" />&nbsp;
             <input name="" type="button"  class="cancel" value="取消" />
         </div>
+    </div>
+</div>
+
+<div class="rightinfo mainContain" style="margin-top: -50px;">
+    <div class="tableListDiv" style="margin-bottom: 0">
+        <canvas style="border:1px solid rgb(230,230,230);" width="100%" height="400px" canvas-div="canvasData" id="myCanvas">
+
+        </canvas>
     </div>
 </div>
 

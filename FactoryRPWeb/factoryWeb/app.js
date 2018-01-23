@@ -55,6 +55,7 @@ var myApp = angular.module('myApp', [
         findByCodePath:'/api/deviceParameterDictionary/findByCode'  , //查询设备参数
         addDeviceProcessPath:'/api/deviceProcess/addDeviceProcess'  , //新增审核流程
         queryAllDecviceProcessTypePath:'/api/deviceProcess/queryAllDecviceProcessType'  , //查询所有流程类型集合
+        queryProcessDetailPath:'/api/deviceProcess/queryProcessDetail'  , //查询审核流程详细数据
         deviceProcessFindByPagePath:'/api/deviceProcess/findByPage'   //分页查询审核流程
 
 

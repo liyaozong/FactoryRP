@@ -1,6 +1,7 @@
 package tech.yozo.factoryrp.service.Impl;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -366,7 +367,7 @@ public class ProcessServiceImpl implements ProcessService {
                 deviceProcessDetailWarpResp.setHandleDemandType(p1.getHandleDemandType());
 
                 String processAuditor = p1.getProcessAuditor(); //处理处理人的逻辑
-                List<Long> userIds = JSON.parseObject(processAuditor, List.class);
+                List<Long> userIds = JSON.parseObject(processAuditor, new TypeReference<List<Long>>(){});
 
                 List<DeviceProcessHandlerResp> deviceProcessHandlerRespList = new ArrayList<>();
 
@@ -393,7 +394,9 @@ public class ProcessServiceImpl implements ProcessService {
 
                 warpRespList.stream().forEach(p1 -> {
                     p1.getHandlerList().stream().forEach(h1 -> {
-                        h1.setName(String.valueOf(userMap.get(h1.getUserId())));
+                        if (null!=userMap.get(h1.getUserId())){
+                            h1.setName(userMap.get(h1.getUserId()).getUserName());
+                        }
                     });
                 });
 

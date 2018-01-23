@@ -17,6 +17,7 @@ myApp.controller('deviceProcessCtrl',['$timeout','$filter','$rootScope','$locati
             if(data.data.totalCount>=1){
                 $scope.paginationConf.totalItems = data.data.totalCount;
                 $scope.deviceProcessLists=data.data.list;
+
                 $timeout(function () {
                     $scope.deviceProcessLists.forEach(function (n,i) {
                         var item=n;
@@ -46,27 +47,46 @@ myApp.controller('deviceProcessCtrl',['$timeout','$filter','$rootScope','$locati
                                 }
                             })
                         }
-                        $scope.deviceProcessTypeLists.forEach(function (m,n) {
-                            // console.log(item.processType,m.id,'--');
-                            if(item.processType==m.id){
-                                item.deviceProcessTypeName=m.deviceProcessType;
-                                m.deviceProcessPhaseList.forEach(function (k,j) {
-                                    // console.log(k.id,item.processStage,'====')
-                                    if(item.processStage==k.id){
-                                        // console.log(k);
-                                        item.processStageName=k.deviceProcessPhase;
-                                    }
-                                });
-                            }
-                        });
-
+                        if($scope.deviceProcessTypeLists&&$scope.deviceProcessTypeLists.length>0){
+                            $scope.deviceProcessTypeLists.forEach(function (m,n) {
+                                // console.log(item.processType,m.id,'--');
+                                if(item.processType==m.code){
+                                    item.deviceProcessTypeName=m.deviceProcessType;
+                                    m.deviceProcessPhaseList.forEach(function (k,j) {
+                                        // console.log(k.id,item.processStage,'====')
+                                        if(item.processStage==k.code){
+                                            // console.log(k);
+                                            item.processStageName=k.deviceProcessPhase;
+                                        }
+                                    });
+                                }
+                            });
+                        }
                     });
+
+                    if($scope.deviceProcessLists.length>0){
+                        getQueryProcessDetail($scope.deviceProcessLists[0].id);
+                        $($('.prossTr')[0]).addClass('ccTr');
+                    }
                 },500);
             }else{
                 $scope.paginationConf.totalItems = 0;
                 $scope.deviceProcessLists.length = 0;
             }
         });
+    };
+
+    //查询详细审核流程数据画图
+    var getQueryProcessDetail=function (id) {
+        deviceProcess.queryProcessDetail(id).success(function (data) {
+            $scope.canvasData=data.data.processDetailList;
+        });
+    };
+    $scope.changeCavans=function (id,event) {
+        // console.log($(event.target));
+        $(event.target).parent().parent().find('tr').removeClass('ccTr');
+        $(event.target).parent().addClass('ccTr');
+        getQueryProcessDetail(id);
     };
 
     //查询设备类型
@@ -92,7 +112,7 @@ myApp.controller('deviceProcessCtrl',['$timeout','$filter','$rootScope','$locati
         // console.log($scope.allUserLists)
     });
 
-    $scope.onQuery();
+    // $scope.onQuery();
 
     //流程类型选择事件
     $scope.processTypeChange=function () {
@@ -196,8 +216,10 @@ myApp.controller('deviceProcessCtrl',['$timeout','$filter','$rootScope','$locati
         // console.log($scope.deviceProcessDetail);
         if($scope.deviceProcessDetail.processAuditor.length<=0){
             alert('审核人员不能为空');
+        }else {
+            $scope.changeFLog=false;
         }
-        $scope.changeFLog=false;
+
     };
     $scope.closePA1=function () {
         $scope.changeFLog=false;
@@ -234,7 +256,7 @@ myApp.controller('deviceProcessCtrl',['$timeout','$filter','$rootScope','$locati
         });
         $scope.processStep--;
         $scope.reqList=arr;
-        console.log($scope.reqList)
+        // console.log($scope.reqList)
     };
 
     //新增审核流程
@@ -280,7 +302,7 @@ myApp.controller('deviceProcessCtrl',['$timeout','$filter','$rootScope','$locati
         }else {
             flog=false;
         }
-        console.log('addReq',addReq);
+        // console.log('addReq',addReq);
         if(flog){
             if($scope.sureFlog==1){
                 console.log('新增');
