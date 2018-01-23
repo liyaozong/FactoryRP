@@ -1,5 +1,7 @@
 package tech.yozo.factoryrp.repository;
 
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import tech.yozo.factoryrp.entity.DeviceInfo;
 import org.springframework.stereotype.Repository;
 import tech.yozo.factoryrp.entity.DeviceType;
@@ -20,5 +22,6 @@ public interface DeviceInfoRepository extends BaseRepository<DeviceInfo,Long>{
      * @param deviceType
      * @return
      */
-    List<DeviceInfo> findByCorporateIdentifyAndDeviceType(Long corporateIdentify,Long deviceType);
+    @Query("select d from DeviceInfo d where d.deviceType = :deviceType and d.corporateIdentify = :corporateIdentify")
+    List<DeviceInfo> findByDeviceTypeAndCorporateIdentify(@Param("deviceType") Long deviceType,@Param("corporateIdentify") Long corporateIdentify);
 }

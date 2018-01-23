@@ -13,7 +13,7 @@ import java.io.Serializable;
  */
 @ApiModel
 @Data
-public class DeviceParamDicEnumResp implements Serializable{
+public class DicEnumResp implements Serializable{
 
     private static final long serialVersionUID = -5872519921177710245L;
 

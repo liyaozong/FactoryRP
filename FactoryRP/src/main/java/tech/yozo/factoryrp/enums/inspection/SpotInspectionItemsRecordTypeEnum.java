@@ -1,6 +1,11 @@
 package tech.yozo.factoryrp.enums.inspection;
 
 import tech.yozo.factoryrp.utils.CheckParam;
+import tech.yozo.factoryrp.vo.resp.DicEnumResp;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  *
@@ -45,6 +50,24 @@ public enum SpotInspectionItemsRecordTypeEnum {
             }
         }
         return null;
+    }
+
+
+    /**
+     * 拿到所有点检项目记录方式枚举
+     * @return
+     */
+    public static List<DicEnumResp> getAllCodesAndName(){
+        List<DicEnumResp> list = new ArrayList<>();
+        Arrays.stream(SpotInspectionItemsRecordTypeEnum.values()).forEach(e1 -> {
+            DicEnumResp errorCodeResp = new DicEnumResp();
+
+            errorCodeResp.setCode(e1.getCode());
+            errorCodeResp.setName(e1.getName());
+
+            list.add(errorCodeResp);
+        });
+        return list;
     }
 
     /**

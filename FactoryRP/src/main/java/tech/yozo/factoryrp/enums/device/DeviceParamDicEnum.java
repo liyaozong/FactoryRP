@@ -1,7 +1,7 @@
 package tech.yozo.factoryrp.enums.device;
 
 import tech.yozo.factoryrp.utils.CheckParam;
-import tech.yozo.factoryrp.vo.resp.DeviceParamDicEnumResp;
+import tech.yozo.factoryrp.vo.resp.DicEnumResp;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -79,10 +79,10 @@ public enum DeviceParamDicEnum {
      * 拿到所有的错误码和描述
      * @return
      */
-    public static List<DeviceParamDicEnumResp> getAllCodesAndName(){
-        List<DeviceParamDicEnumResp> list = new ArrayList<>();
+    public static List<DicEnumResp> getAllCodesAndName(){
+        List<DicEnumResp> list = new ArrayList<>();
         Arrays.stream(DeviceParamDicEnum.values()).forEach(e1 -> {
-            DeviceParamDicEnumResp errorCodeResp = new DeviceParamDicEnumResp();
+            DicEnumResp errorCodeResp = new DicEnumResp();
 
             errorCodeResp.setCode(e1.getCode());
             errorCodeResp.setName(e1.getName());

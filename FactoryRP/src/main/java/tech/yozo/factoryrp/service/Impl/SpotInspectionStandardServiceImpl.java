@@ -63,7 +63,7 @@ public class SpotInspectionStandardServiceImpl implements SpotInspectionStandard
         spotInspectionStandard.setName(spotInspectionStandardAddReq.getName());
         spotInspectionStandard.setDeviceType(spotInspectionStandardAddReq.getDeviceType());
 
-        List<DeviceInfo> deviceInfoList = deviceInfoRepository.findByCorporateIdentifyAndDeviceType(spotInspectionStandardAddReq.getDeviceType(), corporateIdentify);
+        List<DeviceInfo> deviceInfoList = deviceInfoRepository.findByDeviceTypeAndCorporateIdentify(spotInspectionStandardAddReq.getDeviceType(), corporateIdentify);
 
         //设置关联设备ID列表
         if(!CheckParam.isNull(deviceInfoList) && !deviceInfoList.isEmpty()){
@@ -77,7 +77,7 @@ public class SpotInspectionStandardServiceImpl implements SpotInspectionStandard
 
         spotInspectionStandard.setRequirement(spotInspectionStandardAddReq.getRequirement());
         spotInspectionStandard.setCorporateIdentify(corporateIdentify);
-        spotInspectionStandard.setRemark(spotInspectionStandard.getRemark());
+        spotInspectionStandard.setRemark(spotInspectionStandardAddReq.getRemark());
 
         spotInspectionStandardRepository.save(spotInspectionStandard);
 

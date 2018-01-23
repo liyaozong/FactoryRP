@@ -2,10 +2,11 @@ package tech.yozo.factoryrp.api;
 
 import tech.yozo.factoryrp.enums.device.DeviceParamDicEnum;
 import tech.yozo.factoryrp.enums.device.DeviceStatusEnum;
+import tech.yozo.factoryrp.enums.inspection.SpotInspectionItemsRecordTypeEnum;
 import tech.yozo.factoryrp.utils.ErrorCode;
 import tech.yozo.factoryrp.utils.UUIDSequenceWorker;
 import tech.yozo.factoryrp.vo.base.ApiResponse;
-import tech.yozo.factoryrp.vo.resp.DeviceParamDicEnumResp;
+import tech.yozo.factoryrp.vo.resp.DicEnumResp;
 import tech.yozo.factoryrp.vo.resp.ErrorCodeResp;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -54,8 +55,8 @@ public class MainController extends BaseController{
     @ApiOperation(value = "查看所有设备字典code",notes = "查看所有设备字典code",httpMethod = "GET")
     @RequestMapping(value = "/viewDeviceDicCode",method = RequestMethod.GET)
     @ResponseBody
-    public ApiResponse<List<DeviceParamDicEnumResp>> viewDeviceDicCode(){
-        ApiResponse<List<DeviceParamDicEnumResp>> apiResponse = new ApiResponse<>();
+    public ApiResponse<List<DicEnumResp>> viewDeviceDicCode(){
+        ApiResponse<List<DicEnumResp>> apiResponse = new ApiResponse<>();
         apiResponse.setErrorCode(ErrorCode.SUCCESS.getCode());
         apiResponse.setErrorMessage(ErrorCode.SUCCESS.getCode());
         apiResponse.setData(DeviceParamDicEnum.getAllCodesAndName());
@@ -71,11 +72,28 @@ public class MainController extends BaseController{
     @ApiOperation(value = "查询所有设备状态",notes = "查询所有设备状态",httpMethod = "GET")
     @RequestMapping(value = "/queryAllDeviceStatus",method = RequestMethod.GET)
     @ResponseBody
-    public ApiResponse<List<DeviceParamDicEnumResp>> queryAllDeviceStatus(){
-        ApiResponse<List<DeviceParamDicEnumResp>> apiResponse = new ApiResponse<>();
+    public ApiResponse<List<DicEnumResp>> queryAllDeviceStatus(){
+        ApiResponse<List<DicEnumResp>> apiResponse = new ApiResponse<>();
         apiResponse.setErrorCode(ErrorCode.SUCCESS.getCode());
         apiResponse.setErrorMessage(ErrorCode.SUCCESS.getCode());
         apiResponse.setData(DeviceStatusEnum.getAllCodesAndName());
+        apiResponse.setRequestSeqNo(UUIDSequenceWorker.uniqueSequenceId().toString());
+        return apiResponse;
+    }
+
+
+    /**
+     * 查询所有点检项目记录方式枚举
+     * @return
+     */
+    @ApiOperation(value = "查询所有点检项目记录方式枚举",notes = "查询所有点检项目记录方式枚举",httpMethod = "GET")
+    @RequestMapping(value = "/queryAllSpotInspectionItemsRecordType",method = RequestMethod.GET)
+    @ResponseBody
+    public ApiResponse<List<DicEnumResp>> queryAllSpotInspectionItemsRecordType(){
+        ApiResponse<List<DicEnumResp>> apiResponse = new ApiResponse<>();
+        apiResponse.setErrorCode(ErrorCode.SUCCESS.getCode());
+        apiResponse.setErrorMessage(ErrorCode.SUCCESS.getCode());
+        apiResponse.setData(SpotInspectionItemsRecordTypeEnum.getAllCodesAndName());
         apiResponse.setRequestSeqNo(UUIDSequenceWorker.uniqueSequenceId().toString());
         return apiResponse;
     }

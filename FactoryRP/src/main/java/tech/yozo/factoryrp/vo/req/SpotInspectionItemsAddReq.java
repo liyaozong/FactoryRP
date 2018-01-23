@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import tech.yozo.factoryrp.vo.base.ApiRequest;
+import tech.yozo.factoryrp.vo.validation.NotEmpty;
 
 import java.io.Serializable;
 import java.util.List;
@@ -24,6 +25,7 @@ public class SpotInspectionItemsAddReq extends ApiRequest implements Serializabl
      * 巡检项目名称
      */
     @ApiModelProperty(value = "巡检项目名称",notes ="巡检项目名称" )
+    @NotEmpty(message = "巡检项目名称不可为空")
     private String name;
 
     /**
@@ -32,11 +34,6 @@ public class SpotInspectionItemsAddReq extends ApiRequest implements Serializabl
     @ApiModelProperty(value = "记录方式",notes ="记录方式" )
     private String recordType;
 
-    /**
-     * 关联巡检标准的ID
-     */
-    @ApiModelProperty(value = "关联巡检标准的ID",notes ="关联巡检标准的ID" )
-    private Long standard;
 
     /**
      * 输入限制规则，比如列表，文字等，根据记录方式规则限定
