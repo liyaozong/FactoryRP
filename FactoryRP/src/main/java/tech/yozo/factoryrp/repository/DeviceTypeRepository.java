@@ -1,5 +1,6 @@
 package tech.yozo.factoryrp.repository;
 
+import org.springframework.data.repository.query.Param;
 import tech.yozo.factoryrp.entity.DeviceTroubleType;
 import tech.yozo.factoryrp.entity.DeviceType;
 import org.springframework.stereotype.Repository;

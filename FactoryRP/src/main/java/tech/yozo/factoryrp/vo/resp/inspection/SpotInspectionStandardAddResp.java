@@ -17,6 +17,7 @@ import java.io.Serializable;
 @Data
 public class SpotInspectionStandardAddResp implements Serializable {
 
+    private static final long serialVersionUID = 4315473944366559091L;
 
     /**
      * 点检标准ID

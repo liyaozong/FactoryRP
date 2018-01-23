@@ -2,20 +2,21 @@ package tech.yozo.factoryrp.api;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import tech.yozo.factoryrp.config.auth.UserAuthService;
 import tech.yozo.factoryrp.service.SpotInspectionStandardService;
 import tech.yozo.factoryrp.vo.base.ApiResponse;
 import tech.yozo.factoryrp.vo.req.SpotInspectionStandardAddReq;
+import tech.yozo.factoryrp.vo.req.SpotInspectionStandardQueryReq;
 import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionStandardAddResp;
+import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionStandardQueryResp;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * 点巡检相关接口
@@ -34,6 +35,37 @@ public class SpotInspectionStandardController extends BaseController{
     @Resource
     private UserAuthService userAuthService;
 
+
+    /**
+     * 点检标准分页查询
+     * @param spotInspectionStandardQueryReq
+     * @param spotInspectionStandardQueryReq
+     * @return
+     */
+    @ApiOperation(value = "点检标准分页查询",notes = "点检标准分页查询",httpMethod = "POST")
+    @PostMapping("/findByPage")
+    @ApiImplicitParam(dataType = "SpotInspectionStandardQueryReq" ,name = "spotInspectionStandardQueryReq", paramType = "VO" ,
+            value = "点检标准分页查询",required = true)
+    public ApiResponse<List<SpotInspectionStandardQueryResp>> findByPage(@RequestBody SpotInspectionStandardQueryReq spotInspectionStandardQueryReq,HttpServletRequest request){
+        Long corporateIdentify = userAuthService.getCurrentUserCorporateIdentify(request);
+        return apiResponse(spotInspectionStandardService.findByPage(spotInspectionStandardQueryReq,corporateIdentify));
+    }
+
+    /**
+     * 删除巡检标准
+     * @param standardId
+     */
+    @ApiOperation(value = "删除巡检标准",notes = "删除巡检标准",httpMethod = "GET")
+    @GetMapping("/deleteInspectionStandard")
+    @ApiImplicitParams({
+            @ApiImplicitParam(dataType = "Long" ,name = "standardId", paramType = "query" ,
+                    value = "巡检ID",required = true,defaultValue = "1"),
+    })
+    public ApiResponse deleteInspectionStandard(Long standardId,HttpServletRequest request){
+        Long corporateIdentify = userAuthService.getCurrentUserCorporateIdentify(request);
+        spotInspectionStandardService.deleteInspectionStandard(standardId,corporateIdentify);
+        return apiResponse();
+    }
 
     /**
      * 点检标准新增

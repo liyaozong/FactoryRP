@@ -1,13 +1,15 @@
 package tech.yozo.factoryrp.service.Impl;
 
 import com.alibaba.fastjson.JSON;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-import tech.yozo.factoryrp.entity.DeviceInfo;
-import tech.yozo.factoryrp.entity.DeviceProcessDetail;
-import tech.yozo.factoryrp.entity.SpotInspectionItems;
-import tech.yozo.factoryrp.entity.SpotInspectionStandard;
+import tech.yozo.factoryrp.entity.*;
 import tech.yozo.factoryrp.enums.inspection.SpotInspectionItemsRecordTypeEnum;
 import tech.yozo.factoryrp.exception.BussinessException;
+import tech.yozo.factoryrp.page.Pagination;
 import tech.yozo.factoryrp.repository.DeviceInfoRepository;
 import tech.yozo.factoryrp.repository.DeviceTypeRepository;
 import tech.yozo.factoryrp.repository.SpotInspectionItemsRepository;
@@ -17,11 +19,20 @@ import tech.yozo.factoryrp.utils.CheckParam;
 import tech.yozo.factoryrp.utils.ErrorCode;
 import tech.yozo.factoryrp.vo.req.SpotInspectionItemsAddReq;
 import tech.yozo.factoryrp.vo.req.SpotInspectionStandardAddReq;
+import tech.yozo.factoryrp.vo.req.SpotInspectionStandardQueryReq;
 import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionStandardAddResp;
+import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionStandardQueryResp;
 
 import javax.annotation.Resource;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -41,6 +52,9 @@ public class SpotInspectionStandardServiceImpl implements SpotInspectionStandard
 
     @Resource
     private DeviceInfoRepository deviceInfoRepository;
+
+    @Resource
+    private DeviceTypeRepository deviceTypeRepository;
 
     /**
      * 点检标准新增方法
@@ -117,5 +131,110 @@ public class SpotInspectionStandardServiceImpl implements SpotInspectionStandard
         return spotInspectionStandardAddResp;
     }
 
+    /**
+     * 删除巡检标准
+     * @param standardId
+     * @param corporateIdentify
+     */
+    @Override
+    public void deleteInspectionStandard(Long standardId,Long corporateIdentify) {
+        SpotInspectionStandard inspectionStandard = spotInspectionStandardRepository.findOne(standardId);
+
+        if(!CheckParam.isNull(inspectionStandard)){
+            spotInspectionStandardRepository.delete(inspectionStandard);
+            List<SpotInspectionItems> spotInspectionItemsList = spotInspectionItemsRepository.findByStandardAndCorporateIdentify(inspectionStandard.getId(), corporateIdentify);
+
+            if(!CheckParam.isNull(spotInspectionItemsList) && !spotInspectionItemsList.isEmpty()){
+                spotInspectionItemsRepository.deleteInBatch(spotInspectionItemsList);
+            }
+        }
+
+    }
+
+
+    /**
+     * 点检标准分页查询
+     * @param spotInspectionStandardQueryReq
+     * @param corporateIdentify
+     * @return
+     */
+    public List<SpotInspectionStandardQueryResp> findByPage(SpotInspectionStandardQueryReq spotInspectionStandardQueryReq,Long corporateIdentify){
+
+        if (spotInspectionStandardQueryReq.getCurrentPage() > 0) {
+            spotInspectionStandardQueryReq.setCurrentPage(spotInspectionStandardQueryReq.getCurrentPage()-1);
+        }
+
+        Pageable p = new PageRequest(spotInspectionStandardQueryReq.getCurrentPage(), spotInspectionStandardQueryReq.getItemsPerPage());
+
+        Page<SpotInspectionStandard> page = spotInspectionStandardRepository.findAll((Root<SpotInspectionStandard> root,
+                                                                    CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) -> {
+
+            List<Predicate> list = new ArrayList<>();
+
+            if (!CheckParam.isNull(spotInspectionStandardQueryReq.getId())) { //主键
+                list.add(criteriaBuilder.equal(root.get("id").as(Long.class), spotInspectionStandardQueryReq.getId()));
+            }
+            if (!CheckParam.isNull(spotInspectionStandardQueryReq.getName())) { //巡检标准名称
+                list.add(criteriaBuilder.like(root.get("name").as(String.class), "%"+spotInspectionStandardQueryReq.getName()+"%"));
+            }
+            if (!CheckParam.isNull(spotInspectionStandardQueryReq.getRemark())) { //备注
+                list.add(criteriaBuilder.like(root.get("remark").as(String.class), "%"+spotInspectionStandardQueryReq.getRemark()+"%"));
+            }
+            if (!CheckParam.isNull(spotInspectionStandardQueryReq.getRelateDeviceType())) { //适用设备类型
+                list.add(criteriaBuilder.equal(root.get("deviceType").as(Long.class), spotInspectionStandardQueryReq.getRelateDeviceType()));
+            }
+            if (!CheckParam.isNull(spotInspectionStandardQueryReq.getRequirement())) { //巡检要求
+                list.add(criteriaBuilder.like(root.get("requirement").as(String.class), "%"+spotInspectionStandardQueryReq.getRequirement()+"%"));
+            }
+
+            list.add(criteriaBuilder.equal(root.get("corporateIdentify").as(Long.class), corporateIdentify));
+
+            Predicate[] predicates = new Predicate[list.size()];
+            predicates = list.toArray(predicates);
+            return criteriaBuilder.and(predicates);
+        }, p);
+
+        if (page.hasContent()){
+            List<SpotInspectionStandardQueryResp> respList = new ArrayList<>();
+
+            //格式化设备类型名称
+            List<Long> deviceTypeIds = new ArrayList<>();
+
+            page.getContent().stream().forEach(p1 -> {
+                deviceTypeIds.add(p1.getDeviceType());
+            });
+
+            if(!CheckParam.isNull(deviceTypeIds) && !deviceTypeIds.isEmpty()){
+                List<DeviceType> deviceTypeList = deviceTypeRepository.findAll(deviceTypeIds);
+
+                //形成以设备类型id为键的Map
+                Map<Long, DeviceType> deviceTypeMap = deviceTypeList.stream().collect(Collectors.toMap(DeviceType::getId, Function.identity()));
+
+                page.getContent().stream().forEach(p1 -> {
+                    SpotInspectionStandardQueryResp spotInspectionStandardQueryResp = new SpotInspectionStandardQueryResp();
+
+                    spotInspectionStandardQueryResp.setId(p1.getId());
+                    spotInspectionStandardQueryResp.setName(p1.getName());
+                    spotInspectionStandardQueryResp.setRemark(p1.getRemark());
+
+                    if(!CheckParam.isNull(deviceTypeMap.get(p1.getDeviceType()))){
+                        spotInspectionStandardQueryResp.setRelateDeviceName(deviceTypeMap.get(p1.getDeviceType()).getName());
+                    }
+                    spotInspectionStandardQueryResp.setRequirement(p1.getRequirement());
+                    spotInspectionStandardQueryResp.setItemsPerPage(spotInspectionStandardQueryReq.getItemsPerPage());
+                    spotInspectionStandardQueryResp.setCurrentPage(spotInspectionStandardQueryReq.getCurrentPage());
+
+                    respList.add(spotInspectionStandardQueryResp);
+                });
+
+                return respList;
+
+            }
+
+        }
+
+        return null;
+
+    }
 
 }

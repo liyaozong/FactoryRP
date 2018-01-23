@@ -34,7 +34,6 @@ public class SpotInspectionItemsAddReq extends ApiRequest implements Serializabl
     @ApiModelProperty(value = "记录方式",notes ="记录方式" )
     private String recordType;
 
-
     /**
      * 输入限制规则，比如列表，文字等，根据记录方式规则限定
      */

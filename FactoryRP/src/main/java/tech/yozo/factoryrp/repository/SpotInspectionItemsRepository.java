@@ -2,6 +2,8 @@ package tech.yozo.factoryrp.repository;
 
 import tech.yozo.factoryrp.entity.SpotInspectionItems;
 
+import java.util.List;
+
 /**
  * 巡检项目Repository
  * @author created by Singer email:313402703@qq.com
@@ -9,4 +11,13 @@ import tech.yozo.factoryrp.entity.SpotInspectionItems;
  * @description
  */
 public interface SpotInspectionItemsRepository extends BaseRepository<SpotInspectionItems,Long> {
+
+
+    /**
+     * 根据巡检标准ID和企业唯一标识进行查询
+     * @param Standard
+     * @param corporateIdentify
+     * @return
+     */
+    List<SpotInspectionItems> findByStandardAndCorporateIdentify(Long Standard ,Long corporateIdentify);
 }
