@@ -42,10 +42,10 @@ public class SpotInspectionStandardController extends BaseController{
      * @param spotInspectionStandardQueryReq
      * @return
      */
-    @ApiOperation(value = "点检标准分页查询",notes = "点检标准分页查询",httpMethod = "POST")
+    @ApiOperation(value = "点检标准分页查询-WEB",notes = "点检标准分页查询-WEB",httpMethod = "POST")
     @PostMapping("/findByPage")
     @ApiImplicitParam(dataType = "SpotInspectionStandardQueryReq" ,name = "spotInspectionStandardQueryReq", paramType = "VO" ,
-            value = "点检标准分页查询",required = true)
+            value = "点检标准分页查询-WEB",required = true)
     public ApiResponse<List<SpotInspectionStandardQueryResp>> findByPage(@RequestBody SpotInspectionStandardQueryReq spotInspectionStandardQueryReq,HttpServletRequest request){
         Long corporateIdentify = userAuthService.getCurrentUserCorporateIdentify(request);
         return apiResponse(spotInspectionStandardService.findByPage(spotInspectionStandardQueryReq,corporateIdentify));
