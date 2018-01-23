@@ -3,6 +3,7 @@ package tech.yozo.factoryrp.service;
 import tech.yozo.factoryrp.vo.req.SpotInspectionStandardAddReq;
 import tech.yozo.factoryrp.vo.req.SpotInspectionStandardQueryReq;
 import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionStandardAddResp;
+import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionStandardDetailQueryResp;
 import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionStandardQueryResp;
 
 import java.util.List;
@@ -15,6 +16,13 @@ import java.util.List;
  */
 public interface SpotInspectionStandardService {
 
+    /**
+     * 查询点巡检标准详情
+     * @param standardId
+     * @param corporateIdentify
+     * @return
+     */
+    SpotInspectionStandardDetailQueryResp queryInspectionStandardDetail(Long standardId, Long corporateIdentify);
 
     /**
      * 点检标准分页查询

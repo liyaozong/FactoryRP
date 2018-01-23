@@ -21,6 +21,8 @@ import tech.yozo.factoryrp.vo.req.SpotInspectionItemsAddReq;
 import tech.yozo.factoryrp.vo.req.SpotInspectionStandardAddReq;
 import tech.yozo.factoryrp.vo.req.SpotInspectionStandardQueryReq;
 import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionStandardAddResp;
+import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionStandardDetailQueryResp;
+import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionStandardItemsQueryResp;
 import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionStandardQueryResp;
 
 import javax.annotation.Resource;
@@ -129,6 +131,63 @@ public class SpotInspectionStandardServiceImpl implements SpotInspectionStandard
         spotInspectionStandardAddResp.setName(spotInspectionStandardAddReq.getName());
 
         return spotInspectionStandardAddResp;
+    }
+
+
+    /**
+     * 查询点巡检标准详情
+     * @param standardId
+     * @param corporateIdentify
+     * @return
+     */
+    public SpotInspectionStandardDetailQueryResp queryInspectionStandardDetail(Long standardId, Long corporateIdentify){
+
+        SpotInspectionStandard spotInspectionStandard = spotInspectionStandardRepository.findOne(standardId);
+
+        if(!CheckParam.isNull(spotInspectionStandard)){
+            SpotInspectionStandardDetailQueryResp spotInspectionStandardDetailQueryResp = new SpotInspectionStandardDetailQueryResp();
+
+            spotInspectionStandardDetailQueryResp.setRemark(spotInspectionStandard.getRemark());
+            spotInspectionStandardDetailQueryResp.setName(spotInspectionStandard.getName());
+            spotInspectionStandardDetailQueryResp.setRequirement(spotInspectionStandard.getRequirement());
+
+            DeviceType deviceType = deviceTypeRepository.findOne(spotInspectionStandard.getDeviceType());
+            if(!CheckParam.isNull(deviceType)){
+                spotInspectionStandardDetailQueryResp.setDeviceTypeName(deviceType.getName());
+            }
+
+            List<SpotInspectionItems> spotInspectionItemsList = spotInspectionItemsRepository.findByStandardAndCorporateIdentify(standardId, corporateIdentify);
+
+            if(!CheckParam.isNull(spotInspectionItemsList) && !spotInspectionItemsList.isEmpty()){
+
+                List<SpotInspectionStandardItemsQueryResp> spotInspectionItems = new ArrayList<>();
+
+                spotInspectionItemsList.stream().forEach(s1 -> {
+                    SpotInspectionStandardItemsQueryResp spotInspectionStandardItemsQueryResp = new SpotInspectionStandardItemsQueryResp();
+                    spotInspectionStandardItemsQueryResp.setName(s1.getName());
+                    if(!CheckParam.isNull(SpotInspectionItemsRecordTypeEnum.getByCode(s1.getRecordType()))){
+                        spotInspectionStandardItemsQueryResp.setRecordTypeName(SpotInspectionItemsRecordTypeEnum.getByCode(s1.getRecordType()).getName());
+                    }
+
+                    //如果是文字类型的就特殊处理
+                    if(SpotInspectionItemsRecordTypeEnum.SPOT_INSPECTION_ITEMS_RECORD_TYPE_ENUM_VERBAL_DESCRIPTION.getCode().equals(s1.getRecordType())){
+                        spotInspectionStandardItemsQueryResp.setInputLimitValue(null);
+                    }else{
+                        spotInspectionStandardItemsQueryResp.setInputLimitValue(JSON.parseArray(s1.getVaildateRegular(),String.class));
+                    }
+
+                    spotInspectionItems.add(spotInspectionStandardItemsQueryResp);
+                });
+
+                spotInspectionStandardDetailQueryResp.setSpotInspectionItems(spotInspectionItems);
+
+            }
+
+            return spotInspectionStandardDetailQueryResp;
+        }
+
+
+        return null;
     }
 
     /**

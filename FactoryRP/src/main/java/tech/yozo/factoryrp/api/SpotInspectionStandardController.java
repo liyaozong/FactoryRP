@@ -11,6 +11,7 @@ import tech.yozo.factoryrp.vo.base.ApiResponse;
 import tech.yozo.factoryrp.vo.req.SpotInspectionStandardAddReq;
 import tech.yozo.factoryrp.vo.req.SpotInspectionStandardQueryReq;
 import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionStandardAddResp;
+import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionStandardDetailQueryResp;
 import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionStandardQueryResp;
 
 import javax.annotation.Resource;
@@ -35,6 +36,22 @@ public class SpotInspectionStandardController extends BaseController{
     @Resource
     private UserAuthService userAuthService;
 
+
+    /**
+     * 查询点巡检标准详情
+     * @param standardId
+     * @return
+     */
+    @ApiOperation(value = "查询点巡检标准详情-WEB",notes = "查询点巡检标准详情-WEB",httpMethod = "GET")
+    @GetMapping("/queryInspectionStandardDetail")
+    @ApiImplicitParams({
+            @ApiImplicitParam(dataType = "Long" ,name = "standardId", paramType = "query" ,
+                    value = "巡检ID",required = true,defaultValue = "1"),
+    })
+    public ApiResponse<SpotInspectionStandardDetailQueryResp> queryInspectionStandardDetail(@RequestParam("standardId") Long standardId,HttpServletRequest request){
+        Long corporateIdentify = userAuthService.getCurrentUserCorporateIdentify(request);
+        return apiResponse(spotInspectionStandardService.queryInspectionStandardDetail(standardId,corporateIdentify));
+    }
 
     /**
      * 点检标准分页查询
