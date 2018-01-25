@@ -11,7 +11,10 @@
     </div>
 
     <ul class="nav">
-        <li ng-repeat="item in publicMenu"><a ng-class="{selected:  item.url== topMenuLi}" ng-href="{{'#/main/'+item.url}}" ui-sref="{{'main.'+item.url}}"><img ng-src="{{'images/'+item.url+'.png'}}" title="{{item.name}}" /><h2>{{item.name}}</h2></a></li>
+        <li ng-repeat="item in publicMenu">
+            <a ng-if="item.url=='home'" ng-class="{selected:  item.url== topMenuLi}" ng-href="{{'#/main/'+item.url}}" ui-sref="{{'main.'+item.url}}"><img ng-src="{{'images/'+item.url+'.png'}}" title="{{item.name}}" /><h2>{{item.name}}</h2></a>
+            <a ng-if="item.url!='home'" ng-class="{selected:  item.twoMenu[0].url== topMenuLi}" ng-href="{{'#/main/'+item.twoMenu[0].url}}" ui-sref="{{'main.'+item.twoMenu[0].url}}"><img ng-src="{{'images/'+item.url+'.png'}}" title="{{item.name}}" /><h2>{{item.name}}</h2></a>
+        </li>
 
         <!--<li><a href="#/main/home" ui-sref="main.home" class="selected"><img src="images/home.png" title="首页" /><h2>首页</h2></a></li>-->
         <!--<li><a href="#/main/deviceManage" ui-sref="main.deviceManage"><img src="images/deviceManage.png" title="设备管理" /><h2>设备管理</h2></a></li>-->

@@ -55,3 +55,56 @@ myApp.factory('validate',["$rootScope",function ($rootScope) {
 
     return validate;
 }]);
+
+//localStorage 服务封装
+myApp.factory('locals', ['$window', function($window){
+    return{
+        set: function(key,value){ //存储单个属性
+            // 判断是否无痕浏览模式
+            if (typeof localStorage === 'object') {
+                try {
+                    $window.localStorage[key] = escape(value);
+                } catch (e) {
+                    alert('Your web browser does not support storing settings locally. In Safari, the most common cause of this is using "Private Browsing Mode". Some settings may not save or some features may not work properly for you.');
+                }
+            }
+        },
+        get: function(key){  //读取单个属性
+            // 判断是否无痕浏览模式
+            if (typeof localStorage === 'object') {
+                try {
+                    return unescape($window.localStorage[key]);
+                } catch (e) {
+                    alert('Your web browser does not support storing settings locally. In Safari, the most common cause of this is using "Private Browsing Mode". Some settings may not save or some features may not work properly for you.');
+                }
+            }
+        },
+        getParam: function(c){ //读取单个属性中的某个属性
+            var cookieValue = this.get(c);
+            var theRequest = {};
+            if(cookieValue){
+                if (cookieValue.indexOf("&") != -1) {
+                    var str = cookieValue.split("&");
+                    for (var i = 0; i < str.length; i++) {
+                        theRequest[str[i].split("=")[0]] = str[i].split("=")[1];
+                    }
+                }else{
+                    theRequest[cookieValue.split("=")[0]] = cookieValue.split("=")[1];
+                }
+                return theRequest;
+            }else{
+                return false;
+            }
+        },
+        setObject: function(key,value){ //存储对象，以JSON格式存储
+            $window.localStorage[key] = JSON.stringify(value);
+        },
+        getObject: function (key) {  //读取对象
+            return JSON.parse($window.localStorage[key] || '{}');
+        },
+        remove: function(key){ //删除缓存
+            $window.localStorage[key] = '';
+            delete $window.localStorage[key];
+        }
+    }
+}]);

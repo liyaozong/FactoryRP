@@ -55,11 +55,12 @@ var myApp = angular.module('myApp', [
         findByCodePath:'/api/deviceParameterDictionary/findByCode'  , //查询设备参数
         addDeviceProcessPath:'/api/deviceProcess/addDeviceProcess'  , //新增审核流程
         queryAllDecviceProcessTypePath:'/api/deviceProcess/queryAllDecviceProcessType'  , //查询所有流程类型集合
+        queryProcessDetailPath:'/api/deviceProcess/queryProcessDetail'  , //查询审核流程详细数据
         deviceProcessFindByPagePath:'/api/deviceProcess/findByPage'   //分页查询审核流程
 
 
     })
-    .run(['$rootScope', '$window', '$location', '$log','$injector','crumbNav','$cookies','$state', function ($rootScope, $window, $location, $log, $injector,crumbNav,$cookies,$state) {
+    .run(['$rootScope', '$window', '$location', '$log','$injector','locals','$cookies','$state', function ($rootScope, $window, $location, $log, $injector,locals,$cookies,$state) {
 
         $rootScope.$on('$stateNotFound',
             function(event, unfoundState, fromState, fromParams){
@@ -70,20 +71,15 @@ var myApp = angular.module('myApp', [
 
         $rootScope.$on('$locationChangeStart',
             function(event, next){
-                var routerArr=crumbNav.getList();
+                // var routerArr=crumbNav.getList();
                 var stateUrl=$location.$$url.split('/')[2];
                 // console.log($location.$$url.split('/')[1]);
                 var loginUrl=$location.$$url.split('/')[1];
                 $rootScope.stateUrlLi=stateUrl;
-                routerArr.forEach(function (n,i) {
-                    if(stateUrl==n.stateUrl){
-                        $rootScope.urlLists=n.nameArr;
-                    }
-                });
-                var AuthUserMenu=$rootScope.publicMenu?$rootScope.publicMenu:angular.fromJson($cookies.get('menu'));
-                // console.log(angular.fromJson($cookies.get('menu')));
+                var AuthUserMenu=$rootScope.publicMenu?$rootScope.publicMenu:locals.getObject('menu');
                 $rootScope.publicMenu=AuthUserMenu;
-                var flog=true;
+                // console.log($rootScope.publicMenu);
+                var flog=true;var crumbNavArr=[];$rootScope.topMenulists=[];
                 // console.log(AuthUserMenu);
                 if(AuthUserMenu!=undefined&&loginUrl!='login'){
                     if(stateUrl=='home'){
@@ -93,6 +89,7 @@ var myApp = angular.module('myApp', [
                         AuthUserMenu.forEach(function (n,i) {
                             if(n.url==stateUrl){
                                 flog=false;
+                                crumbNavArr.push({'name':n.name});
                             }
 
                         });
@@ -102,21 +99,22 @@ var myApp = angular.module('myApp', [
                     }else {
                         AuthUserMenu.forEach(function (n,i) {
                             n.twoMenu.forEach(function (v,k) {
-                                if(n.url==stateUrl||v.url==stateUrl) {
+                                if(v.url==stateUrl){
+                                    flog=false;
+                                    // console.log(n,v,'---');
                                     $rootScope.publicTwoMenu=n.twoMenu;
                                     $rootScope.liMenu=n.name;
                                     $rootScope.topMenuLi=n.twoMenu[0].url;
-                                }
-                                if(v.url==stateUrl){
-                                    flog=false;
+                                    // console.log($rootScope.topMenuLi);
+                                    crumbNavArr=[{'name':n.name},{'name':v.name}];
                                 }
                             });
-
                         });
                         if(flog){
                             $state.go('main.'+AuthUserMenu[0].url)
                         }
                     }
+                    $rootScope.urlLists=crumbNavArr;
                 }
                 // console.log($rootScope.publicTwoMenu)
             });
@@ -294,6 +292,29 @@ var myApp = angular.module('myApp', [
                     'content@main':{
                         templateUrl:FF_API.baseTpl+'tpls/deviceTroubleType.html',
                         controller:'deviceTroubleTypeCtrl'
+                    }
+                }
+            })
+
+            //点巡检
+            //巡检标准
+            .state("main.spotInspectionStandard",{
+                url:"/spotInspectionStandard",
+                views:{
+                    'content@main':{
+                        templateUrl:FF_API.baseTpl+'tpls/spotInspectionStandard.html',
+                        controller:'spotInspectionStandardCtrl'
+                    }
+                }
+            })
+
+            //巡检计划
+            .state("main.inspectionPlan",{
+                url:"/inspectionPlan",
+                views:{
+                    'content@main':{
+                        templateUrl:FF_API.baseTpl+'tpls/inspectionPlan.html',
+                        controller:'inspectionPlanCtrl'
                     }
                 }
             })

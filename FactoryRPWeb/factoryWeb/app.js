@@ -12,8 +12,8 @@ var myApp = angular.module('myApp', [
 ])
 /*服务端接口地址*/
     .constant('FF_API', {
-        base: 'http://47.96.28.88:9550',      //工程路径
-        // base: 'http://39.104.71.127:9550',      //工程路径
+        base: 'http://47.96.28.88:9550',      //开发环境工程路径
+        // base: 'http://39.104.71.127:9550',      //测试环境工程路径
         baseTpl: 'views/'                 ,      //模板路径
         queryCorporateAllUserPath:'/api/authorization/queryCorporateAllUser' ,  //查询所有企业用户
         departmentListPath:'/api/department/list' ,  //查询所有企业用户
@@ -60,7 +60,7 @@ var myApp = angular.module('myApp', [
 
 
     })
-.run(['$rootScope', '$window', '$location', '$log','$injector','crumbNav','$cookies','$state', function ($rootScope, $window, $location, $log, $injector,crumbNav,$cookies,$state) {
+.run(['$rootScope', '$window', '$location', '$log','$injector','locals','$cookies','$state', function ($rootScope, $window, $location, $log, $injector,locals,$cookies,$state) {
 
         $rootScope.$on('$stateNotFound',
             function(event, unfoundState, fromState, fromParams){
@@ -71,20 +71,15 @@ var myApp = angular.module('myApp', [
 
         $rootScope.$on('$locationChangeStart',
             function(event, next){
-                var routerArr=crumbNav.getList();
+                // var routerArr=crumbNav.getList();
                 var stateUrl=$location.$$url.split('/')[2];
                 // console.log($location.$$url.split('/')[1]);
                 var loginUrl=$location.$$url.split('/')[1];
                 $rootScope.stateUrlLi=stateUrl;
-                routerArr.forEach(function (n,i) {
-                    if(stateUrl==n.stateUrl){
-                        $rootScope.urlLists=n.nameArr;
-                    }
-                });
-                var AuthUserMenu=$rootScope.publicMenu?$rootScope.publicMenu:angular.fromJson($cookies.get('menu'));
-                // console.log(angular.fromJson($cookies.get('menu')));
+                var AuthUserMenu=$rootScope.publicMenu?$rootScope.publicMenu:locals.getObject('menu');
                 $rootScope.publicMenu=AuthUserMenu;
-                var flog=true;
+                // console.log($rootScope.publicMenu);
+                var flog=true;var crumbNavArr=[];$rootScope.topMenulists=[];
                 // console.log(AuthUserMenu);
                 if(AuthUserMenu!=undefined&&loginUrl!='login'){
                     if(stateUrl=='home'){
@@ -94,6 +89,7 @@ var myApp = angular.module('myApp', [
                         AuthUserMenu.forEach(function (n,i) {
                             if(n.url==stateUrl){
                                 flog=false;
+                                crumbNavArr.push({'name':n.name});
                             }
 
                         });
@@ -103,21 +99,22 @@ var myApp = angular.module('myApp', [
                     }else {
                         AuthUserMenu.forEach(function (n,i) {
                             n.twoMenu.forEach(function (v,k) {
-                                if(n.url==stateUrl||v.url==stateUrl) {
+                                if(v.url==stateUrl){
+                                    flog=false;
+                                    // console.log(n,v,'---');
                                     $rootScope.publicTwoMenu=n.twoMenu;
                                     $rootScope.liMenu=n.name;
                                     $rootScope.topMenuLi=n.twoMenu[0].url;
-                                }
-                                if(v.url==stateUrl){
-                                    flog=false;
+                                    console.log($rootScope.topMenuLi,'---');
+                                    crumbNavArr=[{'name':n.name},{'name':v.name}];
                                 }
                             });
-
                         });
                         if(flog){
                             $state.go('main.'+AuthUserMenu[0].url)
                         }
                     }
+                    $rootScope.urlLists=crumbNavArr;
                 }
                 // console.log($rootScope.publicTwoMenu)
             });
@@ -295,6 +292,29 @@ var myApp = angular.module('myApp', [
                     'content@main':{
                         templateUrl:FF_API.baseTpl+'tpls/deviceTroubleType.html',
                         controller:'deviceTroubleTypeCtrl'
+                    }
+                }
+            })
+
+            //点巡检
+            //巡检标准
+            .state("main.spotInspectionStandard",{
+                url:"/spotInspectionStandard",
+                views:{
+                    'content@main':{
+                        templateUrl:FF_API.baseTpl+'tpls/spotInspectionStandard.html',
+                        controller:'spotInspectionStandardCtrl'
+                    }
+                }
+            })
+
+            //巡检计划
+            .state("main.inspectionPlan",{
+                url:"/inspectionPlan",
+                views:{
+                    'content@main':{
+                        templateUrl:FF_API.baseTpl+'tpls/inspectionPlan.html',
+                        controller:'inspectionPlanCtrl'
                     }
                 }
             })
