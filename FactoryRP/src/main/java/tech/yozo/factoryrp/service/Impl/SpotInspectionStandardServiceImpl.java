@@ -4,12 +4,14 @@ import com.alibaba.fastjson.JSON;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-import tech.yozo.factoryrp.entity.*;
+import org.springframework.transaction.annotation.Transactional;
+import tech.yozo.factoryrp.entity.DeviceInfo;
+import tech.yozo.factoryrp.entity.DeviceType;
+import tech.yozo.factoryrp.entity.SpotInspectionItems;
+import tech.yozo.factoryrp.entity.SpotInspectionStandard;
 import tech.yozo.factoryrp.enums.inspection.SpotInspectionItemsRecordTypeEnum;
 import tech.yozo.factoryrp.exception.BussinessException;
-import tech.yozo.factoryrp.page.Pagination;
 import tech.yozo.factoryrp.repository.DeviceInfoRepository;
 import tech.yozo.factoryrp.repository.DeviceTypeRepository;
 import tech.yozo.factoryrp.repository.SpotInspectionItemsRepository;
@@ -17,7 +19,6 @@ import tech.yozo.factoryrp.repository.SpotInspectionStandardRepository;
 import tech.yozo.factoryrp.service.SpotInspectionStandardService;
 import tech.yozo.factoryrp.utils.CheckParam;
 import tech.yozo.factoryrp.utils.ErrorCode;
-import tech.yozo.factoryrp.vo.req.SpotInspectionItemsAddReq;
 import tech.yozo.factoryrp.vo.req.SpotInspectionStandardAddReq;
 import tech.yozo.factoryrp.vo.req.SpotInspectionStandardQueryReq;
 import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionStandardAddResp;
@@ -30,7 +31,6 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -44,6 +44,7 @@ import java.util.stream.Collectors;
  * @description
  */
 @Service
+@Transactional
 public class SpotInspectionStandardServiceImpl implements SpotInspectionStandardService {
 
     @Resource

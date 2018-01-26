@@ -20,6 +20,9 @@ import java.io.Serializable;
 public class SpotInspectionItems extends BaseEntity implements Serializable {
 
 
+    private static final long serialVersionUID = 2397845773563945449L;
+
+
     /**
      * 巡检项目名称
      */
