@@ -42,7 +42,7 @@ myApp.factory('HttpInterceptor', function($rootScope,$q,$window,$cookies,$inject
                     } else {
                         var AuthUserMenu=response.data.data.authUserMenuList;
 
-                        // console.log($rootScope.AuthUserMenu,'+++++++++');
+                        // console.log(AuthUserMenu,'+++++++++');
                         $rootScope.publicMenu=[];
                         AuthUserMenu.forEach(function (n,i) {
                             var menu={};
@@ -72,17 +72,15 @@ myApp.factory('HttpInterceptor', function($rootScope,$q,$window,$cookies,$inject
                                 $rootScope.publicMenu.push(menu);
                             }
                         });
-                        var str11=angular.toJson($rootScope.publicMenu);
-                        $cookies.put('menu',str11);
-                        // console.log('$rootScope.publicMenu',$rootScope.publicMenu)
-                        // console.log('response',$rootScope.AuthUserMenu);
+                        $window.localStorage['menu'] = JSON.stringify($rootScope.publicMenu);
                         stateService.go("main.home");
                     }
                     rootScope.stateBeforeLogin = null;
                 } else if(response && response.data && response.data.errorCode == '000667' && response.data.errorMessage == '请登录'){
                     $cookies.remove('token');
                     $cookies.remove('username');
-                    $cookies.remove('menu');
+                    $window.localStorage[key] = '';
+                    delete $window.localStorage[key];
 
                     var rootScope = $injector.get('$rootScope');
                     if($injector.get('$rootScope').$state && $injector.get('$rootScope').$state.current && $injector.get('$rootScope').$state.current.name != 'login'){
