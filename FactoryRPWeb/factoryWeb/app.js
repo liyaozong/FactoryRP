@@ -56,7 +56,8 @@ var myApp = angular.module('myApp', [
         addDeviceProcessPath:'/api/deviceProcess/addDeviceProcess'  , //新增审核流程
         queryAllDecviceProcessTypePath:'/api/deviceProcess/queryAllDecviceProcessType'  , //查询所有流程类型集合
         queryProcessDetailPath:'/api/deviceProcess/queryProcessDetail'  , //查询审核流程详细数据
-        deviceProcessFindByPagePath:'/api/deviceProcess/findByPage'   //分页查询审核流程
+        deviceProcessFindByPagePath:'/api/deviceProcess/findByPage',   //分页查询审核流程
+        spotInspectionStandardFindByPagePath:'/api/spotInspectionStandard/findByPage'   //分页查询巡检标准
 
 
     })
@@ -105,7 +106,7 @@ var myApp = angular.module('myApp', [
                                     $rootScope.publicTwoMenu=n.twoMenu;
                                     $rootScope.liMenu=n.name;
                                     $rootScope.topMenuLi=n.twoMenu[0].url;
-                                    console.log($rootScope.topMenuLi,'---');
+                                    // console.log($rootScope.topMenuLi,'---');
                                     crumbNavArr=[{'name':n.name},{'name':v.name}];
                                 }
                             });

@@ -72,7 +72,7 @@ factoryParameterSettingApp.controller('sparePartsManageController',function ($sc
             $scope.orderList=data.data.list;
         });
     };
-    $scope.onQuery_cc();
+    // $scope.onQuery_cc();
 
     /*查询设备信息 start*/
     $scope.onQuery=function () {
@@ -128,7 +128,7 @@ factoryParameterSettingApp.controller('sparePartsManageController',function ($sc
         });
     };
     /*查询设备信息 end*/
-    $scope.onQuery();
+    // $scope.onQuery();
 
 
     //打开厂商或者供应商选择层
@@ -237,7 +237,7 @@ factoryParameterSettingApp.controller('sparePartsManageController',function ($sc
         var flog;
         // console.log(addReq.length);
         for(var i in addReq){
-            console.log(i,":",addReq[i]);
+            // console.log(i,":",addReq[i]);
             flog=validate.required(addReq[i]);
             if(!flog){
                 break;
@@ -245,7 +245,7 @@ factoryParameterSettingApp.controller('sparePartsManageController',function ($sc
         }
         if(flog){
             if($scope.sureFlog==1){
-                console.log('新增');
+                // console.log('新增');
                 spareParts.addSpareParts(addReq).success(function (data) {
                     if(data.errorCode=='000000'){
                         hideDiv('addSparePartsPop');
@@ -259,7 +259,7 @@ factoryParameterSettingApp.controller('sparePartsManageController',function ($sc
                 })
             }else if($scope.sureFlog==2){
                 addReq.id=$scope.editSpareParts.id;
-                console.log('编辑',addReq);
+                // console.log('编辑',addReq);
                 spareParts.editSpareParts(addReq).success(function (data) {
                     if(data.errorCode=='000000'){
                         hideDiv('addSparePartsPop');
@@ -280,7 +280,7 @@ factoryParameterSettingApp.controller('sparePartsManageController',function ($sc
     /*编辑设备信息 start*/
     $scope.editSparePartsFuc=function(res){
         $scope.errFlog=false;
-        console.log(res);
+        // console.log(res);
         popupDiv('addSparePartsPop');
         $scope.editSpareParts={
             sparePartType:res.sparePartType,//备件类型
