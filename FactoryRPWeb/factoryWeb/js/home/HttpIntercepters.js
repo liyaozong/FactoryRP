@@ -79,8 +79,8 @@ myApp.factory('HttpInterceptor', function($rootScope,$q,$window,$cookies,$inject
                 } else if(response && response.data && response.data.errorCode == '000667' && response.data.errorMessage == '请登录'){
                     $cookies.remove('token');
                     $cookies.remove('username');
-                    $window.localStorage[key] = '';
-                    delete $window.localStorage[key];
+                    $window.localStorage['menu'] = '';
+                    delete $window.localStorage['menu'];
 
                     var rootScope = $injector.get('$rootScope');
                     if($injector.get('$rootScope').$state && $injector.get('$rootScope').$state.current && $injector.get('$rootScope').$state.current.name != 'login'){

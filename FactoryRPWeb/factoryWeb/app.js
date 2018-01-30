@@ -57,6 +57,9 @@ var myApp = angular.module('myApp', [
         queryAllDecviceProcessTypePath:'/api/deviceProcess/queryAllDecviceProcessType'  , //查询所有流程类型集合
         queryProcessDetailPath:'/api/deviceProcess/queryProcessDetail'  , //查询审核流程详细数据
         deviceProcessFindByPagePath:'/api/deviceProcess/findByPage',   //分页查询审核流程
+        queryAllSpotInspectionItemsRecordTypePath:'/main/queryAllSpotInspectionItemsRecordType',   //分页查询巡检标准
+        queryInspectionStandardDetailPath:'/api/spotInspectionStandard/queryInspectionStandardDetail',//查询巡检标准详情
+        deleteInspectionStandardPath:'/api/spotInspectionStandard/deleteInspectionStandard',//单个删除巡检标准
         spotInspectionStandardFindByPagePath:'/api/spotInspectionStandard/findByPage'   //分页查询巡检标准
 
 

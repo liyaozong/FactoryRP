@@ -12,8 +12,8 @@ var myApp = angular.module('myApp', [
 ])
 /*服务端接口地址*/
     .constant('FF_API', {
-        // base: 'http://47.96.28.88:9550',      //工程路径
-        base: 'http://39.104.71.127:9550',      //工程路径
+        // base: 'http://47.96.28.88:9550',      //开发环境工程路径
+        base: 'http://39.104.71.127:9550',      //测试环境工程路径
         baseTpl: 'views/'                 ,      //模板路径
         queryCorporateAllUserPath:'/api/authorization/queryCorporateAllUser' ,  //查询所有企业用户
         departmentListPath:'/api/department/list' ,  //查询所有企业用户
@@ -56,7 +56,11 @@ var myApp = angular.module('myApp', [
         addDeviceProcessPath:'/api/deviceProcess/addDeviceProcess'  , //新增审核流程
         queryAllDecviceProcessTypePath:'/api/deviceProcess/queryAllDecviceProcessType'  , //查询所有流程类型集合
         queryProcessDetailPath:'/api/deviceProcess/queryProcessDetail'  , //查询审核流程详细数据
-        deviceProcessFindByPagePath:'/api/deviceProcess/findByPage'   //分页查询审核流程
+        deviceProcessFindByPagePath:'/api/deviceProcess/findByPage',   //分页查询审核流程
+        queryAllSpotInspectionItemsRecordTypePath:'/main/queryAllSpotInspectionItemsRecordType',   //分页查询巡检标准
+        queryInspectionStandardDetailPath:'/api/spotInspectionStandard/queryInspectionStandardDetail',//查询巡检标准详情
+        deleteInspectionStandardPath:'/api/spotInspectionStandard/deleteInspectionStandard',//单个删除巡检标准
+        spotInspectionStandardFindByPagePath:'/api/spotInspectionStandard/findByPage'   //分页查询巡检标准
 
 
     })
@@ -105,7 +109,7 @@ var myApp = angular.module('myApp', [
                                     $rootScope.publicTwoMenu=n.twoMenu;
                                     $rootScope.liMenu=n.name;
                                     $rootScope.topMenuLi=n.twoMenu[0].url;
-                                    // console.log($rootScope.topMenuLi);
+                                    // console.log($rootScope.topMenuLi,'---');
                                     crumbNavArr=[{'name':n.name},{'name':v.name}];
                                 }
                             });
