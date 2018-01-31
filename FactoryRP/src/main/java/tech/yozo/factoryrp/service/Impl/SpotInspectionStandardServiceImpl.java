@@ -148,6 +148,7 @@ public class SpotInspectionStandardServiceImpl implements SpotInspectionStandard
         if(!CheckParam.isNull(spotInspectionStandard)){
             SpotInspectionStandardDetailQueryResp spotInspectionStandardDetailQueryResp = new SpotInspectionStandardDetailQueryResp();
 
+            spotInspectionStandardDetailQueryResp.setDeviceType(spotInspectionStandard.getDeviceType());
             spotInspectionStandardDetailQueryResp.setRemark(spotInspectionStandard.getRemark());
             spotInspectionStandardDetailQueryResp.setName(spotInspectionStandard.getName());
             spotInspectionStandardDetailQueryResp.setRequirement(spotInspectionStandard.getRequirement());
@@ -276,6 +277,7 @@ public class SpotInspectionStandardServiceImpl implements SpotInspectionStandard
                     spotInspectionStandardQueryResp.setId(p1.getId());
                     spotInspectionStandardQueryResp.setName(p1.getName());
                     spotInspectionStandardQueryResp.setRemark(p1.getRemark());
+                    spotInspectionStandardQueryResp.setTotalCount(page.getTotalElements());
 
                     if(!CheckParam.isNull(deviceTypeMap.get(p1.getDeviceType()))){
                         spotInspectionStandardQueryResp.setRelateDeviceName(deviceTypeMap.get(p1.getDeviceType()).getName());

@@ -57,4 +57,9 @@ public class SpotInspectionStandardQueryResp implements Serializable {
     @ApiModelProperty(value = "每页显示记录数",example = "10")
     private Integer itemsPerPage;
 
+    /**
+     * 总数量
+     */
+    @ApiModelProperty(value = "总数量",example = "10")
+    private Long totalCount;
 }
