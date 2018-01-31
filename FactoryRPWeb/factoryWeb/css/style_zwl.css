@@ -183,14 +183,55 @@ input[type="number"]{
 .changeTable tr{
     cursor: pointer;
 }
+.popup_div{
+    padding-left: 104px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+    margin-top: -8px;
+    width: 100%;
+}
+.popup_div_table{
+    width: 614px;
+}
+.ImportantNote .popup_div_table tr th{
+    padding: 5px 0;
+}
+.popup_div_table button{
+    background-color: #00a2d4;
+    padding:5px 8px;
+    width: 80px;
+    border-radius: 3px;
+    color: #e6e6e6;
+    cursor: pointer;
+    outline: none;
+}
+#addP1{
+    padding:16px;
+    box-sizing: border-box;
+}
+.popup_div_table_XJXM{
+    box-sizing: border-box;
+    width: 100%;
+}
 
+.ImportantNote .popup_div_table_XJXM tbody tr:hover{
+    background: none;
+}
+.add_P_tr input,.ImportantNote .add_P_tr select{
+    width: 110px;
+}
 
+.ImportantNote .add_P_tr td{
+    padding: 5px;
+}
+.displayNone{
+    display: none;
+}
+.displayBlock{
+    display: block;
+}
 
-
-
-
-
-
-
-
+textarea{
+    resize: none;
+}
 

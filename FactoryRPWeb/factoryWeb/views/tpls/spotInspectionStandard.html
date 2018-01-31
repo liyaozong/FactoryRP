@@ -1,1 +1,355 @@
-电检标准
+<style>
+    .ImportantNote textarea{
+        font-size: 14px;
+        width: 155px;
+        height: 32px;
+        border: 1px solid #e6e6e6;
+        vertical-align: middle;
+    }
+    .mainContain .tableListDiv tr td{
+        font-size: 12px;
+    }
+    .mainContain .tableListDiv tr th{
+        font-size: 12px;
+    }
+</style>
+<div class="rightinfo mainContain" id="mainContain1">
+    <div style="padding: 0;width: 100%" class="queryDiv" >
+        <ul>
+            <li>
+                <label>
+                    <button style="margin-left: 10px;" class="btn" ng-click="openSIS(0)">新增巡检标准</button>
+                </label>
+                <label for="deviceType" >
+                    <span style="width: 100px;text-align: right">设备类型:</span>
+                    <select id="deviceType" ng-model="relateDeviceType" ng-options="deviceTypeListDetail.id as deviceTypeListDetail.name for deviceTypeListDetail in deviceTypeLists">
+                        <option value="">请选择适用设备</option>
+                    </select>
+                </label>
+                <label>
+                    <button style="margin-left: 10px;" class="btn" ng-click="onQuery()">查询</button>
+                </label>
+            </li>
+        </ul>
+    </div>
+    <div style="max-height: 400px;overflow: auto;" class="tableListDiv data-container jurisdiction" id="deviceAddressPop">
+        <table>
+            <thead>
+            <tr>
+                <th style="text-align: left;padding-left: 20px" colspan="7">巡检标准</th>
+            </tr>
+            <tr>
+                <th style="min-width:50px;">全选<input style="vertical-align: middle;margin-left: 5px" type="checkbox" value="1" onclick="selAll(this)" id="allSelected"/></th>
+                <th>序号</th>
+                <th>名称</th>
+                <th>适用设备</th>
+                <th>巡检要求</th>
+                <th>备注</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody id="apply_infos_table">
+            <tr ng-repeat="orderDetail in spotInspectionStandardLists" ng-if="spotInspectionStandardLists.length>0" class="prossTr" ng-click="changeDetail(orderDetail.id,$event)">
+                <td class="firstTd">{{$index+1}}<input style="margin-left: 5px;vertical-align: middle;" class="SISListsInput" type="checkbox" name="che"  value="{{orderDetail.id}}" ng-click="stopUp($event)"/></td>
+                <td>{{$index+1}}</td>
+                <td>{{orderDetail.name||'--'}}</td>
+                <td>{{orderDetail.relateDeviceName||'--'}}</td>
+                <td>{{orderDetail.requirement||'--'}}</td>
+                <td>{{orderDetail.remark||'--'}}</td>
+                <td>
+                    <a href="javascript:void(0)" class="resBtn editBtn" ng-click="openSIS_detail(1,orderDetail,$event)">
+                        编辑
+                    </a>
+                    <a href="javascript:void(0)" class="resBtn editBtn" ng-click="openSIS_detail(2,orderDetail,$event)">
+                        详情
+                    </a>
+                    <!--<a href="javascript:void(0)" class="resBtn deleteBtn" ng-click="deleteContactCompanyBalance(orderDetail)">-->
+                    <!--<img src="image/comm/resBtnDelete.png" alt="删除"/>-->
+                    <!--<b class="title">删除</b>-->
+                    <!--</a>-->
+                </td>
+            </tr>
+            <tr ng-if="spotInspectionStandardLists.length<=0">
+                <td colspan="14">暂无数据</td>
+            </tr>
+            </tbody>
+            <tfoot ng-if="spotInspectionStandardLists.length>0">
+            <tr>
+                <td>
+                    <a href="javascript:void(0)" class="resBtn deleteBtn" ng-click="deleteSISBalance()">
+                        <img src="image/comm/resBtnDelete.png" alt="删除"/>
+                        <b class="title">删除</b>
+                    </a>
+                </td>
+                <td style="text-align: center" colspan="17"><tm-pagination conf="paginationConf"></tm-pagination></td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+    <!--<div class="tip">-->
+        <!--<div class="tiptop"><span>提示信息</span><a></a></div>-->
+        <!--<div class="tipinfo">-->
+            <!--<span><img src="images/ticon.png" /></span>-->
+            <!--<div class="tipright">-->
+                <!--<p>是否确认对信息的修改 ？</p>-->
+                <!--<cite>如果是请点击确定按钮 ，否则请点取消。</cite>-->
+            <!--</div>-->
+        <!--</div>-->
+
+        <!--<div class="tipbtn">-->
+            <!--<input name="" type="button"  class="sure" value="确定" />&nbsp;-->
+            <!--<input name="" type="button"  class="cancel" value="取消" />-->
+        <!--</div>-->
+    <!--</div>-->
+</div>
+
+<!-- 巡检标准详情表格 -->
+<div class="rightinfo mainContain" style="margin-top: -50px;">
+    <div class="tableListDiv" style="margin-bottom: 0">
+        <table>
+            <thead>
+            <tr>
+                <th style="text-align: left;padding-left: 20px" colspan="7">巡检项目明细</th>
+            </tr>
+            <tr>
+                <th>序号</th>
+                <th>项目</th>
+                <th>记录方式</th>
+                <th>参考值</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="orderDetail in changeDetailLists" ng-if="spotInspectionStandardLists.length>0">
+                <td>{{$index+1}}</td>
+                <td>{{orderDetail.name||'--'}}</td>
+                <td>{{orderDetail.recordTypeName||'--'}}</td>
+                <td>{{orderDetail.inputLimitValue.join(',')||'--'}}</td>
+            </tr>
+            <tr ng-if="changeDetailLists.length<=0">
+                <td colspan="14">暂无数据</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!--  巡检标准弹出层（新增，编辑，详情）  -->
+<div class="ImportantNote SISpopup">
+    <div class="headline">
+        <span ng-bind="SISTip"></span>
+        <img onClick="hideDiv('SISpopup')" class="companyCloseImg" src="image/comm/diffClosed.png" width="22" height="22">
+    </div>
+    <div style="padding: 30px 0 20px 0;width: 840px;max-height: 380px;height: auto;overflow-y: hidden; overflow: auto;" class="businessAuth">
+        <!-- 基础信息 -->
+        <div class="titleDiv" id="addP">
+            <span class="tips">基础信息</span>
+            <p>
+                <label for="name" >
+                    <span style="width: 100px;text-align: right">巡检名称:</span>
+                    <input style="width: 250px" id="name" ng-model="SISReq.name" ng-disabled="SISType==2" type="text" placeholder="请输入巡检名称"/>
+                </label>
+            </p>
+            <p>
+                <!--<label>-->
+                    <!--<span style="width: 100px;text-align: right">适用设备:</span>-->
+                    <!--<input style="margin-left: 24px" ng-model="SISReq.sysb" ng-value="1" type="radio" name="device" id="deviceName"><label for="deviceName" style="margin-left: 8px">按设备</label>-->
+                    <!--<input style="margin-left: 24px" ng-model="SISReq.sysb" ng-value="2" type="radio" name="device" id="deviveT"><label for="deviveT" style="margin-left: 8px">按类型</label>-->
+                <!--</label>-->
+                <label for="deviceType2" >
+                    <span style="width: 100px;text-align: right">设备类型:</span>
+                    <select id="deviceType2" ng-model="SISReq.addDeviceType" ng-options="deviceTypeListDetail.id as deviceTypeListDetail.name for deviceTypeListDetail in deviceTypeLists" ng-disabled="SISType==2">
+                        <option value="">请选择设备类型</option>
+                    </select>
+                </label>
+            </p>
+            <div class="popup_div">
+                <table class="popup_div_table">
+                    <thead>
+                    <tr>
+                        <th ng-if="SISType!=2">
+                            <button ng-click="addDevice()">添加设备</button>
+                        </th>
+                        <th>设备名称</th>
+                        <th>设备编码</th>
+                        <th>规格型号</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="item in SISReq.deviceItems" ng-if="SISReq.deviceItems.length>0">
+                        <td ng-if="SISType!=2">
+                            <a href="javascript:void(0)" class="resBtn deleteBtn" ng-click="deleteSISBalance(item,$index)">
+                                <img src="image/comm/resBtnDelete.png" alt="删除"/>
+                                <b class="title">删除</b>
+                            </a>
+                        </td>
+                        <td ng-bind="item.name"></td>
+                        <td ng-bind="item.code"></td>
+                        <td ng-bind="item.specification"></td>
+                    </tr>
+                    <tr ng-if="SISReq.deviceItems.length<=0||SISReq.deviceItems==null||SISReq.deviceItems==undefined">
+                        <td colspan="4" ng-if="SISType!=2">暂无数据</td>
+                        <td colspan="3" ng-if="SISType==2">暂无数据</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p>
+                <label for="requirement">
+                    <span style="width: 100px;text-align: right">巡检要求:</span>
+                    <textarea placeholder="请输入巡检要求" name="requirement" id="requirement" ng-model="SISReq.requirement"  ng-disabled="SISType==2"></textarea>
+                </label>
+            </p>
+            <p>
+                <label for="remark">
+                    <span style="width: 100px;text-align: right">备注:</span>
+                    <textarea placeholder="请输入备注" name="remark" id="remark" ng-model="SISReq.remark" ng-disabled="SISType==2"></textarea>
+                </label>
+            </p>
+        </div>
+        <!-- 巡检项目 -->
+        <div class="titleDiv" id="addP1">
+            <span class="tips">巡检项目</span>
+            <table class="popup_div_table popup_div_table_XJXM">
+                <thead>
+                <tr>
+                    <th ng-if="SISType!=2">
+                        <button ng-click="addProject()">添加项目</button>
+                    </th>
+                    <th>项目</th>
+                    <th>记录方式</th>
+                    <th>选择项(/分割)</th>
+                    <th>参考下限</th>
+                    <th>参考上限</th>
+                </tr>
+                </thead>
+                <tbody id="addProjectTable">
+                <tr ng-repeat="item in addProjectLists" ng-if="addProjectLists.length>0" class="add_P_tr">
+                    <td ng-if="SISType!=2">
+                        <a href="javascript:void(0)" class="resBtn deleteBtn" ng-click="deleteProjectBalance(item,$index)">
+                            <img src="image/comm/resBtnDelete.png" alt="删除"/>
+                            <b class="title">删除</b>
+                        </a>
+                    </td>
+                    <td><input class="projectName" type="text" placeholder="请输入项目" ng-disabled="SISType==2"></td>
+                    <td>
+                        <select class="projectRecordType" id="{{'recordType_div'+$index}}" ng-model="recordType" ng-options="deviceTypeListDetail.code as deviceTypeListDetail.name for deviceTypeListDetail in recordTypeLists" ng-change="changeRecordType($index)"  ng-disabled="SISType==2">
+                            <option value="">请选择记录方式</option>
+                        </select>
+                    </td>
+                    <td><input class="recordType_td_input projectXZX" type="text" placeholder="请输入选择项"  ng-disabled="SISType==2"></td>
+                    <td><input class="recordType_td_input projectXX" type="number" placeholder="请输入参考下限"  ng-disabled="SISType==2"></td>
+                    <td><input class="recordType_td_input projectSX" type="number" placeholder="请输入参考上限"  ng-disabled="SISType==2"></td>
+                </tr>
+                <tr ng-if="addProjectLists.length<=0">
+                    <td colspan="6" ng-if="SISType!=2">暂无数据</td>
+                    <td colspan="5" ng-if="SISType==2">暂无数据</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="errP" style="text-align: center" ng-show="errFlog">表单有空值!!!</div>
+        <div class="submitBtn1" style="text-align: center;padding-left: 40px;">
+            <button type="button" ng-click="addSISSure()" value="" class="btn">保存</button>
+            <button type="button" value="" class="btn" onClick="hideDiv('SISpopup')">取消</button>
+        </div>
+    </div>
+</div>
+
+<!-- 添加设备弹出层 -->
+<div class="ImportantNote addDevicePop mainContain" id="addDevicePop" style="max-height: 500px;overflow: auto">
+    <div class="headline">
+        <span>添加设备</span>
+        <img onClick="hideDiv('addDevicePop');popupDiv('SISpopup');" class="companyCloseImg" src="image/comm/diffClosed.png" width="22" height="22">
+    </div>
+    <div style="padding: 0;width: 100%" class="queryDiv" >
+        <ul>
+            <li>
+                <!--<label for="deviceType1" >-->
+                    <!--<span style="width: 100px;text-align: right">设备类型:</span>-->
+                    <!--<select id="deviceType1" ng-model="addDeviceType" ng-options="deviceTypeListDetail.id as deviceTypeListDetail.name for deviceTypeListDetail in deviceTypeLists">-->
+                        <!--<option value="">请选择设备类型</option>-->
+                    <!--</select>-->
+                <!--</label>-->
+                <label for="departmentManage" >
+                    <span style="width: 100px;text-align: right">使用部门:</span>
+                    <select id="departmentManage" ng-model="addDepartmentManage" ng-options="deviceTypeListDetail.id as deviceTypeListDetail.name for deviceTypeListDetail in departmentManageLists">
+                        <option value="">请选择使用部门</option>
+                    </select>
+                </label>
+                <label style="margin-left: 10px" for="code2"><span>设备名称：</span>
+                    <input type="text" id="code2" placeholder="请输入设备名称" ng-model="addDeviceTypeName"/>
+                </label>
+                <label>
+                    <button class="btn" ng-click="onQuery_cc()">查询</button>
+                </label>
+            </li>
+        </ul>
+    </div>
+    <div class="tableListDiv data-container jurisdiction">
+        <table>
+            <thead>
+            <tr>
+                <th style="text-align: left" colspan="17">设备列表</th>
+            </tr>
+            <tr>
+                <th style="min-width:50px;">全选<input style="vertical-align: middle;margin-left: 5px" type="checkbox" value="1" onclick="selAll1(this)" id="allSelected1"/></th>
+                <th>设备编号</th>
+                <th>设备名称</th>
+                <th>使用部门</th>
+                <th>规格型号</th>
+                <th>设备类别</th>
+            </tr>
+            </thead>
+            <tbody id="apply_infos_table1">
+            <tr ng-click="deviceTroubleRecord($event,orderDetail)" data-appid = "{{orderDetail.id}}" ng-class="{'':dataAudit=='','bg-gray':orderDetail.id == dataAudit}"  ng-repeat="orderDetail in deviceListInfos">
+                <td class="firstTd">{{$index+1}}<input style="margin-left: 5px;vertical-align: middle;" type="checkbox" name="che1"  value="{{orderDetail.id}}" class="addDeviceCheck"/></td>
+                <td>{{orderDetail.code||'--'}}</td>
+                <td>{{orderDetail.name||'--'}}</td>
+                <td>{{orderDetail.useDept||'--'}}</td>
+                <td>{{orderDetail.specification||'--'}}</td>
+                <td>{{orderDetail.deviceType||'--'}}</td>
+            </tr>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td style="text-align: center" colspan="6"><tm-pagination conf="paginationConf_CC"></tm-pagination></td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    <div class="submitBtn1" style="text-align: center;padding-left: 40px;margin-bottom: 10px">
+        <button type="button" ng-click="changeCCSure()" value="" class="btn">保存</button>
+        <button type="button" value="" class="btn" onClick="hideDiv('addDevicePop');popupDiv('SISpopup');">取消</button>
+    </div>
+</div>
+
+<!--保存成功start-->
+<div class="ImportantNote SaveSuccess">
+    <div class="headline">
+        <span>重要提示</span>
+        <img onClick="hideDiv('SaveSuccess')" class="companyCloseImg" src="image/comm/diffClosed.png" width="22" height="22">
+    </div>
+    <div class="businessAuth">
+        <p><img src="image/comm/attentionPlease.png" alt="注意："/><span class="Message"></span></p>
+        <div class="submitBtn1" style="text-align: right;">
+            <input ng-click="reload()" onClick="hideDiv('SaveSuccess')" type="button" value="确定" class="btn">
+        </div>
+    </div>
+</div>
+<!--保存成功end-->
+<!--单个删除弹出框start-->
+<div class="ImportantNote deleteSISPop">
+    <div class="headline">
+        <span>删除巡检标准</span>
+        <img onClick="hideDiv('deleteSISPop')" class="companyCloseImg" src="image/comm/diffClosed.png" width="22" height="22">
+    </div>
+    <div class="businessAuth">
+        <p><img src="image/comm/attentionPlease.png" alt="注意："/>确认删除选中的巡检标准？</p>
+        <div class="submitBtn1" style="text-align: center;">
+            <input type="button" value="删除"  class="btn" ng-click="deleteSISPopSure()"/>
+            <input type="button" value="取消" class="btn" onClick="hideDiv('deleteSISPop')">
+        </div>
+    </div>
+</div>
+<!--单个删除弹出框end-->

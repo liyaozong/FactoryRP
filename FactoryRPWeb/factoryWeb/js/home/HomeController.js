@@ -1,7 +1,7 @@
 /**
  * Created by SHYL on 2016/6/13.
  */
-myApp.controller("HomeController", function($rootScope,UrlService,$cookies,$state, $scope, $resource, $timeout, $http,$location,$log,AuthorizationService,functionManageService,userManagementService) {
+myApp.controller("HomeController", function($rootScope,UrlService,$cookies,$state, $scope, $resource, $timeout, $http,$location,$log,AuthorizationService,functionManageService,userManagementService,$window) {
     $("body").removeAttr('id');
     $("body").css('background','#fff');
     if($location.path()=='/main/deviceManage'){
@@ -26,6 +26,8 @@ myApp.controller("HomeController", function($rootScope,UrlService,$cookies,$stat
         $cookies.remove('username');
         $cookies.remove('corporateIdentify');
         $cookies.remove('requestSeqNo');
+        $window.localStorage['menu'] = '';
+        delete $window.localStorage['menu'];
         $state.go("login");
 //        AuthorizationService.doLogout(function(data){
 //            console.log(data)
