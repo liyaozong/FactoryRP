@@ -64,12 +64,16 @@ public class SpotInspectionPlan extends BaseEntity implements Serializable {
     private String spotInspectionRange;
 
     /**
-     * 循环周期类型
+     * 循环周期类型 周，年，天，小时，月等
      */
     @ApiModelProperty(value = "循环周期类型",notes ="循环周期类型" )
     @Column(name = "recycle_period_type",length = 20)
     private String recyclePeriodType;
 
+
+    /**
+     * 循环周期
+     */
     @ApiModelProperty(value = "循环周期",notes ="循环周期" )
     @Column(name = "recycle_period",length = 20)
     private Integer recyclePeriod;

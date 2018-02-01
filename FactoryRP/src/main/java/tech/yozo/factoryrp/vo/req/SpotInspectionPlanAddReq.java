@@ -71,7 +71,7 @@ public class SpotInspectionPlanAddReq extends ApiRequest implements Serializable
     /**
      * 循环周期
      */
-    @ApiModelProperty(value = "循环周期",notes ="循环周期",example = "1")
+    @ApiModelProperty(value = "循环周期，周，年，天，小时，月等，根据后端枚举取值",notes ="循环周期，周，年，天，小时，月等",example = "1")
     private Integer recyclePeriod;
 
 
