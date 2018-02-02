@@ -5,6 +5,7 @@ import tech.yozo.factoryrp.vo.req.SpotInspectionStandardQueryReq;
 import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionStandardAddResp;
 import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionStandardDetailQueryResp;
 import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionStandardQueryResp;
+import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionStandardQueryWarpResp;
 
 import java.util.List;
 
@@ -30,7 +31,7 @@ public interface SpotInspectionStandardService {
      * @param corporateIdentify
      * @return
      */
-    List<SpotInspectionStandardQueryResp> findByPage(SpotInspectionStandardQueryReq spotInspectionStandardQueryReq, Long corporateIdentify);
+    SpotInspectionStandardQueryWarpResp findByPage(SpotInspectionStandardQueryReq spotInspectionStandardQueryReq, Long corporateIdentify);
 
     /**
      * 点检标准新增方法

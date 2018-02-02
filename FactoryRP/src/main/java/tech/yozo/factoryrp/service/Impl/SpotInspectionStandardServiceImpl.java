@@ -21,10 +21,7 @@ import tech.yozo.factoryrp.utils.CheckParam;
 import tech.yozo.factoryrp.utils.ErrorCode;
 import tech.yozo.factoryrp.vo.req.SpotInspectionStandardAddReq;
 import tech.yozo.factoryrp.vo.req.SpotInspectionStandardQueryReq;
-import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionStandardAddResp;
-import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionStandardDetailQueryResp;
-import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionStandardItemsQueryResp;
-import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionStandardQueryResp;
+import tech.yozo.factoryrp.vo.resp.inspection.*;
 
 import javax.annotation.Resource;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -219,7 +216,7 @@ public class SpotInspectionStandardServiceImpl implements SpotInspectionStandard
      * @param corporateIdentify
      * @return
      */
-    public List<SpotInspectionStandardQueryResp> findByPage(SpotInspectionStandardQueryReq spotInspectionStandardQueryReq,Long corporateIdentify){
+    public SpotInspectionStandardQueryWarpResp findByPage(SpotInspectionStandardQueryReq spotInspectionStandardQueryReq, Long corporateIdentify){
 
         if (spotInspectionStandardQueryReq.getCurrentPage() > 0) {
             spotInspectionStandardQueryReq.setCurrentPage(spotInspectionStandardQueryReq.getCurrentPage()-1);
@@ -277,19 +274,23 @@ public class SpotInspectionStandardServiceImpl implements SpotInspectionStandard
                     spotInspectionStandardQueryResp.setId(p1.getId());
                     spotInspectionStandardQueryResp.setName(p1.getName());
                     spotInspectionStandardQueryResp.setRemark(p1.getRemark());
-                    spotInspectionStandardQueryResp.setTotalCount(page.getTotalElements());
 
                     if(!CheckParam.isNull(deviceTypeMap.get(p1.getDeviceType()))){
                         spotInspectionStandardQueryResp.setRelateDeviceName(deviceTypeMap.get(p1.getDeviceType()).getName());
                     }
                     spotInspectionStandardQueryResp.setRequirement(p1.getRequirement());
-                    spotInspectionStandardQueryResp.setItemsPerPage(spotInspectionStandardQueryReq.getItemsPerPage());
-                    spotInspectionStandardQueryResp.setCurrentPage(spotInspectionStandardQueryReq.getCurrentPage());
 
                     respList.add(spotInspectionStandardQueryResp);
                 });
 
-                return respList;
+                SpotInspectionStandardQueryWarpResp spotInspectionStandardQueryWarpResp = new SpotInspectionStandardQueryWarpResp();
+
+                spotInspectionStandardQueryWarpResp.setCurrentPage(spotInspectionStandardQueryReq.getCurrentPage());
+                spotInspectionStandardQueryWarpResp.setItemsPerPage(spotInspectionStandardQueryReq.getItemsPerPage());
+                spotInspectionStandardQueryWarpResp.setTotalCount(page.getTotalElements());
+                spotInspectionStandardQueryWarpResp.setList(respList);
+
+                return spotInspectionStandardQueryWarpResp;
 
             }
 
