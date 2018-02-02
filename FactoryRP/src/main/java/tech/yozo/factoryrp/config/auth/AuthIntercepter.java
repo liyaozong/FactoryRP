@@ -1,5 +1,6 @@
 package tech.yozo.factoryrp.config.auth;
 
+import tech.yozo.factoryrp.entity.MenuRole;
 import tech.yozo.factoryrp.entity.User;
 import tech.yozo.factoryrp.service.AuthorizationService;
 import tech.yozo.factoryrp.utils.AuthWebUtil;
@@ -22,8 +23,9 @@ import tech.yozo.factoryrp.vo.resp.role.RoleResp;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * @author created by Singer email:313402703@qq.com
@@ -260,10 +262,16 @@ public class AuthIntercepter implements HandlerInterceptor {
 
             });
 
-            authUser.setAuthUserMenuList(authUserMenuList);
+
+            //去重操作
+            ArrayList<AuthUserMenu> authUserMenuArrayList = authUserMenuList.stream().collect(Collectors.collectingAndThen(Collectors.toCollection(() -> new TreeSet<>(Comparator.comparingLong(AuthUserMenu::getId))), ArrayList::new));
+
+            authUser.setAuthUserMenuList(authUserMenuArrayList);
             authUser.setRoleList(roleList);
 
             stringRedisTemplate.opsForValue().set(authCachePrefix+token, JSON.toJSONString(authUser),authExpiredTime);
+
+
 
             try {
                 AuthWebUtil.loginSuccess(request,response,authUser);
@@ -277,5 +285,7 @@ public class AuthIntercepter implements HandlerInterceptor {
             AuthWebUtil.loginFailed(request, response);
             return false;
     }
+
+
 
 }
