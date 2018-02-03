@@ -33,7 +33,7 @@ factoryParameterSettingApp.controller('deviceManageController',function ($scope,
             currentPage: $scope.paginationConf1.currentPage,
             itemsPerPage: $scope.paginationConf1.itemsPerPage
         }, function (response) {
-            if(response.data.totalCount>=1){
+            if(response.errorCode=='000000'&&response.data.totalCount>=1){
                 $scope.paginationConf1.totalItems = response.data.totalCount;
                 $scope.troubleRecordList=response.data.list;
                 console.log($scope.troubleRecordList)
