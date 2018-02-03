@@ -6,6 +6,7 @@ import lombok.Data;
 import tech.yozo.factoryrp.vo.base.ApiRequest;
 import tech.yozo.factoryrp.vo.validation.NotEmpty;
 
+import javax.persistence.Column;
 import java.io.Serializable;
 import java.util.List;
 
@@ -47,6 +48,12 @@ public class SpotInspectionStandardAddReq extends ApiRequest implements Serializ
      */
     @ApiModelProperty(value = "设备类型关联ID",notes ="设备类型关联ID" )
     private Long deviceType;
+
+    /**
+     * 适用设备列表ID，数组形式
+     */
+    @ApiModelProperty(value = "适用设备列表ID，数组形式",notes ="适用设备列表ID，数组形式" )
+    private List<Long> relateDevices;
 
     /**
      * 巡检项目集合

@@ -55,4 +55,18 @@ public class SpotInspectionItems extends BaseEntity implements Serializable {
     private Long standard;
 
 
+    /**
+     * 上限值
+     */
+    @ApiModelProperty(value = "上限值",notes ="上限值" )
+    @Column(name = "upper_limit",length = 20)
+    private Integer upperLimit;
+
+    /**
+     * 下限值
+     */
+    @ApiModelProperty(value = "下限值",notes ="下限值" )
+    @Column(name = "lower_limit",length = 20)
+    private Integer lowerLimit;
+
 }

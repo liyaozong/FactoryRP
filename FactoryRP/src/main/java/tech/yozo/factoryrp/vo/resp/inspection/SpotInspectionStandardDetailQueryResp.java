@@ -22,9 +22,9 @@ public class SpotInspectionStandardDetailQueryResp implements Serializable{
 
 
     /**
-     * 设备详情
+     * 关联设备类型ID
      */
-    @ApiModelProperty(value = "设备详情",notes ="设备详情" )
+    @ApiModelProperty(value = "关联设备类型ID",notes ="关联设备类型ID" )
     private Long deviceType;
 
     /**

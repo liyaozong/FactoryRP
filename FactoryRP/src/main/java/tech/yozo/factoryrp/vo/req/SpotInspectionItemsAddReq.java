@@ -39,4 +39,16 @@ public class SpotInspectionItemsAddReq extends ApiRequest implements Serializabl
      */
     @ApiModelProperty(value = "输入限制规则，比如列表，文字等，根据记录方式规则限定",notes ="输入限制规则，比如列表，文字等，根据记录方式规则限定" )
     private List<String> inputLimitValue;
+
+    /**
+     * 上限值
+     */
+    @ApiModelProperty(value = "上限值",notes ="上限值" )
+    private Integer upperLimit;
+
+    /**
+     * 下限值
+     */
+    @ApiModelProperty(value = "下限值",notes ="下限值" )
+    private Integer lowerLimit;
 }
