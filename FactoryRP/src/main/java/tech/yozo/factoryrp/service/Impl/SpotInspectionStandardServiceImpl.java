@@ -265,7 +265,7 @@ public class SpotInspectionStandardServiceImpl implements SpotInspectionStandard
             if(!CheckParam.isNull(deviceTypeIds) && !deviceTypeIds.isEmpty()){
                 List<DeviceType> deviceTypeList = deviceTypeRepository.findAll(deviceTypeIds);
 
-                //形成以设备类型id为键的Map
+                //形成以设备类型ID为键的Map
                 Map<Long, DeviceType> deviceTypeMap = deviceTypeList.stream().collect(Collectors.toMap(DeviceType::getId, Function.identity()));
 
                 page.getContent().stream().forEach(p1 -> {

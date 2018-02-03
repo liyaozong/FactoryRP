@@ -6,18 +6,19 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import tech.yozo.factoryrp.entity.SpotInspectionPlan;
-import tech.yozo.factoryrp.entity.SpotInspectionPlanDevice;
-import tech.yozo.factoryrp.entity.SpotInspectionStandard;
+import tech.yozo.factoryrp.entity.*;
 import tech.yozo.factoryrp.exception.BussinessException;
+import tech.yozo.factoryrp.repository.DepartmentRepository;
 import tech.yozo.factoryrp.repository.SpotInspectionPlanDeviceRepository;
 import tech.yozo.factoryrp.repository.SpotInspectionPlanRepository;
+import tech.yozo.factoryrp.repository.UserRepository;
 import tech.yozo.factoryrp.service.SpotInspectionPlanService;
 import tech.yozo.factoryrp.utils.CheckParam;
 import tech.yozo.factoryrp.utils.ErrorCode;
 import tech.yozo.factoryrp.vo.req.SpotInspectionPlanAddReq;
 import tech.yozo.factoryrp.vo.req.SpotInspectionPlanQueryReq;
 import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionPlanAddResp;
+import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionPlanQueryResp;
 import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionPlanQueryWarpResp;
 
 import javax.annotation.Resource;
@@ -25,9 +26,10 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.math.BigDecimal;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * 巡检计划相关服务
@@ -45,6 +47,13 @@ public class SpotInspectionPlanServiceImpl implements SpotInspectionPlanService 
 
     @Resource
     private SpotInspectionPlanDeviceRepository spotInspectionPlanDeviceRepository;
+
+    @Resource
+    private UserRepository userRepository;
+
+    @Resource
+    private DepartmentRepository departmentRepository;
+
 
 
     /**
@@ -73,7 +82,9 @@ public class SpotInspectionPlanServiceImpl implements SpotInspectionPlanService 
         spotInspectionPlan.setPlanStatus(spotInspectionPlanAddReq.getPlanStatus());
         spotInspectionPlan.setRecyclePeriod(spotInspectionPlanAddReq.getRecyclePeriod());
         spotInspectionPlan.setSpotInspectionRange(spotInspectionPlanAddReq.getRange());
+        spotInspectionPlan.setRecyclePeriodType(spotInspectionPlanAddReq.getRecyclePeriodType());
         spotInspectionPlan.setCorporateIdentify(corporateIdentify);
+
 
         spotInspectionPlanRepository.save(spotInspectionPlan);
 
@@ -141,12 +152,65 @@ public class SpotInspectionPlanServiceImpl implements SpotInspectionPlanService 
 
         if(page.hasContent()){
 
-            //需要格式化数据
+            SpotInspectionPlanQueryWarpResp spotInspectionPlanQueryWarpResp = new SpotInspectionPlanQueryWarpResp();
+
+            //需要格式化数据 需要格式化部门，执行人员名称，以及设备数
             List<SpotInspectionPlan> spotInspectionPlanList = page.getContent();
+
+            List<SpotInspectionPlanQueryResp> spotInspectionPlanQueryRespList = new ArrayList<>();
+
+            List<Long> deptIds = new ArrayList<>();
+
+            List<Long> userIds = new ArrayList<>();
+
+            List<Long> planIds = new ArrayList<>();
 
             spotInspectionPlanList.stream().forEach(s1 -> {
 
+                deptIds.add(s1.getDepartment()); //格式化部门名称之用
+                userIds.addAll(JSON.parseArray(s1.getExecutors(),Long.class)); //格式化执行人姓名之用
+                planIds.add(s1.getId()); //格式化关联设备数量之用
+
             });
+
+
+            List<User> userList = userRepository.findByCorporateIdentifyAndUserIdIn(corporateIdentify, userIds);
+
+            List<Department> departmentList = departmentRepository.findByCorporateIdentifyAndIdIn(corporateIdentify, deptIds);
+
+
+            List<SpotInspectionPlanDevice> devices = spotInspectionPlanDeviceRepository.findByCorporateIdentifyAndSpotInspectionPlanIn(corporateIdentify, planIds);
+
+            Map<Long, User> userMap = userList.stream().collect(Collectors.toMap(User::getUserId, Function.identity()));
+            Map<Long, Department> departmentMap = departmentList.stream().collect(Collectors.toMap(Department::getId, Function.identity()));
+            Map<Long, List<SpotInspectionPlanDevice>> devicesMap =
+                    devices.stream().collect(Collectors.groupingBy(SpotInspectionPlanDevice::getSpotInspectionPlan));
+
+            spotInspectionPlanList.stream().forEach(s1 -> {
+
+                SpotInspectionPlanQueryResp spotInspectionPlanQueryResp = new SpotInspectionPlanQueryResp();
+
+                spotInspectionPlanQueryResp.setName(s1.getName());
+
+                 if(!CheckParam.isNull(userMap) && !userMap.isEmpty()){
+                     //s1.setExecutorsName();
+                 }
+
+                 //格式化部门
+                if(!CheckParam.isNull(departmentMap) && !departmentMap.isEmpty() && !CheckParam.isNull(departmentMap.get(s1.getDepartment()))){
+                    spotInspectionPlanQueryResp.setDepartmentName(departmentMap.get(s1.getDepartment()).getName());
+                }
+                if(!CheckParam.isNull(devicesMap) && !devicesMap.isEmpty() && !CheckParam.isNull(devicesMap.get(s1.getId()))){
+                    spotInspectionPlanQueryResp.setDeviceCount(devicesMap.get(s1.getId()).size());
+                }
+
+                spotInspectionPlanQueryResp.setPlanStatus(s1.getPlanStatus());
+                spotInspectionPlanQueryResp.setLastExecuteTime(s1.getLastExecuteTime());
+                spotInspectionPlanQueryResp.setNextExecuteTime(s1.getNextExecuteTime());
+
+                spotInspectionPlanQueryRespList.add(spotInspectionPlanQueryResp);
+            });
+
 
         }
 

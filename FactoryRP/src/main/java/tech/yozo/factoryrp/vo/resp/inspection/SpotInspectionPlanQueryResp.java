@@ -7,6 +7,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 巡检计划查询返回VO
@@ -44,7 +45,7 @@ public class SpotInspectionPlanQueryResp implements Serializable {
      * 所在部门
      */
     @ApiModelProperty(value = "所在部门",notes ="所在部门" )
-    private Long departmentName;
+    private String departmentName;
 
 
     /**
@@ -53,5 +54,18 @@ public class SpotInspectionPlanQueryResp implements Serializable {
     @ApiModelProperty(value = "上次执行时间",notes ="上次执行时间" )
     private Date lastExecuteTime;
 
+
+    /**
+     * 执行人名称数组
+     */
+    @ApiModelProperty(value = "执行人名称数组",notes ="执行人名称数组" )
+    private List<String> executorsName;
+
+
+    /**
+     * 设备数
+     */
+    @ApiModelProperty(value = "设备数",notes ="设备数" )
+    private Integer deviceCount;
 
 }

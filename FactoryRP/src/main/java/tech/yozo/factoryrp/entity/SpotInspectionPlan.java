@@ -32,7 +32,6 @@ public class SpotInspectionPlan extends BaseEntity implements Serializable {
     @Column(name = "name",length = 20)
     private String name;
 
-
     /**
      * 下次执行时间
      */
@@ -41,6 +40,10 @@ public class SpotInspectionPlan extends BaseEntity implements Serializable {
     @Column(name = "next_execute_time")
     private Date nextExecuteTime;
 
+    @JSONField(format="yyyy-MM-dd HH:mm:ss")
+    @ApiModelProperty(value = "上次执行时间",notes ="上次执行时间" )
+    @Column(name = "last_execute_time")
+    private Date lastExecuteTime;
 
     /**
      * 计划状态 1启用 2停用 3编辑中
@@ -82,7 +85,7 @@ public class SpotInspectionPlan extends BaseEntity implements Serializable {
      * 截止时间 如果为空表示计划长期有效
      */
     @JSONField(format="yyyy-MM-dd HH:mm:ss")
-    @ApiModelProperty(value = "截止时间",notes ="截止时间" )
+    @ApiModelProperty(value = "截止时间--如果为空表示计划长期有效",notes ="截止时间--如果为空表示计划长期有效" )
     @Column(name = "end_time")
     private Date endTime;
 
