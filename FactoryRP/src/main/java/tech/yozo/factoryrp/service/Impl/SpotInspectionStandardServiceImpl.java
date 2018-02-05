@@ -66,7 +66,21 @@ public class SpotInspectionStandardServiceImpl implements SpotInspectionStandard
         List<SpotInspectionStandard> spotInspectionStandardList = spotInspectionStandardRepository.findByCorporateIdentifyAndIdIn(corporateIdentify, ids);
 
         if(!CheckParam.isNull(spotInspectionStandardList) && !spotInspectionStandardList.isEmpty()){
-            spotInspectionStandardRepository.delete(spotInspectionStandardList);
+
+            List<Long> standardIds = new ArrayList<>();
+
+            spotInspectionStandardList.stream().forEach(s1 -> {
+                standardIds.add(s1.getId());
+            });
+
+            List<SpotInspectionItems> itemsList = spotInspectionItemsRepository.findByStandardIdsInAndCorporateIdentify(standardIds, corporateIdentify);
+
+            if(!CheckParam.isNull(itemsList) && !itemsList.isEmpty()){
+                spotInspectionItemsRepository.deleteInBatch(itemsList);
+            }
+
+            spotInspectionStandardRepository.deleteInBatch(spotInspectionStandardList);
+
         }
 
 
