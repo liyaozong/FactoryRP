@@ -280,6 +280,7 @@ public class SpotInspectionStandardServiceImpl implements SpotInspectionStandard
                     if(!CheckParam.isNull(deviceTypeMap.get(p1.getDeviceType()))){
                         spotInspectionStandardQueryResp.setRelateDeviceName(deviceTypeMap.get(p1.getDeviceType()).getName());
                     }
+                    spotInspectionStandardQueryResp.setRelateDevices(JSON.parseArray(p1.getRelateDevices(),Long.class));
                     spotInspectionStandardQueryResp.setRequirement(p1.getRequirement());
 
                     respList.add(spotInspectionStandardQueryResp);
