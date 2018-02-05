@@ -108,6 +108,8 @@ public class SpotInspectionStandardServiceImpl implements SpotInspectionStandard
                 spotInspectionItems.setRecordType(s1.getRecordType());
                 spotInspectionItems.setStandard(standardId);
                 spotInspectionItems.setCorporateIdentify(corporateIdentify);
+                spotInspectionItems.setLowerLimit(s1.getLowerLimit());
+                spotInspectionItems.setUpperLimit(s1.getUpperLimit());
 
                 //文字的处理逻辑 没有规定填写哪些文字，所以允许空
                 if(!SpotInspectionItemsRecordTypeEnum.SPOT_INSPECTION_ITEMS_RECORD_TYPE_ENUM_VERBAL_DESCRIPTION.getCode().equals(s1.getRecordType())){
