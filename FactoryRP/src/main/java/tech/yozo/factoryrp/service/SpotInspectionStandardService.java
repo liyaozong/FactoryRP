@@ -18,6 +18,13 @@ import java.util.List;
 public interface SpotInspectionStandardService {
 
     /**
+     * 批量删除点检标准
+     * @param ids
+     * @param corporateIdentify
+     */
+    void deleteSpotInspectionStandardByIds(List<Long> ids,Long corporateIdentify);
+
+    /**
      * 查询点巡检标准详情
      * @param standardId
      * @param corporateIdentify

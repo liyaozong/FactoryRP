@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 import tech.yozo.factoryrp.config.auth.UserAuthService;
 import tech.yozo.factoryrp.service.SpotInspectionStandardService;
+import tech.yozo.factoryrp.utils.CheckParam;
 import tech.yozo.factoryrp.vo.base.ApiResponse;
 import tech.yozo.factoryrp.vo.req.SpotInspectionStandardAddReq;
 import tech.yozo.factoryrp.vo.req.SpotInspectionStandardQueryReq;
@@ -17,7 +18,9 @@ import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionStandardQueryResp;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * 点巡检相关接口
@@ -96,6 +99,31 @@ public class SpotInspectionStandardController extends BaseController{
     public ApiResponse<SpotInspectionStandardAddResp> addSpotInspectionStandard(@Valid @RequestBody SpotInspectionStandardAddReq spotInspectionStandardAddReq, HttpServletRequest request){
         Long corporateIdentify = userAuthService.getCurrentUserCorporateIdentify(request);
         return apiResponse(spotInspectionStandardService.addSpotInspectionStandard(spotInspectionStandardAddReq,corporateIdentify));
+    }
+
+    /**
+     * 批量删除点检标准
+     * @param ids
+     */
+    @RequestMapping("/deleteSpotInspectionStandardByIds")
+    @ApiOperation(value = "批量删除点检标准--WEB",notes = "批量删除点检标准--WEB",httpMethod = "GET")
+    @ApiImplicitParams(@ApiImplicitParam(paramType = "query",dataType = "String",name = "ids",
+            value = "需要删除的主键，多个主键用逗号分割",required = true,defaultValue = "1,2"))
+    public ApiResponse deleteSpotInspectionStandardByIds(String ids,HttpServletRequest request){
+        Long corporateIdentify = userAuthService.getCurrentUserCorporateIdentify(request);
+        List<Long> idList = new ArrayList<>();
+        if (!CheckParam.isNull(ids)){
+            String[] idArray =ids.split(",");
+            if (idArray.length>0){
+                Stream.of(idArray).forEach(s1 -> {
+                    idList.add(Long.parseLong(s1));
+                });
+            }
+        }
+
+        spotInspectionStandardService.deleteSpotInspectionStandardByIds(idList,corporateIdentify);
+
+        return apiResponse();
     }
 
 }

@@ -57,6 +57,23 @@ public class SpotInspectionStandardServiceImpl implements SpotInspectionStandard
     private DeviceTypeRepository deviceTypeRepository;
 
     /**
+     * 批量删除点检标准
+     * @param ids
+     * @param corporateIdentify
+     */
+    public void deleteSpotInspectionStandardByIds(List<Long> ids,Long corporateIdentify){
+
+        List<SpotInspectionStandard> spotInspectionStandardList = spotInspectionStandardRepository.findByCorporateIdentifyAndIdIn(corporateIdentify, ids);
+
+        if(!CheckParam.isNull(spotInspectionStandardList) && !spotInspectionStandardList.isEmpty()){
+            spotInspectionStandardRepository.delete(spotInspectionStandardList);
+        }
+
+
+
+    }
+
+    /**
      * 点检标准新增方法
      * @param spotInspectionStandardAddReq
      * @param corporateIdentify

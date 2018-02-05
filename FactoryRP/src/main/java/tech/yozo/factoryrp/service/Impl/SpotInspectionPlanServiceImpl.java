@@ -119,7 +119,7 @@ public class SpotInspectionPlanServiceImpl implements SpotInspectionPlanService 
 
 
     /**
-     * 根据部门
+     * 根据部门ID查询点检计划
      * @param spotInspectionPlanQueryReq
      * @param corporateIdentify
      * @return
@@ -163,6 +163,9 @@ public class SpotInspectionPlanServiceImpl implements SpotInspectionPlanService 
 
             List<Long> userIds = new ArrayList<>();
 
+            //格式化用户的Map
+            Map<Long,List<Long>> userIdsMap = new HashMap<>();
+
             List<Long> planIds = new ArrayList<>();
 
             spotInspectionPlanList.stream().forEach(s1 -> {
@@ -196,7 +199,7 @@ public class SpotInspectionPlanServiceImpl implements SpotInspectionPlanService 
                      //s1.setExecutorsName();
                  }
 
-                 //格式化部门
+                 //格式化部门设备数量
                 if(!CheckParam.isNull(departmentMap) && !departmentMap.isEmpty() && !CheckParam.isNull(departmentMap.get(s1.getDepartment()))){
                     spotInspectionPlanQueryResp.setDepartmentName(departmentMap.get(s1.getDepartment()).getName());
                 }
