@@ -1,5 +1,6 @@
 package tech.yozo.factoryrp.repository;
 
+import org.springframework.data.jpa.repository.Query;
 import tech.yozo.factoryrp.entity.SpotInspectionItems;
 
 import java.util.List;
@@ -28,5 +29,6 @@ public interface SpotInspectionItemsRepository extends BaseRepository<SpotInspec
      * @param corporateIdentify
      * @return
      */
+    @Query(value = "select s from SpotInspectionItems s where s.standard in :standardIds and s.corporateIdentify = :corporateIdentify")
     List<SpotInspectionItems> findByStandardIdsInAndCorporateIdentify(List<Long> standardIds ,Long corporateIdentify);
 }
