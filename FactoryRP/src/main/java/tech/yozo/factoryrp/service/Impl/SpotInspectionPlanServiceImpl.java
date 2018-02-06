@@ -1,6 +1,8 @@
 package tech.yozo.factoryrp.service.Impl;
 
 import com.alibaba.fastjson.JSON;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -13,6 +15,7 @@ import tech.yozo.factoryrp.repository.SpotInspectionPlanDeviceRepository;
 import tech.yozo.factoryrp.repository.SpotInspectionPlanRepository;
 import tech.yozo.factoryrp.repository.UserRepository;
 import tech.yozo.factoryrp.service.SpotInspectionPlanService;
+import tech.yozo.factoryrp.utils.BaseUtil;
 import tech.yozo.factoryrp.utils.CheckParam;
 import tech.yozo.factoryrp.utils.ErrorCode;
 import tech.yozo.factoryrp.vo.req.SpotInspectionPlanAddReq;
@@ -27,6 +30,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.math.BigDecimal;
+import java.text.ParseException;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -54,6 +58,7 @@ public class SpotInspectionPlanServiceImpl implements SpotInspectionPlanService 
     @Resource
     private DepartmentRepository departmentRepository;
 
+    private static Logger logger = LoggerFactory.getLogger(SpotInspectionPlanServiceImpl.class);
 
 
     /**
@@ -63,6 +68,7 @@ public class SpotInspectionPlanServiceImpl implements SpotInspectionPlanService 
      * @return
      */
     public SpotInspectionPlanAddResp addSpotInspectionPlan(SpotInspectionPlanAddReq spotInspectionPlanAddReq,Long corporateIdentify){
+
 
         SpotInspectionPlan plan = spotInspectionPlanRepository.findByNameAndCorporateIdentify(spotInspectionPlanAddReq.getName(), corporateIdentify);
 
@@ -77,8 +83,14 @@ public class SpotInspectionPlanServiceImpl implements SpotInspectionPlanService 
         spotInspectionPlan.setName(spotInspectionPlanAddReq.getName());
         spotInspectionPlan.setDepartment(spotInspectionPlanAddReq.getDepartment());
         spotInspectionPlan.setExecutors(JSON.toJSONString(spotInspectionPlanAddReq.getExecutors()));
-        spotInspectionPlan.setEndTime(spotInspectionPlanAddReq.getEndTime());
-        spotInspectionPlan.setNextExecuteTime(spotInspectionPlanAddReq.getNextExecuteTime());
+
+        try {
+            spotInspectionPlan.setEndTime(BaseUtil.strToDate(spotInspectionPlanAddReq.getEndTime()));
+            spotInspectionPlan.setNextExecuteTime(BaseUtil.strToDate(spotInspectionPlanAddReq.getNextExecuteTime()));
+        } catch (ParseException e) {
+            logger.error("日期字符串转换异常 :"+e.getMessage(),e);
+        }
+
         spotInspectionPlan.setPlanStatus(spotInspectionPlanAddReq.getPlanStatus());
         spotInspectionPlan.setRecyclePeriod(spotInspectionPlanAddReq.getRecyclePeriod());
         spotInspectionPlan.setSpotInspectionRange(spotInspectionPlanAddReq.getRange());
@@ -101,6 +113,7 @@ public class SpotInspectionPlanServiceImpl implements SpotInspectionPlanService 
                 spotInspectionPlanDevice.setCorporateIdentify(corporateIdentify);
                 spotInspectionPlanDevice.setSpotInspectionPlan(spotInspectionPlan.getId());
                 spotInspectionPlanDevice.setLineOrder(d1.getLineOrder());
+                spotInspectionPlanDevice.setSpotInspectionStandard(d1.getSpotInspectionStandard());
 
                 spotInspectionPlanDeviceList.add(spotInspectionPlanDevice);
             });
@@ -126,6 +139,10 @@ public class SpotInspectionPlanServiceImpl implements SpotInspectionPlanService 
      */
     public SpotInspectionPlanQueryWarpResp findByPage(SpotInspectionPlanQueryReq spotInspectionPlanQueryReq, Long corporateIdentify){
 
+        if (spotInspectionPlanQueryReq.getCurrentPage() > 0) {
+            spotInspectionPlanQueryReq.setCurrentPage(spotInspectionPlanQueryReq.getCurrentPage()-1);
+        }
+
         Pageable p = new PageRequest(spotInspectionPlanQueryReq.getCurrentPage(), spotInspectionPlanQueryReq.getItemsPerPage());
 
         Page<SpotInspectionPlan> page = spotInspectionPlanRepository.findAll((Root<SpotInspectionPlan> root,
@@ -137,7 +154,7 @@ public class SpotInspectionPlanServiceImpl implements SpotInspectionPlanService 
                 list.add(criteriaBuilder.equal(root.get("department").as(Long.class), spotInspectionPlanQueryReq.getDepartmentId()));
             }
             if (!CheckParam.isNull(spotInspectionPlanQueryReq.getNextExecuteTime())) { //下次执行时间
-                list.add(criteriaBuilder.equal(root.get("remark").as(Date.class), spotInspectionPlanQueryReq.getNextExecuteTime()));
+                list.add(criteriaBuilder.equal(root.get("nextExecuteTime").as(Date.class), spotInspectionPlanQueryReq.getNextExecuteTime()));
             }
             if (!CheckParam.isNull(spotInspectionPlanQueryReq.getRecyclePeriodType())) { //循环周期类型
                 list.add(criteriaBuilder.equal(root.get("recyclePeriodType").as(String.class), spotInspectionPlanQueryReq.getRecyclePeriodType()));
@@ -161,30 +178,29 @@ public class SpotInspectionPlanServiceImpl implements SpotInspectionPlanService 
 
             List<Long> deptIds = new ArrayList<>();
 
-            List<Long> userIds = new ArrayList<>();
-
-            //格式化用户的Map
-            Map<Long,List<Long>> userIdsMap = new HashMap<>();
+            //List<Long> userIds = new ArrayList<>();
 
             List<Long> planIds = new ArrayList<>();
 
             spotInspectionPlanList.stream().forEach(s1 -> {
 
                 deptIds.add(s1.getDepartment()); //格式化部门名称之用
-                userIds.addAll(JSON.parseArray(s1.getExecutors(),Long.class)); //格式化执行人姓名之用
+                //userIds.addAll(JSON.parseArray(s1.getExecutors(),Long.class)); //格式化执行人姓名之用
                 planIds.add(s1.getId()); //格式化关联设备数量之用
 
             });
 
 
-            List<User> userList = userRepository.findByCorporateIdentifyAndUserIdIn(corporateIdentify, userIds);
+            //List<User> userList = userRepository.findByCorporateIdentifyAndUserIdIn(corporateIdentify, userIds);
 
             List<Department> departmentList = departmentRepository.findByCorporateIdentifyAndIdIn(corporateIdentify, deptIds);
 
 
             List<SpotInspectionPlanDevice> devices = spotInspectionPlanDeviceRepository.findByCorporateIdentifyAndSpotInspectionPlanIn(corporateIdentify, planIds);
 
-            Map<Long, User> userMap = userList.stream().collect(Collectors.toMap(User::getUserId, Function.identity()));
+            //Map<Long, User> userMap = userList.stream().collect(Collectors.toMap(User::getUserId, Function.identity()));
+
+
             Map<Long, Department> departmentMap = departmentList.stream().collect(Collectors.toMap(Department::getId, Function.identity()));
             Map<Long, List<SpotInspectionPlanDevice>> devicesMap =
                     devices.stream().collect(Collectors.groupingBy(SpotInspectionPlanDevice::getSpotInspectionPlan));
@@ -195,9 +211,9 @@ public class SpotInspectionPlanServiceImpl implements SpotInspectionPlanService 
 
                 spotInspectionPlanQueryResp.setName(s1.getName());
 
-                 if(!CheckParam.isNull(userMap) && !userMap.isEmpty()){
+                 //if(!CheckParam.isNull(userMap) && !userMap.isEmpty()){
                      //s1.setExecutorsName();
-                 }
+                 //}
 
                  //格式化部门设备数量
                 if(!CheckParam.isNull(departmentMap) && !departmentMap.isEmpty() && !CheckParam.isNull(departmentMap.get(s1.getDepartment()))){
@@ -210,13 +226,20 @@ public class SpotInspectionPlanServiceImpl implements SpotInspectionPlanService 
                 spotInspectionPlanQueryResp.setPlanStatus(s1.getPlanStatus());
                 spotInspectionPlanQueryResp.setLastExecuteTime(s1.getLastExecuteTime());
                 spotInspectionPlanQueryResp.setNextExecuteTime(s1.getNextExecuteTime());
+                spotInspectionPlanQueryResp.setExecutors(JSON.parseArray(s1.getExecutors(),Long.class));
+
 
                 spotInspectionPlanQueryRespList.add(spotInspectionPlanQueryResp);
             });
 
 
-        }
+            spotInspectionPlanQueryWarpResp.setSpotInspectionPlanQueryRespList(spotInspectionPlanQueryRespList);
+            spotInspectionPlanQueryWarpResp.setTotalCount(page.getTotalElements());
+            spotInspectionPlanQueryWarpResp.setCurrentPage(spotInspectionPlanQueryReq.getCurrentPage());
+            spotInspectionPlanQueryWarpResp.setItemsPerPage(spotInspectionPlanQueryReq.getItemsPerPage());
 
+            return spotInspectionPlanQueryWarpResp;
+        }
 
         return null;
     }

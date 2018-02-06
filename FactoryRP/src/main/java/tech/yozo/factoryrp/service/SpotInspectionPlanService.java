@@ -1,7 +1,9 @@
 package tech.yozo.factoryrp.service;
 
 import tech.yozo.factoryrp.vo.req.SpotInspectionPlanAddReq;
+import tech.yozo.factoryrp.vo.req.SpotInspectionPlanQueryReq;
 import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionPlanAddResp;
+import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionPlanQueryWarpResp;
 
 /**
  * 巡检计划相关服务
@@ -18,5 +20,14 @@ public interface SpotInspectionPlanService {
      * @return
      */
     SpotInspectionPlanAddResp addSpotInspectionPlan(SpotInspectionPlanAddReq spotInspectionPlanAddReq, Long corporateIdentify);
+
+
+    /**
+     * 根据部门ID查询点检计划
+     * @param spotInspectionPlanQueryReq
+     * @param corporateIdentify
+     * @return
+     */
+    SpotInspectionPlanQueryWarpResp findByPage(SpotInspectionPlanQueryReq spotInspectionPlanQueryReq, Long corporateIdentify);
 
 }

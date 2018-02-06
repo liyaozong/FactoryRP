@@ -7,9 +7,10 @@ import javax.validation.Payload;
 import java.lang.annotation.*;
 
 /**
+ * 数字字符串验证注解
  * @author created by Singer email:313402703@qq.com
  * @time 2017/11/17
- * @description 非空注解
+ * @description 数字字符串验证注解
  */
 @Documented
 @Target({ElementType.FIELD,ElementType.PARAMETER})

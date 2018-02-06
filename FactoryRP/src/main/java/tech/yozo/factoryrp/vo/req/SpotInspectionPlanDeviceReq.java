@@ -24,7 +24,7 @@ public class SpotInspectionPlanDeviceReq implements Serializable {
      */
     @ApiModelProperty(value = "点检标准ID",notes ="点检标准ID",example = "1")
     @Column(name = "spot_inspection_standard",length = 20)
-    private Long SpotInspectionStandard;
+    private Long spotInspectionStandard;
 
 
     /**

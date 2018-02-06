@@ -174,6 +174,7 @@ public class SpotInspectionStandardServiceImpl implements SpotInspectionStandard
      */
     public SpotInspectionStandardDetailQueryResp queryInspectionStandardDetail(Long standardId, Long corporateIdentify){
 
+
         SpotInspectionStandard spotInspectionStandard = spotInspectionStandardRepository.findOne(standardId);
 
         if(!CheckParam.isNull(spotInspectionStandard)){

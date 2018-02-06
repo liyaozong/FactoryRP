@@ -56,10 +56,10 @@ public class SpotInspectionPlanQueryResp implements Serializable {
 
 
     /**
-     * 执行人名称数组
+     * 执行人ID
      */
-    @ApiModelProperty(value = "执行人名称数组",notes ="执行人名称数组" )
-    private List<String> executorsName;
+    @ApiModelProperty(value = "执行人ID",notes ="执行人ID" )
+    private List<Long> executors;
 
 
     /**

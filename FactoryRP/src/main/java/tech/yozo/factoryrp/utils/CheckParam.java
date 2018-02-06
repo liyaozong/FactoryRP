@@ -269,7 +269,13 @@ public class CheckParam {
 		}
 		return flag;
 	}
-	
+
+	public static void main(String[] args) {
+		String date = "2018-01-23 18:42:30";
+
+		System.out.println(isDatetime(date));
+	}
+
 	/**
 	 * 验证字符串是否为yyyy-MM-dd格式的合法日期
 	 * @param str

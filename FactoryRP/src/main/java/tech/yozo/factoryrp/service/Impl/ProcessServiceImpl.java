@@ -480,6 +480,7 @@ public class ProcessServiceImpl implements ProcessService {
         if (deviceProcessQueryReq.getCurrentPage() > 0) {
             deviceProcessQueryReq.setCurrentPage(deviceProcessQueryReq.getCurrentPage()-1);
         }
+
         Pageable p = new PageRequest(deviceProcessQueryReq.getCurrentPage(), deviceProcessQueryReq.getItemsPerPage());
 
         Page<DeviceProcess> page = deviceProcessRepository.findAll((Root<DeviceProcess> root,

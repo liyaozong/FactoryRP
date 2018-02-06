@@ -1,10 +1,13 @@
 package tech.yozo.factoryrp.vo.req;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 import tech.yozo.factoryrp.vo.base.ApiRequest;
+import tech.yozo.factoryrp.vo.validation.IsDateStr;
 import tech.yozo.factoryrp.vo.validation.NotEmpty;
 
 import javax.persistence.Column;
@@ -31,15 +34,6 @@ public class SpotInspectionPlanAddReq extends ApiRequest implements Serializable
     @NotEmpty(message = "巡检计划名称不能为空")
     private String name;
 
-
-    /**
-     * 下次执行时间
-     */
-    @JSONField(format="yyyy-MM-dd HH:mm:ss")
-    @ApiModelProperty(value = "下次执行时间",notes ="下次执行时间" ,example = "2018-01-25 : 10:53:50")
-    private Date nextExecuteTime;
-
-
     /**
      * 执行者
      */
@@ -57,7 +51,7 @@ public class SpotInspectionPlanAddReq extends ApiRequest implements Serializable
     /**
      * 所在部门
      */
-    @ApiModelProperty(value = "所在部门",notes ="所在部门",example = "研发")
+    @ApiModelProperty(value = "所在部门",notes ="所在部门",example = "1")
     private Long department;
 
 
@@ -84,9 +78,16 @@ public class SpotInspectionPlanAddReq extends ApiRequest implements Serializable
     /**
      * 截止时间 如果为空表示计划长期有效
      */
-    @JSONField(format="yyyy-MM-dd HH:mm:ss")
-    @ApiModelProperty(value = "截止时间",notes ="截止时间" ,example = "2018-01-25 : 10:53:50")
-    private Date endTime;
+    @ApiModelProperty(value = "截止时间",notes ="截止时间" ,example = "2018-01-23 18:42:30")
+    @IsDateStr(message = "必须为日期格式(yyyy-MM-dd HH:mm:ss)的字符串")
+    private String endTime;
+
+    /**
+     * 下次执行时间
+     */
+    @ApiModelProperty(value = "下次执行时间",notes ="下次执行时间" ,example = "2018-01-23 18:42:30")
+    @IsDateStr(message = "必须为日期格式(yyyy-MM-dd HH:mm:ss)的字符串")
+    private String nextExecuteTime;
 
     @ApiModelProperty(value = "点检计划-设备集合",notes ="点检计划-设备集合", example = "list")
     List<SpotInspectionPlanDeviceReq> list;
