@@ -27,6 +27,15 @@ public interface SpotInspectionStandardRepository extends BaseRepository<SpotIns
 
 
     /**
+     * 根据设备类型和企业唯一标识查询点检标准
+     * @param deviceType
+     * @param corporateIdentify
+     * @return
+     */
+    @Query(value = "select s from SpotInspectionStandard s where s.deviceType = :deviceType and s.corporateIdentify = :corporateIdentify")
+    List<SpotInspectionStandard> findByDeviceTypeAndCorporateIdentify(@Param("deviceType") Long deviceType,@Param("corporateIdentify") Long corporateIdentify);
+
+    /**
      * 根据企业唯一标识和ID进行in查询
      * @param corporateIdentify
      * @param ids

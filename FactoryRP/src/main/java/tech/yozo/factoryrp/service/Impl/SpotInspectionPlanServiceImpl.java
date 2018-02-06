@@ -61,6 +61,8 @@ public class SpotInspectionPlanServiceImpl implements SpotInspectionPlanService 
     private static Logger logger = LoggerFactory.getLogger(SpotInspectionPlanServiceImpl.class);
 
 
+
+
     /**
      * 新增点检计划
      * @param spotInspectionPlanAddReq

@@ -40,10 +40,10 @@ public class SpotInspectionStandardQueryResp implements Serializable {
     private List<Long> relateDevices;
 
     /**
-     * 适用设备名称
+     * 适用设备类型名称
      */
-    @ApiModelProperty(value = "适用设备名称",notes ="适用设备名称" )
-    private String relateDeviceName;
+    @ApiModelProperty(value = "适用设备类型名称",notes ="适用设备类型名称" )
+    private String relateDeviceTypeName;
 
     /**
      * 备注

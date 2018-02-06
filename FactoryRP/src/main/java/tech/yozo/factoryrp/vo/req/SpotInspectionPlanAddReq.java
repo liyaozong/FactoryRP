@@ -1,18 +1,13 @@
 package tech.yozo.factoryrp.vo.req;
 
-import com.alibaba.fastjson.annotation.JSONField;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import org.springframework.format.annotation.DateTimeFormat;
 import tech.yozo.factoryrp.vo.base.ApiRequest;
 import tech.yozo.factoryrp.vo.validation.IsDateStr;
 import tech.yozo.factoryrp.vo.validation.NotEmpty;
 
-import javax.persistence.Column;
 import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
 
 /**

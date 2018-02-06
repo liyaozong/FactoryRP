@@ -126,4 +126,18 @@ public class SpotInspectionStandardController extends BaseController{
         return apiResponse();
     }
 
+    /**
+     * 根据设备ID查询点检标准-MOBILE
+     * @param deviceId
+     * @return
+     */
+    @RequestMapping("/queryStanardByDeviceId")
+    @ApiOperation(value = "根据设备ID查询点检标准-MOBILE-",notes = "根据设备ID查询点检标准-MOBILE",httpMethod = "GET")
+    @ApiImplicitParams(@ApiImplicitParam(paramType = "query",dataType = "Long",name = "deviceId",
+            value = "设备ID",required = true,defaultValue = "1"))
+    public ApiResponse<List<SpotInspectionStandardQueryResp>> queryStanardByDeviceId(@RequestParam(name = "deviceId",required = true) Long deviceId,HttpServletRequest request){
+        Long corporateIdentify = userAuthService.getCurrentUserCorporateIdentify(request);
+        return apiResponse(spotInspectionStandardService.queryStanardByDeviceId(deviceId,corporateIdentify));
+    }
+
 }

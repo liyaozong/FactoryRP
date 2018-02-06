@@ -58,6 +58,55 @@ public class SpotInspectionStandardServiceImpl implements SpotInspectionStandard
 
 
     /**
+     * 根据设备ID查询点检标准
+     * @param deviceId
+     * @param corporateIdentify
+     * @return
+     */
+    public List<SpotInspectionStandardQueryResp> queryStanardByDeviceId(Long deviceId,Long corporateIdentify){
+
+
+        DeviceInfo deviceInfo = deviceInfoRepository.findOne(deviceId);
+
+
+        if(!CheckParam.isNull(deviceInfo)){
+
+            Long deviceType = deviceInfo.getDeviceType();
+
+            List<SpotInspectionStandard> spotInspectionStandardList = spotInspectionStandardRepository.findByDeviceTypeAndCorporateIdentify(deviceType, corporateIdentify);
+
+            if(!CheckParam.isNull(spotInspectionStandardList) && !spotInspectionStandardList.isEmpty()){
+
+                //排除不需要的数据
+                spotInspectionStandardList = spotInspectionStandardList.stream().filter(d1 ->
+                        JSON.parseArray(d1.getRelateDevices(),Long.class).contains(deviceId)).collect(Collectors.toList());
+
+                List<SpotInspectionStandardQueryResp> respList = new ArrayList<>();
+
+                DeviceType type = deviceTypeRepository.findOne(deviceInfo.getDeviceType());
+
+                spotInspectionStandardList.stream().forEach(d1 -> {
+                    SpotInspectionStandardQueryResp spotInspectionStandardQueryResp = new SpotInspectionStandardQueryResp();
+
+                    spotInspectionStandardQueryResp.setId(d1.getId());
+                    spotInspectionStandardQueryResp.setName(d1.getName());
+                    spotInspectionStandardQueryResp.setRelateDeviceTypeName(CheckParam.isNull(type) ? null : type.getName());
+                    spotInspectionStandardQueryResp.setRelateDevices(JSON.parseArray(d1.getRelateDevices(),Long.class));
+                    spotInspectionStandardQueryResp.setRemark(d1.getRemark());
+                    spotInspectionStandardQueryResp.setRequirement(d1.getRequirement());
+
+                    respList.add(spotInspectionStandardQueryResp);
+                });
+
+                    return respList;
+            }
+
+        }
+
+        return null;
+    }
+
+    /**
      * 批量删除点检标准
      * @param ids
      * @param corporateIdentify
@@ -334,8 +383,10 @@ public class SpotInspectionStandardServiceImpl implements SpotInspectionStandard
                     spotInspectionStandardQueryResp.setName(p1.getName());
                     spotInspectionStandardQueryResp.setRemark(p1.getRemark());
 
+
+                    //适用设备类型名称
                     if(!CheckParam.isNull(deviceTypeMap.get(p1.getDeviceType()))){
-                        spotInspectionStandardQueryResp.setRelateDeviceName(deviceTypeMap.get(p1.getDeviceType()).getName());
+                        spotInspectionStandardQueryResp.setRelateDeviceTypeName(deviceTypeMap.get(p1.getDeviceType()).getName());
                     }
                     spotInspectionStandardQueryResp.setRelateDevices(JSON.parseArray(p1.getRelateDevices(),Long.class));
                     spotInspectionStandardQueryResp.setRequirement(p1.getRequirement());

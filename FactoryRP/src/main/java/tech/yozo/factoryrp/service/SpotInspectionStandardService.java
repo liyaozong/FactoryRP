@@ -18,6 +18,14 @@ import java.util.List;
 public interface SpotInspectionStandardService {
 
     /**
+     * 根据设备ID查询点检标准
+     * @param deviceId
+     * @param corporateIdentify
+     * @return
+     */
+    List<SpotInspectionStandardQueryResp> queryStanardByDeviceId(Long deviceId,Long corporateIdentify);
+
+    /**
      * 批量删除点检标准
      * @param ids
      * @param corporateIdentify
