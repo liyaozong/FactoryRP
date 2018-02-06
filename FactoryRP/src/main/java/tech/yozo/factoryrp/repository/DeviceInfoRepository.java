@@ -24,4 +24,13 @@ public interface DeviceInfoRepository extends BaseRepository<DeviceInfo,Long>{
      */
     @Query("select d from DeviceInfo d where d.deviceType = :deviceType and d.corporateIdentify = :corporateIdentify")
     List<DeviceInfo> findByDeviceTypeAndCorporateIdentify(@Param("deviceType") Long deviceType,@Param("corporateIdentify") Long corporateIdentify);
+
+
+    /**
+     * 根据主键进行in查询
+     * @param ids
+     * @return
+     */
+    @Query("select d from DeviceInfo d where d.id in :ids")
+    List<DeviceInfo> findByIdsIn(@Param("ids") List<Long> ids);
 }

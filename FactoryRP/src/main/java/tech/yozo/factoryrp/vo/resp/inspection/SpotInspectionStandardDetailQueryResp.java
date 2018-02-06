@@ -56,4 +56,12 @@ public class SpotInspectionStandardDetailQueryResp implements Serializable{
      */
     @ApiModelProperty(value = "巡检项目集合",notes ="巡检项目集合" )
     private List<SpotInspectionStandardItemsQueryResp> spotInspectionItems;
+
+    /**
+     * 关联设备ID集合
+     */
+    @ApiModelProperty(value = "关联设备信息集合",notes ="关联设备信息集合",example = "[1,2]",dataType = "List")
+    private List<SpotInspectionStandardDeviceInfo> deviceInfoList;
+
+
 }

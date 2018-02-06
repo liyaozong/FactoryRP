@@ -56,6 +56,7 @@ public class SpotInspectionStandardServiceImpl implements SpotInspectionStandard
     @Resource
     private DeviceTypeRepository deviceTypeRepository;
 
+
     /**
      * 批量删除点检标准
      * @param ids
@@ -212,6 +213,30 @@ public class SpotInspectionStandardServiceImpl implements SpotInspectionStandard
                 });
 
                 spotInspectionStandardDetailQueryResp.setSpotInspectionItems(spotInspectionItems);
+
+            }
+
+            List<Long> deviceInfoIds = JSON.parseArray(spotInspectionStandard.getRelateDevices(),Long.class);
+
+
+            if(!CheckParam.isNull(deviceInfoIds) && !deviceInfoIds.isEmpty()){
+                List<DeviceInfo> deviceInfoList = deviceInfoRepository.findByIdsIn(deviceInfoIds);
+
+                List<SpotInspectionStandardDeviceInfo> standardDeviceInfoList = new ArrayList<>();
+
+
+                deviceInfoList.stream().forEach(d1 -> {
+                    SpotInspectionStandardDeviceInfo spotInspectionStandardDeviceInfo =  new SpotInspectionStandardDeviceInfo();
+
+                    spotInspectionStandardDeviceInfo.setId(d1.getId());
+                    spotInspectionStandardDeviceInfo.setName(d1.getName());
+                    spotInspectionStandardDeviceInfo.setCode(d1.getCode());
+                    spotInspectionStandardDeviceInfo.setSpecification(d1.getSpecification());
+
+                    standardDeviceInfoList.add(spotInspectionStandardDeviceInfo);
+                });
+
+                spotInspectionStandardDetailQueryResp.setDeviceInfoList(standardDeviceInfoList);
 
             }
 
