@@ -369,7 +369,7 @@ myApp.controller('spotInspectionStandardCtrl',['$filter','$rootScope','$timeout'
 
 
 // 巡检计划控制器
-myApp.controller('inspectionPlanCtrl',['$filter','$rootScope','$location','$scope','$cookies','departmentManageService','inspectionPlan','queryCorporateAllUser',function($filter,$rootScope,$location,$scope,$cookies,departmentManageService,inspectionPlan,queryCorporateAllUser){
+myApp.controller('inspectionPlanCtrl',['$filter','$rootScope','$location','$scope','$cookies','departmentManageService','inspectionPlan','queryCorporateAllUser','factoryParameterSettingService',function($filter,$rootScope,$location,$scope,$cookies,departmentManageService,inspectionPlan,queryCorporateAllUser,factoryParameterSettingService){
     // console.log('巡检计划控制器');
     //查询部门
     departmentManageService.queryOrder({
@@ -412,6 +412,20 @@ myApp.controller('inspectionPlanCtrl',['$filter','$rootScope','$location','$scop
         // console.log($scope.allUserLists)
     });
 
+    //查询巡检计划执行时间类型
+    inspectionPlan.queryAllSpotInspectionPlanRecycleType().success(function (data) {
+       console.log(data);
+       $scope.SIPRecycleTypeLists=data.data;
+    });
+
+    //根据设备id查询巡检标准
+    $scope.queryStanardByDeviceId=function (id) {
+        inspectionPlan.queryStanardByDeviceId(id).success(function (data) {
+            // console.log(data);
+            $scope.stanardByDeviceIdLists=data.data;
+        })
+    };
+
     //分页查询巡检计划
 
     //新增巡检计划
@@ -428,7 +442,8 @@ myApp.controller('inspectionPlanCtrl',['$filter','$rootScope','$location','$scop
             recyclePeriodType:'',//循环周期类型
             endTime:'',//截止时间
             executors:'' ,//执行人集合
-            nameStrs:'' //执行人姓名字符串
+            nameStrs:'', //执行人姓名字符串
+            list:[]
         };
         popupDiv('iPlanPopup')
 
@@ -483,10 +498,77 @@ myApp.controller('inspectionPlanCtrl',['$filter','$rootScope','$location','$scop
         // popupDiv('iPlanPopup');
     };
 
-    //选择包含设备
+    //打开添加巡检对象弹出层
     $scope.addDevice=function () {
+        hideDiv('iPlanPopup');
+        popupDiv('iPlanDevicePopup');
+        $scope.changedDeviceObj={};
+    };
 
+    //点击确认巡检对象
+    $scope.addSISSure_device=function () {
+        $scope.iPlanReq.list.push({
+            id:$scope.changedDeviceObj.id,
+            name:$scope.changedDeviceObj.name,
+            code:$scope.changedDeviceObj.code,
+            specification:$scope.changedDeviceObj.specification,
+            planStatus:$scope.changedDeviceObj.planStatus
+        });
+
+        hideDiv('iPlanDevicePopup');
+        popupDiv('iPlanPopup');
+    };
+
+    //删除包含设备列表中的设备
+    $scope.deleteSISBalance_device=function (obj,i) {
+        $scope.iPlanReq.list.splice(i,1);
+    };
+
+    //分页查询设备
+    $scope.paginationConf_CC = {
+        currentPage: 1,
+        itemsPerPage: 5
+    };
+    $scope.onQuery_cc=function () {
+        factoryParameterSettingService.deviceListInfo({
+            useDept:$scope.dd_departmentManage,//使用部门
+            deviceType:$scope.dd_DeviceType,//设备类型
+            name:$scope.dd_DeviceTypeName,//设备名称
+            currentPage: $scope.paginationConf_CC.currentPage,
+            itemsPerPage: $scope.paginationConf_CC.itemsPerPage
+        }, function(response){
+            if(response.data.totalCount>=1){
+                $scope.paginationConf_CC.totalItems = response.data.totalCount;
+                $scope.deviceListInfos=response.data.list
+            }else{
+                $scope.paginationConf_CC.totalItems = 0;
+                $scope.deviceListInfos=[];
+            }
+        });
+    };
+
+    //打开设备列表弹出层
+    $scope.changedDevice=function () {
+        $scope.onQuery_cc();
+        hideDiv('iPlanDevicePopup');
+        popupDiv('changedDevicePop');
+    };
+
+    //确认点击选择设备
+    $scope.changedDeviceClick=function (event,obj) {
+        $(event.target).parent().parent().find('tr').removeClass('ccTr');
+        $(event.target).parent().addClass('ccTr');
+        // console.log(obj);
+        //点击确认选择设备
+        $scope.changeCCSure_changedDevice=function () {
+            $scope.changedDeviceObj=obj;
+            $scope.queryStanardByDeviceId(obj.id);
+            hideDiv('changedDevicePop');
+            popupDiv('iPlanDevicePopup');
+        };
     };
 
 
+
+    $scope.$watch('paginationConf_CC.currentPage + paginationConf_CC.itemsPerPage', $scope.onQuery_cc);
 }]);

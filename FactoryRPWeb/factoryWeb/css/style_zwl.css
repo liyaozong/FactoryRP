@@ -146,6 +146,9 @@ input[type="number"]{
 #deviceAddressPop .ccTr:hover{
     background: #ff6f09;!important;
 }
+#iPlanDevicePopup .ccTr:hover{
+    background: #ff6f09;!important;
+}
 .changedDiv{
     position: absolute;
     right: 1px;
@@ -238,7 +241,7 @@ textarea{
 #iPlanPopup_div input,#iPlanPopup_div select{
     width: 252px;
 }
-#iPlanPopup_div p{
+#iPlanPopup_div p,#iPlanDevicePopup_div p{
     text-align: left;
 }
 .executorsPopup{
@@ -246,4 +249,20 @@ textarea{
 }
 .iPlan_popup_table{
     width: 100%;
+}
+
+#iPlanDevicePopup_div{
+    position: relative;
+}
+.iPlanDevicePopup_div_btn{
+    position: absolute;
+    right: 20px;
+    top: 40px;
+    width: 80px;
+    height: 80px;
+    background-color: #71B9FE;
+    border-radius: 3px;
+    outline: none;
+    cursor: pointer;
+    color: white;
 }
