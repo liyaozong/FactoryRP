@@ -1,6 +1,6 @@
 //点巡检
 
-//巡检计划
+//巡检标准
 myApp.factory("spotInspectionStandard",["AppHttp","FF_API",function(AppHttp,FF_API){
     var spotInspectionStandard={};
     //分页查询巡检计划
@@ -8,6 +8,14 @@ myApp.factory("spotInspectionStandard",["AppHttp","FF_API",function(AppHttp,FF_A
         return AppHttp({
             method: 'post',
             url: FF_API.base + FF_API.spotInspectionStandardFindByPagePath,
+            data:data
+        });
+    };
+    //新增巡检标准
+    spotInspectionStandard.addSpotInspectionStandard=function(data){
+        return AppHttp({
+            method: 'post',
+            url: FF_API.base + FF_API.addSpotInspectionStandardPath,
             data:data
         });
     };
@@ -32,6 +40,34 @@ myApp.factory("spotInspectionStandard",["AppHttp","FF_API",function(AppHttp,FF_A
             url: FF_API.base + FF_API.deleteInspectionStandardPath+'?standardId='+standardId
         });
     };
+    //批量删除巡检标准
+    spotInspectionStandard.deleteSpotInspectionStandardByIds=function(standardId){
+        return AppHttp({
+            method: 'get',
+            url: FF_API.base + FF_API.deleteSpotInspectionStandardByIdsPath+'?ids='+standardId
+        });
+    };
 
     return spotInspectionStandard;
+}]);
+
+//巡检计划
+myApp.factory("inspectionPlan",["AppHttp","FF_API",function(AppHttp,FF_API){
+    var inspectionPlan={};
+    //巡检时间
+    inspectionPlan.getxjsj=function(){
+        return AppHttp({
+            method: 'get',
+            url: FF_API.baseApi + FF_API.getxjsjPath
+        });
+    };
+    //巡检时间
+    inspectionPlan.getxjlx=function(){
+        return AppHttp({
+            method: 'get',
+            url: FF_API.baseApi + FF_API.getxjlxPath
+        });
+    };
+
+    return inspectionPlan;
 }]);
