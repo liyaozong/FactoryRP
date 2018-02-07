@@ -12,6 +12,7 @@ var myApp = angular.module('myApp', [
 ])
 /*服务端接口地址*/
     .constant('FF_API', {
+        baseApi: '/',      //本地环境工程路径
         base: 'http://47.96.28.88:9550',      //开发环境工程路径
         // base: 'http://39.104.71.127:9550',      //测试环境工程路径
         baseTpl: 'views/'                 ,      //模板路径
@@ -60,7 +61,11 @@ var myApp = angular.module('myApp', [
         queryAllSpotInspectionItemsRecordTypePath:'/main/queryAllSpotInspectionItemsRecordType',   //分页查询巡检标准
         queryInspectionStandardDetailPath:'/api/spotInspectionStandard/queryInspectionStandardDetail',//查询巡检标准详情
         deleteInspectionStandardPath:'/api/spotInspectionStandard/deleteInspectionStandard',//单个删除巡检标准
-        spotInspectionStandardFindByPagePath:'/api/spotInspectionStandard/findByPage'   //分页查询巡检标准
+        deleteSpotInspectionStandardByIdsPath:'/api/spotInspectionStandard/deleteSpotInspectionStandardByIds',//批量删除巡检标准
+        addSpotInspectionStandardPath:'/api/spotInspectionStandard/addSpotInspectionStandard',//新增巡检标准
+        spotInspectionStandardFindByPagePath:'/api/spotInspectionStandard/findByPage',   //分页查询巡检标准
+        getxjsjPath:'service/getxjsj',   //巡检计划状态
+        getxjlxPath:'service/getxjlx'   //巡检计划名称
 
 
     })

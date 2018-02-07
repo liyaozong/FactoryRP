@@ -23,7 +23,7 @@
                 <label for="deviceType" >
                     <span style="width: 100px;text-align: right">设备类型:</span>
                     <select id="deviceType" ng-model="relateDeviceType" ng-options="deviceTypeListDetail.id as deviceTypeListDetail.name for deviceTypeListDetail in deviceTypeLists">
-                        <option value="">请选择适用设备</option>
+                        <option value="">请选择设备类型</option>
                     </select>
                 </label>
                 <label>
@@ -53,7 +53,7 @@
                 <td class="firstTd">{{$index+1}}<input style="margin-left: 5px;vertical-align: middle;" class="SISListsInput" type="checkbox" name="che"  value="{{orderDetail.id}}" ng-click="stopUp($event)"/></td>
                 <td>{{$index+1}}</td>
                 <td>{{orderDetail.name||'--'}}</td>
-                <td>{{orderDetail.relateDeviceName||'--'}}</td>
+                <td>{{orderDetail.relateDeviceTypeName||'--'}}</td>
                 <td>{{orderDetail.requirement||'--'}}</td>
                 <td>{{orderDetail.remark||'--'}}</td>
                 <td>
@@ -76,31 +76,16 @@
             <tfoot ng-if="spotInspectionStandardLists.length>0">
             <tr>
                 <td>
-                    <a href="javascript:void(0)" class="resBtn deleteBtn" ng-click="deleteSISBalance()">
+                    <a href="javascript:void(0)" class="resBtn deleteBtn" ng-click="deleteSISBalance_si()">
                         <img src="image/comm/resBtnDelete.png" alt="删除"/>
                         <b class="title">删除</b>
                     </a>
                 </td>
-                <td style="text-align: center" colspan="17"><tm-pagination conf="paginationConf"></tm-pagination></td>
+                <td style="text-align: center" colspan="7"><tm-pagination conf="paginationConf"></tm-pagination></td>
             </tr>
             </tfoot>
         </table>
     </div>
-    <!--<div class="tip">-->
-        <!--<div class="tiptop"><span>提示信息</span><a></a></div>-->
-        <!--<div class="tipinfo">-->
-            <!--<span><img src="images/ticon.png" /></span>-->
-            <!--<div class="tipright">-->
-                <!--<p>是否确认对信息的修改 ？</p>-->
-                <!--<cite>如果是请点击确定按钮 ，否则请点取消。</cite>-->
-            <!--</div>-->
-        <!--</div>-->
-
-        <!--<div class="tipbtn">-->
-            <!--<input name="" type="button"  class="sure" value="确定" />&nbsp;-->
-            <!--<input name="" type="button"  class="cancel" value="取消" />-->
-        <!--</div>-->
-    <!--</div>-->
 </div>
 
 <!-- 巡检标准详情表格 -->
@@ -109,13 +94,15 @@
         <table>
             <thead>
             <tr>
-                <th style="text-align: left;padding-left: 20px" colspan="7">巡检项目明细</th>
+                <th style="text-align: left;padding-left: 20px" colspan="6">巡检项目明细</th>
             </tr>
             <tr>
                 <th>序号</th>
                 <th>项目</th>
                 <th>记录方式</th>
-                <th>参考值</th>
+                <th>选择项(/分割)</th>
+                <th>参考下限</th>
+                <th>参考上限</th>
             </tr>
             </thead>
             <tbody>
@@ -123,10 +110,12 @@
                 <td>{{$index+1}}</td>
                 <td>{{orderDetail.name||'--'}}</td>
                 <td>{{orderDetail.recordTypeName||'--'}}</td>
-                <td>{{orderDetail.inputLimitValue.join(',')||'--'}}</td>
+                <td>{{orderDetail.inputLimitValue.join('/')||'--'}}</td>
+                <td>{{orderDetail.lowerLimit||'--'}}</td>
+                <td>{{orderDetail.upperLimit||'--'}}</td>
             </tr>
             <tr ng-if="changeDetailLists.length<=0">
-                <td colspan="14">暂无数据</td>
+                <td colspan="6">暂无数据</td>
             </tr>
             </tbody>
         </table>
@@ -139,7 +128,7 @@
         <span ng-bind="SISTip"></span>
         <img onClick="hideDiv('SISpopup')" class="companyCloseImg" src="image/comm/diffClosed.png" width="22" height="22">
     </div>
-    <div style="padding: 30px 0 20px 0;width: 840px;max-height: 380px;height: auto;overflow-y: hidden; overflow: auto;" class="businessAuth">
+    <div style="padding: 30px 0 20px 0;width: 840px;height: auto;overflow-y: hidden; overflow: auto;" class="businessAuth">
         <!-- 基础信息 -->
         <div class="titleDiv" id="addP">
             <span class="tips">基础信息</span>
@@ -157,7 +146,7 @@
                 <!--</label>-->
                 <label for="deviceType2" >
                     <span style="width: 100px;text-align: right">设备类型:</span>
-                    <select id="deviceType2" ng-model="SISReq.addDeviceType" ng-options="deviceTypeListDetail.id as deviceTypeListDetail.name for deviceTypeListDetail in deviceTypeLists" ng-disabled="SISType==2">
+                    <select style="width: 252px;" id="deviceType2" ng-model="SISReq.addDeviceType" ng-options="deviceTypeListDetail.id as deviceTypeListDetail.name for deviceTypeListDetail in deviceTypeLists" ng-disabled="SISType==2">
                         <option value="">请选择设备类型</option>
                     </select>
                 </label>
@@ -236,9 +225,9 @@
                             <option value="">请选择记录方式</option>
                         </select>
                     </td>
-                    <td><input class="recordType_td_input projectXZX" type="text" placeholder="请输入选择项"  ng-disabled="SISType==2"></td>
-                    <td><input class="recordType_td_input projectXX" type="number" placeholder="请输入参考下限"  ng-disabled="SISType==2"></td>
-                    <td><input class="recordType_td_input projectSX" type="number" placeholder="请输入参考上限"  ng-disabled="SISType==2"></td>
+                    <td><input class="recordType_td_input projectXZX inputLimitValue" type="text" placeholder="请输入选择项"  ng-disabled="SISType==2"></td>
+                    <td><input class="recordType_td_input projectXX lowerLimit" min="0" type="number" placeholder="请输入参考下限"  ng-disabled="SISType==2"></td>
+                    <td><input class="recordType_td_input projectSX upperLimit" min="0" type="number" placeholder="请输入参考上限"  ng-disabled="SISType==2"></td>
                 </tr>
                 <tr ng-if="addProjectLists.length<=0">
                     <td colspan="6" ng-if="SISType!=2">暂无数据</td>
@@ -256,7 +245,7 @@
 </div>
 
 <!-- 添加设备弹出层 -->
-<div class="ImportantNote addDevicePop mainContain" id="addDevicePop" style="max-height: 500px;overflow: auto">
+<div class="ImportantNote addDevicePop mainContain" id="addDevicePop">
     <div class="headline">
         <span>添加设备</span>
         <img onClick="hideDiv('addDevicePop');popupDiv('SISpopup');" class="companyCloseImg" src="image/comm/diffClosed.png" width="22" height="22">

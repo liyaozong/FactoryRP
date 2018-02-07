@@ -2,7 +2,7 @@
 
 
 // 巡检标准控制器
-myApp.controller('spotInspectionStandardCtrl',['$filter','$rootScope','$timeout','$scope','$cookies','spotInspectionStandard','deviceType','departmentManageService','factoryParameterSettingService',function($filter,$rootScope,$timeout,$scope,$cookies,spotInspectionStandard,deviceType,departmentManageService,factoryParameterSettingService){
+myApp.controller('spotInspectionStandardCtrl',['$filter','$rootScope','$timeout','$scope','$cookies','spotInspectionStandard','deviceType','departmentManageService','factoryParameterSettingService','validate',function($filter,$rootScope,$timeout,$scope,$cookies,spotInspectionStandard,deviceType,departmentManageService,factoryParameterSettingService,validate){
     // console.log('巡检标准控制器');
 
     $scope.paginationConf = {
@@ -12,20 +12,30 @@ myApp.controller('spotInspectionStandardCtrl',['$filter','$rootScope','$timeout'
 
     //查询设备类型
     deviceType.list().success(function (data) {
-        console.log(data,'设备类型');
+        // console.log(data,'设备类型');
         $scope.deviceTypeLists=data.data;
     });
 
     //查询部门
-    $scope.departmentManageLists = departmentManageService.getOrderList();
+    departmentManageService.queryOrder({
+        name:$scope.depName,
+        corporateIdentify:$scope.corporateIdentify
+    }, function(response){
+        if(response.data!=''&&response.data!=null&&response.data!=undefined&&response.errorCode=='000000'){
+            $scope.departmentManageLists=response.data;
+        }else{
+            console.log(response.errorMessage);
+        }
+    });
+    // $scope.departmentManageLists = departmentManageService.getOrderList();
 
     //查询点巡检记录方式
     spotInspectionStandard.getRecordType().success(function (data) {
         $scope.recordTypeLists=data.data;
-        console.log($scope.recordTypeLists,'----')
+        // console.log($scope.recordTypeLists,'----')
     });
 
-    //查询设备
+    //分页查询设备
     $scope.paginationConf_CC = {
         currentPage: 1,
         itemsPerPage: 5
@@ -66,10 +76,10 @@ myApp.controller('spotInspectionStandardCtrl',['$filter','$rootScope','$timeout'
         };
         spotInspectionStandard.list(req).success(function (data) {
             // console.log(data,'巡检标准');
-            // if(data.data.totalCount>=1){
-            if(true){
+            if(data.data&&data.data.totalCount>=1){
+            // if(true){
                 $scope.paginationConf.totalItems = data.data.totalCount;
-                $scope.spotInspectionStandardLists=data.data;
+                $scope.spotInspectionStandardLists=data.data.list;
                 // console.log($scope.spotInspectionStandardLists);
                 $timeout(function () {
                     if($scope.spotInspectionStandardLists.length>0){
@@ -81,12 +91,14 @@ myApp.controller('spotInspectionStandardCtrl',['$filter','$rootScope','$timeout'
                     }
                 },300);
             }else{
+                $scope.changeDetailLists=[];
                 $scope.paginationConf.totalItems = 0;
                 $scope.spotInspectionStandardLists.length = 0;
             }
         });
     };
 
+    //阻止冒泡
     $scope.stopUp=function (event) {
         // console.log(event)
         event.stopPropagation();
@@ -106,12 +118,12 @@ myApp.controller('spotInspectionStandardCtrl',['$filter','$rootScope','$timeout'
     //添加设备(打开弹出层)
     $scope.addDevice=function () {
         // console.log($scope.addDeviceType);
-        // if($scope.addDeviceType){
+        if($scope.SISReq.addDeviceType){
             $scope.onQuery_cc();
             hideDiv('SISpopup');popupDiv('addDevicePop');
-        // }else {
-        //     alert('请选择设备类型');
-        // }
+        }else {
+            alert('请选择设备类型');
+        }
     };
 
     //保存添加设备弹出层数据
@@ -168,16 +180,74 @@ myApp.controller('spotInspectionStandardCtrl',['$filter','$rootScope','$timeout'
     //确定保存事件（新增、编辑、详情）
     $scope.addSISSure=function () {
         if($scope.SISType==0){
-            alert('接口调试中');
+            // alert('接口调试中');
+            var arr=[];var arr1=[];
+            $scope.SISReq.deviceItems.forEach(function (v) {
+                arr.push(v.id);
+            });
+            $('.add_P_tr').each(function (i,n) {
+                var obj={
+                    name:$(this).find('.projectName').val(),
+                    recordType:$(this).find('.projectRecordType').val().split(':')[1],
+                    inputLimitValue:$(this).find('.inputLimitValue').val().split('/'),
+                    lowerLimit:$(this).find('.lowerLimit').val(),
+                    upperLimit:$(this).find('.upperLimit').val()
+                };
+                arr1.push(obj);
+                // console.log($(this).find('.projectRecordType').val())
+            });
+
+            var req={
+                name:$scope.SISReq.name,
+                deviceType:$scope.SISReq.addDeviceType,
+                remark:$scope.SISReq.remark,
+                relateDevices:arr,
+                requirement:$scope.SISReq.requirement,
+                requestTime:$filter('date')(new Date(),'yyyy-MM-dd HH:mm:ss'),
+                spotInspectionItems:arr1
+            };
+            console.log(req);
+            var flog;
+            for(var i in req){
+                // console.log(i,":",req[i]);
+                flog=validate.required(req[i]);
+                if(!flog){
+                    break;
+                }
+            }
+            if(req.relateDevices.length>0&&req.spotInspectionItems.length>0){
+                flog=true;
+            }else {
+                flog=false;
+            }
+            if(flog){
+                spotInspectionStandard.addSpotInspectionStandard(req).success(function (data) {
+                    if(data.errorCode=='000000'){
+                        hideDiv('SISpopup');
+                        popupDiv('SaveSuccess');
+                        $('.SaveSuccess .Message').html(data.errorMessage);
+                    }else{
+                        hideDiv('SISpopup');
+                        popupDiv('SaveSuccess');
+                        $('.SaveSuccess .Message').html(data.errorMessage);
+                    }
+                })
+            }else {
+                $scope.errFlog=true;
+            }
+
         }else if($scope.SISType==1){
             alert('接口调试中');
+            hideDiv('SISpopup');
+        }else {
+            hideDiv('SISpopup');
         }
-        hideDiv('SISpopup');
     };
 
     //新增巡检标准
     $scope.openSIS=function (type) {
         $scope.SISType=type;
+        $scope.errFlog=false;
         $scope.SISTip='巡检标准新增';
         $scope.addProjectLists=[];
         $scope.SISReq={
@@ -193,14 +263,15 @@ myApp.controller('spotInspectionStandardCtrl',['$filter','$rootScope','$timeout'
     //巡检标准详情or编辑
     $scope.openSIS_detail=function (type,item,event) {
         spotInspectionStandard.queryInspectionStandardDetail(item.id).success(function (data) {
-
+            $scope.errFlog=false;
             $scope.SISType=type;
             $scope.SISTip=type==2?'巡检标准详情':'巡检标准编辑';
             var datas=data.data;
             $scope.SISReq={
                 name:datas.name,
-                deviceItems:datas.deviceItems,
+                deviceItems:datas.deviceInfoList,
                 requirement:datas.requirement,
+                addDeviceType:datas.deviceType,
                 remark:datas.remark
             };
             $scope.addProjectLists=[];
@@ -223,7 +294,7 @@ myApp.controller('spotInspectionStandardCtrl',['$filter','$rootScope','$timeout'
                 $timeout(function () {
                     // console.log($('.add_P_tr').html());
                     $('.add_P_tr').each(function (i,n) {
-                        // console.log(n,i);
+                        // console.log(this,i);
                         $(this).find('.projectName').val(datas.spotInspectionItems[i].name);
                         // $(this).find('.projectRecordType').val(datas.spotInspectionItems[i].recordTypeName);
                         $(this).find('.projectRecordType option').each(function (j,k) {
@@ -233,9 +304,11 @@ myApp.controller('spotInspectionStandardCtrl',['$filter','$rootScope','$timeout'
                             }
                         });
                         if(datas.spotInspectionItems[i].recordTypeName!='文字描述'){
-                            $(this).find('.projectXZX').val(datas.spotInspectionItems[i].inputLimitValue[0]);
-                            $(this).find('.projectXX').val(datas.spotInspectionItems[i].inputLimitValue[1]);
-                            $(this).find('.projectSX').val(datas.spotInspectionItems[i].inputLimitValue[2]);
+                            $(this).find('.inputLimitValue').val(datas.spotInspectionItems[i].inputLimitValue.join('/'));
+                            $(this).find('.lowerLimit').val(datas.spotInspectionItems[i].lowerLimit);
+                            $(this).find('.upperLimit').val(datas.spotInspectionItems[i].upperLimit);
+                        }else {
+                            $(this).find('.recordType_td_input').val('').addClass('displayNone');
                         }
                     })
                 },300)
@@ -248,7 +321,7 @@ myApp.controller('spotInspectionStandardCtrl',['$filter','$rootScope','$timeout'
     };
 
     //删除
-    $scope.deleteSISBalance=function () {
+    $scope.deleteSISBalance_si=function () {
         popupDiv('deleteSISPop');
     };
 
@@ -262,7 +335,17 @@ myApp.controller('spotInspectionStandardCtrl',['$filter','$rootScope','$timeout'
         });
         // console.log(arr);
         if(arr.length>1){
-            alert('批量删除接口调试中');hideDiv('deleteSISPop');
+            spotInspectionStandard.deleteSpotInspectionStandardByIds(arr.join(',')).success(function (data) {
+                if(data.errorCode=='000000'){
+                    hideDiv('deleteSISPop');
+                    popupDiv('SaveSuccess');
+                    $('.SaveSuccess .Message').html(data.errorMessage);
+                }else{
+                    hideDiv('deleteSISPop');
+                    popupDiv('SaveSuccess');
+                    $('.SaveSuccess .Message').html(data.errorMessage);
+                }
+            })
         }else if(arr.length==1){
             spotInspectionStandard.deleteInspectionStandard(arr[0]).success(function (data) {
                 if(data.errorCode=='000000'){
@@ -286,9 +369,124 @@ myApp.controller('spotInspectionStandardCtrl',['$filter','$rootScope','$timeout'
 
 
 // 巡检计划控制器
-myApp.controller('inspectionPlanCtrl',['$filter','$rootScope','$location','$scope','$cookies','queryCorporateAllUser','userManageMent',function($filter,$rootScope,$location,$scope,$cookies,queryCorporateAllUser,userManageMent){
+myApp.controller('inspectionPlanCtrl',['$filter','$rootScope','$location','$scope','$cookies','departmentManageService','inspectionPlan','queryCorporateAllUser',function($filter,$rootScope,$location,$scope,$cookies,departmentManageService,inspectionPlan,queryCorporateAllUser){
     // console.log('巡检计划控制器');
+    //查询部门
+    departmentManageService.queryOrder({
+        name:$scope.depName,
+        corporateIdentify:$scope.corporateIdentify
+    }, function(response){
+        if(response.data!=''&&response.data!=null&&response.data!=undefined&&response.errorCode=='000000'){
+            $scope.departmentManageLists=response.data;
+        }else{
+            console.log(response.errorMessage);
+        }
+    });
 
+    //查询巡检计划状态
+    inspectionPlan.getxjsj().success(function (data) {
+        // console.log(data);
+        $scope.xjsjLists=data.data;
+    });
+
+    //查询巡检计划名称
+    inspectionPlan.getxjlx().success(function (data) {
+        $scope.xjlxLists=data.data;
+    });
+
+    //计划状态
+    $scope.planStatusLists=[{
+        id:1,
+        name:'启用'
+    },{
+        id:2,
+        name:'停用'
+    },{
+        id:3,
+        name:'编辑中'
+    }];
+
+    //查询执行人
+    queryCorporateAllUser.getData().success(function (data) {
+        $scope.allUserLists=data.data.userRespList;
+        // console.log($scope.allUserLists)
+    });
+
+    //分页查询巡检计划
+
+    //新增巡检计划
+    $scope.openIPlan=function (type) {
+        $scope.iPlanType=type;
+        $scope.iPlanTip='巡检计划新增';
+        $scope.iPlanReq={
+            name:'',//计划名称
+            range:'',//位置范围
+            department:'',//所在部门
+            planStatus:'',//计划状态
+            nextExecuteTime:'',//下次执行时间
+            recyclePeriod:'',//循环周期
+            recyclePeriodType:'',//循环周期类型
+            endTime:'',//截止时间
+            executors:'' ,//执行人集合
+            nameStrs:'' //执行人姓名字符串
+        };
+        popupDiv('iPlanPopup')
+
+    };
+
+    //打开执行人选择列表
+    $scope.openPA=function () {
+        hideDiv('iPlanPopup');
+        popupDiv('executorsPopup');
+        $scope.processAuditorLists=[];
+        $scope.userLists=angular.copy($scope.allUserLists);
+    };
+
+    //选择执行者
+    $scope.changePA_left=function (id,i) {
+        // console.log(id,i);
+        var arr=$scope.userLists[i];
+        $scope.processAuditorLists.push(arr);
+        $scope.userLists.splice(i,1);
+    };
+
+    //删除已选择执行者
+    $scope.changePA_right=function (id,i) {
+        // console.log(id,i);
+        var arr=$scope.processAuditorLists[i];
+        $scope.userLists.push(arr);
+        $scope.processAuditorLists.splice(i,1);
+    };
+
+    //确定选择执行者列表
+    $scope.closePA=function () {
+        var processAuditorList=[];var nameList=[];
+        $scope.processAuditorLists.forEach(function (n,i) {
+            processAuditorList.push(n.userId);
+            nameList.push(n.userName);
+        });
+        $scope.iPlanReq={
+            executors:processAuditorList,
+            nameStrs:nameList.join(',')
+        };
+        // console.log($scope.iPlanReq);
+        if($scope.iPlanReq.executors.length<=0){
+            alert('执行者不能为空');
+        }else {
+            $scope.closePA1();
+        }
+
+    };
+    $scope.closePA1=function () {
+        hideDiv('executorsPopup');
+        popupDiv('iPlanPopup');
+        // popupDiv('iPlanPopup');
+    };
+
+    //选择包含设备
+    $scope.addDevice=function () {
+
+    };
 
 
 }]);

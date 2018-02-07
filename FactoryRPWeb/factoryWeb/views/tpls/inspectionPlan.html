@@ -1,1 +1,325 @@
-巡检计划
+<style>
+    .ImportantNote textarea{
+        font-size: 14px;
+        width: 155px;
+        height: 32px;
+        border: 1px solid #e6e6e6;
+        vertical-align: middle;
+    }
+    .mainContain .tableListDiv tr td{
+        font-size: 12px;
+    }
+    .mainContain .tableListDiv tr th{
+        font-size: 12px;
+    }
+</style>
+<div class="rightinfo mainContain" id="mainContain1">
+    <div style="padding: 0;width: 100%" class="queryDiv" >
+        <ul>
+            <li>
+                <label>
+                    <button style="margin-left: 10px;" class="btn" ng-click="openIPlan(0)">新增巡检计划</button>
+                </label>
+                <label for="departmentManage" >
+                    <span style="width: 100px;text-align: right">部门:</span>
+                    <select id="departmentManage" ng-model="departmentManage" ng-options="deviceTypeListDetail.id as deviceTypeListDetail.name for deviceTypeListDetail in departmentManageLists">
+                        <option value="">请选择部门</option>
+                    </select>
+                </label>
+                <label for="xjsj" >
+                    <span style="width: 100px;text-align: right">状态:</span>
+                    <select id="xjsj" ng-model="xjsj" ng-options="deviceTypeListDetail.id as deviceTypeListDetail.name for deviceTypeListDetail in xjsjLists">
+                        <option value="">全部</option>
+                    </select>
+                </label>
+                <label for="xjlx" >
+                    <span style="width: 100px;text-align: right">名称:</span>
+                    <select id="xjlx" ng-model="xjlx" ng-options="deviceTypeListDetail.id as deviceTypeListDetail.name for deviceTypeListDetail in xjlxLists">
+                        <option value="">全部</option>
+                    </select>
+                </label>
+                <label>
+                    <button style="margin-left: 10px;" class="btn" ng-click="onQuery()">查询</button>
+                </label>
+            </li>
+        </ul>
+    </div>
+    <div style="max-height: 400px;overflow: auto;" class="tableListDiv data-container jurisdiction" id="deviceAddressPop">
+        <table>
+            <thead>
+            <tr>
+                <th style="text-align: left;padding-left: 20px" colspan="11">巡检计划</th>
+            </tr>
+            <tr>
+                <th style="min-width:50px;">全选<input style="vertical-align: middle;margin-left: 5px" type="checkbox" value="1" onclick="selAll(this)" id="allSelected"/></th>
+                <th>序号</th>
+                <th>状态</th>
+                <th>名称</th>
+                <th>部门</th>
+                <th>上次巡检时间</th>
+                <th>下次巡检时间</th>
+                <th>周期</th>
+                <th>执行人</th>
+                <th>巡检设备数</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody id="apply_infos_table">
+            <tr ng-repeat="orderDetail in spotInspectionStandardLists" ng-if="spotInspectionStandardLists.length>0" class="prossTr" ng-click="changeDetail(orderDetail.id,$event)">
+                <td class="firstTd">{{$index+1}}<input style="margin-left: 5px;vertical-align: middle;" class="SISListsInput" type="checkbox" name="che"  value="{{orderDetail.id}}" ng-click="stopUp($event)"/></td>
+                <td>{{$index+1}}</td>
+                <td>{{orderDetail.name||'--'}}</td>
+                <td>{{orderDetail.relateDeviceName||'--'}}</td>
+                <td>{{orderDetail.requirement||'--'}}</td>
+                <td>{{orderDetail.remark||'--'}}</td>
+                <td>
+                    <a href="javascript:void(0)" class="resBtn editBtn" ng-click="openSIS_detail(1,orderDetail,$event)">
+                        编辑
+                    </a>
+                    <a href="javascript:void(0)" class="resBtn editBtn" ng-click="openSIS_detail(2,orderDetail,$event)">
+                        详情
+                    </a>
+                    <!--<a href="javascript:void(0)" class="resBtn deleteBtn" ng-click="deleteContactCompanyBalance(orderDetail)">-->
+                    <!--<img src="image/comm/resBtnDelete.png" alt="删除"/>-->
+                    <!--<b class="title">删除</b>-->
+                    <!--</a>-->
+                </td>
+            </tr>
+            <tr ng-if="spotInspectionStandardLists.length<=0">
+                <td colspan="14">暂无数据</td>
+            </tr>
+            </tbody>
+            <tfoot ng-if="spotInspectionStandardLists.length>0">
+            <tr>
+                <td>
+                    <a href="javascript:void(0)" class="resBtn deleteBtn" ng-click="deleteSISBalance()">
+                        <img src="image/comm/resBtnDelete.png" alt="删除"/>
+                        <b class="title">删除</b>
+                    </a>
+                </td>
+                <td style="text-align: center" colspan="17"><tm-pagination conf="paginationConf"></tm-pagination></td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+
+<!-- 历史巡检表格 -->
+<div class="rightinfo mainContain" style="margin-top: -50px;">
+    <div class="tableListDiv" style="margin-bottom: 0">
+        <table>
+            <thead>
+            <tr>
+                <th style="text-align: left;padding-left: 20px" colspan="9">历史巡检</th>
+            </tr>
+            <tr>
+                <th>序号</th>
+                <th>计划时间</th>
+                <th>巡检时间</th>
+                <th>巡检人</th>
+                <th>巡检设备异常数</th>
+                <th>巡检设备漏检数</th>
+                <th>延误情况</th>
+                <th>异常处理情况</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="orderDetail in changeDetailLists" ng-if="spotInspectionStandardLists.length>0">
+                <td>{{$index+1}}</td>
+                <td>{{orderDetail.name||'--'}}</td>
+                <td>{{orderDetail.recordTypeName||'--'}}</td>
+                <td>{{orderDetail.inputLimitValue.join(',')||'--'}}</td>
+                <td>{{orderDetail.lowerLimit||'--'}}</td>
+                <td>{{orderDetail.upperLimit||'--'}}</td>
+                <td>{{orderDetail.upperLimit||'--'}}</td>
+                <td>{{orderDetail.upperLimit||'--'}}</td>
+                <td>
+                    <a href="javascript:void(0)" class="resBtn editBtn" ng-click="openSIS_detail(2,orderDetail,$event)">
+                        详情
+                    </a>
+                </td>
+            </tr>
+            <tr ng-if="changeDetailLists.length<=0">
+                <td colspan="9">暂无数据</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- 弹出层（新增、编辑、详情） -->
+<div class="ImportantNote iPlanPopup">
+    <div class="headline">
+        <span ng-bind="iPlanTip"></span>
+        <img onClick="hideDiv('iPlanPopup')" class="companyCloseImg" src="image/comm/diffClosed.png" width="22" height="22">
+    </div>
+    <div style="padding: 30px 0 20px 0;width: 840px;height: auto;overflow-y: hidden; overflow: auto;" class="businessAuth">
+        <!-- 计划信息 -->
+        <div class="titleDiv" id="iPlanPopup_div">
+            <span class="tips">计划信息</span>
+            <p>
+                <label for="name" >
+                    <span style="width: 100px;text-align: right">计划名称:</span>
+                    <input id="name" ng-model="iPlanReq.name" ng-disabled="iPlanType==2" type="text" placeholder="请输入巡检计划名称"/>
+                </label>
+            </p>
+            <p>
+                <label for="deviceType2" >
+                    <span style="width: 100px;text-align: right">所在部门:</span>
+                    <select id="deviceType2" ng-model="iPlanReq.department" ng-options="deviceTypeListDetail.id as deviceTypeListDetail.name for deviceTypeListDetail in departmentManageLists" ng-disabled="iPlanType==2">
+                        <option value="">请选择所在部门</option>
+                    </select>
+                </label>
+                <label for="range" >
+                    <span style="width: 100px;text-align: right">位置范围:</span>
+                    <input id="range" ng-model="iPlanReq.range" ng-disabled="iPlanType==2" type="text" placeholder="请输入位置范围"/>
+                </label>
+            </p>
+            <p>
+                <label for="processAuditor1" style="position: relative;">
+                    <span style="width: 100px;text-align: right">执行班组/人:</span>
+                    <input id="processAuditor1" ng-model="iPlanReq.nameStrs" type="text" min="0" placeholder="请选择执行班组/人" disabled/>
+                    <span class="changedDiv" ng-click="openPA()">...</span>
+                </label>
+            </p>
+            <p>
+                <label for="planStatus" >
+                    <span style="width: 100px;text-align: right">计划状态:</span>
+                    <select id="planStatus" ng-model="iPlanReq.planStatus" ng-options="deviceTypeListDetail.id as deviceTypeListDetail.name for deviceTypeListDetail in planStatusLists" ng-disabled="iPlanType==2">
+                        <option value="">请选择计划状态</option>
+                    </select>
+                </label>
+                <label for="recyclePeriod_input" >
+                    <span style="width: 100px;text-align: right">循环周期:</span>
+                    <input style="width: 100px;margin-right: 47px;" id="recyclePeriod_input" ng-model="iPlanReq.recyclePeriod" ng-disabled="iPlanType==2" type="number" placeholder="请输入周期" ng-value="0"/>
+                    <select style="width: 100px" id="recyclePeriod" ng-model="iPlanReq.recyclePeriodType" ng-options="deviceTypeListDetail.id as deviceTypeListDetail.name for deviceTypeListDetail in departmentManageLists" ng-disabled="iPlanType==2">
+                        <option value="">请选择周期类型</option>
+                    </select>
+                </label>
+            </p>
+            <p>
+                <label for="nextExecuteTime" >
+                    <span style="width: 100px;text-align: right">下次执行时间:</span>
+                    <input id="nextExecuteTime" ng-model="iPlanReq.nextExecuteTime" ng-disabled="iPlanType==2" type="date" placeholder="请输入下次执行时间"/>
+                </label>
+                <label for="endTime" >
+                    <span style="width: 100px;text-align: right">截止时间:</span>
+                    <input id="endTime" ng-model="iPlanReq.endTime" ng-disabled="iPlanType==2" type="date" placeholder="请输入截止时间(为设置表示长期有效)"/>
+                </label>
+            </p>
+        </div>
+        <!-- 包含设备 -->
+        <div class="titleDiv" id="addP1">
+            <span class="tips">包含设备</span>
+            <table class="popup_div_table iPlan_popup_table">
+                <thead>
+                <tr>
+                    <th ng-if="iPlanType!=2">
+                        <button ng-click="addDevice()">选择设备</button>
+                    </th>
+                    <th>路线顺序</th>
+                    <th>设备名称</th>
+                    <th>设备编号</th>
+                    <th>设备型号</th>
+                    <th>巡检标准名称</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="item in SISReq.deviceItems" ng-if="SISReq.deviceItems.length>0">
+                    <td ng-if="iPlanType!=2">
+                        <a href="javascript:void(0)" class="resBtn deleteBtn" ng-click="deleteSISBalance(item,$index)">
+                            <img src="image/comm/resBtnDelete.png" alt="删除"/>
+                            <b class="title">删除</b>
+                        </a>
+                    </td>
+                    <td ng-bind="item.name"></td>
+                    <td ng-bind="item.code"></td>
+                    <td ng-bind="item.specification"></td>
+                </tr>
+                <tr ng-if="SISReq.deviceItems.length<=0||SISReq.deviceItems==null||SISReq.deviceItems==undefined">
+                    <td colspan="6" ng-if="iPlanType!=2">暂无数据</td>
+                    <td colspan="5" ng-if="iPlanType==2">暂无数据</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="errP" style="text-align: center" ng-show="errFlog">表单有空值!!!</div>
+        <div class="submitBtn1" style="text-align: center;padding-left: 40px;">
+            <button type="button" ng-click="addSISSure()" value="" class="btn">保存</button>
+            <button type="button" value="" class="btn" onClick="hideDiv('iPlanPopup')">取消</button>
+        </div>
+    </div>
+</div>
+
+<!-- 选择执行者弹出层 -->
+<div class="ImportantNote executorsPopup">
+    <div class="headline">
+        <span>选择执行者</span>
+        <img ng-click="closePA1()" class="companyCloseImg" src="image/comm/diffClosed.png" width="22" height="22">
+    </div>
+    <div class="titleDiv">
+        <!--<span class="tips">选择执行者</span>-->
+        <div style="padding: 0;width: 100%" class="queryDiv" >
+            <ul>
+                <li style="text-align: left;margin-bottom: 12px;margin-top: -8px;margin-right: 8px">
+                    <label>
+                        <span style="width: 100px;text-align: right;display: inline-block">可选择人员:</span>
+                        <input type="text" ng-model="queryYH" placeholder="输入姓名检索">
+                    </label>
+                </li>
+            </ul>
+        </div>
+        <div class="processAuditor">
+            <div class="processAuditorLeft">
+                <table class="changeTable">
+                    <thead>
+                    <tr>
+                        <th colspan="2">可选列表</th>
+                    </tr>
+                    <tr>
+                        <th>序号</th>
+                        <th>姓名</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="item in userLists | filter:queryYH" ng-click="changePA_left(item.userId,$index)">
+                        <td ng-bind="$index+1"></td>
+                        <td ng-bind="item.userName"></td>
+                    </tr>
+                    <tr ng-if="userLists.length<=0||userLists==null||userLists==undefined">
+                        <td colspan="2">暂无数据</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="processAuditorRight">
+                <table class="changeTable">
+                    <thead>
+                    <tr>
+                        <th colspan="2">已选列表</th>
+                    </tr>
+                    <tr>
+                        <th>序号</th>
+                        <th>姓名</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-click="changePA_right(item.userId,$index)" ng-repeat="item in processAuditorLists">
+                        <td ng-bind="$index+1"></td>
+                        <td ng-bind="item.userName"></td>
+                    </tr>
+                    <tr ng-if="processAuditorLists.length<=0||processAuditorLists==null||processAuditorLists==undefined">
+                        <td colspan="2">暂无数据</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div style="clear: both"></div>
+        </div>
+    </div>
+    <div class="submitBtn1" style="text-align: center;padding-left: 40px;margin-bottom: 18px;">
+        <button type="button" ng-click="closePA()" value="" class="btn">确定</button>
+        <button type="button" value="" class="btn" ng-click="closePA1()">取消</button>
+    </div>
+</div>

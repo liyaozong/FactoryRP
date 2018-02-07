@@ -148,9 +148,9 @@ input[type="number"]{
 }
 .changedDiv{
     position: absolute;
-    right: 5px;
-    top: -6px;
-    width: 28px;
+    right: 1px;
+    top: -5px;
+    width: 30px;
     height: 30px;
     text-align: center;
     cursor: pointer;
@@ -235,3 +235,15 @@ textarea{
     resize: none;
 }
 
+#iPlanPopup_div input,#iPlanPopup_div select{
+    width: 252px;
+}
+#iPlanPopup_div p{
+    text-align: left;
+}
+.executorsPopup{
+    min-width: 840px;
+}
+.iPlan_popup_table{
+    width: 100%;
+}

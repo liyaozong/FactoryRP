@@ -170,6 +170,9 @@ function popupDiv(div_class) {
 	dd=div_obj.height()+14;
     var windowWidth = document.body.clientWidth;
     var windowHeight = document.body.clientHeight;
+
+    div_obj.css("maxWidth",windowWidth*0.7);
+    div_obj.css("maxHeight",windowHeight*0.6);
     var popupHeight = div_obj.height();
     var popupWidth = div_obj.width();
 	$("."+div_class).show();
@@ -178,7 +181,8 @@ function popupDiv(div_class) {
 
      div_obj.css("top",(windowHeight-popupHeight)/2);
      div_obj.css("left",(windowWidth-popupWidth)/2);
-	 
+     div_obj.css("overflow",'auto');
+
 }
 function hideDiv(div_class) {
     $("#bg1").hide();
