@@ -1,5 +1,8 @@
 package tech.yozo.factoryrp.utils;
 
+import com.alibaba.fastjson.JSON;
+import tech.yozo.factoryrp.enums.inspection.SpotInspectionPlanRecycleTypeEnum;
+
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -253,7 +256,52 @@ public class DateTimeUtil {
 		}
 	}
 
-	// subtractDate
+
+    /**
+     * 根据参数在指定日期上面加上指定的时间
+     * @param date
+     * @param period
+     * @param type
+     * @return
+     */
+	public static Date plusDateByParam(Date date,int period,String type){
+
+        try {
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(date);
+
+            if(SpotInspectionPlanRecycleTypeEnum.SPOT_INSPECTION_PLAN_RECYCLE_TYPE_MONTH.equals(type)){
+                int currMonth = Calendar.DAY_OF_MONTH;
+                calendar.set(currMonth, calendar.get(currMonth) + period);
+            }else if(SpotInspectionPlanRecycleTypeEnum.SPOT_INSPECTION_PLAN_RECYCLE_TYPE_YEAR.getCode().equals(type)){
+                int currYear = Calendar.YEAR;
+                calendar.set(currYear, calendar.get(currYear) + period);
+            }else if(SpotInspectionPlanRecycleTypeEnum.SPOT_INSPECTION_PLAN_RECYCLE_TYPE_DAY.getCode().equals(type)){
+                int currDay = Calendar.DAY_OF_MONTH;
+                calendar.set(currDay, calendar.get(currDay) + period);
+            }else if(SpotInspectionPlanRecycleTypeEnum.SPOT_INSPECTION_PLAN_RECYCLE_TYPE_HOUR.getCode().equals(type)){
+                int currHour = Calendar.HOUR_OF_DAY;
+                calendar.set(currHour, calendar.get(currHour) + period);
+            }else if(!SpotInspectionPlanRecycleTypeEnum.verifyIsExist(type)){{
+                return new Date();
+            }
+
+            }
+            return calendar.getTime();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public static void main(String[] args) {
+        Date date = new Date();
+        Date parsedDate = plusDateByParam(date, 10, SpotInspectionPlanRecycleTypeEnum.SPOT_INSPECTION_PLAN_RECYCLE_TYPE_HOUR.getCode());
+        Date parsedDateYear = plusDateByParam(date, 1, SpotInspectionPlanRecycleTypeEnum.SPOT_INSPECTION_PLAN_RECYCLE_TYPE_YEAR.getCode());
+
+
+        System.out.println(parsedDate);
+        System.out.println(parsedDateYear);
+    }
 
 	/**
 	 * 返回加上指定天数的日期.
@@ -263,7 +311,7 @@ public class DateTimeUtil {
 	 * @param day
 	 *            加上的天数. return
 	 */
-	public static Date plusDate(final Date date, final int day) {
+	public static Date plusDate(Date date, int day) {
 		try {
 			Calendar calendar = Calendar.getInstance();
 			calendar.setTime(date);

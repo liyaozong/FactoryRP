@@ -6,11 +6,13 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
+import tech.yozo.factoryrp.entity.SpotInspectionRecordDetail;
 import tech.yozo.factoryrp.vo.base.ApiRequest;
 
 import javax.persistence.Column;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 巡检记录新增请求对象
@@ -86,5 +88,11 @@ public class SpotInspectionRecordAddReq extends ApiRequest implements Serializab
     @ApiModelProperty(value = "循环周期",notes ="循环周期" )
     @Column(name = "recycle_period",length = 20)
     private Integer recyclePeriod;
+
+    /**
+     * 巡检记录详情集合
+     */
+    @ApiModelProperty(value = "巡检记录详情集合",notes ="巡检记录详情集合",example = "[1,2,3]")
+    private List<SpotInspectionRecordDetail> detailList;
 
 }

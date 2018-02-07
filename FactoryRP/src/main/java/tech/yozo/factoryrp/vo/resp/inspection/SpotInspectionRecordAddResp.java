@@ -3,6 +3,7 @@ package tech.yozo.factoryrp.vo.resp.inspection;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import tech.yozo.factoryrp.entity.SpotInspectionRecordDetail;
 
 import java.io.Serializable;
 import java.util.List;
@@ -26,10 +27,5 @@ public class SpotInspectionRecordAddResp implements Serializable {
     private Long id;
 
 
-    /**
-     * 巡检记录详情集合
-     */
-    @ApiModelProperty(value = "巡检记录详情集合",notes ="巡检记录详情集合",example = "[1,2,3]")
-    private List<Long> detailList;
 
 }
