@@ -30,7 +30,7 @@ import java.util.stream.Stream;
  */
 @RestController
 @RequestMapping(value = "api/spotInspectionStandard")
-@Api(description = "点巡检相关接口")
+@Api(description = "点检标准相关接口")
 public class SpotInspectionStandardController extends BaseController{
 
     @Resource
@@ -127,12 +127,12 @@ public class SpotInspectionStandardController extends BaseController{
     }
 
     /**
-     * 根据设备ID查询点检标准-MOBILE
+     * 根据设备ID查询点检标准
      * @param deviceId
      * @return
      */
     @RequestMapping("/queryStanardByDeviceId")
-    @ApiOperation(value = "根据设备ID查询点检标准-MOBILE-",notes = "根据设备ID查询点检标准-MOBILE",httpMethod = "GET")
+    @ApiOperation(value = "根据设备ID查询点检标准",notes = "根据设备ID查询点检标准",httpMethod = "GET")
     @ApiImplicitParams(@ApiImplicitParam(paramType = "query",dataType = "Long",name = "deviceId",
             value = "设备ID",required = true,defaultValue = "1"))
     public ApiResponse<List<SpotInspectionStandardQueryResp>> queryStanardByDeviceId(@RequestParam(name = "deviceId",required = true) Long deviceId,HttpServletRequest request){

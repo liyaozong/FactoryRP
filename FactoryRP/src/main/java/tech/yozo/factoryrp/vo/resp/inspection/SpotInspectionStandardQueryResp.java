@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import javax.persistence.Column;
 import java.io.Serializable;
 import java.util.List;
 
@@ -57,5 +58,6 @@ public class SpotInspectionStandardQueryResp implements Serializable {
      */
     @ApiModelProperty(value = "巡检要求",notes ="巡检要求" )
     private String requirement ;
+
 
 }

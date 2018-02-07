@@ -40,4 +40,16 @@ public class SpotInspectionStandardItemsQueryResp implements Serializable {
     private List<String> inputLimitValue;
 
 
+    /**
+     * 上限值
+     */
+    @ApiModelProperty(value = "上限值",notes ="上限值" )
+    private Integer upperLimit;
+
+    /**
+     * 下限值
+     */
+    @ApiModelProperty(value = "下限值",notes ="下限值" )
+    private Integer lowerLimit;
+
 }

@@ -8,6 +8,7 @@ import tech.yozo.factoryrp.vo.base.ApiRequest;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  *
@@ -45,7 +46,7 @@ public class SpotInspectionPlanQueryReq extends ApiRequest implements Serializab
      */
     @JSONField(format="yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty(value = "下次执行时间",notes ="下次执行时间" )
-    private Date nextExecuteTime;
+    private String nextExecuteTime;
 
 
     /**
@@ -53,4 +54,11 @@ public class SpotInspectionPlanQueryReq extends ApiRequest implements Serializab
      */
     @ApiModelProperty(value = "循环周期类型",notes ="循环周期类型" )
     private String recyclePeriodType;
+
+
+    /**
+     * 巡检记录详情集合
+     */
+    @ApiModelProperty(value = "巡检记录详情集合",notes ="巡检记录详情集合",example = "List")
+    List<SpotInspectionRecordDetailAddReq> detailList;
 }

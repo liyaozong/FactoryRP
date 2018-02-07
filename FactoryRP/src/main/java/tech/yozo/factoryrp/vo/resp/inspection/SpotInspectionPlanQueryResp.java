@@ -40,6 +40,11 @@ public class SpotInspectionPlanQueryResp implements Serializable {
     @ApiModelProperty(value = "计划状态 1启用 2停用 3编辑中",notes ="计划状态 1启用 2停用 3编辑中" )
     private Integer planStatus;
 
+    /**
+     * 状态 是否过期 1未过期 2过期
+     */
+    @ApiModelProperty(value = "状态 是否过期 1未过期 2过期",notes ="状态 是否过期 1未过期 2过期" )
+    private Integer expiredStatus;
 
     /**
      * 所在部门

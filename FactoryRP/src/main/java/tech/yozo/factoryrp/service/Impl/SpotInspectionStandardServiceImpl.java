@@ -95,6 +95,9 @@ public class SpotInspectionStandardServiceImpl implements SpotInspectionStandard
                     spotInspectionStandardQueryResp.setRemark(d1.getRemark());
                     spotInspectionStandardQueryResp.setRequirement(d1.getRequirement());
 
+
+
+
                     respList.add(spotInspectionStandardQueryResp);
                 });
 
@@ -259,6 +262,8 @@ public class SpotInspectionStandardServiceImpl implements SpotInspectionStandard
                         spotInspectionStandardItemsQueryResp.setInputLimitValue(JSON.parseArray(s1.getVaildateRegular(),String.class));
                     }
 
+                    spotInspectionStandardItemsQueryResp.setLowerLimit(s1.getLowerLimit());
+                    spotInspectionStandardItemsQueryResp.setUpperLimit(s1.getUpperLimit());
                     spotInspectionItems.add(spotInspectionStandardItemsQueryResp);
                 });
 
