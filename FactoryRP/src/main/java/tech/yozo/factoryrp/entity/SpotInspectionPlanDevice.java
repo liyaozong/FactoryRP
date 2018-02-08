@@ -50,10 +50,10 @@ public class SpotInspectionPlanDevice extends BaseEntity implements Serializable
     private Long deviceType;
 
     /**
-     * 适用设备列表 [1,2,3] 这种格式，存放设备ID
+     * 适用设备ID
      */
-    @ApiModelProperty(value = "适用设备列表",notes ="适用设备列表" )
-    @Column(name = "relate_devices",length = 200)
-    private String relateDevices;
+    @ApiModelProperty(value = "适用设备ID",notes ="适用设备ID" )
+    @Column(name = "device_id",length = 20)
+    private Long deviceId;
 
 }

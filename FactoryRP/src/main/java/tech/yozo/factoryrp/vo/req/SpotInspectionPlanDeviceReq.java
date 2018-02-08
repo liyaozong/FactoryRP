@@ -23,7 +23,6 @@ public class SpotInspectionPlanDeviceReq implements Serializable {
      * 点检标准ID
      */
     @ApiModelProperty(value = "点检标准ID",notes ="点检标准ID",example = "1")
-    @Column(name = "spot_inspection_standard",length = 20)
     private Long spotInspectionStandard;
 
 
@@ -31,21 +30,18 @@ public class SpotInspectionPlanDeviceReq implements Serializable {
      * 路线顺序
      */
     @ApiModelProperty(value = "路线顺序",notes ="路线顺序",example = "1" )
-    @Column(name = "line_order",length = 20)
     private Integer lineOrder;
 
     /**
      *适用设备类型
      */
     @ApiModelProperty(value = "适用设备类型",notes ="适用设备类型",example = "1" )
-    @Column(name = "device_type",length = 50)
     private Long deviceType;
 
     /**
-     * 适用设备列表 [1,2,3] 这种格式，存放设备ID
+     * 适用设备ID
      */
-    @ApiModelProperty(value = "适用设备列表",notes ="适用设备列表",example = "[1,2,3]" )
-    @Column(name = "relate_devices",length = 200)
-    private List<String> relateDevices;
+    @ApiModelProperty(value = "适用设备ID",notes ="适用设备ID",example = "1" )
+    private Long deviceId;
 
 }

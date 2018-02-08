@@ -111,7 +111,7 @@ public class SpotInspectionPlanServiceImpl implements SpotInspectionPlanService 
             spotInspectionPlanAddReq.getList().stream().forEach(d1 -> {
                 SpotInspectionPlanDevice spotInspectionPlanDevice = new SpotInspectionPlanDevice();
                 spotInspectionPlanDevice.setDeviceType(d1.getDeviceType());
-                spotInspectionPlanDevice.setRelateDevices(JSON.toJSONString(d1.getRelateDevices()));
+                spotInspectionPlanDevice.setDeviceId(d1.getDeviceId());
                 spotInspectionPlanDevice.setCorporateIdentify(corporateIdentify);
                 spotInspectionPlanDevice.setSpotInspectionPlan(spotInspectionPlan.getId());
                 spotInspectionPlanDevice.setLineOrder(d1.getLineOrder());
