@@ -68,6 +68,20 @@ myApp.factory("inspectionPlan",["AppHttp","FF_API",function(AppHttp,FF_API){
             url: FF_API.baseApi + FF_API.getxjlxPath
         });
     };
+    //巡检计划执行时间类型
+    inspectionPlan.queryAllSpotInspectionPlanRecycleType=function(){
+        return AppHttp({
+            method: 'get',
+            url: FF_API.base + FF_API.queryAllSpotInspectionPlanRecycleTypePath
+        });
+    };
+    //根据部门ID查询巡检标准
+    inspectionPlan.queryStanardByDeviceId=function(deviceId){
+        return AppHttp({
+            method: 'get',
+            url: FF_API.base + FF_API.queryStanardByDeviceIdPath+'?deviceId='+deviceId
+        });
+    };
 
     return inspectionPlan;
 }]);

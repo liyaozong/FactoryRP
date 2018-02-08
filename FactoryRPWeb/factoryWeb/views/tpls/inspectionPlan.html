@@ -154,7 +154,7 @@
         <span ng-bind="iPlanTip"></span>
         <img onClick="hideDiv('iPlanPopup')" class="companyCloseImg" src="image/comm/diffClosed.png" width="22" height="22">
     </div>
-    <div style="padding: 30px 0 20px 0;width: 840px;height: auto;overflow-y: hidden; overflow: auto;" class="businessAuth">
+    <div style="padding: 30px 0 20px 0;width: 840px;height: auto;" class="businessAuth">
         <!-- 计划信息 -->
         <div class="titleDiv" id="iPlanPopup_div">
             <span class="tips">计划信息</span>
@@ -193,7 +193,7 @@
                 <label for="recyclePeriod_input" >
                     <span style="width: 100px;text-align: right">循环周期:</span>
                     <input style="width: 100px;margin-right: 47px;" id="recyclePeriod_input" ng-model="iPlanReq.recyclePeriod" ng-disabled="iPlanType==2" type="number" placeholder="请输入周期" ng-value="0"/>
-                    <select style="width: 100px" id="recyclePeriod" ng-model="iPlanReq.recyclePeriodType" ng-options="deviceTypeListDetail.id as deviceTypeListDetail.name for deviceTypeListDetail in departmentManageLists" ng-disabled="iPlanType==2">
+                    <select style="width: 100px" id="recyclePeriod" ng-model="iPlanReq.recyclePeriodType" ng-options="deviceTypeListDetail.id as deviceTypeListDetail.name for deviceTypeListDetail in SIPRecycleTypeLists" ng-disabled="iPlanType==2">
                         <option value="">请选择周期类型</option>
                     </select>
                 </label>
@@ -218,7 +218,7 @@
                     <th ng-if="iPlanType!=2">
                         <button ng-click="addDevice()">选择设备</button>
                     </th>
-                    <th>路线顺序</th>
+                    <!--<th>路线顺序</th>-->
                     <th>设备名称</th>
                     <th>设备编号</th>
                     <th>设备型号</th>
@@ -226,9 +226,9 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="item in SISReq.deviceItems" ng-if="SISReq.deviceItems.length>0">
+                <tr ng-repeat="item in iPlanReq.list" ng-if="iPlanReq.list.length>0">
                     <td ng-if="iPlanType!=2">
-                        <a href="javascript:void(0)" class="resBtn deleteBtn" ng-click="deleteSISBalance(item,$index)">
+                        <a href="javascript:void(0)" class="resBtn deleteBtn" ng-click="deleteSISBalance_device(item,$index)">
                             <img src="image/comm/resBtnDelete.png" alt="删除"/>
                             <b class="title">删除</b>
                         </a>
@@ -236,8 +236,9 @@
                     <td ng-bind="item.name"></td>
                     <td ng-bind="item.code"></td>
                     <td ng-bind="item.specification"></td>
+                    <td ng-bind="item.planStatus"></td>
                 </tr>
-                <tr ng-if="SISReq.deviceItems.length<=0||SISReq.deviceItems==null||SISReq.deviceItems==undefined">
+                <tr ng-if="iPlanReq.list.length<=0||iPlanReq.list==null||iPlanReq.list==undefined">
                     <td colspan="6" ng-if="iPlanType!=2">暂无数据</td>
                     <td colspan="5" ng-if="iPlanType==2">暂无数据</td>
                 </tr>
@@ -321,5 +322,132 @@
     <div class="submitBtn1" style="text-align: center;padding-left: 40px;margin-bottom: 18px;">
         <button type="button" ng-click="closePA()" value="" class="btn">确定</button>
         <button type="button" value="" class="btn" ng-click="closePA1()">取消</button>
+    </div>
+</div>
+
+<!-- 选择包含设备弹出层 -->
+<div class="ImportantNote iPlanDevicePopup">
+    <div class="headline">
+        <span>添加巡检对象</span>
+        <img onClick="hideDiv('iPlanDevicePopup');popupDiv('iPlanPopup');" class="companyCloseImg" src="image/comm/diffClosed.png" width="22" height="22">
+    </div>
+    <div style="padding: 10px 0 20px 0;height: auto;width: 400px" class="businessAuth">
+        <div class="titleDiv" id="iPlanDevicePopup_div">
+            <span class="tips">添加巡检对象</span>
+            <p>
+                <label for="code_device" >
+                    <span style="width: 100px;text-align: right">设备编号:</span>
+                    <input id="code_device" ng-model="changedDeviceObj.code" disabled type="text"/>
+                </label>
+            </p>
+            <p>
+                <label for="name_devece" >
+                    <span style="width: 100px;text-align: right">设备名称:</span>
+                    <input id="name_devece" ng-model="changedDeviceObj.name" disabled type="text"/>
+                </label>
+            </p>
+            <p>
+                <label for="sr_device" >
+                    <span style="width: 100px;text-align: right">规格型号:</span>
+                    <input id="sr_device" ng-model="changedDeviceObj.specification" disabled type="text"/>
+                </label>
+            </p>
+            <p>
+                <label for="bm_device" style="position: relative;">
+                    <span style="width: 100px;text-align: right">使用部门:</span>
+                    <input id="bm_device" ng-model="changedDeviceObj.useDept" type="text" disabled/>
+                    <span class="changedDiv">...</span>
+                </label>
+            </p>
+            <p>
+                <label for="deviceType_device" >
+                    <span style="width: 100px;text-align: right">设备分类:</span>
+                    <input id="deviceType_device" ng-model="changedDeviceObj.deviceType" disabled type="text"/>
+                </label>
+            </p>
+            <p>
+                <label for="sis_device" >
+                    <span style="width: 100px;text-align: right">点巡检标准:</span>
+                    <select id="sis_device" ng-model="changedDeviceObj.planStatus" ng-options="deviceTypeListDetail.id as deviceTypeListDetail.name for deviceTypeListDetail in stanardByDeviceIdLists">
+                        <option value="">请选择点巡检标准</option>
+                    </select>
+                </label>
+            </p>
+            <button class="iPlanDevicePopup_div_btn" ng-click="changedDevice()">
+                选择设备
+            </button>
+        </div>
+        <div class="errP" style="text-align: center" ng-show="errFlog">表单有空值!!!</div>
+        <div class="submitBtn1" style="text-align: center;padding-left: 40px;">
+            <button type="button" ng-click="addSISSure_device()" value="" class="btn">保存</button>
+            <button type="button" value="" class="btn" onClick="hideDiv('iPlanDevicePopup');popupDiv('iPlanPopup');">取消</button>
+        </div>
+    </div>
+</div>
+
+<!-- 选择设备弹出层 -->
+<div class="ImportantNote changedDevicePop mainContain" id="iPlanDevicePopup">
+    <div class="headline">
+        <span>添加设备</span>
+        <img onClick="hideDiv('changedDevicePop');popupDiv('iPlanDevicePopup');" class="companyCloseImg" src="image/comm/diffClosed.png" width="22" height="22">
+    </div>
+    <div style="padding: 0;width: 100%" class="queryDiv" >
+        <ul>
+            <li>
+                <label for="dd_DeviceType" >
+                <span style="width: 100px;text-align: right">设备类型:</span>
+                <select id="dd_DeviceType" ng-model="dd_DeviceType" ng-options="deviceTypeListDetail.id as deviceTypeListDetail.name for deviceTypeListDetail in deviceTypeLists">
+                <option value="">请选择设备类型</option>
+                </select>
+                </label>
+                <label for="dd_departmentManage" >
+                    <span style="width: 100px;text-align: right">使用部门:</span>
+                    <select id="dd_departmentManage" ng-model="dd_departmentManage" ng-options="deviceTypeListDetail.id as deviceTypeListDetail.name for deviceTypeListDetail in departmentManageLists">
+                        <option value="">请选择使用部门</option>
+                    </select>
+                </label>
+                <label style="margin-left: 10px" for="dd_DeviceTypeName"><span>设备名称：</span>
+                    <input type="text" id="dd_DeviceTypeName" placeholder="请输入设备名称" ng-model="dd_DeviceTypeName"/>
+                </label>
+                <label>
+                    <button class="btn" ng-click="onQuery_cc()">查询</button>
+                </label>
+            </li>
+        </ul>
+    </div>
+    <div class="tableListDiv data-container jurisdiction">
+        <table>
+            <thead>
+            <tr>
+                <th style="text-align: left" colspan="5">设备列表</th>
+            </tr>
+            <tr>
+                <th>设备编号</th>
+                <th>设备名称</th>
+                <th>使用部门</th>
+                <th>规格型号</th>
+                <th>设备类别</th>
+            </tr>
+            </thead>
+            <tbody id="apply_infos_table1">
+            <tr ng-click="changedDeviceClick($event,orderDetail)" data-appid = "{{orderDetail.id}}" ng-class="{'':dataAudit=='','bg-gray':orderDetail.id == dataAudit}"  ng-repeat="orderDetail in deviceListInfos" class="dd_prossTr">
+                <td>{{orderDetail.code||'--'}}</td>
+                <td>{{orderDetail.name||'--'}}</td>
+                <td>{{orderDetail.useDept||'--'}}</td>
+                <td>{{orderDetail.specification||'--'}}</td>
+                <td>{{orderDetail.deviceType||'--'}}</td>
+            </tr>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td style="text-align: center" colspan="5"><tm-pagination conf="paginationConf_CC"></tm-pagination></td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    <div class="submitBtn1" style="text-align: center;padding-left: 40px;margin-bottom: 10px">
+        <button type="button" ng-click="changeCCSure_changedDevice()" value="" class="btn">保存</button>
+        <button type="button" value="" class="btn" onClick="hideDiv('changedDevicePop');popupDiv('iPlanDevicePopup');">取消</button>
     </div>
 </div>
