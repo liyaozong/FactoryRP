@@ -534,7 +534,7 @@ myApp.controller('inspectionPlanCtrl',['$filter','$rootScope','$location','$scop
           }else {
               flog=false;
           }
-          console.log($scope.iPlanReq.nextExecuteTime,new Date());
+          // console.log($scope.iPlanReq.nextExecuteTime,new Date());
           if($scope.iPlanReq.nextExecuteTime<new Date()){
               flog=false;
               alert('下次执行时间必须大于当前时间');
@@ -542,21 +542,21 @@ myApp.controller('inspectionPlanCtrl',['$filter','$rootScope','$location','$scop
               flog=false;
               alert('截止时间必须大于下次执行时间');
           }
-          // if(flog){
-          //     inspectionPlan.addSpotInspectionPlan(req).success(function (data) {
-          //         if(data.errorCode=='000000'){
-          //             hideDiv('iPlanPopup');
-          //             popupDiv('SaveSuccess');
-          //             $('.SaveSuccess .Message').html(data.errorMessage);
-          //         }else{
-          //             hideDiv('iPlanPopup');
-          //             popupDiv('SaveSuccess');
-          //             $('.SaveSuccess .Message').html(data.errorMessage);
-          //         }
-          //     })
-          // }else {
-          //     $scope.errFlog=true;
-          // }
+          if(flog){
+              inspectionPlan.addSpotInspectionPlan(req).success(function (data) {
+                  if(data.errorCode=='000000'){
+                      hideDiv('iPlanPopup');
+                      popupDiv('SaveSuccess');
+                      $('.SaveSuccess .Message').html(data.errorMessage);
+                  }else{
+                      hideDiv('iPlanPopup');
+                      popupDiv('SaveSuccess');
+                      $('.SaveSuccess .Message').html(data.errorMessage);
+                  }
+              })
+          }else {
+              $scope.errFlog=true;
+          }
       }
     };
 
