@@ -206,7 +206,7 @@ myApp.controller('spotInspectionStandardCtrl',['$filter','$rootScope','$timeout'
                 requestTime:$filter('date')(new Date(),'yyyy-MM-dd HH:mm:ss'),
                 spotInspectionItems:arr1
             };
-            console.log(req);
+            // console.log(req);
             var flog;
             for(var i in req){
                 // console.log(i,":",req[i]);
@@ -216,7 +216,7 @@ myApp.controller('spotInspectionStandardCtrl',['$filter','$rootScope','$timeout'
                 }
             }
             if(req.relateDevices.length>0&&req.spotInspectionItems.length>0){
-                flog=true;
+                // flog=true;
             }else {
                 flog=false;
             }
@@ -369,7 +369,7 @@ myApp.controller('spotInspectionStandardCtrl',['$filter','$rootScope','$timeout'
 
 
 // 巡检计划控制器
-myApp.controller('inspectionPlanCtrl',['$filter','$rootScope','$location','$scope','$cookies','departmentManageService','inspectionPlan','queryCorporateAllUser','factoryParameterSettingService',function($filter,$rootScope,$location,$scope,$cookies,departmentManageService,inspectionPlan,queryCorporateAllUser,factoryParameterSettingService){
+myApp.controller('inspectionPlanCtrl',['$filter','$rootScope','$location','$scope','$cookies','departmentManageService','inspectionPlan','queryCorporateAllUser','factoryParameterSettingService','validate','$timeout',function($filter,$rootScope,$location,$scope,$cookies,departmentManageService,inspectionPlan,queryCorporateAllUser,factoryParameterSettingService,validate,$timeout){
     // console.log('巡检计划控制器');
     //查询部门
     departmentManageService.queryOrder({
@@ -414,7 +414,7 @@ myApp.controller('inspectionPlanCtrl',['$filter','$rootScope','$location','$scop
 
     //查询巡检计划执行时间类型
     inspectionPlan.queryAllSpotInspectionPlanRecycleType().success(function (data) {
-       console.log(data);
+       // console.log(data);
        $scope.SIPRecycleTypeLists=data.data;
     });
 
@@ -427,6 +427,52 @@ myApp.controller('inspectionPlanCtrl',['$filter','$rootScope','$location','$scop
     };
 
     //分页查询巡检计划
+    $scope.paginationConf={
+        currentPage:1,
+        itemsPerPage:5
+    };
+    $scope.spotInspectionPlanLists=[];
+    $scope.onQuery=function () {
+        var req={
+            "currentPage": $scope.paginationConf.currentPage, //当前页码
+            "itemsPerPage": $scope.paginationConf.itemsPerPage,//每页显示记录数
+            departmentId:$scope.departmentManage
+        };
+        inspectionPlan.spotInspectionPlanFindByPage(req).success(function (data) {
+            // console.log(data,'巡检计划');
+            if(data.data&&data.data.totalCount>=1){
+                // if(true){
+                $scope.paginationConf.totalItems = data.data.totalCount;
+                $scope.spotInspectionPlanLists=data.data.spotInspectionPlanQueryRespList;
+                $timeout(function () {
+                    if($scope.spotInspectionPlanLists){
+                        $scope.spotInspectionPlanLists.forEach(function (k) {
+                            var strsArr=[];
+                            for(var i=0;i<k.executors.length;i++){
+                                $scope.allUserLists.forEach(function (v) {
+                                    if(v.userId==k.executors[i]){
+                                        strsArr.push(v.userName);
+                                    }
+                                });
+                            }
+                            k.executorsName=strsArr.join(',');
+                        });
+                    }
+                //     if($scope.spotInspectionStandardLists.length>0){
+                //         spotInspectionStandard.queryInspectionStandardDetail($scope.spotInspectionStandardLists[0].id).success(function (data) {
+                //             $scope.changeDetailLists=data.data.spotInspectionItems;
+                //             // console.log($scope.changeDetailLists,'--==')
+                //         });
+                //         $($('.prossTr')[0]).addClass('ccTr');
+                //     }
+                },400);
+            }else{
+                // $scope.changeDetailLists=[];
+                $scope.paginationConf.totalItems = 0;
+                $scope.spotInspectionPlanLists.length = 0;
+            }
+        });
+    };
 
     //新增巡检计划
     $scope.openIPlan=function (type) {
@@ -441,12 +487,77 @@ myApp.controller('inspectionPlanCtrl',['$filter','$rootScope','$location','$scop
             recyclePeriod:'',//循环周期
             recyclePeriodType:'',//循环周期类型
             endTime:'',//截止时间
-            executors:'' ,//执行人集合
+            executors:[] ,//执行人集合
             nameStrs:'', //执行人姓名字符串
             list:[]
         };
         popupDiv('iPlanPopup')
 
+    };
+
+    //确认提交巡检计划
+    $scope.addIPlanSure=function () {
+      if($scope.iPlanType==0){
+          var arr=[];
+          $scope.iPlanReq.list.forEach(function (v,i) {
+              arr.push({
+                  deviceId:v.id,
+                  deviceType:v.deviceType,
+                  lineOrder:i+1,
+                  spotInspectionStandard:v.planStatus
+              })
+          });
+          var req={
+              "department": $scope.iPlanReq.department,
+              "endTime":$filter('date')($scope.iPlanReq.endTime,'yyyy-MM-dd HH:mm:ss'),
+              "executors": $scope.iPlanReq.executors,
+              "list": arr,
+              "name": $scope.iPlanReq.name,
+              "nextExecuteTime":$filter('date')($scope.iPlanReq.nextExecuteTime,'yyyy-MM-dd HH:mm:ss'),
+              "planStatus": $scope.iPlanReq.planStatus,
+              "range": $scope.iPlanReq.range,
+              "recyclePeriod": $scope.iPlanReq.recyclePeriod,
+              "recyclePeriodType": $scope.iPlanReq.recyclePeriodType,
+              "requestTime": $filter('date')(new Date(),'yyyy-MM-dd HH:mm:ss')
+          };
+          console.log(req);
+          var flog;
+          for(var i in req){
+              // console.log(i,":",req[i]);
+              flog=validate.required(req[i]);
+              if(!flog){
+                  break;
+              }
+          }
+          if(req.list.length>0){
+              // flog=true;
+          }else {
+              flog=false;
+          }
+          console.log($scope.iPlanReq.nextExecuteTime,new Date());
+          if($scope.iPlanReq.nextExecuteTime<new Date()){
+              flog=false;
+              alert('下次执行时间必须大于当前时间');
+          }else if($scope.iPlanReq.endTime<$scope.iPlanReq.nextExecuteTime){
+              flog=false;
+              alert('截止时间必须大于下次执行时间');
+          }
+          // if(flog){
+          //     inspectionPlan.addSpotInspectionPlan(req).success(function (data) {
+          //         if(data.errorCode=='000000'){
+          //             hideDiv('iPlanPopup');
+          //             popupDiv('SaveSuccess');
+          //             $('.SaveSuccess .Message').html(data.errorMessage);
+          //         }else{
+          //             hideDiv('iPlanPopup');
+          //             popupDiv('SaveSuccess');
+          //             $('.SaveSuccess .Message').html(data.errorMessage);
+          //         }
+          //     })
+          // }else {
+          //     $scope.errFlog=true;
+          // }
+      }
     };
 
     //打开执行人选择列表
@@ -480,10 +591,9 @@ myApp.controller('inspectionPlanCtrl',['$filter','$rootScope','$location','$scop
             processAuditorList.push(n.userId);
             nameList.push(n.userName);
         });
-        $scope.iPlanReq={
-            executors:processAuditorList,
-            nameStrs:nameList.join(',')
-        };
+        $scope.iPlanReq.executors=processAuditorList;
+        $scope.iPlanReq.nameStrs=nameList.join(',');
+
         // console.log($scope.iPlanReq);
         if($scope.iPlanReq.executors.length<=0){
             alert('执行者不能为空');
@@ -507,16 +617,28 @@ myApp.controller('inspectionPlanCtrl',['$filter','$rootScope','$location','$scop
 
     //点击确认巡检对象
     $scope.addSISSure_device=function () {
-        $scope.iPlanReq.list.push({
-            id:$scope.changedDeviceObj.id,
-            name:$scope.changedDeviceObj.name,
-            code:$scope.changedDeviceObj.code,
-            specification:$scope.changedDeviceObj.specification,
-            planStatus:$scope.changedDeviceObj.planStatus
-        });
-
-        hideDiv('iPlanDevicePopup');
-        popupDiv('iPlanPopup');
+        if($scope.stanardByDeviceIdLists){
+            $scope.stanardByDeviceIdLists.forEach(function (v) {
+                if($scope.changedDeviceObj.planStatus==v.id){
+                    $scope.changedDeviceObj.planStatusName=v.name;
+                }
+            });
+        }
+        if($scope.changedDeviceObj.id){
+            $scope.iPlanReq.list.push({
+                id:$scope.changedDeviceObj.id,
+                name:$scope.changedDeviceObj.name,
+                code:$scope.changedDeviceObj.code,
+                specification:$scope.changedDeviceObj.specification,
+                planStatus:$scope.changedDeviceObj.planStatus,
+                planStatusName:$scope.changedDeviceObj.planStatusName,
+                deviceType:$scope.changedDeviceObj.deviceTypeId
+            });
+            hideDiv('iPlanDevicePopup');
+            popupDiv('iPlanPopup');
+        }else {
+            alert('请选择设备');
+        }
     };
 
     //删除包含设备列表中的设备
@@ -559,16 +681,23 @@ myApp.controller('inspectionPlanCtrl',['$filter','$rootScope','$location','$scop
         $(event.target).parent().parent().find('tr').removeClass('ccTr');
         $(event.target).parent().addClass('ccTr');
         // console.log(obj);
-        //点击确认选择设备
-        $scope.changeCCSure_changedDevice=function () {
-            $scope.changedDeviceObj=obj;
-            $scope.queryStanardByDeviceId(obj.id);
+        $scope.dd_obj=obj;
+    };
+    //点击确认选择设备
+    $scope.changeCCSure_changedDevice=function () {
+        if($scope.dd_obj){
+            $scope.changedDeviceObj=$scope.dd_obj;
+            // console.log($scope.dd_obj);
+            $scope.queryStanardByDeviceId($scope.dd_obj.id);
             hideDiv('changedDevicePop');
             popupDiv('iPlanDevicePopup');
-        };
+        }else {
+            alert('请选择设备');
+        }
+
     };
 
 
-
+    $scope.$watch('paginationConf.currentPage + paginationConf.itemsPerPage', $scope.onQuery);
     $scope.$watch('paginationConf_CC.currentPage + paginationConf_CC.itemsPerPage', $scope.onQuery_cc);
 }]);

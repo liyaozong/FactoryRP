@@ -82,6 +82,22 @@ myApp.factory("inspectionPlan",["AppHttp","FF_API",function(AppHttp,FF_API){
             url: FF_API.base + FF_API.queryStanardByDeviceIdPath+'?deviceId='+deviceId
         });
     };
+    //新增巡检计划
+    inspectionPlan.addSpotInspectionPlan=function(data){
+        return AppHttp({
+            method: 'post',
+            url: FF_API.base + FF_API.addSpotInspectionPlanPath,
+            data:data
+        });
+    };
+    //分页查询巡检计划
+    inspectionPlan.spotInspectionPlanFindByPage=function(data){
+        return AppHttp({
+            method: 'post',
+            url: FF_API.base + FF_API.spotInspectionPlanFindByPagePath,
+            data:data
+        });
+    };
 
     return inspectionPlan;
 }]);
