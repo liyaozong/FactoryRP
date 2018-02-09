@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tech.yozo.factoryrp.entity.*;
+import tech.yozo.factoryrp.enums.inspection.SpotInspectionPlanRecycleTypeEnum;
 import tech.yozo.factoryrp.exception.BussinessException;
 import tech.yozo.factoryrp.repository.DepartmentRepository;
 import tech.yozo.factoryrp.repository.SpotInspectionPlanDeviceRepository;
@@ -216,7 +217,7 @@ public class SpotInspectionPlanServiceImpl implements SpotInspectionPlanService 
                 spotInspectionPlanQueryResp.setLastExecuteTime(s1.getLastExecuteTime());
                 spotInspectionPlanQueryResp.setNextExecuteTime(s1.getNextExecuteTime());
                 spotInspectionPlanQueryResp.setExecutors(JSON.parseArray(s1.getExecutors(),Long.class));
-
+                spotInspectionPlanQueryResp.setRecyclePeriod(SpotInspectionPlanRecycleTypeEnum.handlerRecycleTimer(s1.getRecyclePeriod(),s1.getRecyclePeriodType()));
 
                 spotInspectionPlanQueryRespList.add(spotInspectionPlanQueryResp);
             });

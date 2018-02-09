@@ -73,4 +73,9 @@ public class SpotInspectionPlanQueryResp implements Serializable {
     @ApiModelProperty(value = "设备数",notes ="设备数" )
     private Integer deviceCount;
 
+    /**
+     * 周期
+     */
+    @ApiModelProperty(value = "周期",notes ="周期" )
+    private String recyclePeriod;
 }

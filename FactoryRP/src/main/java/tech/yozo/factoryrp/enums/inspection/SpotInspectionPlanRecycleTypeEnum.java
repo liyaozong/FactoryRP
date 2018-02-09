@@ -32,6 +32,22 @@ public enum SpotInspectionPlanRecycleTypeEnum {
         this.name = name;
     }
 
+    /**
+     * 格式化时间
+     * @param unit
+     * @param code
+     * @return
+     */
+    public static String handlerRecycleTimer(Integer unit,String code){
+        SpotInspectionPlanRecycleTypeEnum spotInspectionPlanRecycleTypeEnum = getByCode(code);
+
+            if(CheckParam.isNull(spotInspectionPlanRecycleTypeEnum)){
+                return null;
+            }
+            return unit+spotInspectionPlanRecycleTypeEnum.getName();
+
+    }
+
     public static SpotInspectionPlanRecycleTypeEnum getByCode(String code) {
         for (SpotInspectionPlanRecycleTypeEnum v : SpotInspectionPlanRecycleTypeEnum.values()) {
             if (!CheckParam.isNull(code) && v.getCode().equals(code)) {
