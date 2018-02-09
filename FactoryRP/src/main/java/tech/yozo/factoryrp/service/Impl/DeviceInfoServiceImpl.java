@@ -155,6 +155,7 @@ public class DeviceInfoServiceImpl implements DeviceInfoService {
             res.getList().forEach(fullDeviceInfoResp -> {
                 SimpleDeviceInfoResp sr = new SimpleDeviceInfoResp();
                 BeanUtils.copyProperties(fullDeviceInfoResp,sr);
+                sr.setDeviceTypeId(fullDeviceInfoResp.getDeviceTypeId());
                 ls.add(sr);
             });
             r.setList(ls);

@@ -23,6 +23,9 @@ public class SimpleDeviceInfoResp implements Serializable{
     @ApiModelProperty(value = "规格型号")
     private String specification;
 
+    @ApiModelProperty(value = "设备类别ID",notes ="设备类别ID" )
+    private Long deviceTypeId;
+
     @ApiModelProperty(value = "设备编号")
     private String code;
 
