@@ -66,6 +66,8 @@ var myApp = angular.module('myApp', [
         spotInspectionStandardFindByPagePath:'/api/spotInspectionStandard/findByPage',   //分页查询巡检标准
         queryAllSpotInspectionPlanRecycleTypePath:'/main/queryAllSpotInspectionPlanRecycleType',   //巡检计划执行时间类型
         queryStanardByDeviceIdPath:'/api/spotInspectionStandard/queryStanardByDeviceId',   //根据部门ID查询巡检标准
+        addSpotInspectionPlanPath:'/api/spotInspectionPlan/addSpotInspectionPlan',   //新增点检计划
+        spotInspectionPlanFindByPagePath:'/api/spotInspectionPlan/findByPage',   //新增点检计划
         getxjsjPath:'service/getxjsj',   //巡检计划状态
         getxjlxPath:'service/getxjlx'   //巡检计划名称
 
