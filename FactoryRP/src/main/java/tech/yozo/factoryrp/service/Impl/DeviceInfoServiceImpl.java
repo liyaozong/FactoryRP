@@ -212,6 +212,7 @@ public class DeviceInfoServiceImpl implements DeviceInfoService {
             FullDeviceInfoResp fdi = new FullDeviceInfoResp();
             BeanUtils.copyProperties(deviceInfo,fdi);
             fdi.setDeviceType(dtMap.get(deviceInfo.getDeviceType()));
+            fdi.setDeviceTypeId(deviceInfo.getDeviceType());
             fdi.setManufacturer(ccMap.get(deviceInfo.getManufacturer()));
             fdi.setSupplier(ccMap.get(deviceInfo.getSupplier()));
             fdi.setUseDept(deptMap.get(deviceInfo.getUseDept()));

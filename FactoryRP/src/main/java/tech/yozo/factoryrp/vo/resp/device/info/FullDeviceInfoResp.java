@@ -35,6 +35,9 @@ public class FullDeviceInfoResp implements Serializable{
     @ApiModelProperty(value = "设备类别",notes ="设备类别" )
     private String deviceType;
 
+    @ApiModelProperty(value = "设备类别ID",notes ="设备类别ID" )
+    private Long deviceTypeId;
+
     @ApiModelProperty(value = "购置时间",notes ="购置时间" )
     private Date buyDate;
 
