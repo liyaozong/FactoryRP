@@ -180,28 +180,18 @@ public class SpotInspectionPlanServiceImpl implements SpotInspectionPlanService 
 
             List<Long> deptIds = new ArrayList<>();
 
-            //List<Long> userIds = new ArrayList<>();
-
             List<Long> planIds = new ArrayList<>();
 
             spotInspectionPlanList.stream().forEach(s1 -> {
 
                 deptIds.add(s1.getDepartment()); //格式化部门名称之用
-                //userIds.addAll(JSON.parseArray(s1.getExecutors(),Long.class)); //格式化执行人姓名之用
                 planIds.add(s1.getId()); //格式化关联设备数量之用
 
             });
 
-
-            //List<User> userList = userRepository.findByCorporateIdentifyAndUserIdIn(corporateIdentify, userIds);
-
             List<Department> departmentList = departmentRepository.findByCorporateIdentifyAndIdIn(corporateIdentify, deptIds);
 
-
             List<SpotInspectionPlanDevice> devices = spotInspectionPlanDeviceRepository.findByCorporateIdentifyAndSpotInspectionPlanIn(corporateIdentify, planIds);
-
-            //Map<Long, User> userMap = userList.stream().collect(Collectors.toMap(User::getUserId, Function.identity()));
-
 
             Map<Long, Department> departmentMap = departmentList.stream().collect(Collectors.toMap(Department::getId, Function.identity()));
             Map<Long, List<SpotInspectionPlanDevice>> devicesMap =
@@ -213,9 +203,6 @@ public class SpotInspectionPlanServiceImpl implements SpotInspectionPlanService 
 
                 spotInspectionPlanQueryResp.setName(s1.getName());
 
-                 //if(!CheckParam.isNull(userMap) && !userMap.isEmpty()){
-                     //s1.setExecutorsName();
-                 //}
 
                  //格式化部门设备数量
                 if(!CheckParam.isNull(departmentMap) && !departmentMap.isEmpty() && !CheckParam.isNull(departmentMap.get(s1.getDepartment()))){
