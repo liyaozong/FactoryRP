@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">设备管理系统</string>
     <string name="operator">北京银河灵动科技有限公司</string>
-    <string name="manufacturer">华圣铝业有限公司</string>
+    <string name="manufacturer">山西华圣铝业有限公司</string>
 
     <!-- Strings related to login -->
     <string name="prompt_address">工厂</string>
@@ -24,6 +24,7 @@
     <string name="failure_network">网络不可用，请检查网络设置</string>
     <string name="failure_request">请求错误，请查看手机网络或服务器状态</string>
     <string name="failure_camera_permission">没有授权，无法使用照相机</string>
+    <string name="failure_click">请扫描对应设备条码进行点检</string>
 
     <string name="hint_parts_count">最多只能添加10个。</string>
     <string name="hint_image_count">只能添加3张照片。</string>
@@ -72,6 +73,8 @@
     <string name="title_select_device">选择设备</string>
     <string name="title_select_parts">选择备件</string>
     <string name="title_select_maintainer">选择维修人员</string>
+    <string name="title_inspect_devices">点检设备列表</string>
+    <string name="title_inspect_detail">设备点检项</string>
 
     <string name="title_repair_info">故障信息</string>
     <string name="title_repair_advice">处理意见</string>

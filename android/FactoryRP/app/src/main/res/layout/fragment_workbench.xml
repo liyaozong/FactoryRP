@@ -24,7 +24,7 @@
                 android:layout_height="wrap_content" android:id="@+id/button_add_repair" android:layout_weight="1"
                 android:drawableTop="@drawable/selector_repair_order"
                 android:background="@android:color/background_light"
-        />
+                android:enabled="false"/>
 
         <Button
                 android:text="@string/action_add_device"
@@ -35,141 +35,154 @@
 
     </LinearLayout>
 
-    <ScrollView
+    <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-    >
-        <LinearLayout
-                android:orientation="vertical"
+            android:layout_height="wrap_content" android:background="@android:color/background_light"
+            android:layout_marginTop="6dp" android:padding="2dp">
+
+        <TextView
+                android:text="维修工单"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:id="@+id/textView3"
+                android:textSize="20sp" android:layout_margin="4dp"/>
+        <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1dp" app:srcCompat="@color/colorBackground"
+                android:id="@+id/imageView5" android:layout_marginLeft="6dp" android:layout_marginRight="6dp"/>
+        <TableLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
         >
-            <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" android:background="@android:color/background_light"
-                    android:layout_marginTop="6dp" android:padding="2dp">
 
+            <TableRow android:layout_width="match_parent" android:layout_height="match_parent">
                 <TextView
-                        android:text="维修工单"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" android:id="@+id/textView3"
-                        android:textSize="20sp" android:layout_margin="4dp"/>
-                <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp" app:srcCompat="@color/colorBackground"
-                        android:id="@+id/imageView5" android:layout_marginLeft="6dp" android:layout_marginRight="6dp"/>
-                <TableLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                >
-
-                    <TableRow android:layout_width="match_parent" android:layout_height="match_parent">
-                        <TextView
-                                android:text="@string/text_repair_wait_audit"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content" android:id="@+id/tv_0"
-                                android:padding="6dp" android:textSize="16sp"/>
-                        <TextView
-                                android:layout_width="80dp"
-                                android:layout_height="wrap_content" android:id="@+id/textView_waitto_audit"
-                                android:text="0"
-                                android:textColor="@android:color/holo_blue_dark" android:textSize="26sp"
-                                android:paddingLeft="6dp" android:textStyle="bold"/>
-                        <TextView
-                                android:text="@string/text_repair_wait_exec"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content" android:id="@+id/tv_1" android:padding="6dp"
-                                android:textSize="16sp"/>
-                        <TextView
-                                android:text="0"
-                                android:layout_width="80dp"
-                                android:layout_height="wrap_content" android:id="@+id/textView_waitto_exec"
-                                android:textColor="@android:color/holo_blue_dark" android:textSize="26sp"
-                                android:paddingLeft="6dp" android:textStyle="bold"/>
-                    </TableRow>
-                    <TableRow android:layout_width="match_parent" android:layout_height="match_parent">
-                        <TextView
-                                android:text="@string/text_repair_executing"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content" android:id="@+id/tv_2" android:padding="6dp"
-                                android:textSize="16sp"/>
-                        <TextView
-                                android:text="0"
-                                android:layout_width="80dp"
-                                android:layout_height="wrap_content" android:id="@+id/textView_executing"
-                                android:textColor="@android:color/holo_blue_dark" android:textSize="26sp"
-                                android:paddingLeft="6dp" android:textStyle="bold"/>
-                        <TextView
-                                android:text="@string/text_repair_wait_verify"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content" android:id="@+id/tv_3" android:padding="6dp"
-                                android:textSize="16sp"/>
-                        <TextView
-                                android:text="0"
-                                android:layout_width="80dp"
-                                android:layout_height="wrap_content" android:id="@+id/textView_waitto_verify"
-                                android:textColor="@android:color/holo_blue_dark" android:textSize="26sp"
-                                android:paddingLeft="6dp" android:textStyle="bold"/>
-                    </TableRow>
-                </TableLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" android:layout_marginTop="6dp"
-                    android:background="@android:color/background_light" android:padding="2dp">
+                        android:text="@string/text_repair_wait_audit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:id="@+id/tv_0"
+                        android:padding="6dp" android:textSize="16sp"/>
                 <TextView
-                        android:text="保养任务"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" android:id="@+id/textView10" android:textSize="20sp"
-                        android:layout_margin="4dp"/>
-                <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp" app:srcCompat="@color/colorBackground"
-                        android:id="@+id/imageView6" android:layout_marginLeft="6dp" android:layout_marginRight="6dp"/>
-                <FrameLayout android:layout_width="match_parent" android:layout_height="match_parent">
-                    <ListView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content" android:id="@+id/listview_maintain_task"/>
-                    <TextView
-                            android:id="@+id/noNewMaintainTask"
-                            android:layout_width="match_parent"
-                            android:layout_height="120dp"
-                            android:gravity="center"
-                            android:text="暂时没有新的保养任务！"/>
-                </FrameLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" android:background="@android:color/background_light"
-                    android:layout_marginTop="6dp" android:padding="2dp">
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content" android:id="@+id/textView_waitto_audit"
+                        android:text="0"
+                        android:textColor="@android:color/holo_blue_dark" android:textSize="26sp"
+                        android:paddingLeft="6dp" android:textStyle="bold"/>
                 <TextView
-                        android:text="点检任务"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" android:id="@+id/textView11" android:textSize="20sp"
-                        android:layout_margin="4dp"/>
-                <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp" app:srcCompat="@color/colorBackground"
-                        android:id="@+id/imageView7" android:layout_marginLeft="6dp" android:layout_marginRight="6dp"/>
-                <FrameLayout android:layout_width="match_parent" android:layout_height="wrap_content">
-                    <ListView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content" android:id="@+id/listview_check_task"/>
-                    <TextView
-                            android:id="@+id/noNewCheckTask"
-                            android:layout_width="match_parent"
-                            android:layout_height="120dp"
-                            android:gravity="center"
-                            android:text="暂时没有新的点检任务！"/>
-                </FrameLayout>
-            </LinearLayout>
+                        android:text="@string/text_repair_wait_exec"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:id="@+id/tv_1" android:padding="6dp"
+                        android:textSize="16sp"/>
+                <TextView
+                        android:text="0"
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content" android:id="@+id/textView_waitto_exec"
+                        android:textColor="@android:color/holo_blue_dark" android:textSize="26sp"
+                        android:paddingLeft="6dp" android:textStyle="bold"/>
+            </TableRow>
+            <TableRow android:layout_width="match_parent" android:layout_height="match_parent">
+                <TextView
+                        android:text="@string/text_repair_executing"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:id="@+id/tv_2" android:padding="6dp"
+                        android:textSize="16sp"/>
+                <TextView
+                        android:text="0"
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content" android:id="@+id/textView_executing"
+                        android:textColor="@android:color/holo_blue_dark" android:textSize="26sp"
+                        android:paddingLeft="6dp" android:textStyle="bold"/>
+                <TextView
+                        android:text="@string/text_repair_wait_verify"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:id="@+id/tv_3" android:padding="6dp"
+                        android:textSize="16sp"/>
+                <TextView
+                        android:text="0"
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content" android:id="@+id/textView_waitto_verify"
+                        android:textColor="@android:color/holo_blue_dark" android:textSize="26sp"
+                        android:paddingLeft="6dp" android:textStyle="bold"/>
+            </TableRow>
+        </TableLayout>
+    </LinearLayout>
+
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:layout_marginTop="6dp"
+            android:background="@android:color/background_light" android:padding="2dp">
+        <TextView
+                android:text="保养任务"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:id="@+id/textView10" android:textSize="20sp"
+                android:layout_margin="4dp"/>
+        <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1dp" app:srcCompat="@color/colorBackground"
+                android:id="@+id/imageView6" android:layout_marginLeft="6dp" android:layout_marginRight="6dp"/>
+        <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:layout_margin="6dp"
+                android:gravity="center_vertical">
+            <TextView
+                    android:text="今天"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:id="@+id/textView95"
+                    android:layout_weight="1" android:textSize="16sp"/>
+            <TextView
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content" android:id="@+id/tv_mtask_today"
+                    android:textColor="@android:color/holo_blue_dark" android:textSize="26sp"
+                    android:paddingLeft="6dp" android:textStyle="bold" android:text="0"/>
+            <TextView
+                    android:text="明天"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:id="@+id/textView93"
+                    android:layout_weight="1" android:textSize="16sp"/>
+            <TextView
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content" android:id="@+id/tv_mtask_tomorrow"
+                    android:textColor="@android:color/holo_blue_dark" android:textSize="26sp"
+                    android:paddingLeft="6dp" android:textStyle="bold" android:text="0"/>
+            <TextView
+                    android:text="过期 "
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:id="@+id/textView91"
+                    android:layout_weight="1" android:textSize="16sp"/>
+            <TextView
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content" android:id="@+id/tv_mtask_overdue"
+                    android:textColor="@android:color/holo_blue_dark" android:textSize="26sp"
+                    android:paddingLeft="6dp" android:textStyle="bold" android:text="0"/>
         </LinearLayout>
+    </LinearLayout>
 
-    </ScrollView>
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" android:background="@android:color/background_light"
+            android:layout_marginTop="6dp" android:padding="2dp">
+        <TextView
+                android:text="点检任务"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:id="@+id/textView11" android:textSize="20sp"
+                android:layout_margin="4dp"/>
+        <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1dp" app:srcCompat="@color/colorBackground"
+                android:id="@+id/imageView7" android:layout_marginLeft="6dp" android:layout_marginRight="6dp"/>
+        <FrameLayout android:layout_width="match_parent" android:layout_height="match_parent">
+            <ListView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" android:id="@+id/listview_check_task"/>
+            <TextView
+                    android:id="@+id/noNewCheckTask"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="暂时没有新的点检任务！"/>
+        </FrameLayout>
+    </LinearLayout>
 
 </LinearLayout>
