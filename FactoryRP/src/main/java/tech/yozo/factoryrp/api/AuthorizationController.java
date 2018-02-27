@@ -312,4 +312,15 @@ public class AuthorizationController extends BaseController{
         return null;
     }
 
+    /**
+     * 退出登陆接口
+     * @param request
+     */
+    @ApiOperation(value = "退出登陆接口",notes = "退出登陆接口",httpMethod = "GET")
+    @GetMapping("/loginOut")
+    public ApiResponse loginOut(HttpServletRequest request){
+        userAuthService.loginOut(request);
+        return apiResponse();
+    }
+
 }
