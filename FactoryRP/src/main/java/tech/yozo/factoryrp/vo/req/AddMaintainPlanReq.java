@@ -13,7 +13,7 @@ import java.util.Date;
  **/
 @Data
 public class AddMaintainPlanReq implements Serializable{
-    @ApiModelProperty(value = "设备编号",example = "2")
+    @ApiModelProperty(value = "设备主键",example = "2")
     private Long deveiceId;
     @ApiModelProperty(value = "保养级别",example = "2")
     private Integer maintainLevel;

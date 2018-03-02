@@ -7,9 +7,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import tech.yozo.factoryrp.config.auth.UserAuthService;
+import tech.yozo.factoryrp.page.Pagination;
 import tech.yozo.factoryrp.service.MaintainPlanService;
 import tech.yozo.factoryrp.vo.base.ApiResponse;
 import tech.yozo.factoryrp.vo.req.AddMaintainPlanReq;
+import tech.yozo.factoryrp.vo.req.MaintainPlanListReq;
+import tech.yozo.factoryrp.vo.resp.MaintainPlanDetailVo;
+import tech.yozo.factoryrp.vo.resp.MaintainPlanListVo;
 import tech.yozo.factoryrp.vo.resp.auth.AuthUser;
 
 import javax.servlet.http.HttpServletRequest;
@@ -34,5 +38,18 @@ public class MaintainPlanController extends BaseController{
         AuthUser user = userAuthService.getCurrentUser(request);
         maintainPlanService.addMaintainPlan(param,corporateIdentify,user);
         return apiResponse();
+    }
+
+    @RequestMapping("list")
+    @ApiOperation(value = "保养计划列表--WEB",notes = "保养计划列表--WEB",httpMethod = "POST")
+    public ApiResponse<Pagination<MaintainPlanListVo>> list(@RequestBody MaintainPlanListReq param,HttpServletRequest request){
+        Long corporateIdentify =userAuthService.getCurrentUserCorporateIdentify(request);
+        return apiResponse(maintainPlanService.findByPage(param,corporateIdentify));
+    }
+
+    @RequestMapping("get")
+    @ApiOperation(value = "根据主键查询保养计划接口--WEB",notes = "根据主键查询保养计划接口--WEB",httpMethod = "POST")
+    public ApiResponse<MaintainPlanDetailVo> addTroubleRecord(Long id){
+        return apiResponse(maintainPlanService.getDetailById(id));
     }
 }

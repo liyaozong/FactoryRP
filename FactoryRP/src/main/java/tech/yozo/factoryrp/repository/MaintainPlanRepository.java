@@ -1,5 +1,7 @@
 package tech.yozo.factoryrp.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import tech.yozo.factoryrp.entity.MaintainPlan;
 
@@ -9,4 +11,6 @@ import tech.yozo.factoryrp.entity.MaintainPlan;
  **/
 @Repository
 public interface MaintainPlanRepository extends BaseRepository<MaintainPlan,Long>{
+
+    public Page<MaintainPlan> findByCorporateIdentify(Long corporateIdentify,Pageable pageable);
 }
