@@ -78,6 +78,22 @@ public class UserAuthService {
 
 
     /**
+     * 退出登陆接口
+     * @param request
+     */
+    public void loginOut(HttpServletRequest request){
+        String token = request.getHeader("token");
+        if(CheckParam.isNull(token)){
+            token = request.getParameter("token");
+        }
+
+        String authedUserStr = stringRedisTemplate.opsForValue().get(authCachePrefix + token);
+        if(!CheckParam.isNull(authedUserStr)){
+            stringRedisTemplate.delete(authCachePrefix + token);
+        }
+    }
+
+    /**
      * 根据用户名和企业唯一标识进行查找
      * @param username
      * @param corporateIdentify

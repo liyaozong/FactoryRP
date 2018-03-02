@@ -71,7 +71,9 @@
                 android:name=".ui.PartsSelectActivity"
                 android:label="@string/title_select_parts">
         </activity>
-        <activity android:name=".scan.ScanActivity">
+        <activity
+                android:name=".scan.ScanActivity"
+                android:label="@string/title_scan_device">
         </activity>
         <activity
                 android:name=".ui.AboutUsActivity"
@@ -81,8 +83,16 @@
                 android:name=".ui.ValidateRepairActivity"
                 android:label="@string/title_repair_validate">
         </activity>
-        <activity android:name=".ui.EngineerSelectActivity"
+        <activity
+                android:name=".ui.EngineerSelectActivity"
                 android:label="@string/title_select_maintainer">
+        </activity>
+        <activity
+                android:name=".ui.InspectDeviceActivity"
+                android:label="@string/title_inspect_devices">
+        </activity>
+        <activity android:name=".ui.InspectDetailActivity"
+                android:label="@string/title_inspect_detail">
         </activity>
     </application>
 

@@ -11,5 +11,5 @@ import java.util.List;
 @Repository
 public interface ContactCompanyRepository extends BaseRepository<ContactCompany,Long>{
 
-    public List<ContactCompany> findByCorporateIdentifyAndStatusFlag(Long corporateIdentify,Integer statusFlag);
+    List<ContactCompany> findByCorporateIdentifyAndStatusFlag(Long corporateIdentify,Integer statusFlag);
 }

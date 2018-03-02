@@ -54,9 +54,10 @@ public class AuthIntercepter implements HandlerInterceptor {
     @Value("${spring.auth.expiredTime}")
     private Long authExpiredTime;
 
-   /* @Resource
-    private UserRepository userRepository;
-*/
+    public static void main(String[] args) {
+        System.out.println("/api/authorization/login".equalsIgnoreCase("api/authorization/login"));
+    }
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
@@ -64,59 +65,9 @@ public class AuthIntercepter implements HandlerInterceptor {
         /**
          * 如果是登陆的URL执行登陆逻辑
          */
-       if(requestURI.contains("api/authorization/webLogin") || requestURI.contains("api/authorization/login")){
+       if(requestURI.equalsIgnoreCase("/api/authorization/webLogin")
+               || requestURI.equalsIgnoreCase("/api/authorization/login")){
            logger.info(">>>>>>>>>>>>>>>>>>>>>>>>>>用户开始登陆<<<<<<<<<<<<<<<<<<"+requestURI);
-
-
-           //临时的处理逻辑，直接返回用户权限给前端
-           /*String username = request.getParameter("username");
-           String password = request.getParameter("password");
-           String corporateCode = request.getParameter("corporateCode");
-           User user = authorizationService.findByUserName(username);
-           if(CheckParam.isNull(username) || CheckParam.isNull(password)){
-               AuthWebUtil.loginFailed(request,response);
-               return false;
-           }else if(CheckParam.isNull(corporateCode)){
-               AuthWebUtil.corporateCodeError(request,response);
-               return false;
-           }
-
-           AuthUser authUser = new AuthUser();
-           authUser.setToken("1");
-           authUser.setCorporateIdentify(1L);
-           authUser.setUserName(user.getUserName());
-           authUser.setUserId(user.getUserId());
-           List<AuthUserMenu> authUserMenuList = new ArrayList<>();
-           List<RoleResp> roleList  = new ArrayList<>();
-
-           user.getRoleList().forEach(u1 ->{
-               u1.getMenuList().forEach(m1 ->{
-                   AuthUserMenu authUserMenu = new AuthUserMenu();
-                   authUserMenu.setId(m1.getId());
-                   authUserMenu.setParentId(m1.getParentId());
-                   authUserMenu.setName(m1.getName());
-                   authUserMenu.setUrl(m1.getUrl());
-                   authUserMenu.setRemark(m1.getRemark());
-
-                   authUserMenuList.add(authUserMenu);
-               });
-
-               RoleResp roleResp = new RoleResp();
-               roleResp.setEnableStatus(u1.getEnableStatus());
-               roleResp.setRoleCode(u1.getRoleCode());
-               roleResp.setRoleDescription(u1.getRoleDescription());
-               roleResp.setRoleId(String.valueOf(u1.getId()));
-               roleResp.setRoleName(u1.getRoleName());
-
-               roleList.add(roleResp);
-           });
-
-           authUser.setAuthUserMenuList(authUserMenuList);
-           authUser.setRoleList(roleList);
-           AuthWebUtil.loginSuccess(request,response,authUser);
-           return true;*/
-
-
            return handleLogin(request,response);
         }
 
@@ -272,6 +223,7 @@ public class AuthIntercepter implements HandlerInterceptor {
             stringRedisTemplate.opsForValue().set(authCachePrefix+token, JSON.toJSONString(authUser),authExpiredTime);
 
 
+            logger.info(">>>>>>>>>>>>>>>>>>>>>>>登陆成功返回到前端的用户数据<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"+JSON.toJSONString(authUser));
 
             try {
                 AuthWebUtil.loginSuccess(request,response,authUser);
