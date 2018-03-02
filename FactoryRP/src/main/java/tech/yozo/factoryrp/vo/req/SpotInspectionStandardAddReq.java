@@ -22,6 +22,7 @@ public class SpotInspectionStandardAddReq extends ApiRequest implements Serializ
 
     private static final long serialVersionUID = 878732320910722990L;
 
+
     /**
      * 巡检标准名称
      */

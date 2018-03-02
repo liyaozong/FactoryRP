@@ -24,13 +24,13 @@ import tech.yozo.factoryrp.vo.req.SpotInspectionPlanQueryReq;
 import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionPlanAddResp;
 import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionPlanQueryResp;
 import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionPlanQueryWarpResp;
+import tech.yozo.factoryrp.vo.resp.inspection.mobile.SpotInspectionPlanResp;
 
 import javax.annotation.Resource;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.*;
 import java.util.function.Function;
@@ -131,6 +131,57 @@ public class SpotInspectionPlanServiceImpl implements SpotInspectionPlanService 
         spotInspectionPlanAddResp.setName(spotInspectionPlan.getName());
 
         return spotInspectionPlanAddResp;
+    }
+
+
+    /**
+     * 手机端查询点检任务
+     * @param userId
+     * @param corporateIdentify
+     * @return
+     */
+    @Override
+    public List<SpotInspectionPlanResp> queryMobilePlan(Long userId, Long corporateIdentify) {
+
+
+        List<SpotInspectionPlan> spotInspectionPlans = spotInspectionPlanRepository.findByCorporateIdentify(corporateIdentify);
+
+
+        if(!CheckParam.isNull(spotInspectionPlans) && !spotInspectionPlans.isEmpty()){
+
+            List<SpotInspectionPlanResp> planResultList = new ArrayList<>();
+
+
+            //选出当前userId执行的任务
+            spotInspectionPlans.stream().forEach(s1 -> {
+                List<Long> executorList = JSON.parseArray(s1.getExecutors(), Long.class);
+
+                if(executorList.contains(userId)){
+                    spotInspectionPlans.add(s1);
+                }
+            });
+
+            if(!CheckParam.isNull(spotInspectionPlans) && !spotInspectionPlans.isEmpty()){
+
+
+                spotInspectionPlans.stream().forEach(s1 ->{
+
+                    SpotInspectionPlanResp spotInspectionPlanResp = new SpotInspectionPlanResp();
+
+                    spotInspectionPlanResp.setPanId(s1.getId());
+                    spotInspectionPlanResp.setNextExecuteTime(s1.getNextExecuteTime()); //设置任务开始时间
+
+                    planResultList.add(spotInspectionPlanResp);
+                });
+
+                return planResultList;
+
+            }
+
+
+        }
+
+        return null;
     }
 
 

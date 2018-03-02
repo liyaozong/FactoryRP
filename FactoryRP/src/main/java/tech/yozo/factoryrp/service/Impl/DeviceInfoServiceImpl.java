@@ -1,5 +1,6 @@
 package tech.yozo.factoryrp.service.Impl;
 
+import com.alibaba.fastjson.JSON;
 import tech.yozo.factoryrp.entity.ContactCompany;
 import tech.yozo.factoryrp.entity.Department;
 import tech.yozo.factoryrp.entity.DeviceInfo;
@@ -105,6 +106,7 @@ public class DeviceInfoServiceImpl implements DeviceInfoService {
         }
         return res;
     }
+
 
     @Override
     public DeviceInfo save(AddDeviceReq param, Long corporateIdentify) {

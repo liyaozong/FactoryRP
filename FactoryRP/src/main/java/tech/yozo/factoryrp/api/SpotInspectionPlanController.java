@@ -2,6 +2,7 @@ package tech.yozo.factoryrp.api;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,10 +15,12 @@ import tech.yozo.factoryrp.vo.req.SpotInspectionPlanAddReq;
 import tech.yozo.factoryrp.vo.req.SpotInspectionPlanQueryReq;
 import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionPlanAddResp;
 import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionPlanQueryWarpResp;
+import tech.yozo.factoryrp.vo.resp.inspection.mobile.SpotInspectionPlanResp;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * 巡检计划前端控制器
@@ -37,6 +40,20 @@ public class SpotInspectionPlanController extends BaseController{
     @Resource
     private UserAuthService userAuthService;
 
+
+
+    /**
+     * 手机端查询点检任务
+     * @return
+     */
+    @ApiOperation(value = "手机端查询点检任务-Mobile",notes = "手机端查询点检任务-Mobile",httpMethod = "GET")
+    @RequestMapping("/queryMobilePlan")
+    public ApiResponse<List<SpotInspectionPlanResp>> queryMobilePlan(HttpServletRequest request){
+        Long corporateIdentify = userAuthService.getCurrentUserCorporateIdentify(request);
+        Long userId = userAuthService.getCurrentUserId(request);
+
+        return apiResponse(spotInspectionPlanService.queryMobilePlan(userId,corporateIdentify));
+    }
 
     /**
      * 点检标准新增

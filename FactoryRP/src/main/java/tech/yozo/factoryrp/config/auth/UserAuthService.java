@@ -33,10 +33,16 @@ public class UserAuthService {
 
     /**
      * 根据token拿到userId
-     * @param token
+     * @param request
      * @return
      */
-    public Long getCurrentUserId(String token){
+    public Long getCurrentUserId(HttpServletRequest request){
+
+        String token = request.getHeader("token");
+
+        if(CheckParam.isNull(token)){
+            token = request.getParameter("token");
+        }
 
         String authedUserStr = stringRedisTemplate.opsForValue().get(authCachePrefix + token);
 
