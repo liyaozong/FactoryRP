@@ -208,7 +208,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="orderDetail in troubleRecordList">
+                    <tr data-appid = "{{orderDetail.id}}" ng-click="chooseTroubleRecord($event,orderDetail)" ng-class="{'':dataChooseTrouble=='','bg-gray':orderDetail.id == dataChooseTrouble}" ng-repeat="orderDetail in troubleRecordList">
                         <td class="firstTd">{{$index+1}}<input style="margin-left: 5px;vertical-align: middle;" type="checkbox" name="che1"  value="{{orderDetail.id}}"/></td>
                         <td>{{orderDetail.status||'--'}}</td>
                         <td>{{orderDetail.happenTime||'--'|date:'yyyy-MM-dd'}}</td>

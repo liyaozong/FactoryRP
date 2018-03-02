@@ -713,6 +713,12 @@ factoryParameterSettingApp.controller('deviceManageController',function ($scope,
     };
     /*故障信息详情查询 end*/
     /*批量删除故障 start*/
+    $scope.chooseTroubleRecord=function ($event,res) {
+        var dataId = $($event.target).parents('tr').data("appid");
+        localStorage.setItem('dataChooseTrouble',dataId);
+        var data =localStorage.getItem('dataChooseTrouble');
+        $scope.dataChooseTrouble=data;
+    };
     $scope.deleteAllTroubleRecords=function(){
         if($(".tableListDiv tr td input[name='che1']:checked").length<1){
             popupDiv('SaveSuccess');
