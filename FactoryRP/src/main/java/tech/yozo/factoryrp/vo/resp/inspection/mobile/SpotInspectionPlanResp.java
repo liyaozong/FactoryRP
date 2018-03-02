@@ -22,8 +22,6 @@ public class SpotInspectionPlanResp implements Serializable {
 
 
     @ApiModelProperty(value = "计划开始时间",required = true,notes = "计划开始时间",example = "1")
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date nextExecuteTime;
+    private String nextExecuteTime;
 
 }

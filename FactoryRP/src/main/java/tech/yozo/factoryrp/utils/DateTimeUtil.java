@@ -112,7 +112,7 @@ public class DateTimeUtil {
 	 * @return
 	 */
 	public static String dateToStr(final Date date) {
-		return dateToStr(date, "yyyy-MM-dd HH:mm");
+		return dateToStr(date, "yyyy-MM-dd HH:mm:ss");
 	}
 
 	/**

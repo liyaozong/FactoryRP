@@ -18,6 +18,7 @@ import tech.yozo.factoryrp.repository.UserRepository;
 import tech.yozo.factoryrp.service.SpotInspectionPlanService;
 import tech.yozo.factoryrp.utils.BaseUtil;
 import tech.yozo.factoryrp.utils.CheckParam;
+import tech.yozo.factoryrp.utils.DateTimeUtil;
 import tech.yozo.factoryrp.utils.ErrorCode;
 import tech.yozo.factoryrp.vo.req.SpotInspectionPlanAddReq;
 import tech.yozo.factoryrp.vo.req.SpotInspectionPlanQueryReq;
@@ -169,7 +170,7 @@ public class SpotInspectionPlanServiceImpl implements SpotInspectionPlanService 
                     SpotInspectionPlanResp spotInspectionPlanResp = new SpotInspectionPlanResp();
 
                     spotInspectionPlanResp.setPanId(s1.getId());
-                    spotInspectionPlanResp.setNextExecuteTime(s1.getNextExecuteTime()); //设置任务开始时间
+                    spotInspectionPlanResp.setNextExecuteTime(DateTimeUtil.dateToStr(s1.getNextExecuteTime())); //设置任务开始时间
 
                     planResultList.add(spotInspectionPlanResp);
                 });
