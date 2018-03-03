@@ -47,9 +47,12 @@ public class SpotInspectionPlanController extends BaseController{
      */
     @ApiOperation(value = "手机端查询点检任务关联设备-Mobile",notes = "手机端查询点检任务关联设备-Mobile",httpMethod = "GET")
     @RequestMapping("/querySpotInspectionPlanDevices")
+    @ApiImplicitParams({
+            @ApiImplicitParam(dataType = "Long" ,name = "planId", paramType = "query" ,
+                    value = "点检计划ID",required = true,defaultValue = "3")
+    })
     public ApiResponse<List<SpotInspectionPlanDeviceQueryResp>> querySpotInspectionPlanDevices(HttpServletRequest request,
                                                                                   @RequestParam(value="planId",required = true,defaultValue = "1") Long planId){
-
         Long corporateIdentify = userAuthService.getCurrentUserCorporateIdentify(request);
         return apiResponse(spotInspectionPlanService.querySpotInspectionPlanDevices(planId,corporateIdentify));
 
