@@ -100,12 +100,13 @@ public class SpotInspectionPlanServiceImpl implements SpotInspectionPlanService 
                     spotInspectionPlanDeviceQueryResp.setUseDept(d1.getUseDept());
                     spotInspectionPlanDeviceQueryResp.setName(d1.getName());
                     spotInspectionPlanDeviceQueryResp.setSpecification(d1.getSpecification());
+                    spotInspectionPlanDeviceQueryResp.setDeviceStandard(deviceIdStandardLMap.get(d1.getId()));
 
-                    List<Long> deviceStandardIdList = new ArrayList<>();
+                    //List<Long> deviceStandardIdList = new ArrayList<>();
 
 
-                    deviceStandardIdList.add(deviceIdStandardLMap.get(d1.getId()));
-                    spotInspectionPlanDeviceQueryResp.setDeviceStandatdIdList(deviceStandardIdList);
+                    //deviceStandardIdList.add(deviceIdStandardLMap.get(d1.getId()));
+                    //spotInspectionPlanDeviceQueryResp.setDeviceStandatdIdList(deviceStandardIdList);
 
                     resultList.add(spotInspectionPlanDeviceQueryResp);
                 });

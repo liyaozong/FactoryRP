@@ -37,7 +37,7 @@ public class SpotInspectionPlanDeviceQueryResp implements Serializable {
     private Long useDept;
 
 
-    @ApiModelProperty(value = "设备关联的巡检标准ID集合")
-    private List<Long> deviceStandatdIdList;
+    @ApiModelProperty(value = "设备关联的巡检标准")
+    private Long deviceStandard;
 
 }
