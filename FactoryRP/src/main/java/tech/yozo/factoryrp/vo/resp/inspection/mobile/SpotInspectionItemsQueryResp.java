@@ -1,4 +1,4 @@
-package tech.yozo.factoryrp.vo.resp.inspection;
+package tech.yozo.factoryrp.vo.resp.inspection.mobile;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -9,16 +9,16 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * 点检标准项细节查询返回VO
  * @author created by Singer email:313402703@qq.com
- * @time 2018/1/23
+ * @time 2018/3/3
  * @description
  */
 @ApiModel
 @Data
-public class SpotInspectionStandardItemsQueryResp implements Serializable {
+public class SpotInspectionItemsQueryResp implements Serializable {
 
-    private static final long serialVersionUID = 6313045572385406968L;
+
+
 
     /**
      * 巡检项目名称

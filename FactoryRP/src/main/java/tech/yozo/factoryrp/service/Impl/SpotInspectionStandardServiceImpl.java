@@ -12,16 +12,14 @@ import tech.yozo.factoryrp.entity.SpotInspectionItems;
 import tech.yozo.factoryrp.entity.SpotInspectionStandard;
 import tech.yozo.factoryrp.enums.inspection.SpotInspectionItemsRecordTypeEnum;
 import tech.yozo.factoryrp.exception.BussinessException;
-import tech.yozo.factoryrp.repository.DeviceInfoRepository;
-import tech.yozo.factoryrp.repository.DeviceTypeRepository;
-import tech.yozo.factoryrp.repository.SpotInspectionItemsRepository;
-import tech.yozo.factoryrp.repository.SpotInspectionStandardRepository;
+import tech.yozo.factoryrp.repository.*;
 import tech.yozo.factoryrp.service.SpotInspectionStandardService;
 import tech.yozo.factoryrp.utils.CheckParam;
 import tech.yozo.factoryrp.utils.ErrorCode;
 import tech.yozo.factoryrp.vo.req.SpotInspectionStandardAddReq;
 import tech.yozo.factoryrp.vo.req.SpotInspectionStandardQueryReq;
 import tech.yozo.factoryrp.vo.resp.inspection.*;
+import tech.yozo.factoryrp.vo.resp.inspection.mobile.SpotInspectionItemsQueryResp;
 
 import javax.annotation.Resource;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -56,6 +54,33 @@ public class SpotInspectionStandardServiceImpl implements SpotInspectionStandard
     @Resource
     private DeviceTypeRepository deviceTypeRepository;
 
+    @Resource
+    private SpotInspectionPlanDeviceRepository spotInspectionPlanDeviceRepository;
+
+
+    /**
+     * 手机端
+     * @param deviceTypeId
+     * @param deviceId
+     * @param corporateIdentify
+     * @return
+     */
+    /*public List<SpotInspectionItemsQueryResp> queryMobileSpotInspectionItems(Long deviceTypeId,Long deviceId,Long corporateIdentify){
+
+
+        List<SpotInspectionStandard> inspectionStandardList = spotInspectionStandardRepository.findByDeviceTypeAndCorporateIdentify(deviceTypeId, corporateIdentify);
+
+
+        if(!CheckParam.isNull(inspectionStandardList) && !inspectionStandardList.isEmpty()){
+
+
+            inspectionStandardList.stream().f
+
+
+
+        }
+
+    }*/
 
     /**
      * 根据设备ID查询点检标准

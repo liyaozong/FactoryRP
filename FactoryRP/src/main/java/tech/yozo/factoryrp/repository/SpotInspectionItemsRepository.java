@@ -15,6 +15,8 @@ import java.util.List;
 public interface SpotInspectionItemsRepository extends BaseRepository<SpotInspectionItems,Long> {
 
 
+
+
     /**
      * 根据巡检标准ID和企业唯一标识进行查询
      * @param Standard

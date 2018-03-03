@@ -37,4 +37,6 @@ public interface SpotInspectionPlanDeviceRepository extends BaseRepository<SpotI
     List<SpotInspectionPlanDevice> findByCorporateIdentifyAndSpotInspectionPlan(@Param("corporateIdentify") Long corporateIdentify,@Param("spotInspectionPlan") Long spotInspectionPlan);
 
 
+    //SpotInspectionPlanDevice findByCorporateIdentifyAndDeviceTypeAndDeviceId
+
 }

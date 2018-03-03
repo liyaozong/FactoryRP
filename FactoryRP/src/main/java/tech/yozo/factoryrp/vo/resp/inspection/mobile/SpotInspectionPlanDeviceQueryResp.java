@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * 手机端查询巡检计划关联的设备
@@ -34,5 +35,9 @@ public class SpotInspectionPlanDeviceQueryResp implements Serializable {
 
     @ApiModelProperty(value = "使用部门")
     private Long useDept;
+
+
+    @ApiModelProperty(value = "设备关联的巡检标准ID集合")
+    private List<Long> deviceStandatdIdList;
 
 }

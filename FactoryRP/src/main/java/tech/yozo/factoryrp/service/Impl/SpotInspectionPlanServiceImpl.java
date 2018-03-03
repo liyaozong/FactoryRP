@@ -78,8 +78,11 @@ public class SpotInspectionPlanServiceImpl implements SpotInspectionPlanService 
 
             List<Long> deviceInfoIds = new ArrayList<>();
 
+            Map<Long,Long> deviceIdStandardLMap = new HashMap<>();
+
             inspectionPlanDeviceList.stream().forEach(d1 -> {
                 deviceInfoIds.add(d1.getDeviceId());
+                deviceIdStandardLMap.put(d1.getDeviceId(),d1.getSpotInspectionStandard());
             });
 
             if(!CheckParam.isNull(deviceInfoIds) && !deviceInfoIds.isEmpty()) {
@@ -97,6 +100,12 @@ public class SpotInspectionPlanServiceImpl implements SpotInspectionPlanService 
                     spotInspectionPlanDeviceQueryResp.setUseDept(d1.getUseDept());
                     spotInspectionPlanDeviceQueryResp.setName(d1.getName());
                     spotInspectionPlanDeviceQueryResp.setSpecification(d1.getSpecification());
+
+                    List<Long> deviceStandardIdList = new ArrayList<>();
+
+
+                    deviceStandardIdList.add(deviceIdStandardLMap.get(d1.getId()));
+                    spotInspectionPlanDeviceQueryResp.setDeviceStandatdIdList(deviceStandardIdList);
 
                     resultList.add(spotInspectionPlanDeviceQueryResp);
                 });
