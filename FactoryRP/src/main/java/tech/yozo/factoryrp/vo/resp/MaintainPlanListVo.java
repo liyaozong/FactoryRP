@@ -25,10 +25,14 @@ public class MaintainPlanListVo implements Serializable{
     private String deviceName;
     @ApiModelProperty(value = "设备规格")
     private String deviceSpec;
-    @ApiModelProperty(value = "设备使用部门")
-    private String deviceUseDept;
-    @ApiModelProperty(value = "设备类型")
-    private String deviceType;
+    @ApiModelProperty(value = "设备使用部门主键")
+    private Long deviceUseDeptId;
+    @ApiModelProperty(value = "设备使用部门名称")
+    private Long deviceUseDeptName;
+    @ApiModelProperty(value = "设备类型主键")
+    private Long deviceType;
+    @ApiModelProperty(value = "设备类型名称")
+    private Long deviceTypeName;
     @ApiModelProperty(value = "设备位置")
     private String deviceAddress;
     @ApiModelProperty(value = "保养级别")
