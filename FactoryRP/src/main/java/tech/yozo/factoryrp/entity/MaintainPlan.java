@@ -14,9 +14,35 @@ import java.util.Date;
 @Table(name = "maintain_plan")
 @Entity
 public class MaintainPlan extends BaseEntity implements Serializable{
-    @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "device_id")
-    private DeviceInfo deviceInfo;
+    @Column(name = "plan_status")
+    private Integer planStatus;
+
+    @Column(name = "device_id")
+    private Long deviceId;
+
+    @Column(name = "device_code")
+    private String deviceCode;
+
+    @Column(name = "device_name")
+    private String deviceName;
+
+    @Column(name = "device_spec")
+    private String deviceSpec;
+
+    @Column(name = "use_dept")
+    private Long deviceUseDept;
+
+    @Column(name = "use_dept_name")
+    private String deviceUseDeptName;
+
+    @Column(name = "device_type")
+    private Long deviceType;
+
+    @Column(name = "device_type_name")
+    private String deviceTypeName;
+
+    @Column(name = "device_address")
+    private String deviceAddress;
 
     @Column(name = "maintain_level")
     private Integer maintainLevel;

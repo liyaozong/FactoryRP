@@ -11,9 +11,11 @@ import tech.yozo.factoryrp.page.Pagination;
 import tech.yozo.factoryrp.service.MaintainPlanService;
 import tech.yozo.factoryrp.vo.base.ApiResponse;
 import tech.yozo.factoryrp.vo.req.AddMaintainPlanReq;
+import tech.yozo.factoryrp.vo.req.MaintainPlanListForAppReq;
 import tech.yozo.factoryrp.vo.req.MaintainPlanListReq;
 import tech.yozo.factoryrp.vo.resp.MaintainPlanDetailVo;
 import tech.yozo.factoryrp.vo.resp.MaintainPlanListVo;
+import tech.yozo.factoryrp.vo.resp.SimpleMaintainPlanVo;
 import tech.yozo.factoryrp.vo.resp.auth.AuthUser;
 
 import javax.servlet.http.HttpServletRequest;
@@ -51,5 +53,12 @@ public class MaintainPlanController extends BaseController{
     @ApiOperation(value = "根据主键查询保养计划接口--WEB",notes = "根据主键查询保养计划接口--WEB",httpMethod = "POST")
     public ApiResponse<MaintainPlanDetailVo> addTroubleRecord(Long id){
         return apiResponse(maintainPlanService.getDetailById(id));
+    }
+
+    @RequestMapping("simpleList")
+    @ApiOperation(value = "app端保养计划分页查询列表--MOBILE",notes = "app端保养计划分页查询列表--MOBILE",httpMethod = "POST")
+    public ApiResponse<Pagination<SimpleMaintainPlanVo>> ListForApp(@RequestBody MaintainPlanListForAppReq param, HttpServletRequest request){
+        Long corporateIdentify =userAuthService.getCurrentUserCorporateIdentify(request);
+        return apiResponse(maintainPlanService.findSimpleListByPage(param,corporateIdentify));
     }
 }

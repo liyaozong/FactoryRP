@@ -14,7 +14,23 @@ import java.util.Date;
 @Data
 public class AddMaintainPlanReq implements Serializable{
     @ApiModelProperty(value = "设备主键",example = "2")
-    private Long deveiceId;
+    private Long deviceId;
+    @ApiModelProperty(value = "设备编号",example = "123114")
+    private String deviceCode;
+    @ApiModelProperty(value = "设备名称",example = "电焊机")
+    private String deviceName;
+    @ApiModelProperty(value = "设备规格",example = "LHW-9")
+    private String deviceSpec;
+    @ApiModelProperty(value = "设备使用部门主键",example = "10")
+    private Long deviceUseDeptId;
+    @ApiModelProperty(value = "设备使用部门名称",example = "测试部门")
+    private String deviceUseDeptName;
+    @ApiModelProperty(value = "设备类型主键",example = "34")
+    private Long deviceType;
+    @ApiModelProperty(value = "设备类型名称",example = "生产设备")
+    private String deviceTypeName;
+    @ApiModelProperty(value = "设备位置",example = "一楼")
+    private String deviceAddress;
     @ApiModelProperty(value = "保养级别",example = "2")
     private Integer maintainLevel;
     @ApiModelProperty(value = "维修班组主键",example = "21")
@@ -29,11 +45,11 @@ public class AddMaintainPlanReq implements Serializable{
     private String maintainPart;
     @ApiModelProperty(value = "保养标准",example = "")
     private String maintainStandard;
-    @ApiModelProperty(value = "上次保养时间",example = "2017-12-12 08:09:55")
+    @ApiModelProperty(value = "上次保养时间(格式：yyyy-MM-dd)",example = "2017-12-12")
     private Date lastMaintainTime;
-    @ApiModelProperty(value = "计划开始时间",example = "2018-03-02 08:09:55")
+    @ApiModelProperty(value = "计划开始时间(格式：yyyy-MM-dd)",example = "2018-03-02")
     private Date planMaintainTimeStart;
-    @ApiModelProperty(value = "计划结束时间",example = "2018-06-02 08:09:55")
+    @ApiModelProperty(value = "计划结束时间(格式：yyyy-MM-dd)",example = "2018-06-02")
     private Date planMaintainTimeEnd;
     @ApiModelProperty(value = "保养负责人主键",example = "1")
     private Long planManagerId;

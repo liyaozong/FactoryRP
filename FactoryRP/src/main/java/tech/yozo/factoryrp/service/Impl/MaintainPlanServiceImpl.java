@@ -1,6 +1,6 @@
 package tech.yozo.factoryrp.service.Impl;
 
-import com.fasterxml.jackson.databind.util.BeanUtil;
+import com.alibaba.druid.util.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -8,20 +8,22 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-import tech.yozo.factoryrp.entity.Department;
-import tech.yozo.factoryrp.entity.DeviceInfo;
-import tech.yozo.factoryrp.entity.DeviceType;
+import tech.yozo.factoryrp.entity.DeviceParameterDictionary;
 import tech.yozo.factoryrp.entity.MaintainPlan;
+import tech.yozo.factoryrp.enums.PlanStatusEnum;
+import tech.yozo.factoryrp.enums.device.DeviceParamDicEnum;
 import tech.yozo.factoryrp.page.Pagination;
+import tech.yozo.factoryrp.repository.DeviceParameterDictionaryRepository;
 import tech.yozo.factoryrp.repository.MaintainPlanRepository;
 import tech.yozo.factoryrp.service.DepartmentService;
 import tech.yozo.factoryrp.service.DeviceTypeService;
 import tech.yozo.factoryrp.service.MaintainPlanService;
-import tech.yozo.factoryrp.utils.CheckParam;
 import tech.yozo.factoryrp.vo.req.AddMaintainPlanReq;
+import tech.yozo.factoryrp.vo.req.MaintainPlanListForAppReq;
 import tech.yozo.factoryrp.vo.req.MaintainPlanListReq;
 import tech.yozo.factoryrp.vo.resp.MaintainPlanDetailVo;
 import tech.yozo.factoryrp.vo.resp.MaintainPlanListVo;
+import tech.yozo.factoryrp.vo.resp.SimpleMaintainPlanVo;
 import tech.yozo.factoryrp.vo.resp.auth.AuthUser;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -44,14 +46,14 @@ public class MaintainPlanServiceImpl implements MaintainPlanService{
     private DeviceTypeService deviceTypeService;
     @Autowired
     private DepartmentService departmentService;
+    @Autowired
+    private DeviceParameterDictionaryRepository deviceParameterDictionaryRepository;
 
     @Override
     public void addMaintainPlan(AddMaintainPlanReq plan, Long corporateIdentify, AuthUser AuthUser) {
         MaintainPlan maintainPlan = new MaintainPlan();
         BeanUtils.copyProperties(plan,maintainPlan);
-        DeviceInfo deviceInfo = new DeviceInfo();
-        deviceInfo.setId(plan.getDeveiceId());
-        maintainPlan.setDeviceInfo(deviceInfo);
+        maintainPlan.setPlanStatus(PlanStatusEnum.TODAY.getCode());
         maintainPlan.setCorporateIdentify(corporateIdentify);
         maintainPlan.setCreateTime(new Date());
         maintainPlan.setUpdateTime(new Date());
@@ -77,20 +79,6 @@ public class MaintainPlanServiceImpl implements MaintainPlanService{
         Page<MaintainPlan> page = maintainPlanRepository.findByCorporateIdentify(corporateIdentify,p);
         Pagination<MaintainPlanListVo> res = new Pagination(currentPage+1,itemsPerPage,page.getTotalElements());
         if (page.hasContent()){
-            List<DeviceType> deviceTypeList =  deviceTypeService.list(corporateIdentify);
-            Map<Long,String> dtMap = new HashMap<>();
-            if (!CheckParam.isNull(deviceTypeList)){
-                deviceTypeList.forEach(deviceType -> {
-                    dtMap.put(deviceType.getId(),deviceType.getName());
-                });
-            }
-            List<Department> listDept = departmentService.list(corporateIdentify);
-            Map<Long,String> deptMap = new HashMap<>();
-            if(!CheckParam.isNull(listDept)){
-                listDept.forEach(department -> {
-                    deptMap.put(department.getId(),department.getName());
-                });
-            }
             List<MaintainPlanListVo> list = new ArrayList<>();
             page.getContent().forEach(maintainPlan -> {
                 MaintainPlanListVo v = new MaintainPlanListVo();
@@ -103,37 +91,83 @@ public class MaintainPlanServiceImpl implements MaintainPlanService{
                         v.setCycleType("循环多次");
                         break;
                 }
-                v.setDeviceAddress(maintainPlan.getDeviceInfo().getInstallationAddress());
-                v.setDeviceCode(maintainPlan.getDeviceInfo().getCode());
-                v.setDeviceName(maintainPlan.getDeviceInfo().getName());
-                v.setDeviceSpec(maintainPlan.getDeviceInfo().getSpecification());
-                v.setDeviceType(dtMap.get(maintainPlan.getDeviceInfo().getDeviceType()));
-                v.setDeviceUseDept(deptMap.get(maintainPlan.getDeviceInfo().getUseDept()));
-                Date now = new Date();
-                Calendar calendarStart = Calendar.getInstance();
-                calendarStart.setTime(maintainPlan.getPlanMaintainTimeStart());
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                 v.setStartTime(sdf.format(maintainPlan.getPlanMaintainTimeStart()));
                 v.setLastTime(sdf.format(maintainPlan.getLastMaintainTime()));
                 v.setEndTime(sdf.format(maintainPlan.getPlanMaintainTimeEnd()));
-                Calendar calendarEnd = Calendar.getInstance();
-                calendarEnd.setTime(maintainPlan.getPlanMaintainTimeEnd());
-                Calendar calendarNow = Calendar.getInstance();
-                calendarNow.setTime(now);
-                if (calendarEnd.before(calendarNow)){
-                    v.setPlanStatus("已过期");
-                }else if (calendarStart.get(Calendar.DAY_OF_MONTH)==calendarNow.get(Calendar.DAY_OF_MONTH)
-                        && calendarStart.get(Calendar.MONTH)==calendarNow.get(Calendar.MONTH)
-                        && calendarStart.get(Calendar.YEAR)==calendarNow.get(Calendar.YEAR)){
-                    v.setPlanStatus("今日计划");
-                }else if (calendarStart.get(Calendar.YEAR)==calendarNow.get(Calendar.YEAR)
-                        && calendarStart.get(Calendar.MONTH)==calendarNow.get(Calendar.MONTH)){
-                    v.setPlanStatus("当月计划");
-                }
-
+                v.setPlanStatus(PlanStatusEnum.getByCode(maintainPlan.getPlanStatus()).getName());
                 list.add(v);
             });
             res.setList(list);
+        }
+        return res;
+    }
+
+    @Override
+    public Pagination<SimpleMaintainPlanVo> findSimpleListByPage(MaintainPlanListForAppReq param, Long corporateIdentify) {
+        Integer currentPage = param.getCurrentPage();
+        Integer itemsPerPage = param.getItemsPerPage();
+        if(null==currentPage){
+            currentPage=0;
+        }
+        if (null==itemsPerPage){
+            itemsPerPage=10;
+        }
+        if (currentPage > 0) {
+            currentPage-=1;
+        }
+        Pageable p = new PageRequest(currentPage, itemsPerPage);
+        Page<MaintainPlan> page = maintainPlanRepository.findAll(new Specification<MaintainPlan>() {
+            @Override
+            public Predicate toPredicate(Root<MaintainPlan> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
+                List<Predicate> cons = new ArrayList<>();
+                if (null==param.getPlanType()){
+                    param.setPlanType(PlanStatusEnum.TODAY.getCode());
+                }
+                cons.add(criteriaBuilder.equal(root.get("planStatus").as(Integer.class),param.getPlanType()));
+                if (!StringUtils.isEmpty(param.getDeviceName())){
+                    cons.add(criteriaBuilder.like(root.get("deviceName").as(String.class),"%"+param.getDeviceName()+"%"));
+                }
+                if (!StringUtils.isEmpty(param.getDeviceCode())){
+                    cons.add(criteriaBuilder.equal(root.get("deviceCode").as(String.class),param.getDeviceCode()));
+                }
+                if (!StringUtils.isEmpty(param.getDeviceSpec())){
+                    cons.add(criteriaBuilder.equal(root.get("deviceSpec").as(String.class),param.getDeviceSpec()));
+                }
+                if (null!=param.getRepairGroupId()){
+                    cons.add(criteriaBuilder.equal(root.get("repairGroupId").as(Long.class),param.getRepairGroupId()));
+                }
+                cons.add(criteriaBuilder.equal(root.get("corporateIdentify").as(Long.class),corporateIdentify));
+                criteriaQuery.orderBy(criteriaBuilder.desc(root.get("createTime")));
+                Predicate[] ps = new Predicate[cons.size()];
+                ps = cons.toArray(ps);
+                return criteriaBuilder.and(ps);
+            }
+        },p);
+        Pagination<SimpleMaintainPlanVo> res = new Pagination<>(currentPage+1,itemsPerPage,page.getTotalElements());
+        if (page.hasContent()){
+            List<SimpleMaintainPlanVo> rel = new ArrayList<>();
+            res.setList(rel);
+            List<MaintainPlan> list = page.getContent();
+            List<DeviceParameterDictionary> deviceParameterDictionaryList = deviceParameterDictionaryRepository.findByCodeAndCorporateIdentify(DeviceParamDicEnum.DEVICE_PARAM_MAINTENANCE_LEVEL.getCode(), corporateIdentify);
+            Map<Integer,String> maintainLevels = new HashMap<>();
+            if (null!=deviceParameterDictionaryList && deviceParameterDictionaryList.size()>0){
+                deviceParameterDictionaryList.stream().forEach(deviceParameterDictionary -> {
+                    maintainLevels.put(deviceParameterDictionary.getType(),deviceParameterDictionary.getName());
+                });
+            }
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            list.stream().forEach(maintainPlan -> {
+                SimpleMaintainPlanVo vo = new SimpleMaintainPlanVo();
+                vo.setId(maintainPlan.getId());
+                vo.setDeviceCode(maintainPlan.getDeviceCode());
+                vo.setDeviceName(maintainPlan.getDeviceName());
+                vo.setDeviceSpec(maintainPlan.getDeviceSpec());
+                vo.setMaintainLevel(maintainLevels.get(maintainPlan.getMaintainLevel()));
+                vo.setNexMaintainTime(sdf.format(maintainPlan.getPlanMaintainTimeStart())+"至"+sdf.format(maintainPlan.getPlanMaintainTimeEnd()));
+                vo.setPlanManagerName(maintainPlan.getPlanManagerName());
+                rel.add(vo);
+            });
         }
         return res;
     }
