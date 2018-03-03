@@ -217,6 +217,7 @@ public class SpotInspectionPlanServiceImpl implements SpotInspectionPlanService 
 
                     spotInspectionPlanResp.setPanId(s1.getId());
                     spotInspectionPlanResp.setNextExecuteTime(DateTimeUtil.dateToStr(s1.getNextExecuteTime())); //设置任务开始时间
+                    spotInspectionPlanResp.setPlanName(s1.getName());
 
                     planResultList.add(spotInspectionPlanResp);
                 });

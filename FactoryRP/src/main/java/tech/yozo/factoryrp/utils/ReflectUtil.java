@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 反射工具类
  * @author created by Singer email:313402703@qq.com
  * @time 2018/3/3
  * @description
@@ -30,7 +31,7 @@ public class ReflectUtil {
 
 
     /**
-     * 拿到某个类的
+     * 拿到某个类的字段
      * @param object
      * @param fieldList
      * @param clazz
@@ -38,7 +39,6 @@ public class ReflectUtil {
      */
     private static void exceClass(Object object, List<Field> fieldList, Class<?> clazz) throws Exception {
         if (clazz != Object.class) {
-            /*System.out.println(clazz);*/
             returnClassField(object, fieldList, clazz);
             Class<?> clazzs = clazz.getSuperclass();
             exceClass(object, fieldList, clazzs);
