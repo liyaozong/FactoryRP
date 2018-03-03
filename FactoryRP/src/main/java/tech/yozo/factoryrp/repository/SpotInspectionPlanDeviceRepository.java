@@ -27,4 +27,14 @@ public interface SpotInspectionPlanDeviceRepository extends BaseRepository<SpotI
     List<SpotInspectionPlanDevice> findByCorporateIdentifyAndSpotInspectionPlanIn(@Param("corporateIdentify") Long corporateIdentify,@Param("spotInspectionPlan")List<Long> spotInspectionPlan);
 
 
+    /**
+     * 根据企业唯一标识和巡检计划ID查询巡检计划
+     * @param corporateIdentify
+     * @param spotInspectionPlan
+     * @return
+     */
+    @Query(value = "select s from SpotInspectionPlanDevice s where s.corporateIdentify = :corporateIdentify and s.spotInspectionPlan = :spotInspectionPlan")
+    List<SpotInspectionPlanDevice> findByCorporateIdentifyAndSpotInspectionPlan(@Param("corporateIdentify") Long corporateIdentify,@Param("spotInspectionPlan") Long spotInspectionPlan);
+
+
 }

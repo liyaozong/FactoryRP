@@ -11,10 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import tech.yozo.factoryrp.entity.*;
 import tech.yozo.factoryrp.enums.inspection.SpotInspectionPlanRecycleTypeEnum;
 import tech.yozo.factoryrp.exception.BussinessException;
-import tech.yozo.factoryrp.repository.DepartmentRepository;
-import tech.yozo.factoryrp.repository.SpotInspectionPlanDeviceRepository;
-import tech.yozo.factoryrp.repository.SpotInspectionPlanRepository;
-import tech.yozo.factoryrp.repository.UserRepository;
+import tech.yozo.factoryrp.repository.*;
 import tech.yozo.factoryrp.service.SpotInspectionPlanService;
 import tech.yozo.factoryrp.utils.BaseUtil;
 import tech.yozo.factoryrp.utils.CheckParam;
@@ -25,6 +22,7 @@ import tech.yozo.factoryrp.vo.req.SpotInspectionPlanQueryReq;
 import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionPlanAddResp;
 import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionPlanQueryResp;
 import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionPlanQueryWarpResp;
+import tech.yozo.factoryrp.vo.resp.inspection.mobile.SpotInspectionPlanDeviceQueryResp;
 import tech.yozo.factoryrp.vo.resp.inspection.mobile.SpotInspectionPlanResp;
 
 import javax.annotation.Resource;
@@ -58,12 +56,60 @@ public class SpotInspectionPlanServiceImpl implements SpotInspectionPlanService 
     private UserRepository userRepository;
 
     @Resource
+    private DeviceInfoRepository deviceInfoRepository;
+
+    @Resource
     private DepartmentRepository departmentRepository;
 
     private static Logger logger = LoggerFactory.getLogger(SpotInspectionPlanServiceImpl.class);
 
 
+    /**
+     * 查询巡检计划关联的设备
+     * @param planId
+     * @param corporateIdentify
+     * @return
+     */
+    public List<SpotInspectionPlanDeviceQueryResp> querySpotInspectionPlanDevices(Long planId,Long corporateIdentify){
 
+        List<SpotInspectionPlanDevice> inspectionPlanDeviceList = spotInspectionPlanDeviceRepository.findByCorporateIdentifyAndSpotInspectionPlan(corporateIdentify,planId);
+
+        if(!CheckParam.isNull(inspectionPlanDeviceList) && !inspectionPlanDeviceList.isEmpty()){
+
+            List<Long> deviceInfoIds = new ArrayList<>();
+
+            inspectionPlanDeviceList.stream().forEach(d1 -> {
+                deviceInfoIds.add(d1.getDeviceId());
+            });
+
+            if(!CheckParam.isNull(deviceInfoIds) && !deviceInfoIds.isEmpty()) {
+                List<DeviceInfo> deviceInfoList = deviceInfoRepository.findByIdsIn(deviceInfoIds);
+
+                List<SpotInspectionPlanDeviceQueryResp> resultList = new ArrayList<>();
+
+                deviceInfoList.stream().forEach(d1 -> {
+                    SpotInspectionPlanDeviceQueryResp spotInspectionPlanDeviceQueryResp = new SpotInspectionPlanDeviceQueryResp();
+
+                    spotInspectionPlanDeviceQueryResp.setId(d1.getId());
+                    spotInspectionPlanDeviceQueryResp.setCode(d1.getCode());
+                    spotInspectionPlanDeviceQueryResp.setDeviceTypeId(d1.getDeviceType());
+                    spotInspectionPlanDeviceQueryResp.setInstallationAddress(d1.getInstallationAddress());
+                    spotInspectionPlanDeviceQueryResp.setUseDept(d1.getUseDept());
+                    spotInspectionPlanDeviceQueryResp.setName(d1.getName());
+                    spotInspectionPlanDeviceQueryResp.setSpecification(d1.getSpecification());
+
+                    resultList.add(spotInspectionPlanDeviceQueryResp);
+                });
+
+
+                return resultList;
+            }
+
+
+        }
+
+        return null;
+    }
 
     /**
      * 新增点检计划

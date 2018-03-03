@@ -4,10 +4,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.repository.query.Param;
+import org.springframework.web.bind.annotation.*;
 import tech.yozo.factoryrp.config.auth.UserAuthService;
 import tech.yozo.factoryrp.service.SpotInspectionPlanService;
 import tech.yozo.factoryrp.vo.base.ApiResponse;
@@ -15,6 +13,7 @@ import tech.yozo.factoryrp.vo.req.SpotInspectionPlanAddReq;
 import tech.yozo.factoryrp.vo.req.SpotInspectionPlanQueryReq;
 import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionPlanAddResp;
 import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionPlanQueryWarpResp;
+import tech.yozo.factoryrp.vo.resp.inspection.mobile.SpotInspectionPlanDeviceQueryResp;
 import tech.yozo.factoryrp.vo.resp.inspection.mobile.SpotInspectionPlanResp;
 
 import javax.annotation.Resource;
@@ -40,6 +39,21 @@ public class SpotInspectionPlanController extends BaseController{
     @Resource
     private UserAuthService userAuthService;
 
+
+    /**
+     * 手机端查询点检任务关联设备
+     * @param planId
+     * @return
+     */
+    @ApiOperation(value = "手机端查询点检任务关联设备-Mobile",notes = "手机端查询点检任务关联设备-Mobile",httpMethod = "GET")
+    @RequestMapping("/querySpotInspectionPlanDevices")
+    public ApiResponse<List<SpotInspectionPlanDeviceQueryResp>> querySpotInspectionPlanDevices(HttpServletRequest request,
+                                                                                  @RequestParam(value="planId",required = true,defaultValue = "1") Long planId){
+
+        Long corporateIdentify = userAuthService.getCurrentUserCorporateIdentify(request);
+        return apiResponse(spotInspectionPlanService.querySpotInspectionPlanDevices(planId,corporateIdentify));
+
+    }
 
 
     /**
