@@ -16,14 +16,14 @@
             android:icon="@drawable/ic_device_info"
             android:title="@string/title_device_repair_record"/>
 
-    <item
-            android:id="@+id/navigation_maintain_record_list"
-            android:icon="@drawable/ic_device_info"
-            android:title="@string/title_device_maintain_record"/>
+    <!--<item-->
+            <!--android:id="@+id/navigation_maintain_record_list"-->
+            <!--android:icon="@drawable/ic_device_info"-->
+            <!--android:title="@string/title_device_maintain_record"/>-->
 
-    <item
-            android:id="@+id/navigation_check_record_list"
-            android:icon="@drawable/ic_device_info"
-            android:title="@string/title_device_check_record"/>
+    <!--<item-->
+            <!--android:id="@+id/navigation_check_record_list"-->
+            <!--android:icon="@drawable/ic_device_info"-->
+            <!--android:title="@string/title_device_check_record"/>-->
 
 </menu>

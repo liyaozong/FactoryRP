@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.*;
 import tech.yozo.factoryrp.R;
 import tech.yozo.factoryrp.ui.PartsSelectActivity;
+import tech.yozo.factoryrp.utils.Constant;
 import tech.yozo.factoryrp.vo.resp.device.trouble.UsedSparePartsVo;
 import tech.yozo.factoryrp.vo.resp.device.trouble.WorkOrderDetailVo;
 import tech.yozo.factoryrp.vo.resp.sparepars.SparePartsResp;
@@ -81,7 +82,9 @@ public class RepairPartsFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mParam_mode = getArguments().getInt(ARG_PARAM1);
-            mParam_obj = (WorkOrderDetailVo) getArguments().getSerializable(ARG_PARAM2);
+            if(mParam_mode != Constant.FOR_MAINTAIN_MODE) {
+                mParam_obj = (WorkOrderDetailVo) getArguments().getSerializable(ARG_PARAM2);
+            }
         }
 
         if(mParam_obj != null) {

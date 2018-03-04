@@ -1,6 +1,7 @@
 package tech.yozo.factoryrp.ui.fragment;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -15,7 +16,9 @@ import butterknife.Unbinder;
 import tech.yozo.factoryrp.R;
 import tech.yozo.factoryrp.ui.*;
 import tech.yozo.factoryrp.utils.HttpClient;
+import tech.yozo.factoryrp.vo.resp.MaintainTaskCount;
 import tech.yozo.factoryrp.vo.resp.device.trouble.WorkOrderCountVo;
+import tech.yozo.factoryrp.vo.resp.inspect.InspectTaskResp;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -34,6 +37,7 @@ public class WorkBenchFragment extends BaseFragment implements HttpClient.OnHttp
 
     private static final int UPDATE_COUNT = 110;
     private static final int UPDATE_INSPECT_TASK = 111;
+    private static final int UPDATE_MAINTAIN_TASK = 112;
 
     Unbinder unbinder;
     @BindView(R.id.button_ask_repair)
@@ -65,6 +69,8 @@ public class WorkBenchFragment extends BaseFragment implements HttpClient.OnHttp
     private String mParam_id;
 
     private List<Map<String, Object>> list;
+    private List<InspectTaskResp> inspectTaskRespList;
+    private InspectTaskListAdapter mInspectTaskListAdapter;
 
     public WorkBenchFragment() {
         // Required empty public constructor
@@ -104,24 +110,17 @@ public class WorkBenchFragment extends BaseFragment implements HttpClient.OnHttp
         unbinder = ButterKnife.bind(this, view);
 
 
+        //TODO
+        tvMtaskToday.setText("3");
+
         listviewCheckTask.setEmptyView(noNewCheckTask);
-        String[] from = {"title", "time"};
-        int[] to = {R.id.et_mtask_name, R.id.et_mtask_start_time};
-        list = new ArrayList<>();
-        for (int i = 0; i < 3; i++) {
-            Map<String, Object> map = new HashMap<>();
-            map.put("title", "任务：" + i);
-            map.put("time",
-                    new SimpleDateFormat("计划开始时间：yyyy年MM月dd日").format(new Date()));
-            list.add(map);
-        }
-        SimpleAdapter adapter = new SimpleAdapter(getContext(), list, R.layout.item_inspect_list, from, to);
-        listviewCheckTask.setAdapter(adapter);
+        mInspectTaskListAdapter = new InspectTaskListAdapter(getContext());
+        listviewCheckTask.setAdapter(mInspectTaskListAdapter);
         listviewCheckTask.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                //TODO
                 Intent intent = new Intent(getActivity(), InspectDeviceActivity.class);
+                intent.putExtra("INSPECT_TASK_ID", inspectTaskRespList.get(i).getPanId());
                 startActivityForResult(intent, UPDATE_INSPECT_TASK);
             }
         });
@@ -143,6 +142,8 @@ public class WorkBenchFragment extends BaseFragment implements HttpClient.OnHttp
     @Override
     protected void buildUI() {
         HttpClient.getInstance().requestTroubleCount(getContext(), this);
+        HttpClient.getInstance().requestMaintainTaskCount(getContext(), this);
+        HttpClient.getInstance().requestInspectTask(getContext(), this);
     }
 
     @OnClick({R.id.button_ask_repair, R.id.button_add_repair, R.id.button_add_device, R.id.textView_waitto_audit,
@@ -190,21 +191,21 @@ public class WorkBenchFragment extends BaseFragment implements HttpClient.OnHttp
                 break;
             }
             case R.id.tv_mtask_today: {
-                Intent intent = new Intent(getContext(), RepairRecordListActivity.class);
-                intent.putExtra(RepairRecordListActivity.RECORD_CATEGORY, HttpClient.REQUEST_TROUBLE_REPAIRING);
-                startActivityForResult(intent, UPDATE_COUNT);
+                Intent intent = new Intent(getContext(), MaintainListActivity.class);
+                intent.putExtra("type", 1);
+                startActivityForResult(intent, UPDATE_MAINTAIN_TASK);
                 break;
             }
             case R.id.tv_mtask_tomorrow: {
-                Intent intent = new Intent(getContext(), RepairRecordListActivity.class);
-                intent.putExtra(RepairRecordListActivity.RECORD_CATEGORY, HttpClient.REQUEST_TROUBLE_REPAIRING);
-                startActivityForResult(intent, UPDATE_COUNT);
+                Intent intent = new Intent(getContext(), MaintainListActivity.class);
+                intent.putExtra("type", 4);
+                startActivityForResult(intent, UPDATE_MAINTAIN_TASK);
                 break;
             }
             case R.id.tv_mtask_overdue: {
-                Intent intent = new Intent(getContext(), RepairRecordListActivity.class);
-                intent.putExtra(RepairRecordListActivity.RECORD_CATEGORY, HttpClient.REQUEST_TROUBLE_REPAIRING);
-                startActivityForResult(intent, UPDATE_COUNT);
+                Intent intent = new Intent(getContext(), MaintainListActivity.class);
+                intent.putExtra("type", 7);
+                startActivityForResult(intent, UPDATE_MAINTAIN_TASK);
                 break;
             }
         }
@@ -212,8 +213,12 @@ public class WorkBenchFragment extends BaseFragment implements HttpClient.OnHttp
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == UPDATE_COUNT && resultCode == Activity.RESULT_OK) {
-            HttpClient.getInstance().requestTroubleCount(getContext(), this);
+        if(resultCode == Activity.RESULT_OK) {
+            if (requestCode == UPDATE_COUNT) {
+                HttpClient.getInstance().requestTroubleCount(getContext(), this);
+            } else if (requestCode == UPDATE_MAINTAIN_TASK) {
+                HttpClient.getInstance().requestMaintainTaskCount(getContext(), this);
+            }
         }
     }
 
@@ -249,8 +254,91 @@ public class WorkBenchFragment extends BaseFragment implements HttpClient.OnHttp
                 }
                 break;
             }
+            case HttpClient.REQUEST_MAINTAIN_TASK_COUNT: {
+                MaintainTaskCount count = (MaintainTaskCount) obj;
+                if(count != null) {
+                    tvMtaskToday.setText(String.valueOf(count.getTodayPlanNum()));
+                    if(count.getTodayPlanNum() <= 0) {
+                        tvMtaskToday.setEnabled(false);
+                    } else {
+                        tvMtaskToday.setEnabled(true);
+                    }
+                    tvMtaskTomorrow.setText(String.valueOf(count.getTomorrowPlanNum()));
+                    if(count.getTomorrowPlanNum() <= 0) {
+                        tvMtaskTomorrow.setEnabled(false);
+                    } else {
+                        tvMtaskTomorrow.setEnabled(true);
+                    }
+                    tvMtaskOverdue.setText(String.valueOf(count.getExpiredNum()));
+                    if(count.getExpiredNum() <= 0) {
+                        tvMtaskOverdue.setEnabled(false);
+                    } else {
+                        tvMtaskOverdue.setEnabled(true);
+                    }
+                }
+                break;
+            }
+
+            case HttpClient.REQUEST_INSPECT_TASK: {
+                inspectTaskRespList = (List<InspectTaskResp>) list;
+                if(inspectTaskRespList != null) {
+                    mInspectTaskListAdapter.notifyDataSetChanged();
+                }
+            }
             default:
                 break;
+        }
+    }
+
+    private static class ViewHolder
+    {
+        TextView name;
+        TextView time;
+    }
+
+    private class InspectTaskListAdapter extends BaseAdapter {
+        private LayoutInflater mInflater;
+
+        private InspectTaskListAdapter(Context context)
+        {
+            this.mInflater = LayoutInflater.from(context);
+        }
+
+        @Override
+        public int getCount() {
+            if(inspectTaskRespList != null) {
+                return inspectTaskRespList.size();
+            }
+            return 0;
+        }
+
+        @Override
+        public Object getItem(int i) {
+            return null;
+        }
+
+        @Override
+        public long getItemId(int i) {
+            return 0;
+        }
+
+        @Override
+        public View getView(int i, View view, ViewGroup viewGroup) {
+            ViewHolder holder;
+            if(view == null) {
+                holder = new ViewHolder();
+                view = mInflater.inflate(R.layout.item_inspect_list, null);
+                holder.name = (TextView) view.findViewById(R.id.et_mtask_name);
+                holder.time = (TextView) view.findViewById(R.id.et_mtask_start_time);
+                view.setTag(holder);
+            }
+            else {
+                holder = (ViewHolder) view.getTag();
+            }
+
+            holder.name.setText(String.valueOf(inspectTaskRespList.get(i).getPlanName()));
+            holder.time.setText("任务开始时间： " + inspectTaskRespList.get(i).getNextExecuteTime());
+            return view;
         }
     }
 

@@ -23,8 +23,7 @@ import tech.yozo.factoryrp.entity.DeviceType;
 import tech.yozo.factoryrp.entity.MaintenanceEngineer;
 import tech.yozo.factoryrp.entity.RepairGroup;
 import tech.yozo.factoryrp.vo.req.*;
-import tech.yozo.factoryrp.vo.resp.ContactCompany;
-import tech.yozo.factoryrp.vo.resp.DeviceParamDicEnumResp;
+import tech.yozo.factoryrp.vo.resp.*;
 import tech.yozo.factoryrp.vo.resp.auth.AuthUser;
 import tech.yozo.factoryrp.vo.resp.device.info.FullDeviceInfoResp;
 import tech.yozo.factoryrp.vo.resp.device.info.SimpleDeviceInfoResp;
@@ -32,6 +31,9 @@ import tech.yozo.factoryrp.vo.resp.device.trouble.DeviceTroubleTypeVo;
 import tech.yozo.factoryrp.vo.resp.device.trouble.WaitAuditWorkOrderVo;
 import tech.yozo.factoryrp.vo.resp.device.trouble.WorkOrderCountVo;
 import tech.yozo.factoryrp.vo.resp.device.trouble.WorkOrderDetailVo;
+import tech.yozo.factoryrp.vo.resp.inspect.InspectDeviceDetailResp;
+import tech.yozo.factoryrp.vo.resp.inspect.InspectDevicesResp;
+import tech.yozo.factoryrp.vo.resp.inspect.InspectTaskResp;
 import tech.yozo.factoryrp.vo.resp.sparepars.DeviceSparesTypeResp;
 import tech.yozo.factoryrp.vo.resp.sparepars.SparePartsResp;
 
@@ -76,6 +78,14 @@ public class HttpClient {
     private static final String DEVICE_GET_BY_CODE = "api/deviceInfo/getByCode"; //根据条形码查询设备
     private static final String TROUBLE_LIST_BY_DEVICEID = "troubleRecord/list"; //根据设备ID获取故障列表
     private static final String MEMBER_LIST_BY_ROLE = "api/authorization/queryUserByRoleCode"; //根据角色查询员工列表
+    private static final String INSPECT_TASK = "api/spotInspectionPlan/queryMobilePlan";  //获取当前用户的巡检任务
+    private static final String INSPECT_DEVICES = "api/spotInspectionPlan/querySpotInspectionPlanDevices";  //获取巡检任务关联的设备
+    private static final String INSPECT_ITEM = "api/spotInspectionStandard/queryMobileInspectionItemByPlanIdAndDeviceId";  //获取某个设备的巡检项目
+    private static final String SUBMIT_INSPECT_RESULT = "";  //提交巡检结果
+    private static final String MAINTAIN_TASK = "maintainPlan/simpleList";  //获取保养计划列表
+    private static final String MAINTAIN_TASK_COUNT = "maintainPlan/getCount";  //获取保养计划统计数字
+    private static final String MAINTAIN_DETAIL = "maintainPlan/getDetail";  //保养计划详情
+
 
     public static final int REQUEST_LOGIN = 1;
     public static final int REQUEST_DATA_DICT = 2;
@@ -106,6 +116,14 @@ public class HttpClient {
     public static final int REQUEST_DEVICE_GET_BY_CODE = 28;
     public static final int REQUEST_TROUBLE_LIST_BY_DEVICEID = 29;
     public static final int REQUEST_MEMBER_LIST_BY_ROLE = 30;
+    public static final int REQUEST_INSPECT_TASK = 31;
+    public static final int REQUEST_INSPECT_DEVICES = 32;
+    public static final int REQUEST_INSPECT_ITEM = 33;
+    public static final int REQUEST_SUBMIT_INSPECT_RESULT = 34;
+    public static final int REQUEST_MAINTAIN_TASK = 35;
+    public static final int REQUEST_MAINTAIN_TASK_COUNT = 36;
+    public static final int REQUEST_MAINTAIN_DETAIL = 37;
+
 
     private AsyncHttpClient client;
     private List<Header> headers = new ArrayList<>();
@@ -422,6 +440,31 @@ public class HttpClient {
         client.post(context, getAbsoluteUrl(VALIDATE_REPAIR_ACTION), headers.toArray(new Header[headers.size()]), params, CONTENT_TYPE, new FactoryHttpResponseHandler(context, listener, REQUEST_VALIDATE_REPAIR_ACTION));
     }
 
+    public void requestInspectTask(Context context, OnHttpListener listener) {
+        client.get(context, getAbsoluteUrl(INSPECT_TASK), headers.toArray(new Header[headers.size()]), null, new FactoryHttpResponseHandler(context,listener, REQUEST_INSPECT_TASK));
+    }
+
+    public void requestInspectDevices(Context context, OnHttpListener listener, RequestParams params) {
+        client.get(context, getAbsoluteUrl(INSPECT_DEVICES), headers.toArray(new Header[headers.size()]), params, new FactoryHttpResponseHandler(context, listener, REQUEST_INSPECT_DEVICES));
+    }
+
+    public void requestInspectItem(Context context, OnHttpListener listener, RequestParams params) {
+        client.get(context, getAbsoluteUrl(INSPECT_ITEM), headers.toArray(new Header[headers.size()]), params, new FactoryHttpResponseHandler(context, listener, REQUEST_INSPECT_ITEM));
+    }
+
+    public void requestMaintainTask(Context context, OnHttpListener listener, MaintainTaskReq req) {
+        StringEntity params = new StringEntity(JSON.toJSONString(req), Charset.forName("UTF-8"));
+        client.post(context, getAbsoluteUrl(MAINTAIN_TASK), headers.toArray(new Header[headers.size()]), params, CONTENT_TYPE, new FactoryHttpResponseHandler(context, listener, REQUEST_MAINTAIN_TASK));
+    }
+
+    public void requestMaintainTaskCount(Context context, OnHttpListener listener) {
+        client.get(context, getAbsoluteUrl(MAINTAIN_TASK_COUNT), headers.toArray(new Header[headers.size()]), null, new FactoryHttpResponseHandler(context,listener, REQUEST_MAINTAIN_TASK_COUNT));
+    }
+
+    public void requestMaintainDetail(Context context, OnHttpListener listener, RequestParams params) {
+        client.get(context, getAbsoluteUrl(MAINTAIN_DETAIL), headers.toArray(new Header[headers.size()]), params, new FactoryHttpResponseHandler(context,listener, REQUEST_MAINTAIN_DETAIL));
+    }
+
     public interface OnHttpListener {
         void onHttpSuccess(int requestType, Object obj, List<?> list);
         void onFailure(int requestType);
@@ -597,6 +640,31 @@ public class HttpClient {
                                     break;
                             }
                             mListener.onHttpSuccess(mRequestType, null, null);
+                            break;
+                        case REQUEST_INSPECT_TASK:
+                            List<InspectTaskResp> inspectTaskRespList = JSONArray.parseArray(response.getString("data"), InspectTaskResp.class);
+                            mListener.onHttpSuccess(mRequestType, null, inspectTaskRespList);
+                            break;
+                        case REQUEST_INSPECT_DEVICES:
+                            List<InspectDevicesResp> inspectDevicesRespList = JSONArray.parseArray(response.getString("data"), InspectDevicesResp.class);
+                            mListener.onHttpSuccess(mRequestType, null, inspectDevicesRespList);
+                            break;
+                        case REQUEST_INSPECT_ITEM:
+                            InspectDeviceDetailResp inspectItemResp = JSON.parseObject(response.getString("data"), InspectDeviceDetailResp.class);
+                            mListener.onHttpSuccess(mRequestType, inspectItemResp, null);
+                            break;
+
+                        case REQUEST_MAINTAIN_TASK_COUNT:
+                            MaintainTaskCount count = JSON.parseObject(response.getString("data"), MaintainTaskCount.class);
+                            mListener.onHttpSuccess(mRequestType, count, null);
+                            break;
+                        case REQUEST_MAINTAIN_TASK:
+                            List<MaintainTaskResp> maintainTaskRespList = JSONArray.parseArray(response.getJSONObject("data").getString("list"), MaintainTaskResp.class);
+                            mListener.onHttpSuccess(mRequestType, null, maintainTaskRespList);
+                            break;
+                        case REQUEST_MAINTAIN_DETAIL:
+                            MaintainDetailResp maintainTaskResp = JSON.parseObject(response.getString("data"), MaintainDetailResp.class);
+                            mListener.onHttpSuccess(mRequestType, maintainTaskResp, null);
                             break;
                         default:
                             break;

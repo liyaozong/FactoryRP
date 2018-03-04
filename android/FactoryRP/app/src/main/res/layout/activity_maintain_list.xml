@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             tools:context="tech.yozo.factoryrp.ui.fragment.RepairRecordListFragment" android:orientation="vertical">
+
+    <TextView
+            android:text="保养任务列表为空"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" android:id="@+id/tv19" android:gravity="center"/>
+    <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" android:id="@+id/lv_maintain_record"
+            android:divider="@color/colorBackground" android:dividerHeight="5dp"/>
+</FrameLayout>
