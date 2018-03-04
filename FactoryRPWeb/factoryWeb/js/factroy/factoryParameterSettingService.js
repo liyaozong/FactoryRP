@@ -239,6 +239,18 @@ factoryParameterSettingApp.factory('factoryParameterSettingService', function($r
         });
     };
     /* 查询所有设备状态 end*/
+    /*设备对应的维修计划列表 start*/
+    var _queryMaintenanceRecordLists = function(Param,successFunc){
+        var queryMaintenanceRecordLists = $resource(UrlService.getUrl('troubleRecordServe') + 'maintainPlan/list');
+        queryMaintenanceRecordLists.save(Param,function (data) {
+            if (successFunc) {
+                successFunc(data);
+            }
+        }, function (err) {
+
+        });
+    };
+    /*设备对应的维修计划列表 end*/
     return {
         saveContactCompany:_saveContactCompany,
         deleteContactCompany:_deleteContactCompany,
@@ -256,6 +268,7 @@ factoryParameterSettingApp.factory('factoryParameterSettingService', function($r
         addTroubleRecords:_addTroubleRecords,
         batchDeleteTroubleRecords:_batchDeleteTroubleRecords,
         queryTroubleRecordLists:_queryTroubleRecordLists,
+        queryMaintenanceRecordLists:_queryMaintenanceRecordLists,
         queryAlldDeviceTroubleType:_queryAlldDeviceTroubleType,
         queryAllDeviceStatus:_queryAllDeviceStatus,
         queryOrder: function(queryParam, successFunc) {
