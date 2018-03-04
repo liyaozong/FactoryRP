@@ -332,6 +332,17 @@ var myApp = angular.module('myApp', [
                 }
             })
 
+            //巡检记录
+            .state("main.spotInspectionRecord",{
+                url:"/spotInspectionRecord",
+                views:{
+                    'content@main':{
+                        templateUrl:FF_API.baseTpl+'tpls/spotInspectionRecord.html',
+                        controller:'spotInspectionRecordCtrl'
+                    }
+                }
+            })
+
     })
     .config(['$resourceProvider', function ($resourceProvider) {
         $resourceProvider.defaults.actions = {

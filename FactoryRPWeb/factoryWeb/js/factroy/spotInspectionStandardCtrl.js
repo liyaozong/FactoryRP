@@ -369,8 +369,15 @@ myApp.controller('spotInspectionStandardCtrl',['$filter','$rootScope','$timeout'
 
 
 // 巡检计划控制器
-myApp.controller('inspectionPlanCtrl',['$filter','$rootScope','$location','$scope','$cookies','departmentManageService','inspectionPlan','queryCorporateAllUser','factoryParameterSettingService','validate','$timeout',function($filter,$rootScope,$location,$scope,$cookies,departmentManageService,inspectionPlan,queryCorporateAllUser,factoryParameterSettingService,validate,$timeout){
+myApp.controller('inspectionPlanCtrl',['$filter','$rootScope','$location','$scope','$cookies','departmentManageService','inspectionPlan','queryCorporateAllUser','factoryParameterSettingService','validate','$timeout','FileUploader',function($filter,$rootScope,$location,$scope,$cookies,departmentManageService,inspectionPlan,queryCorporateAllUser,factoryParameterSettingService,validate,$timeout,FileUploader){
     // console.log('巡检计划控制器');
+
+    //阻止冒泡
+    $scope.stopUp=function (event) {
+        // console.log(event)
+        event.stopPropagation();
+    };
+
     //查询部门
     departmentManageService.queryOrder({
         name:$scope.depName,
@@ -406,6 +413,18 @@ myApp.controller('inspectionPlanCtrl',['$filter','$rootScope','$location','$scop
         name:'编辑中'
     }];
 
+    //点检值
+    $scope.djzLists=[{
+        id:1,
+        name:'偏高'
+    },{
+        id:2,
+        name:'正常'
+    },{
+        id:3,
+        name:'偏低'
+    }];
+
     //查询执行人
     queryCorporateAllUser.getData().success(function (data) {
         $scope.allUserLists=data.data.userRespList;
@@ -431,7 +450,7 @@ myApp.controller('inspectionPlanCtrl',['$filter','$rootScope','$location','$scop
         currentPage:1,
         itemsPerPage:5
     };
-    $scope.spotInspectionPlanLists=[];
+    $scope.spotInspectionPlanLists=[];$scope.changeDetailLists=[];
     $scope.onQuery=function () {
         var req={
             "currentPage": $scope.paginationConf.currentPage, //当前页码
@@ -458,13 +477,13 @@ myApp.controller('inspectionPlanCtrl',['$filter','$rootScope','$location','$scop
                             k.executorsName=strsArr.join(',');
                         });
                     }
-                //     if($scope.spotInspectionStandardLists.length>0){
-                //         spotInspectionStandard.queryInspectionStandardDetail($scope.spotInspectionStandardLists[0].id).success(function (data) {
-                //             $scope.changeDetailLists=data.data.spotInspectionItems;
-                //             // console.log($scope.changeDetailLists,'--==')
-                //         });
-                //         $($('.prossTr')[0]).addClass('ccTr');
-                //     }
+                    if($scope.spotInspectionPlanLists.length>0){
+                        // spotInspectionStandard.queryInspectionStandardDetail($scope.spotInspectionStandardLists[0].id).success(function (data) {
+                        //     $scope.changeDetailLists=data.data.spotInspectionItems;
+                        //     // console.log($scope.changeDetailLists,'--==')
+                        // });
+                        $($('.prossTr')[0]).addClass('ccTr');
+                    }
                 },400);
             }else{
                 // $scope.changeDetailLists=[];
@@ -472,6 +491,16 @@ myApp.controller('inspectionPlanCtrl',['$filter','$rootScope','$location','$scop
                 $scope.spotInspectionPlanLists.length = 0;
             }
         });
+    };
+
+    //切换历史巡检表格事件
+    $scope.changeDetail=function (id,event) {
+        // console.log($(event.target));
+        $(event.target).parent().parent().find('tr').removeClass('ccTr');
+        $(event.target).parent().addClass('ccTr');
+        // spotInspectionStandard.queryInspectionStandardDetail(id).success(function (data) {
+        //     $scope.changeDetailLists=data.data.spotInspectionItems;
+        // });
     };
 
     //新增巡检计划
@@ -520,7 +549,7 @@ myApp.controller('inspectionPlanCtrl',['$filter','$rootScope','$location','$scop
               "recyclePeriodType": $scope.iPlanReq.recyclePeriodType,
               "requestTime": $filter('date')(new Date(),'yyyy-MM-dd HH:mm:ss')
           };
-          console.log(req);
+          // console.log(req);
           var flog;
           for(var i in req){
               // console.log(i,":",req[i]);
@@ -694,7 +723,104 @@ myApp.controller('inspectionPlanCtrl',['$filter','$rootScope','$location','$scop
         }else {
             alert('请选择设备');
         }
+    };
 
+    //巡检计划操作（编辑、详情）
+    $scope.openIPlan_detail=function (type,obj,$event) {
+        alert('调试中');
+        $event.stopPropagation();
+    };
+
+    //打开执行巡检计划（添加巡检记录）弹出层
+    $scope.openAddRecord=function (obj,$event) {
+        console.log(obj);
+        $scope.spotInspectionRecordAddReq={
+            "detailList": [1,2,3],//巡检记录详情集合
+            "executeTime": "1",//巡检时间
+            "executor": 1,//执行者
+            "planId": 1,//巡检计划ID
+            "planName": "1",//巡检计划名称
+            "planTime": "1",//计划时间
+            "recyclePeriod": 0,//循环周期
+            "recyclePeriodType": "string",//循环周期类型
+            "requestTime": $filter('date')(new Date(),'yyyy-MM-dd HH:mm:ss'),//请求时间
+            "standard": 1//巡检标准ID
+        };
+
+        popupDiv('addRecordPopup');
+        $event.stopPropagation();
+    };
+    //关闭执行巡检计划（添加巡检记录）弹出层
+    $scope.closeAR1=function () {
+        hideDiv('addRecordPopup');
+    };
+    $scope.closeAR=function () {//确定添加巡检
+        alert('接口调试中');
+        hideDiv('addRecordPopup');
+    };
+
+    //打开巡检明细录入弹出层
+    $scope.open_ar_lrs=function (obj,$index) {
+
+
+        hideDiv('addRecordPopup');
+        popupDiv('addRecordPopup2');
+    };
+    //关闭执行巡检计划（添加巡检记录2）弹出层
+    $scope.closeAR21=function () {
+        hideDiv('addRecordPopup2');
+        popupDiv('addRecordPopup');
+    };
+    $scope.closeAR2=function () {//确定执行
+        alert('接口调试中');
+        hideDiv('addRecordPopup2');
+        popupDiv('addRecordPopup');
+    };
+
+    //打开巡检明细录入弹出层3
+    $scope.open_ar_lrs2=function (obj,$index) {
+        hideDiv('addRecordPopup2');
+        popupDiv('addRecordPopup3');
+    };
+    //关闭执行巡检计划（添加巡检记录3）弹出层
+    $scope.closeAR31=function () {
+        hideDiv('addRecordPopup3');
+        popupDiv('addRecordPopup2');
+    };
+    $scope.closeAR3=function () {//确定编辑
+        alert('接口调试中');
+        hideDiv('addRecordPopup3');
+        popupDiv('addRecordPopup2');
+    };
+
+    // popupDiv('addRecordPopup2');
+    //上传文件
+    $scope.uploadStatus = $scope.uploadStatus1 = false; //定义两个上传后返回的状态，成功获失败
+    var uploader = $scope.uploader = new FileUploader({
+        url: '/service/wordsList',
+        queueLimit: 1,     //文件个数
+        removeAfterUpload: true   //上传后删除文件
+    });
+    $scope.clearItems = function(){    //重新选择文件时，清空队列，达到覆盖文件的效果
+        uploader.clearQueue();
+    };
+    uploader.onAfterAddingFile = function(fileItem) {
+        $scope.fileItem = fileItem._file;    //添加文件之后，把文件信息赋给scope
+        //能够在这里判断添加的文件名后缀和文件大小是否满足需求。
+        // console.log($scope.fileItem,'添加文件后')
+    };
+    uploader.onBeforeUploadItem=function(item){
+        console.log(item,'文件上传之前')
+    };
+    uploader.onProgressItem =function (item, progress) {
+        // console.log(item, progress,'文件上传中');
+    };
+    uploader.onSuccessItem = function(fileItem, response, status, headers) {
+        $scope.uploadStatus = true;   //上传成功则把状态改为true
+        // console.log(fileItem,response,status,headers,'文件上传成功后');
+    };
+    $scope.UploadFile = function(){
+        uploader.uploadAll();
     };
 
 

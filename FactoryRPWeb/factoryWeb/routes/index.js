@@ -69,13 +69,18 @@ router.post('/getHotPeopleList',function(req,res,next){
     res.send(data);
 });
 
-
+//上传文件测试
 router.post('/service/wordsList', function(req, res, next) {
-    var ret = [];
-    for(var i=1; i<21; i++) {
-        ret.push({name:"石化重大" + i,level:20});
-    }
-    res.send(JSON.stringify(ret));
+    console.log(req.body);
+    res.send('200');
 });
+
+// router.post('/service/wordsList', function(req, res, next) {
+//     var ret = [];
+//     for(var i=1; i<21; i++) {
+//         ret.push({name:"石化重大" + i,level:20});
+//     }
+//     res.send(JSON.stringify(ret));
+// });
 
 module.exports = router;

@@ -27,13 +27,13 @@
                     </select>
                 </label>
                 <label for="xjsj" >
-                    <span style="width: 100px;text-align: right">状态:</span>
+                    <!--<span style="width: 100px;text-align: right">状态:</span>-->
                     <select id="xjsj" ng-model="xjsj" ng-options="deviceTypeListDetail.id as deviceTypeListDetail.name for deviceTypeListDetail in xjsjLists">
                         <option value="">全部</option>
                     </select>
                 </label>
                 <label for="xjlx" >
-                    <span style="width: 100px;text-align: right">名称:</span>
+                    <!--<span style="width: 100px;text-align: right">名称:</span>-->
                     <select id="xjlx" ng-model="xjlx" ng-options="deviceTypeListDetail.id as deviceTypeListDetail.name for deviceTypeListDetail in xjlxLists">
                         <option value="">全部</option>
                     </select>
@@ -77,10 +77,13 @@
                 <td>{{orderDetail.executorsName||'--'}}</td>
                 <td>{{orderDetail.deviceCount||'--'}}</td>
                 <td>
-                    <a href="javascript:void(0)" class="resBtn editBtn" ng-click="openSIS_detail(1,orderDetail,$event)">
+                    <a href="javascript:void(0)" class="resBtn editBtn" ng-click="openAddRecord(orderDetail,$event)">
+                        执行
+                    </a>
+                    <a href="javascript:void(0)" class="resBtn editBtn" ng-click="openIPlan_detail(1,orderDetail,$event)">
                         编辑
                     </a>
-                    <a href="javascript:void(0)" class="resBtn editBtn" ng-click="openSIS_detail(2,orderDetail,$event)">
+                    <a href="javascript:void(0)" class="resBtn editBtn" ng-click="openIPlan_detail(2,orderDetail,$event)">
                         详情
                     </a>
                     <!--<a href="javascript:void(0)" class="resBtn deleteBtn" ng-click="deleteContactCompanyBalance(orderDetail)">-->
@@ -486,3 +489,211 @@
     </div>
 </div>
 <!--单个删除弹出框end-->
+
+<!-- 执行巡检计划（新增巡检记录1）弹出层 -->
+<div class="ImportantNote addRecordPopup">
+    <div class="headline">
+        <span>执行巡检计划</span>
+        <img ng-click="closeAR1()" class="companyCloseImg" src="image/comm/diffClosed.png" width="22" height="22">
+    </div>
+    <div style="padding: 30px 0 20px 0;width: 840px;height: auto;" class="businessAuth">
+        <div class="titleDiv" id="p_t_l">
+            <span class="tips">巡检内容</span>
+            <p>
+                <label for="AR_name" >
+                    <span style="width: 100px;text-align: right">巡检名称:</span>
+                    <input id="AR_name" ng-model="spotInspectionRecordAddReq.name" type="text"/>
+                </label>
+            </p>
+            <p>
+                <label for="AR_date" >
+                    <span style="width: 100px;text-align: right">巡检时间:</span>
+                    <input id="AR_date" ng-model="spotInspectionRecordAddReq.name" type="date"/>
+                </label>
+                <label for="AR_people" >
+                    <span style="width: 100px;text-align: right">巡检人:</span>
+                    <input id="AR_people" ng-model="spotInspectionRecordAddReq.name" type="text"/>
+                </label>
+            </p>
+            <p>
+                <label for="AR_yc" >
+                    <span style="width: 100px;text-align: right">异常处理情况:</span>
+                    <input id="AR_yc" ng-model="spotInspectionRecordAddReq.name" type="text"/>
+                </label>
+            </p>
+            <div style="padding-left: 104px;position: relative;padding-right: 5px;box-sizing: border-box;">
+                <span style="width: 100px;text-align: right;position: absolute;left: 0;top:0">巡检明细:</span>
+                <table class="popup_div_table iPlan_popup_table">
+                    <thead>
+                    <tr>
+                        <th>执行顺序</th>
+                        <th>巡检项</th>
+                        <th>漏检项</th>
+                        <th>异常项</th>
+                        <th>设备编号</th>
+                        <th>设备名称</th>
+                        <th>设备型号</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="item in spotInspectionRecordAddReq.detailList" ng-if="spotInspectionRecordAddReq.detailList.length>0">
+                        <td ng-bind="$index"></td>
+                        <td ng-bind="item.name"></td>
+                        <td ng-bind="item.code"></td>
+                        <td ng-bind="item.specification"></td>
+                        <td ng-bind="item.planStatusName"></td>
+                        <td ng-bind="item.planStatusName"></td>
+                        <td ng-bind="item.planStatusName"></td>
+                        <td>
+                            <a href="javascript:void(0)" class="resBtn deleteBtn" ng-click="open_ar_lrs(item,$index)">
+                                录入
+                            </a>
+                        </td>
+                    </tr>
+                    <tr ng-if="spotInspectionRecordAddReq.detailList.length<=0||spotInspectionRecordAddReq.detailList==null||spotInspectionRecordAddReq.detailList==undefined">
+                        <td colspan="8">暂无数据</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="submitBtn1" style="text-align: center;padding-left: 40px;margin-bottom: 18px;">
+        <button type="button" ng-click="closeAR()" value="" class="btn">确定</button>
+        <button type="button" value="" class="btn" ng-click="closeAR1()">取消</button>
+    </div>
+</div>
+
+<!-- 执行巡检明细（新增巡检记录2）弹出层 -->
+<div class="ImportantNote addRecordPopup2">
+    <div class="headline">
+        <span>执行</span>
+        <img ng-click="closeAR21()" class="companyCloseImg" src="image/comm/diffClosed.png" width="22" height="22">
+    </div>
+    <div style="padding: 0;width: 840px;height: auto;" class="businessAuth">
+        <div class="titleDiv" id="p_t_l" style="border: none;">
+            <!--<span class="tips">巡检内容</span>-->
+            <p>
+                <label for="AR_bh" >
+                    <span style="width: 100px;text-align: right">设备编号:</span>
+                    <input id="AR_bh" ng-model="spotInspectionRecordAddReq.name" disabled type="text"/>
+                </label>
+                <label for="AR_mc" >
+                    <span style="width: 100px;text-align: right">设备名称:</span>
+                    <input id="AR_mc" ng-model="spotInspectionRecordAddReq.name" disabled type="text"/>
+                </label>
+            </p>
+            <p>
+                <label for="AR_xh" >
+                    <span style="width: 100px;text-align: right">规格型号:</span>
+                    <input id="AR_xh" ng-model="spotInspectionRecordAddReq.name" disabled type="text"/>
+                </label>
+                <label for="AR_bm" >
+                    <span style="width: 100px;text-align: right">使用部门:</span>
+                    <input id="AR_bm" ng-model="spotInspectionRecordAddReq.name" disabled type="text"/>
+                </label>
+            </p>
+            <p>
+                <label for="AR_bz" >
+                    <span style="width: 100px;text-align: right">备注:</span>
+                    <textarea id="AR_bz"></textarea>
+                </label>
+            </p>
+            <div style="padding-left: 104px;position: relative;padding-right: 5px;box-sizing: border-box;">
+                <span style="margin-top: 6px;width: 100px;text-align: right;position: absolute;left: 0;top:0">巡检明细:</span>
+                <table class="popup_div_table iPlan_popup_table">
+                    <thead>
+                    <tr>
+                        <th>点检项</th>
+                        <th>记录结果</th>
+                        <th>是否异常</th>
+                        <th>备注</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="item in spotInspectionRecordAddReq.detailList" ng-if="spotInspectionRecordAddReq.detailList.length>0">
+                        <td ng-bind="$index"></td>
+                        <td ng-bind="item.name"></td>
+                        <td ng-bind="item.code"></td>
+                        <td ng-bind="item.specification"></td>
+                        <td>
+                            <a href="javascript:void(0)" class="resBtn deleteBtn" ng-click="open_ar_lrs2(item,$index)">
+                                录入
+                            </a>
+                        </td>
+                    </tr>
+                    <tr ng-if="spotInspectionRecordAddReq.detailList.length<=0||spotInspectionRecordAddReq.detailList==null||spotInspectionRecordAddReq.detailList==undefined">
+                        <td colspan="8">暂无数据</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div style="padding-left: 104px;position: relative;padding-right: 5px;box-sizing: border-box;">
+                <span style="margin-top: 6px;width: 100px;text-align: right;position: absolute;left: 0;top:0">图片上传:</span>
+                <div class="choose-file-area" id="uploadFileDiv">
+                    <input class="file-name" type="text" readonly="readonly" ng-model="fileItem.name"/>
+                    <a href="javascript:;" class="choose-book">
+                        <input type="file" name="certificate" accept="image/*" nv-file-select uploader="uploader" ng-click="clearItems()"/>浏览
+                    </a>
+                    <button class="uploadFileBtn" type="button" ng-click="UploadFile()">上传</button>
+                </div>
+            </div>
+            <div style="padding-left: 104px;position: relative;padding-right: 5px;box-sizing: border-box;">
+                <span style="margin-top: 6px;width: 100px;text-align: right;position: absolute;left: 0;top:0">已上传图片:</span>
+                <div style="padding: 5px;box-sizing: border-box;margin-top: 10px;border: 1px solid #e6e6e6">暂无数据</div>
+            </div>
+        </div>
+    </div>
+    <div class="submitBtn1" style="text-align: center;padding-left: 40px;margin-bottom: 18px;">
+        <button type="button" ng-click="closeAR2()" value="" class="btn">确定</button>
+        <button type="button" value="" class="btn" ng-click="closeAR21()">取消</button>
+    </div>
+</div>
+
+<!-- 执行巡检明细（新增巡检记录3）弹出层 -->
+<div class="ImportantNote addRecordPopup3">
+    <div class="headline">
+        <span>编辑</span>
+        <img ng-click="closeAR31()" class="companyCloseImg" src="image/comm/diffClosed.png" width="22" height="22">
+    </div>
+    <div style="padding: 0;width: 840px;height: auto;" class="businessAuth">
+        <div class="titleDiv" id="p_t_l" style="border: none;">
+            <!--<span class="tips">巡检内容</span>-->
+            <p>
+                <label for="AR_djx" >
+                    <span style="width: 100px;text-align: right">点检项:</span>
+                    <input id="AR_djx" ng-model="spotInspectionRecordAddReq.name" disabled type="text"/>
+                </label>
+
+                <label for="AR_djz" >
+                    <span style="width: 100px;text-align: right">点检值:</span>
+                    <select id="AR_djz" ng-model="departmentManage" ng-options="deviceTypeListDetail.id as deviceTypeListDetail.name for deviceTypeListDetail in djzLists">
+                        <option value="">请选择点检值</option>
+                    </select>
+                </label>
+            </p>
+            <p>
+                <label>
+                    <span style="width: 100px;text-align: right">有无异常:</span>
+
+                    <label for="yyc" style="margin-left: 45px">无异常</label>
+                    <input id="yyc" type="radio" name="ywyc" style="width: auto" ng-value="1">
+                    <label for="wyc" style="margin-left: 45px">有异常</label>
+                    <input id="wyc" type="radio" name="ywyc" style="width: auto" ng-value="2">
+                </label>
+            </p>
+            <p>
+                <label for="AR_bz1" >
+                    <span style="width: 100px;text-align: right">备注:</span>
+                    <textarea id="AR_bz1"></textarea>
+                </label>
+            </p>
+        </div>
+    </div>
+    <div class="submitBtn1" style="text-align: center;padding-left: 40px;margin-bottom: 18px;">
+        <button type="button" ng-click="closeAR3()" value="" class="btn">确定</button>
+        <button type="button" value="" class="btn" ng-click="closeAR31()">取消</button>
+    </div>
+</div>
