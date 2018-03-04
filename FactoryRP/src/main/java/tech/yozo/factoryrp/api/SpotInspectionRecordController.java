@@ -53,7 +53,7 @@ public class SpotInspectionRecordController extends BaseController {
      * @param spotInspectionRecordMobileAddReq
      * @return
      */
-    @ApiOperation(value = "手机端提交巡检记录",notes = "新增巡检记录",httpMethod = "POST")
+    @ApiOperation(value = "手机端提交巡检记录",notes = "手机端提交巡检记录",httpMethod = "POST")
     @PostMapping("/spotInspectionItemsRecordMobileAdd")
     @ApiImplicitParam(dataType = "SpotInspectionRecordMobileAddReq" ,name = "spotInspectionRecordMobileAddReq", paramType = "VO" ,
             value = "新增巡检记录",required = true)
