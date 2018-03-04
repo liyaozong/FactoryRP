@@ -18,6 +18,9 @@ import java.util.Date;
 @Entity
 public class WorkTime extends BaseEntity implements Serializable{
 
+    @Column(name = "type")
+    private Integer type;
+
     @Column(name = "repair_record_id")
     private Long repairRecordId;
 

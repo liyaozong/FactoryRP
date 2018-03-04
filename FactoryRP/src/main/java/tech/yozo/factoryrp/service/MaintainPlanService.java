@@ -1,6 +1,7 @@
 package tech.yozo.factoryrp.service;
 
 import tech.yozo.factoryrp.page.Pagination;
+import tech.yozo.factoryrp.vo.req.MaintainDetailSubmitReq;
 import tech.yozo.factoryrp.vo.resp.*;
 import tech.yozo.factoryrp.vo.req.AddMaintainPlanReq;
 import tech.yozo.factoryrp.vo.req.MaintainPlanListForAppReq;
@@ -57,4 +58,10 @@ public interface MaintainPlanService {
      * @return
      */
     public MaintainPlanAppQueryVo getDetail(Long id,AuthUser user);
+
+    /**
+     * 客户端提交保养记录
+     * @param param
+     */
+    public void appSubmit(MaintainDetailSubmitReq param,AuthUser user);
 }

@@ -10,7 +10,8 @@ public enum PlanStatusEnum {
 
     TODAY(1,"今日可执行"),
     TOMO(2,"明日可执行"),
-    EXPIRED(3,"已过期");
+    EXPIRED(3,"已过期"),
+    OTHER(4,"其它");
 
     private Integer code;
     private String name;

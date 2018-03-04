@@ -17,5 +17,5 @@ public interface WorkTimeRepository extends BaseRepository<WorkTime,Long>{
      * @param repairRecordId
      * @return
      */
-    public List<WorkTime> findByRepairRecordId(Long repairRecordId);
+    public List<WorkTime> findByRepairRecordIdAndType(Long repairRecordId,Integer type);
 }

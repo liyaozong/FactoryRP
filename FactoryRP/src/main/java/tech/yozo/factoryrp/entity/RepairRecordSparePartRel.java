@@ -15,6 +15,10 @@ import java.io.Serializable;
 @Table(name = "repair_record_spare_part_rel")
 @Entity
 public class RepairRecordSparePartRel extends BaseEntity implements Serializable{
+
+    @Column(name = "type")
+    private Integer type;
+
     @Column(name = "repair_record_id")
     private Long repairRecordId;
 

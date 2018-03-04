@@ -12,5 +12,5 @@ import java.util.List;
 @Repository
 public interface RepairRecordSparePartRelRepository extends BaseRepository<RepairRecordSparePartRel,Long>{
 
-    public List<RepairRecordSparePartRel> findByRepairRecordId(Long repairRecordId);
+    public List<RepairRecordSparePartRel> findByRepairRecordIdAndType(Long repairRecordId,Integer type);
 }

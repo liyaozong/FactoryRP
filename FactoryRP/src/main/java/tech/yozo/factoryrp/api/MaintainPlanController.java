@@ -5,17 +5,12 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import tech.yozo.factoryrp.config.auth.UserAuthService;
 import tech.yozo.factoryrp.page.Pagination;
 import tech.yozo.factoryrp.service.MaintainPlanService;
 import tech.yozo.factoryrp.vo.base.ApiResponse;
-import tech.yozo.factoryrp.vo.req.AddMaintainPlanReq;
-import tech.yozo.factoryrp.vo.req.MaintainPlanListForAppReq;
-import tech.yozo.factoryrp.vo.req.MaintainPlanListReq;
+import tech.yozo.factoryrp.vo.req.*;
 import tech.yozo.factoryrp.vo.resp.*;
 import tech.yozo.factoryrp.vo.resp.auth.AuthUser;
 
@@ -79,5 +74,13 @@ public class MaintainPlanController extends BaseController{
         AuthUser user = userAuthService.getCurrentUser(request);
         MaintainPlanAppQueryVo vo=maintainPlanService.getDetail(id,user);
         return apiResponse(vo);
+    }
+
+    @PostMapping("submit")
+    @ApiOperation(value = "保养提交--Mobile",notes = "保养提交--Mobile",httpMethod = "POST")
+    public ApiResponse submitRepair(HttpServletRequest request,@RequestBody MaintainDetailSubmitReq param){
+        AuthUser user = userAuthService.getCurrentUser(request);
+        maintainPlanService.appSubmit(param,user);
+        return apiResponse();
     }
 }

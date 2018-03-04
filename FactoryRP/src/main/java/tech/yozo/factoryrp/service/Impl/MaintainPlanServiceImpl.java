@@ -8,24 +8,26 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-import tech.yozo.factoryrp.entity.DeviceParameterDictionary;
-import tech.yozo.factoryrp.entity.MaintainPlan;
-import tech.yozo.factoryrp.entity.RepairGroup;
+import org.springframework.transaction.annotation.Transactional;
+import tech.yozo.factoryrp.entity.*;
 import tech.yozo.factoryrp.enums.PlanStatusEnum;
 import tech.yozo.factoryrp.enums.device.DeviceParamDicEnum;
 import tech.yozo.factoryrp.exception.BussinessException;
 import tech.yozo.factoryrp.page.Pagination;
-import tech.yozo.factoryrp.repository.DeviceParameterDictionaryRepository;
-import tech.yozo.factoryrp.repository.MaintainPlanRepository;
-import tech.yozo.factoryrp.repository.RepairGroupRepository;
+import tech.yozo.factoryrp.repository.*;
 import tech.yozo.factoryrp.service.DepartmentService;
 import tech.yozo.factoryrp.service.DeviceTypeService;
 import tech.yozo.factoryrp.service.MaintainPlanService;
+import tech.yozo.factoryrp.utils.CheckParam;
+import tech.yozo.factoryrp.utils.DateTimeUtil;
+import tech.yozo.factoryrp.vo.req.MaintainDetailSubmitReq;
 import tech.yozo.factoryrp.vo.resp.*;
 import tech.yozo.factoryrp.vo.req.AddMaintainPlanReq;
 import tech.yozo.factoryrp.vo.req.MaintainPlanListForAppReq;
 import tech.yozo.factoryrp.vo.req.MaintainPlanListReq;
 import tech.yozo.factoryrp.vo.resp.auth.AuthUser;
+import tech.yozo.factoryrp.vo.resp.device.trouble.UsedSparePartsVo;
+import tech.yozo.factoryrp.vo.resp.device.trouble.WorkTimeVo;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -47,6 +49,12 @@ public class MaintainPlanServiceImpl implements MaintainPlanService{
     private DeviceParameterDictionaryRepository deviceParameterDictionaryRepository;
     @Autowired
     private RepairGroupRepository repairGroupRepository;
+    @Autowired
+    private MaintainRecordRepository maintainRecordRepository;
+    @Autowired
+    private WorkTimeRepository workTimeRepository;
+    @Autowired
+    private RepairRecordSparePartRelRepository repairRecordSparePartRelRepository;
 
     @Override
     public void addMaintainPlan(AddMaintainPlanReq plan, Long corporateIdentify, AuthUser AuthUser) {
@@ -270,5 +278,120 @@ public class MaintainPlanServiceImpl implements MaintainPlanService{
             throw biz;
         }
         return vo;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void appSubmit(MaintainDetailSubmitReq param,AuthUser user) {
+        MaintainPlan maintainPlan = maintainPlanRepository.getOne(param.getMaintainPlanId());
+        if (null!=maintainPlan){
+            if (Long.compare(maintainPlan.getPlanManagerId(),user.getUserId())!=0){
+                BussinessException biz = new BussinessException("10001","不是本人处理计划，无权限操作");
+                throw biz;
+            }
+            maintainPlan.setPlanStatus(PlanStatusEnum.OTHER.getCode());
+            maintainPlan.setUpdateTime(new Date());
+            maintainPlan.setLastMaintainTime(new Date());
+            String unit = maintainPlan.getCycleTimeUnit();
+            Integer cyT = Integer.parseInt(maintainPlan.getCycleTimeValue());
+            Calendar startTime = Calendar.getInstance();
+            startTime.setTime(new Date());
+            Calendar endTime = Calendar.getInstance();
+            endTime.setTime(maintainPlan.getPlanMaintainTimeEnd());
+            if ("天".equals(unit)){
+                startTime.add(Calendar.DAY_OF_MONTH,cyT);
+            }else if("月".equals(unit)){
+                startTime.add(Calendar.MONTH,cyT);
+            }else if(("年".equals(unit))){
+                startTime.add(Calendar.YEAR,cyT);
+            }
+            if (startTime.after(endTime)){
+                maintainPlan.setPlanStatus(PlanStatusEnum.EXPIRED.getCode());
+            }else {
+                maintainPlan.setPlanMaintainTimeStart(startTime.getTime());
+            }
+            maintainPlanRepository.save(maintainPlan);
+            //增加保养记录
+            MaintainRecord maintainRecord = new MaintainRecord();
+            maintainRecord.setMaintainPlanId(maintainPlan.getId());
+            maintainRecord.setMaintainStatus(param.getMaintainStatus());
+            maintainRecord.setMaintainNo("BY"+new Date().getTime());
+            maintainRecord.setMaintainContent(param.getMaintainRemark());
+            maintainRecord.setStoped(param.getStoped());
+            maintainRecord.setStopedHour(param.getStopedHour());
+            maintainRecord.setMaintainAmount(param.getMaintainAmount());
+            maintainRecord.setCostHour(param.getCostHour());
+            maintainRecord.setCorporateIdentify(user.getCorporateIdentify());
+            maintainRecord.setCreateTime(new Date());
+            maintainRecordRepository.save(maintainRecord);
+
+            List<WorkTimeVo> workTimeVos = param.getWorkTimes();
+            if(!CheckParam.isNull(workTimeVos)){
+                List<WorkTime> needSave = new ArrayList<>();
+                workTimeVos.stream().forEach(workTimeVo -> {
+                    WorkTime wt = new WorkTime();
+                    wt.setCostHour(workTimeVo.getCostHour());
+                    wt.setEndTime(DateTimeUtil.strToDate(workTimeVo.getEndTime()));
+                    wt.setStartTime(DateTimeUtil.strToDate(workTimeVo.getStartTime()));
+                    wt.setRepairRecordId(maintainRecord.getId());
+                    wt.setRepairUserId(workTimeVo.getRepairUserId());
+                    wt.setRepairUserName(workTimeVo.getRepairUserName());
+                    wt.setCorporateIdentify(user.getCorporateIdentify());
+                    wt.setType(2);
+                    needSave.add(wt);
+                });
+                //保存工时信息
+                List<WorkTime> olds = workTimeRepository.findByRepairRecordIdAndType(maintainRecord.getId(),2);
+                if (!CheckParam.isNull(olds)){
+                    //清空老数据
+                    workTimeRepository.delete(olds);
+                }
+                if (!CheckParam.isNull(needSave)){
+                    //保存新数据
+                    workTimeRepository.save(needSave);
+                }
+            }
+            List<UsedSparePartsVo> repairRecordSparePartRels = param.getReplaceSpares();
+            if (!CheckParam.isNull(repairRecordSparePartRels)){
+                //保存更换配件信息
+                List<RepairRecordSparePartRel> needSave = new ArrayList<>();
+                repairRecordSparePartRels.stream().forEach(rr->{
+                    RepairRecordSparePartRel rrp = new RepairRecordSparePartRel();
+                    rrp.setRepairRecordId(maintainRecord.getId());
+                    rrp.setName(rr.getName());
+                    rrp.setCode(rr.getCode());
+                    rrp.setSpecificationsAndodels(rr.getSpecificationsAndodels());
+                    rrp.setInventoryUpperLimit(rr.getInventoryUpperLimit());
+                    rrp.setOldOrderNum(rr.getOldOrderNum());
+                    rrp.setNewOrderNum(rr.getNewOrderNum());
+                    rrp.setAmount(rr.getAmount());
+                    rrp.setCorporateIdentify(user.getCorporateIdentify());
+                    rrp.setType(2);
+                    needSave.add(rrp);
+                });
+                List<RepairRecordSparePartRel> ols = repairRecordSparePartRelRepository.findByRepairRecordIdAndType(maintainRecord.getId(),2);
+                if (!CheckParam.isNull(ols)){
+                    //清空老数据
+                    repairRecordSparePartRelRepository.delete(ols);
+                }
+                if (!CheckParam.isNull(needSave)){
+                    //保存新数据
+                    repairRecordSparePartRelRepository.save(needSave);
+                }
+            }
+        }else{
+            BussinessException biz = new BussinessException("10000","保养计划不存在");
+            throw biz;
+        }
+    }
+
+    public static void main(String args[]){
+        Calendar nowDate = Calendar.getInstance();
+        nowDate.setTime(new Date());
+        Calendar nowDate2 = Calendar.getInstance();
+        nowDate2.setTime(new Date());
+        nowDate.add(Calendar.DAY_OF_MONTH,2);
+        System.out.println(nowDate.getTime());
+        System.out.println(nowDate.after(nowDate2));
     }
 }

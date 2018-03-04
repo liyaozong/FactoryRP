@@ -356,6 +356,7 @@ public class TroubleRecordServiceImpl implements TroubleRecordService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void startRepair(StartRepairReq param, AuthUser user) {
         TroubleRecord old = troubleRecordRepository.findOne(param.getTroubleRecordId());
         if (null!=old && old.getStatus() == TroubleStatusEnum.NEED_REPAIR.getCode()){
@@ -400,6 +401,7 @@ public class TroubleRecordServiceImpl implements TroubleRecordService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void endRepair(EndRepairReq param, AuthUser user) {
         TroubleRecord old = troubleRecordRepository.findOne(param.getTroubleRecordId());
         if (null!=old && old.getStatus() == TroubleStatusEnum.REPAIRING.getCode()){
@@ -470,10 +472,11 @@ public class TroubleRecordServiceImpl implements TroubleRecordService {
                        wt.setRepairUserId(workTimeVo.getRepairUserId());
                        wt.setRepairUserName(workTimeVo.getRepairUserName());
                        wt.setCorporateIdentify(user.getCorporateIdentify());
+                       wt.setType(1);
                        needSave.add(wt);
                    });
                    //保存工时信息
-                   List<WorkTime> olds = workTimeRepository.findByRepairRecordId(repairRecord.getId());
+                   List<WorkTime> olds = workTimeRepository.findByRepairRecordIdAndType(repairRecord.getId(),1);
                    if (!CheckParam.isNull(olds)){
                        //清空老数据
                        workTimeRepository.delete(olds);
@@ -498,9 +501,10 @@ public class TroubleRecordServiceImpl implements TroubleRecordService {
                        rrp.setNewOrderNum(rr.getNewOrderNum());
                        rrp.setAmount(rr.getAmount());
                        rrp.setCorporateIdentify(user.getCorporateIdentify());
+                       rrp.setType(1);
                        needSave.add(rrp);
                    });
-                   List<RepairRecordSparePartRel> ols = repairRecordSparePartRelRepository.findByRepairRecordId(repairRecord.getId());
+                   List<RepairRecordSparePartRel> ols = repairRecordSparePartRelRepository.findByRepairRecordIdAndType(repairRecord.getId(),1);
                    if (!CheckParam.isNull(ols)){
                        //清空老数据
                        repairRecordSparePartRelRepository.delete(ols);
@@ -572,7 +576,7 @@ public class TroubleRecordServiceImpl implements TroubleRecordService {
 
                //工作量
                List<WorkTimeVo> workTimes = new ArrayList<>();
-               List<WorkTime> workTimeList= workTimeRepository.findByRepairRecordId(repairRecord.getId());
+               List<WorkTime> workTimeList= workTimeRepository.findByRepairRecordIdAndType(repairRecord.getId(),1);
                if (!CheckParam.isNull(workTimeList)){
                    workTimeList.stream().forEach(workTime -> {
                        WorkTimeVo workTimeVo = new WorkTimeVo();
@@ -587,7 +591,7 @@ public class TroubleRecordServiceImpl implements TroubleRecordService {
 
                //更换配件信息
                List<UsedSparePartsVo> replaceSpares = new ArrayList<>();
-               List<RepairRecordSparePartRel> ols = repairRecordSparePartRelRepository.findByRepairRecordId(repairRecord.getId());
+               List<RepairRecordSparePartRel> ols = repairRecordSparePartRelRepository.findByRepairRecordIdAndType(repairRecord.getId(),1);
                if (!CheckParam.isNull(ols)){
                    ols.stream().forEach(rr->{
                        UsedSparePartsVo usedSparePartsVo = new UsedSparePartsVo();
