@@ -24,7 +24,6 @@ public class SpotInspectionItemsQueryResp implements Serializable {
      * 巡检项目名称
      */
     @ApiModelProperty(value = "巡检项目名称",notes ="巡检项目名称" )
-    @NotEmpty(message = "巡检项目名称不可为空")
     private String name;
 
     /**

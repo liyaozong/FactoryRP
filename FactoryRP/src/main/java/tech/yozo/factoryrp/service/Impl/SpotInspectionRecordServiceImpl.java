@@ -1,7 +1,6 @@
 package tech.yozo.factoryrp.service.Impl;
 
 
-import com.sun.tools.javac.comp.Check;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -16,6 +15,7 @@ import tech.yozo.factoryrp.utils.CheckParam;
 import tech.yozo.factoryrp.utils.DateTimeUtil;
 import tech.yozo.factoryrp.utils.ErrorCode;
 import tech.yozo.factoryrp.vo.req.SpotInspectionRecordAddReq;
+import tech.yozo.factoryrp.vo.req.SpotInspectionRecordMobileAddReq;
 import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionRecordAddResp;
 
 import javax.annotation.Resource;
@@ -30,18 +30,8 @@ import java.util.List;
 @Transactional
 public class SpotInspectionRecordServiceImpl implements SpotInspectionRecordService {
 
-
-    @Resource
-    private SpotInspectionRecordRepository spotInspectionRecordRepository;
-
-    @Resource
-    private SpotInspectionRecordDetailRepository spotInspectionRecordDetailRepository;
-
     @Resource
     private SpotInspectionItemsRepository spotInspectionItemsRepository;
-
-    @Resource
-    private SpotInspectionPlanRepository spotInspectionPlanRepository;
 
     @Resource
     private SpotInspectionStandardRepository spotInspectionStandardRepository;
@@ -52,6 +42,17 @@ public class SpotInspectionRecordServiceImpl implements SpotInspectionRecordServ
     @Resource
     private DeviceTypeRepository deviceTypeRepository;
 
+    @Resource
+    private SpotInspectionPlanDeviceRepository spotInspectionPlanDeviceRepository;
+
+    @Resource
+    private SpotInspectionRecordDetailRepository spotInspectionRecordDetailRepository;
+
+    @Resource
+    private SpotInspectionRecordRepository spotInspectionRecordRepository;
+
+    @Resource
+    private SpotInspectionPlanRepository spotInspectionPlanRepository;
 
     private static Logger logger = LoggerFactory.getLogger(SpotInspectionRecordServiceImpl.class);
 
@@ -127,5 +128,15 @@ public class SpotInspectionRecordServiceImpl implements SpotInspectionRecordServ
         return null;
     }
 
+    /**
+     * 手机端提交巡检记录
+     * @param spotInspectionRecordMobileAddReq
+     * @return
+     */
+    public SpotInspectionRecordAddResp spotInspectionItemsRecordMobileAdd(SpotInspectionRecordMobileAddReq spotInspectionRecordMobileAddReq){
+
+
+        return null;
+    }
 
 }
