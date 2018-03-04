@@ -1,0 +1,66 @@
+package tech.yozo.factoryrp.vo.resp.inspection;
+
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
+
+import java.io.Serializable;
+
+/**
+ * 巡检计划设备详情信息
+ * @author created by Singer email:313402703@qq.com
+ * @time 2018/3/4
+ * @description
+ */
+@ApiModel
+@Data
+public class SpotInspectionPlanDeviceInfoResp implements Serializable{
+
+
+    /**
+     * 设备ID
+     */
+    @ApiModelProperty(value = "设备ID",notes ="设备ID" )
+    private Long deviceId;
+
+
+    /**
+     * 设备名称
+     */
+    @ApiModelProperty(value = "设备名称",notes ="设备名称" )
+    private String deviceName;
+
+
+    /**
+     * 路线顺序
+     */
+    @ApiModelProperty(value = "路线顺序",notes ="路线顺序" )
+    private String lineOrder;
+
+
+    /**
+     * 适用设备类型
+     */
+    @ApiModelProperty(value = "适用设备类型",notes ="适用设备类型" )
+    private String deviceType;
+
+    /**
+     * 适用设备类型名称
+     */
+    @ApiModelProperty(value = "适用设备类型名称",notes ="适用设备类型名称" )
+    private String deviceTypeName;
+
+    /**
+     * 规格型号
+     */
+    @ApiModelProperty(value = "规格型号",notes ="规格型号" )
+    private String deviceSpecification;
+
+
+    /**
+     * 设备编号
+     */
+    @ApiModelProperty(value = "设备编号",notes ="设备编号" )
+    private String deviceCode;
+}
+
