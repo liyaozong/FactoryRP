@@ -21,8 +21,10 @@ public interface SpotInspectionRecordService {
     /**
      * 手机端提交巡检记录
      * @param spotInspectionRecordMobileAddReq
+     * @param corporateIdentify
+     * @param userId
      * @return
      */
-    SpotInspectionRecordAddResp spotInspectionItemsRecordMobileAdd(SpotInspectionRecordMobileAddReq spotInspectionRecordMobileAddReq);
+    SpotInspectionRecordAddResp spotInspectionItemsRecordMobileAdd(SpotInspectionRecordMobileAddReq spotInspectionRecordMobileAddReq,Long corporateIdentify,Long userId);
 
 }

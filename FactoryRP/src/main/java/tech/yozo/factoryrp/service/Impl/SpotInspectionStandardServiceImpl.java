@@ -90,7 +90,7 @@ public class SpotInspectionStandardServiceImpl implements SpotInspectionStandard
 
                 List<SpotInspectionItems> spotInspectionItemsList = spotInspectionItemsRepository.findByStandardAndCorporateIdentify(spotInspectionPlanDevice.getSpotInspectionStandard(), corporateIdentify);
 
-                List<SpotInspectionRecord> recordList = spotInspectionRecordRepository.findByCorporateIdentifyAndPlanId(corporateIdentify, planId);
+                //List<SpotInspectionRecord> recordList = spotInspectionRecordRepository.findByCorporateIdentifyAndPlanId(corporateIdentify, planId);
 
                 if (!CheckParam.isNull(spotInspectionItemsList) && !spotInspectionItemsList.isEmpty()) {
 
@@ -105,8 +105,14 @@ public class SpotInspectionStandardServiceImpl implements SpotInspectionStandard
                     SpotInspectionPlan plan = spotInspectionPlanRepository.findOne(spotInspectionPlanDevice.getSpotInspectionPlan());
 
 
-                    //计算当前时间减去周期之后的时间
-                    Date date = DateTimeUtil.plusDateByParam(plan.getNextExecuteTime(), plan.getRecyclePeriod(), plan.getRecyclePeriodType());
+                    //计算当前时间减去周期之后的时间 注意，此处和计划的下次执行时间无关
+                    //Date date = DateTimeUtil.subtractDateByParam(new Date(), plan.getRecyclePeriod(), plan.getRecyclePeriodType());
+                    Date date = DateTimeUtil.subtractDateByParam(new Date(), plan.getRecyclePeriod(), plan.getRecyclePeriodType());
+
+                    /*String s = JSON.toJSONString(date);
+
+                    String s2 = DateTimeUtil.dateToStr(date);*/
+
                     Map<Long, Integer> executeResultMap = inspectionExecuteResult(corporateIdentify, date, itemIdList);
 
 
@@ -118,7 +124,7 @@ public class SpotInspectionStandardServiceImpl implements SpotInspectionStandard
                         spotInspectionStandardItemsQueryResp.setInputLimitValue(JSON.parseArray(s1.getVaildateRegular(), String.class));
                         spotInspectionStandardItemsQueryResp.setName(s1.getName());
                         spotInspectionStandardItemsQueryResp.setRecordTypeName(s1.getRecordType());
-
+                        spotInspectionStandardItemsQueryResp.setItemId(s1.getId());
 
                         //该计划下面没有过巡检记录表示没有进行过巡检
                        /* if(CheckParam.isNull(recordList) || recordList.isEmpty()){
@@ -141,7 +147,7 @@ public class SpotInspectionStandardServiceImpl implements SpotInspectionStandard
 
                     spotInspectionItemsQueryWarpResp.setSpotInspectionStandard(spotInspectionPlanDevice.getSpotInspectionStandard());
                     spotInspectionItemsQueryWarpResp.setDeviceId(spotInspectionPlanDevice.getDeviceId());
-                    spotInspectionItemsQueryWarpResp.setPlanId(spotInspectionPlanDevice.getId());
+                    spotInspectionItemsQueryWarpResp.setPlanId(spotInspectionPlanDevice.getSpotInspectionPlan());
                     spotInspectionItemsQueryWarpResp.setDeviceName(deviceInfo.getName());
                     spotInspectionItemsQueryWarpResp.setItemList(itemList);
 
@@ -172,7 +178,7 @@ public class SpotInspectionStandardServiceImpl implements SpotInspectionStandard
 
 
         //如果查询出来为空全部设置为未执行
-        if(!CheckParam.isNull(detailList) && !detailList.isEmpty()){
+        if(CheckParam.isNull(detailList) && detailList.isEmpty()){
             itemIdList.stream().forEach(m1 -> {
                 resultMap.put(m1,2);
             });

@@ -131,12 +131,78 @@ public class SpotInspectionRecordServiceImpl implements SpotInspectionRecordServ
     /**
      * 手机端提交巡检记录
      * @param spotInspectionRecordMobileAddReq
+     * @param corporateIdentify
+     * @param userId
      * @return
      */
-    public SpotInspectionRecordAddResp spotInspectionItemsRecordMobileAdd(SpotInspectionRecordMobileAddReq spotInspectionRecordMobileAddReq){
+    public SpotInspectionRecordAddResp spotInspectionItemsRecordMobileAdd(SpotInspectionRecordMobileAddReq spotInspectionRecordMobileAddReq,Long corporateIdentify,Long userId) {
 
 
+        SpotInspectionRecord spotInspectionRecord = new SpotInspectionRecord();
+
+        Date currentDate = new Date();
+
+        spotInspectionRecord.setExecuteTime(currentDate);
+        spotInspectionRecord.setExecutor(userId); //执行者
+        spotInspectionRecord.setPlanId(spotInspectionRecordMobileAddReq.getPlanId());
+        spotInspectionRecord.setStandard(spotInspectionRecord.getStandard());
+        spotInspectionRecord.setCorporateIdentify(corporateIdentify);
+
+
+        //设置计划执行时间，需要取计划表里面的下次执行时间 同时在巡检记录保存成功之后更新巡检计划的下次执行时间和最后一次的执行时间
+        SpotInspectionPlan plan = spotInspectionPlanRepository.findOne(spotInspectionRecordMobileAddReq.getPlanId());
+
+        if (!CheckParam.isNull(plan)) {
+            spotInspectionRecord.setPlanTime(plan.getNextExecuteTime());
+
+            try {
+                Date date = DateTimeUtil.plusDateByParam(new Date(), plan.getRecyclePeriod(), plan.getRecyclePeriodType());
+                plan.setNextExecuteTime(date);
+            } catch (Exception e) {
+                logger.info("时间转换出现异常 :" + e.getMessage(), e);
+                throw new BussinessException(ErrorCode.TIMEPARSE_ERROR.getCode(),
+                        ErrorCode.TIMEPARSE_ERROR.getMessage());
+            }
+            plan.setLastExecuteTime(new Date());
+
+            spotInspectionPlanRepository.save(plan);
+
+            spotInspectionRecord.setPlanName(plan.getName());
+            spotInspectionRecord.setPlanTime(plan.getNextExecuteTime());
+            spotInspectionRecord.setRecyclePeriod(plan.getRecyclePeriod());
+            spotInspectionRecord.setRecyclePeriodType(plan.getRecyclePeriodType());
+            spotInspectionRecord.setStandard(spotInspectionRecordMobileAddReq.getSpotInspectionStandard());
+
+            spotInspectionRecordRepository.save(spotInspectionRecord);
+
+            if (!CheckParam.isNull(spotInspectionRecordMobileAddReq.getDetailList()) && !spotInspectionRecordMobileAddReq.getDetailList().isEmpty()) {
+
+                List<SpotInspectionRecordDetail> detailList = new ArrayList<>();
+
+                spotInspectionRecordMobileAddReq.getDetailList().stream().forEach(s1 -> {
+                    SpotInspectionRecordDetail spotInspectionRecordDetail = new SpotInspectionRecordDetail();
+
+                    spotInspectionRecordDetail.setAbnormalDesc(s1.getAbnormalDesc());
+                    spotInspectionRecordDetail.setRecordId(spotInspectionRecord.getId());
+                    spotInspectionRecordDetail.setRecordResult(s1.getRecordResult());
+                    spotInspectionRecordDetail.setRemark(s1.getRemark());
+                    spotInspectionRecordDetail.setStandardItemId(s1.getItemId());
+                    spotInspectionRecordDetail.setCorporateIdentify(corporateIdentify);
+
+                    detailList.add(spotInspectionRecordDetail);
+                });
+
+                spotInspectionRecordDetailRepository.save(detailList);
+                spotInspectionRecordDetailRepository.save(detailList);
+
+                SpotInspectionRecordAddResp spotInspectionRecordAddResp = new SpotInspectionRecordAddResp();
+
+                spotInspectionRecordAddResp.setId(spotInspectionRecord.getId());
+
+                return spotInspectionRecordAddResp;
+            }
+
+        }
         return null;
     }
-
 }

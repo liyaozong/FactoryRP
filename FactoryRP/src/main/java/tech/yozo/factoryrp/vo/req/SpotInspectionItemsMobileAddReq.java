@@ -19,16 +19,10 @@ public class SpotInspectionItemsMobileAddReq implements Serializable {
 
 
     /**
-     * 巡检记录ID
-     */
-    @ApiModelProperty(value = "巡检记录ID",notes ="巡检记录ID",example = "1")
-    private Long recordId;
-
-    /**
      * 巡检项ID
      */
     @ApiModelProperty(value = "巡检项ID",notes ="巡检项ID",example = "1")
-    private Long standardItemId;
+    private Long itemId;
 
 
     /**
@@ -39,9 +33,9 @@ public class SpotInspectionItemsMobileAddReq implements Serializable {
 
 
     /**
-     * 异常情况描述
+     * 异常情况描述 1无异常2有异常
      */
-    @ApiModelProperty(value = "异常情况描述",notes ="异常情况描述",example = "1")
+    @ApiModelProperty(value = "异常情况描述 1无异常2有异常",notes ="异常情况描述 1无异常2有异常",example = "1")
     private String abnormalDesc;
 
 

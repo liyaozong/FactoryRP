@@ -20,6 +20,9 @@ public class SpotInspectionStandardItemsQueryResp implements Serializable {
 
     private static final long serialVersionUID = 6313045572385406968L;
 
+    @ApiModelProperty(value = "巡检项目ID",notes ="巡检项目ID" )
+    private Long itemId;
+
     /**
      * 巡检项目名称
      */

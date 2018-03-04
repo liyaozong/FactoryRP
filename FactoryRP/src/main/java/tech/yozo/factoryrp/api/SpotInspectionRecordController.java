@@ -12,6 +12,7 @@ import tech.yozo.factoryrp.config.auth.UserAuthService;
 import tech.yozo.factoryrp.service.SpotInspectionRecordService;
 import tech.yozo.factoryrp.vo.base.ApiResponse;
 import tech.yozo.factoryrp.vo.req.SpotInspectionRecordAddReq;
+import tech.yozo.factoryrp.vo.req.SpotInspectionRecordMobileAddReq;
 import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionRecordAddResp;
 
 import javax.annotation.Resource;
@@ -46,6 +47,21 @@ public class SpotInspectionRecordController extends BaseController {
         return apiResponse(spotInspectionRecordService.addSpotInspectionRecord(spotInspectionRecordAddReq, corporateIdentify));
     }
 
+
+    /**
+     * 手机端提交巡检记录
+     * @param spotInspectionRecordMobileAddReq
+     * @return
+     */
+    @ApiOperation(value = "手机端提交巡检记录",notes = "新增巡检记录",httpMethod = "POST")
+    @PostMapping("/spotInspectionItemsRecordMobileAdd")
+    @ApiImplicitParam(dataType = "SpotInspectionRecordMobileAddReq" ,name = "spotInspectionRecordMobileAddReq", paramType = "VO" ,
+            value = "新增巡检记录",required = true)
+    public ApiResponse<SpotInspectionRecordAddResp> spotInspectionItemsRecordMobileAdd(@Valid @RequestBody SpotInspectionRecordMobileAddReq spotInspectionRecordMobileAddReq, HttpServletRequest request){
+        Long corporateIdentify = userAuthService.getCurrentUserCorporateIdentify(request);
+        Long userId = userAuthService.getCurrentUserId(request);
+        return apiResponse(spotInspectionRecordService.spotInspectionItemsRecordMobileAdd(spotInspectionRecordMobileAddReq, corporateIdentify,userId));
+    }
 
 }
 
