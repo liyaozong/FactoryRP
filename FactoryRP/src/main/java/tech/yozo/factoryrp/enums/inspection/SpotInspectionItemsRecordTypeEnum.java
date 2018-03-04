@@ -18,7 +18,7 @@ public enum SpotInspectionItemsRecordTypeEnum {
 
     SPOT_INSPECTION_ITEMS_RECORD_TYPE_ENUM_OPTIONS("options","勾选"),
     SPOT_INSPECTION_ITEMS_RECORD_TYPE_ENUM_TABLE("table","列表"),
-    SPOT_INSPECTION_ITEMS_RECORD_TYPE_ENUM_NUMBER("number","数字"),
+        SPOT_INSPECTION_ITEMS_RECORD_TYPE_ENUM_NUMBER("number","数字"),
     SPOT_INSPECTION_ITEMS_RECORD_TYPE_ENUM_VERBAL_DESCRIPTION("verbal_description","文字描述");
 
 

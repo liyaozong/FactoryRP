@@ -6,6 +6,8 @@ import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionStandardAddResp;
 import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionStandardDetailQueryResp;
 import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionStandardQueryResp;
 import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionStandardQueryWarpResp;
+import tech.yozo.factoryrp.vo.resp.inspection.mobile.SpotInspectionItemsQueryWarpResp;
+import tech.yozo.factoryrp.vo.resp.inspection.mobile.SpotInspectionStandardDetailMobileQueryResp;
 
 import java.util.List;
 
@@ -16,6 +18,16 @@ import java.util.List;
  * @description
  */
 public interface SpotInspectionStandardService {
+
+
+    /**
+     * 手机端根据巡检计划ID和设备code查询巡检项目
+     * @param planId
+     * @param deviceCode
+     * @param corporateIdentify
+     * @return
+     */
+    SpotInspectionItemsQueryWarpResp queryMobileInspectionItemByPlanIdAndDeviceId(Long planId, String deviceCode, Long corporateIdentify);
 
     /**
      * 根据设备ID查询点检标准
@@ -31,6 +43,15 @@ public interface SpotInspectionStandardService {
      * @param corporateIdentify
      */
     void deleteSpotInspectionStandardByIds(List<Long> ids,Long corporateIdentify);
+
+
+    /**
+     * 查询手机端巡检项目详情
+     * @param standardId
+     * @param corporateIdentify
+     * @return
+     */
+    //SpotInspectionStandardDetailMobileQueryResp queryMobileInspectionStandardDetail(Long standardId, Long corporateIdentify);
 
     /**
      * 查询点巡检标准详情

@@ -6,10 +6,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import tech.yozo.factoryrp.entity.DeviceInfo;
-import tech.yozo.factoryrp.entity.DeviceType;
-import tech.yozo.factoryrp.entity.SpotInspectionItems;
-import tech.yozo.factoryrp.entity.SpotInspectionStandard;
+import tech.yozo.factoryrp.entity.*;
 import tech.yozo.factoryrp.enums.inspection.SpotInspectionItemsRecordTypeEnum;
 import tech.yozo.factoryrp.exception.BussinessException;
 import tech.yozo.factoryrp.repository.*;
@@ -20,6 +17,8 @@ import tech.yozo.factoryrp.vo.req.SpotInspectionStandardAddReq;
 import tech.yozo.factoryrp.vo.req.SpotInspectionStandardQueryReq;
 import tech.yozo.factoryrp.vo.resp.inspection.*;
 import tech.yozo.factoryrp.vo.resp.inspection.mobile.SpotInspectionItemsQueryResp;
+import tech.yozo.factoryrp.vo.resp.inspection.mobile.SpotInspectionItemsQueryWarpResp;
+import tech.yozo.factoryrp.vo.resp.inspection.mobile.SpotInspectionPlanDeviceQueryResp;
 
 import javax.annotation.Resource;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -59,28 +58,65 @@ public class SpotInspectionStandardServiceImpl implements SpotInspectionStandard
 
 
     /**
-     * 手机端
-     * @param deviceTypeId
-     * @param deviceId
+     * 手机端根据巡检计划ID和设备code查询巡检项目
+     * @param planId
+     * @param deviceCode
      * @param corporateIdentify
      * @return
      */
-    /*public List<SpotInspectionItemsQueryResp> queryMobileSpotInspectionItems(Long deviceTypeId,Long deviceId,Long corporateIdentify){
+    public SpotInspectionItemsQueryWarpResp queryMobileInspectionItemByPlanIdAndDeviceId(Long planId,String deviceCode,Long corporateIdentify){
 
 
-        List<SpotInspectionStandard> inspectionStandardList = spotInspectionStandardRepository.findByDeviceTypeAndCorporateIdentify(deviceTypeId, corporateIdentify);
+        //查询巡检计划-点检标准-设备关联表
+
+        DeviceInfo deviceInfo = deviceInfoRepository.findByCodeAndCorporateIdentify(deviceCode, corporateIdentify);
+
+        if(!CheckParam.isNull(deviceInfo)) {
+
+            Long deviceInfoId = deviceInfo.getId();
+
+            SpotInspectionPlanDevice spotInspectionPlanDevice = spotInspectionPlanDeviceRepository.findByCorporateIdentifyAndDeviceIdAndSpotInspectionPlan(corporateIdentify, deviceInfoId, planId);
+
+            if (!CheckParam.isNull(spotInspectionPlanDevice)) {
+
+                List<SpotInspectionItems> spotInspectionItemsList = spotInspectionItemsRepository.findByStandardAndCorporateIdentify(spotInspectionPlanDevice.getSpotInspectionStandard(), corporateIdentify);
 
 
-        if(!CheckParam.isNull(inspectionStandardList) && !inspectionStandardList.isEmpty()){
+                if (!CheckParam.isNull(spotInspectionItemsList) && !spotInspectionItemsList.isEmpty()) {
+
+                    List<SpotInspectionStandardItemsQueryResp> itemList = new ArrayList<>();
+
+                    spotInspectionItemsList.stream().forEach(s1 -> {
+                        SpotInspectionStandardItemsQueryResp spotInspectionStandardItemsQueryResp = new SpotInspectionStandardItemsQueryResp();
+
+                        spotInspectionStandardItemsQueryResp.setUpperLimit(s1.getUpperLimit());
+                        spotInspectionStandardItemsQueryResp.setLowerLimit(s1.getLowerLimit());
+                        spotInspectionStandardItemsQueryResp.setInputLimitValue(JSON.parseArray(s1.getVaildateRegular(), String.class));
+                        spotInspectionStandardItemsQueryResp.setName(s1.getName());
+                        spotInspectionStandardItemsQueryResp.setRecordTypeName(s1.getRecordType());
 
 
-            inspectionStandardList.stream().f
+                        itemList.add(spotInspectionStandardItemsQueryResp);
 
+                    });
+                    SpotInspectionItemsQueryWarpResp spotInspectionItemsQueryWarpResp = new SpotInspectionItemsQueryWarpResp();
 
+                    spotInspectionItemsQueryWarpResp.setSpotInspectionStandard(spotInspectionPlanDevice.getSpotInspectionStandard());
+                    spotInspectionItemsQueryWarpResp.setDeviceId(spotInspectionPlanDevice.getDeviceId());
+                    spotInspectionItemsQueryWarpResp.setPlanId(spotInspectionPlanDevice.getId());
+                    spotInspectionItemsQueryWarpResp.setDeviceName(deviceInfo.getName());
+                    spotInspectionItemsQueryWarpResp.setItemList(itemList);
+
+                    return spotInspectionItemsQueryWarpResp;
+
+                }
+
+            }
 
         }
+            return null;
+    }
 
-    }*/
 
     /**
      * 根据设备ID查询点检标准
@@ -91,48 +127,48 @@ public class SpotInspectionStandardServiceImpl implements SpotInspectionStandard
     public List<SpotInspectionStandardQueryResp> queryStanardByDeviceId(Long deviceId,Long corporateIdentify){
 
 
-        DeviceInfo deviceInfo = deviceInfoRepository.findOne(deviceId);
+            DeviceInfo deviceInfo = deviceInfoRepository.findOne(deviceId);
 
 
-        if(!CheckParam.isNull(deviceInfo)){
+            if(!CheckParam.isNull(deviceInfo)){
 
-            Long deviceType = deviceInfo.getDeviceType();
+                Long deviceType = deviceInfo.getDeviceType();
 
-            List<SpotInspectionStandard> spotInspectionStandardList = spotInspectionStandardRepository.findByDeviceTypeAndCorporateIdentify(deviceType, corporateIdentify);
+                List<SpotInspectionStandard> spotInspectionStandardList = spotInspectionStandardRepository.findByDeviceTypeAndCorporateIdentify(deviceType, corporateIdentify);
 
-            if(!CheckParam.isNull(spotInspectionStandardList) && !spotInspectionStandardList.isEmpty()){
+                if(!CheckParam.isNull(spotInspectionStandardList) && !spotInspectionStandardList.isEmpty()){
 
-                //排除不需要的数据
-                spotInspectionStandardList = spotInspectionStandardList.stream().filter(d1 ->
-                        JSON.parseArray(d1.getRelateDevices(),Long.class).contains(deviceId)).collect(Collectors.toList());
+                    //排除不需要的数据
+                    spotInspectionStandardList = spotInspectionStandardList.stream().filter(d1 ->
+                            JSON.parseArray(d1.getRelateDevices(),Long.class).contains(deviceId)).collect(Collectors.toList());
 
-                List<SpotInspectionStandardQueryResp> respList = new ArrayList<>();
+                    List<SpotInspectionStandardQueryResp> respList = new ArrayList<>();
 
-                DeviceType type = deviceTypeRepository.findOne(deviceInfo.getDeviceType());
+                    DeviceType type = deviceTypeRepository.findOne(deviceInfo.getDeviceType());
 
-                spotInspectionStandardList.stream().forEach(d1 -> {
-                    SpotInspectionStandardQueryResp spotInspectionStandardQueryResp = new SpotInspectionStandardQueryResp();
+                    spotInspectionStandardList.stream().forEach(d1 -> {
+                        SpotInspectionStandardQueryResp spotInspectionStandardQueryResp = new SpotInspectionStandardQueryResp();
 
-                    spotInspectionStandardQueryResp.setId(d1.getId());
-                    spotInspectionStandardQueryResp.setName(d1.getName());
-                    spotInspectionStandardQueryResp.setRelateDeviceTypeName(CheckParam.isNull(type) ? null : type.getName());
-                    spotInspectionStandardQueryResp.setRelateDevices(JSON.parseArray(d1.getRelateDevices(),Long.class));
-                    spotInspectionStandardQueryResp.setRemark(d1.getRemark());
-                    spotInspectionStandardQueryResp.setRequirement(d1.getRequirement());
-
-
+                        spotInspectionStandardQueryResp.setId(d1.getId());
+                        spotInspectionStandardQueryResp.setName(d1.getName());
+                        spotInspectionStandardQueryResp.setRelateDeviceTypeName(CheckParam.isNull(type) ? null : type.getName());
+                        spotInspectionStandardQueryResp.setRelateDevices(JSON.parseArray(d1.getRelateDevices(),Long.class));
+                        spotInspectionStandardQueryResp.setRemark(d1.getRemark());
+                        spotInspectionStandardQueryResp.setRequirement(d1.getRequirement());
 
 
-                    respList.add(spotInspectionStandardQueryResp);
-                });
+
+
+                        respList.add(spotInspectionStandardQueryResp);
+                    });
 
                     return respList;
+                }
+
             }
 
+            return null;
         }
-
-        return null;
-    }
 
     /**
      * 批量删除点检标准
@@ -242,6 +278,13 @@ public class SpotInspectionStandardServiceImpl implements SpotInspectionStandard
         return spotInspectionStandardAddResp;
     }
 
+
+    /**
+     * 查询手机端巡检项目详情
+     * @param standardId
+     * @param corporateIdentify
+     * @return
+     */
 
     /**
      * 查询点巡检标准详情

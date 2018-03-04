@@ -32,7 +32,7 @@ public class SpotInspectionPlanDevice extends BaseEntity implements Serializable
      */
     @ApiModelProperty(value = "点检标准ID",notes ="点检标准ID" )
     @Column(name = "spot_inspection_standard",length = 20)
-    private Long SpotInspectionStandard;
+    private Long spotInspectionStandard;
 
     /**
      * 路线顺序

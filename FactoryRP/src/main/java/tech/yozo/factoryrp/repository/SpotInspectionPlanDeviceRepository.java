@@ -18,7 +18,7 @@ public interface SpotInspectionPlanDeviceRepository extends BaseRepository<SpotI
 
 
     /**
-     * 根据企业唯一表示以及巡检计划ID进行查询
+     * 根据企业唯一标识以及巡检计划ID进行查询
      * @param corporateIdentify
      * @param spotInspectionPlan
      * @return
@@ -37,6 +37,29 @@ public interface SpotInspectionPlanDeviceRepository extends BaseRepository<SpotI
     List<SpotInspectionPlanDevice> findByCorporateIdentifyAndSpotInspectionPlan(@Param("corporateIdentify") Long corporateIdentify,@Param("spotInspectionPlan") Long spotInspectionPlan);
 
 
-    //SpotInspectionPlanDevice findByCorporateIdentifyAndDeviceTypeAndDeviceId
+    /**
+     * 根据企业唯一标识，巡检标准ID，设备ID进行查询
+     * @param corporateIdentify
+     * @param deviceId
+     * @param spotInspectionStandard
+     * @return
+     */
+   /* @Query(value = "select s from SpotInspectionPlanDevice s where s.corporateIdentify = :corporateIdentify and s.deviceId = :deviceId and s.spotInspectionStandard = :spotInspectionStandard")
+    List<SpotInspectionPlanDevice> findByCorporateIdentifyAndDeviceIdAndSpotInspectionStandard(@Param("corporateIdentify") Long corporateIdentify,
+                                                                                               @Param("deviceId") Long deviceId,
+                                                                                               @Param("spotInspectionStandard") Long spotInspectionStandard);
+
+*/
+    /**
+     * 根据企业唯一标识，设备ID和巡检计划ID进行查询
+     * @param corporateIdentify
+     * @param deviceId
+     * @param spotInspectionPlan
+     * @return
+     */
+    @Query(value = "select s from SpotInspectionPlanDevice s where s.corporateIdentify = :corporateIdentify and s.deviceId = :deviceId and s.spotInspectionPlan = :spotInspectionPlan")
+    SpotInspectionPlanDevice findByCorporateIdentifyAndDeviceIdAndSpotInspectionPlan(@Param("corporateIdentify") Long corporateIdentify,@Param("deviceId") Long deviceId,
+                                                                                               @Param("spotInspectionPlan") Long spotInspectionPlan);
+
 
 }

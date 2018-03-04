@@ -14,6 +14,13 @@ import java.util.List;
 @Repository
 public interface DeviceInfoRepository extends BaseRepository<DeviceInfo,Long>{
 
+
+    /**
+     * 根据企业唯一标识和设备码进行查找
+     * @param code
+     * @param corporateIdentify
+     * @return
+     */
     DeviceInfo findByCodeAndCorporateIdentify(String code,Long corporateIdentify);
 
     /**
@@ -33,4 +40,8 @@ public interface DeviceInfoRepository extends BaseRepository<DeviceInfo,Long>{
      */
     @Query("select d from DeviceInfo d where d.id in :ids")
     List<DeviceInfo> findByIdsIn(@Param("ids") List<Long> ids);
+
+
+
+
 }

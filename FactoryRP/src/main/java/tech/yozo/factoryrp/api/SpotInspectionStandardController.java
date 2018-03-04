@@ -14,6 +14,7 @@ import tech.yozo.factoryrp.vo.req.SpotInspectionStandardQueryReq;
 import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionStandardAddResp;
 import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionStandardDetailQueryResp;
 import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionStandardQueryResp;
+import tech.yozo.factoryrp.vo.resp.inspection.mobile.SpotInspectionItemsQueryWarpResp;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -85,6 +86,27 @@ public class SpotInspectionStandardController extends BaseController{
         Long corporateIdentify = userAuthService.getCurrentUserCorporateIdentify(request);
         spotInspectionStandardService.deleteInspectionStandard(standardId,corporateIdentify);
         return apiResponse();
+    }
+
+
+    /**
+     * 手机端根据巡检计划ID和设备code查询巡检项目
+     * @param planId
+     * @param deviceCode
+     * @return
+     */
+    @ApiOperation(value = "手机端根据巡检计划ID和设备code查询巡检项目-Mobile",notes = "手机端根据巡检计划ID和设备code查询巡检项目-Mobile",httpMethod = "GET")
+    @GetMapping("/queryMobileInspectionItemByPlanIdAndDeviceId")
+    @ApiImplicitParams({
+            @ApiImplicitParam(dataType = "Long" ,name = "planId", paramType = "query" ,
+                    value = "巡检ID",required = true,defaultValue = "3"),
+            @ApiImplicitParam(dataType = "String" ,name = "deviceCode", paramType = "query" ,
+            value = "设备码",required = true,defaultValue = "123114")
+
+    })
+    public ApiResponse<SpotInspectionItemsQueryWarpResp> queryMobileInspectionItemByPlanIdAndDeviceId(Long planId, String deviceCode,HttpServletRequest request){
+        Long corporateIdentify = userAuthService.getCurrentUserCorporateIdentify(request);
+        return apiResponse(spotInspectionStandardService.queryMobileInspectionItemByPlanIdAndDeviceId(planId,deviceCode,corporateIdentify));
     }
 
     /**

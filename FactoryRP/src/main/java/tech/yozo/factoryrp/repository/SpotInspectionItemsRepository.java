@@ -19,11 +19,11 @@ public interface SpotInspectionItemsRepository extends BaseRepository<SpotInspec
 
     /**
      * 根据巡检标准ID和企业唯一标识进行查询
-     * @param Standard
+     * @param standard
      * @param corporateIdentify
      * @return
      */
-    List<SpotInspectionItems> findByStandardAndCorporateIdentify(Long Standard ,Long corporateIdentify);
+    List<SpotInspectionItems> findByStandardAndCorporateIdentify(Long standard ,Long corporateIdentify);
 
 
     /**
