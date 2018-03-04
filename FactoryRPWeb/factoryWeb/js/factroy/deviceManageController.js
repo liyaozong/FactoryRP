@@ -26,10 +26,14 @@ factoryParameterSettingApp.controller('deviceManageController',function ($scope,
         currentPage: 1,
         itemsPerPage: 5
     };
+    $scope.paginationConf2 = {
+        currentPage: 1,
+        itemsPerPage: 5
+    };
     /*查询设备故障信息列表 公用方法 start*/
-    $scope.queryTroubleRecordList=function(deviceId){
+    $scope.queryTroubleRecordList=function(){
         $scope.queryTroubleRecordListss = factoryParameterSettingService.queryTroubleRecordLists({
-            deviceId:deviceId,//设备ID
+            deviceId:$scope.dataAudit,//设备ID
             currentPage: $scope.paginationConf1.currentPage,
             itemsPerPage: $scope.paginationConf1.itemsPerPage
         }, function (response) {
@@ -47,6 +51,27 @@ factoryParameterSettingApp.controller('deviceManageController',function ($scope,
     };
     $scope.queryTroubleRecordList($scope.dataAudit);
     /*查询设备故障信息列表 公用方法 end*/
+    /*查询保养计划列表 公用方法 start*/
+    $scope.queryMaintenanceRecordList=function(){
+        $scope.queryMaintenanceRecordListss = factoryParameterSettingService.queryMaintenanceRecordLists({
+            deviceId:$scope.dataAudit,//设备ID
+            currentPage: $scope.paginationConf2.currentPage,
+            itemsPerPage: $scope.paginationConf2.itemsPerPage
+        }, function (response) {
+            if(response.errorCode=='000000'&&response.data.totalCount>=1){
+                $scope.paginationConf2.totalItems = response.data.totalCount;
+                $scope.maintenanceRecordList=response.data.list;
+                console.log($scope.maintenanceRecordList)
+            }else{
+                $scope.paginationConf2.totalItems = 0;
+                $scope.maintenanceRecordList=[];
+            }
+        }, function (err) {
+            console.log(err);
+        });
+    };
+    $scope.queryMaintenanceRecordList($scope.dataAudit);
+    /*查询保养计划列表 公用方法 end*/
     /*查询设备信息 start*/
     $scope.onQuery=function () {
         factoryParameterSettingService.deviceListInfo({
@@ -544,6 +569,8 @@ factoryParameterSettingApp.controller('deviceManageController',function ($scope,
         var data =localStorage.getItem('dataAudit');
         $scope.dataAudit=data;
         $scope.queryTroubleRecordList(deviceInfo.id);
+        $scope.queryMaintenanceRecordList(deviceInfo.id);
+
     };
     /*查询设备对应的故障列表 end*/
     /*提出设备对应的故障 start*/
@@ -753,5 +780,97 @@ factoryParameterSettingApp.controller('deviceManageController',function ($scope,
         }
     };
     /*批量删除故障 end*/
+    /*新增保养计划 start*/
+    $scope.addMaintenanceRecord=function () {
+        if($scope.dataAudit==''||$scope.dataAudit==null||$scope.dataAudit==undefined){
+            alert('请至少选择一个设备');
+        }else{
+            $scope.deviceTypes=1;//默认选择
+            factoryParameterSettingService.queryOneDeviceListInfo({
+                id:$scope.dataAudit
+            }, function(response){
+                if(response.data!=''&&response.data!=null&&response.data!=undefined&&response.errorCode=='000000'){
+                    $scope.oneDeviceType=response.data;
+                    console.log($scope.oneDeviceType);
+                    $scope.deviceNameMaintenance=$scope.oneDeviceType.name;
+                    $scope.deviceCodeMaintenance=$scope.oneDeviceType.code;
+                    $scope.specificationMaintenance=$scope.oneDeviceType.specification;
+                    $scope.installationAddressMaintenance=$scope.oneDeviceType.installationAddress;
+
+                    // 设备类型
+                    $("#deviceTypeTroubleMaintenance option").each(function(){
+                        if($(this).text()==$scope.oneDeviceType.deviceType){
+                            $(this).prop("selected",true);
+//                        $scope.deviceTypeEdit=$(this).val();
+                        }
+                    });
+
+                    // 使用部门
+                    $("#useDeptMaintenance option").each(function(){
+                        if($(this).text()==$scope.oneDeviceType.useDept){
+                            $(this).prop("selected",true);
+//                        $scope.useDeptEdit=$(this).val();
+                        }
+                    });
+
+                }else{
+                    console.log(response.errorMessage);
+                }
+            });
+            popupDiv('addMaintenanceRecordBalance');
+            $scope.addTroubleRecordSure=function () {
+                if($scope.happendDate==''||$scope.happendDate==null||$scope.happendDate==undefined){
+                    $("#happendDate").focus()
+                }else if($scope.deviceUser==''||$scope.deviceUser==null||$scope.deviceUser==undefined){
+                    $("#deviceUser").focus()
+                }else if($scope.deviceUserPhone==''||$scope.deviceUserPhone==null||$scope.deviceUserPhone==undefined){
+                    $("#deviceUserPhone").focus()
+                }else if($scope.troubleLevel==''||$scope.troubleLevel==null||$scope.troubleLevel==undefined){
+                    $("#troubleLevel").focus()
+                }else if($scope.deviceStatus==''||$scope.deviceStatus==null||$scope.deviceStatus==undefined){
+                    $("#deviceStatus").focus()
+                }else if($scope.troubleType==''||$scope.troubleType==null||$scope.troubleType==undefined){
+                    $("#troubleType").focus()
+                }else if($scope.repairGroupId==''||$scope.repairGroupId==null||$scope.repairGroupId==undefined){
+                    $("#repairGroupId").focus()
+                }else if($scope.deviceAddress==''||$scope.deviceAddress==null||$scope.deviceAddress==undefined){
+                    $("#deviceAddress").focus()
+                }else if($scope.troubleAddRemark==''||$scope.troubleAddRemark==null||$scope.troubleAddRemark==undefined){
+                    $("#troubleAddRemark").focus()
+                }else{
+                    $scope.happenTimes=$filter('date')($scope.happenTime,'yyyy-MM-dd');
+                    var pa={
+                        deviceId:$scope.dataAudit,
+                        deviceStatus:$scope.deviceStatus,
+                        deviceUser:$scope.deviceUser,
+                        happenTime:$scope.happenTimes,
+                        phone:$scope.deviceUserPhone,
+                        remark:$scope.troubleAddRemark,
+                        repairGroupId:$scope.repairGroupId,
+                        // requestTime:$scope.deviceStatus,
+                        troubleLevel:$scope.troubleLevel,
+                        troubleType:$scope.troubleType
+                    };
+                    $scope.addTroubleRecord = factoryParameterSettingService.addTroubleRecords(pa, function (res) {
+                        if (res.errorCode == '000000' && res.data!=''&& res.data!=null&& res.data!=undefined) {
+                            hideDiv('addTroubleRecordBalance');
+                            popupDiv('SaveSuccess');
+                            $('.SaveSuccess .Message').html(res.errorMessage);
+                        } else {
+                            hideDiv('addTroubleRecordBalance');
+                            popupDiv('SaveSuccess');
+                            $('.SaveSuccess .Message').html(res.errorMessage);
+                            console.log(res.errorMessage);
+                        }
+                    }, function (err) {
+                        console.log(err);
+                    });
+                }
+            }
+        }
+    };
+    /*新增保养计划 end*/
     $scope.$watch('paginationConf.currentPage + paginationConf.itemsPerPage', $scope.onQuery);
+    $scope.$watch('paginationConf1.currentPage + paginationConf1.itemsPerPage', $scope.queryTroubleRecordList);
+    $scope.$watch('paginationConf2.currentPage + paginationConf2.itemsPerPage', $scope.queryMaintenanceRecordList);
 });

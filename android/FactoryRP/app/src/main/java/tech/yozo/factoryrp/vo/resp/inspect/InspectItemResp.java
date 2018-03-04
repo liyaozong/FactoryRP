@@ -6,6 +6,10 @@ import java.util.List;
 
 @Data
 public class InspectItemResp {
+
+//    @ApiModelProperty(value = "巡检项目ID",notes ="巡检项目ID" )
+    private Long itemId;
+
     /**
      * 巡检项目名称
      */
