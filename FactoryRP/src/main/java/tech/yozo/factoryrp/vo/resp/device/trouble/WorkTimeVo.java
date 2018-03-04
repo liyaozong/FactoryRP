@@ -12,18 +12,18 @@ import java.io.Serializable;
 @Data
 public class WorkTimeVo implements Serializable{
 
-    @ApiModelProperty(value = "维修人员主键")
+    @ApiModelProperty(value = "维修/保养人员主键")
     private Long repairUserId;
 
-    @ApiModelProperty(value = "维修人员名称")
+    @ApiModelProperty(value = "维修/保养人员名称")
     private String repairUserName;
 
-    @ApiModelProperty(value = "维修开始时间，格式yyyy-MM-dd HH:mm:ss")
+    @ApiModelProperty(value = "维修/保养开始时间，格式yyyy-MM-dd HH:mm:ss")
     private String startTime;
 
-    @ApiModelProperty(value = "维修结束时间，格式yyyy-MM-dd HH:mm:ss")
+    @ApiModelProperty(value = "维修/保养结束时间，格式yyyy-MM-dd HH:mm:ss")
     private String endTime;
 
-    @ApiModelProperty(value = "维修耗时")
+    @ApiModelProperty(value = "维修/保养耗时")
     private Integer costHour;
 }

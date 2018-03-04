@@ -10,21 +10,21 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import tech.yozo.factoryrp.entity.DeviceParameterDictionary;
 import tech.yozo.factoryrp.entity.MaintainPlan;
+import tech.yozo.factoryrp.entity.RepairGroup;
 import tech.yozo.factoryrp.enums.PlanStatusEnum;
 import tech.yozo.factoryrp.enums.device.DeviceParamDicEnum;
+import tech.yozo.factoryrp.exception.BussinessException;
 import tech.yozo.factoryrp.page.Pagination;
 import tech.yozo.factoryrp.repository.DeviceParameterDictionaryRepository;
 import tech.yozo.factoryrp.repository.MaintainPlanRepository;
+import tech.yozo.factoryrp.repository.RepairGroupRepository;
 import tech.yozo.factoryrp.service.DepartmentService;
 import tech.yozo.factoryrp.service.DeviceTypeService;
 import tech.yozo.factoryrp.service.MaintainPlanService;
-import tech.yozo.factoryrp.vo.MaintainPlanCountVo;
+import tech.yozo.factoryrp.vo.resp.*;
 import tech.yozo.factoryrp.vo.req.AddMaintainPlanReq;
 import tech.yozo.factoryrp.vo.req.MaintainPlanListForAppReq;
 import tech.yozo.factoryrp.vo.req.MaintainPlanListReq;
-import tech.yozo.factoryrp.vo.resp.MaintainPlanDetailVo;
-import tech.yozo.factoryrp.vo.resp.MaintainPlanListVo;
-import tech.yozo.factoryrp.vo.resp.SimpleMaintainPlanVo;
 import tech.yozo.factoryrp.vo.resp.auth.AuthUser;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -44,11 +44,9 @@ public class MaintainPlanServiceImpl implements MaintainPlanService{
     @Autowired
     private MaintainPlanRepository maintainPlanRepository;
     @Autowired
-    private DeviceTypeService deviceTypeService;
-    @Autowired
-    private DepartmentService departmentService;
-    @Autowired
     private DeviceParameterDictionaryRepository deviceParameterDictionaryRepository;
+    @Autowired
+    private RepairGroupRepository repairGroupRepository;
 
     @Override
     public void addMaintainPlan(AddMaintainPlanReq plan, Long corporateIdentify, AuthUser AuthUser) {
@@ -150,13 +148,7 @@ public class MaintainPlanServiceImpl implements MaintainPlanService{
             List<SimpleMaintainPlanVo> rel = new ArrayList<>();
             res.setList(rel);
             List<MaintainPlan> list = page.getContent();
-            List<DeviceParameterDictionary> deviceParameterDictionaryList = deviceParameterDictionaryRepository.findByCodeAndCorporateIdentify(DeviceParamDicEnum.DEVICE_PARAM_MAINTENANCE_LEVEL.getCode(), corporateIdentify);
-            Map<Integer,String> maintainLevels = new HashMap<>();
-            if (null!=deviceParameterDictionaryList && deviceParameterDictionaryList.size()>0){
-                deviceParameterDictionaryList.stream().forEach(deviceParameterDictionary -> {
-                    maintainLevels.put(deviceParameterDictionary.getType(),deviceParameterDictionary.getName());
-                });
-            }
+            Map<Integer, String> maintainLevels = getMaintainLevelMap(corporateIdentify);
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             list.stream().forEach(maintainPlan -> {
                 SimpleMaintainPlanVo vo = new SimpleMaintainPlanVo();
@@ -171,6 +163,17 @@ public class MaintainPlanServiceImpl implements MaintainPlanService{
             });
         }
         return res;
+    }
+
+    private Map<Integer, String> getMaintainLevelMap(Long corporateIdentify) {
+        List<DeviceParameterDictionary> deviceParameterDictionaryList = deviceParameterDictionaryRepository.findByCodeAndCorporateIdentify(DeviceParamDicEnum.DEVICE_PARAM_MAINTENANCE_LEVEL.getCode(), corporateIdentify);
+        Map<Integer,String> maintainLevels = new HashMap<>();
+        if (null!=deviceParameterDictionaryList && deviceParameterDictionaryList.size()>0){
+            deviceParameterDictionaryList.stream().forEach(deviceParameterDictionary -> {
+                maintainLevels.put(deviceParameterDictionary.getType(),deviceParameterDictionary.getName());
+            });
+        }
+        return maintainLevels;
     }
 
     @Override
@@ -223,6 +226,49 @@ public class MaintainPlanServiceImpl implements MaintainPlanService{
         vo.setTodayPlanNum(todayCount);
         vo.setTomorrowPlanNum(tomorrowCount);
         vo.setExpiredNum(expiredCount);
+        return vo;
+    }
+
+    @Override
+    public MaintainPlanAppQueryVo getDetail(Long id, AuthUser user) {
+        MaintainPlanAppQueryVo vo = new MaintainPlanAppQueryVo();
+        //查询保养计划信息
+        MaintainPlan maintainPlan = maintainPlanRepository.getOne(id);
+        if (null != maintainPlan){
+            Map<Integer, String> maintainLevels = getMaintainLevelMap(user.getCorporateIdentify());
+            vo.setMaintainPlanId(maintainPlan.getId());
+            vo.setDeviceName(maintainPlan.getDeviceName());
+            vo.setDeviceCode(maintainPlan.getDeviceCode());
+            vo.setDeviceSpec(maintainPlan.getDeviceSpec());
+            vo.setDeviceTypeName(maintainPlan.getDeviceTypeName());
+            vo.setDeviceUseDeptName(maintainPlan.getDeviceUseDeptName());
+            vo.setMaintainLevel(maintainPlan.getMaintainLevel());
+            vo.setMaintainLevelString(maintainLevels.get(maintainPlan.getMaintainLevel()));
+            vo.setRepairGroupId(maintainPlan.getRepairGroupId());
+            RepairGroup repairGroup = repairGroupRepository.getOne(maintainPlan.getRepairGroupId());
+            if (null!=repairGroup){
+                vo.setRepairGroupName(repairGroup.getName());
+            }
+            switch (maintainPlan.getCycleType()){
+                case 1:
+                    vo.setCycleType("单次");
+                    break;
+                case 2:
+                    vo.setCycleType("多次");
+                    break;
+            }
+            vo.setCycleTime(maintainPlan.getCycleTimeValue()+maintainPlan.getCycleTimeUnit());
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            vo.setLastTime(sdf.format(maintainPlan.getLastMaintainTime()));
+            vo.setNexMaintainTime(sdf.format(maintainPlan.getPlanMaintainTimeStart())+"至"+sdf.format(maintainPlan.getPlanMaintainTimeEnd()));
+            vo.setMaintainPart(maintainPlan.getMaintainPart());
+            vo.setMaintainStandard(maintainPlan.getMaintainStandard());
+            vo.setPlanManagerName(maintainPlan.getPlanManagerName());
+            vo.setPlanRemark(maintainPlan.getPlanRemark());
+        }else{
+            BussinessException biz = new BussinessException("10000","保养计划不存在");
+            throw biz;
+        }
         return vo;
     }
 }

@@ -1,4 +1,4 @@
-package tech.yozo.factoryrp.vo;
+package tech.yozo.factoryrp.vo.resp;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;

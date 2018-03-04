@@ -1,13 +1,10 @@
 package tech.yozo.factoryrp.service;
 
 import tech.yozo.factoryrp.page.Pagination;
-import tech.yozo.factoryrp.vo.MaintainPlanCountVo;
+import tech.yozo.factoryrp.vo.resp.*;
 import tech.yozo.factoryrp.vo.req.AddMaintainPlanReq;
 import tech.yozo.factoryrp.vo.req.MaintainPlanListForAppReq;
 import tech.yozo.factoryrp.vo.req.MaintainPlanListReq;
-import tech.yozo.factoryrp.vo.resp.MaintainPlanDetailVo;
-import tech.yozo.factoryrp.vo.resp.MaintainPlanListVo;
-import tech.yozo.factoryrp.vo.resp.SimpleMaintainPlanVo;
 import tech.yozo.factoryrp.vo.resp.auth.AuthUser;
 
 /**
@@ -52,4 +49,12 @@ public interface MaintainPlanService {
      * @return
      */
     public MaintainPlanCountVo getCount(Long corporateIdentify,AuthUser user);
+
+    /**
+     * 查询保养计划详情
+     * @param id
+     * @param user
+     * @return
+     */
+    public MaintainPlanAppQueryVo getDetail(Long id,AuthUser user);
 }
