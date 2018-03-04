@@ -19,9 +19,7 @@ import tech.yozo.factoryrp.utils.DateTimeUtil;
 import tech.yozo.factoryrp.utils.ErrorCode;
 import tech.yozo.factoryrp.vo.req.SpotInspectionPlanAddReq;
 import tech.yozo.factoryrp.vo.req.SpotInspectionPlanQueryReq;
-import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionPlanAddResp;
-import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionPlanQueryResp;
-import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionPlanQueryWarpResp;
+import tech.yozo.factoryrp.vo.resp.inspection.*;
 import tech.yozo.factoryrp.vo.resp.inspection.mobile.SpotInspectionPlanDeviceQueryResp;
 import tech.yozo.factoryrp.vo.resp.inspection.mobile.SpotInspectionPlanResp;
 
@@ -60,6 +58,10 @@ public class SpotInspectionPlanServiceImpl implements SpotInspectionPlanService 
 
     @Resource
     private DepartmentRepository departmentRepository;
+
+    @Resource
+    private DeviceTypeRepository deviceTypeRepository;
+
 
     private static Logger logger = LoggerFactory.getLogger(SpotInspectionPlanServiceImpl.class);
 
@@ -351,6 +353,89 @@ public class SpotInspectionPlanServiceImpl implements SpotInspectionPlanService 
 
             return spotInspectionPlanQueryWarpResp;
         }
+
+        return null;
+    }
+
+    /**
+     * 根据点检计划ID查询点检计划详情-WEB
+     * @param planId
+     * @param corporateIdentify
+     * @return
+     */
+    public SpotInspectionPlanDetailWarpResp querySpotInspectionPlanDetailByPlanId(Long planId, Long corporateIdentify){
+
+        List<SpotInspectionPlanDevice> planDeviceList = spotInspectionPlanDeviceRepository.findByCorporateIdentifyAndSpotInspectionPlan(corporateIdentify, planId);
+
+        if(!CheckParam.isNull(planDeviceList) && !planDeviceList.isEmpty()){
+
+            SpotInspectionPlan plan = spotInspectionPlanRepository.findOne(planId);
+
+            SpotInspectionPlanDetailWarpResp spotInspectionPlanDetailWarpResp = new SpotInspectionPlanDetailWarpResp();
+
+            Department department = departmentRepository.findOne(plan.getDepartment());
+
+            spotInspectionPlanDetailWarpResp.setDepartmentName(CheckParam.isNull(department) ? null : department.getName());
+            spotInspectionPlanDetailWarpResp.setEndTime(plan.getEndTime());
+            spotInspectionPlanDetailWarpResp.setLastExecuteTime(plan.getLastExecuteTime());
+            spotInspectionPlanDetailWarpResp.setNextExecuteTime(plan.getNextExecuteTime());
+            spotInspectionPlanDetailWarpResp.setPlanStatus(plan.getPlanStatus());
+            spotInspectionPlanDetailWarpResp.setRecyclePeriod(plan.getRecyclePeriod());
+            spotInspectionPlanDetailWarpResp.setRecyclePeriodType(plan.getRecyclePeriodType());
+            spotInspectionPlanDetailWarpResp.setSpotInspectionRange(plan.getSpotInspectionRange());
+
+            List<SpotInspectionPlanDeviceInfoResp> deviceInfoList = new ArrayList<>();
+
+            List<Long> deviceInfoIds = new ArrayList<>();
+            List<Long> deviceTypeIds = new ArrayList<>();
+
+            planDeviceList.forEach(p1 -> {
+                deviceInfoIds.add(p1.getDeviceId());
+                deviceTypeIds.add(p1.getDeviceType());
+            });
+
+            List<DeviceInfo> deviceInfos = deviceInfoRepository.findByIdsIn(deviceInfoIds);
+
+            if(!CheckParam.isNull(deviceInfos) && !deviceInfos.isEmpty()){
+
+                //形成设备Map
+                Map<Long, DeviceInfo> deviceInfoMap = deviceInfos.stream().collect(Collectors.toMap(DeviceInfo::getId, Function.identity()));
+
+                List<DeviceType> deviceTypeList = deviceTypeRepository.findByCorporateIdentifyAndIdIn(corporateIdentify, deviceTypeIds);
+                Map<Long,DeviceType> deviceTypeMap = deviceTypeList.stream().collect(Collectors.toMap(DeviceType::getId, Function.identity()));
+
+                planDeviceList.stream().forEach(p1 -> {
+
+                    if(!CheckParam.isNull(deviceInfoMap.get(p1.getDeviceId()))){
+
+                        SpotInspectionPlanDeviceInfoResp info = new SpotInspectionPlanDeviceInfoResp();
+
+                        DeviceInfo deviceInfo = deviceInfoMap.get(p1.getDeviceId());
+
+                        info.setDeviceCode(deviceInfo.getCode());
+                        info.setDeviceName(deviceInfo.getName());
+                        info.setDeviceSpecification(deviceInfo.getSpecification());
+
+                        boolean b = !CheckParam.isNull(CheckParam.isNull(deviceInfoMap)) && !CheckParam.isNull(deviceTypeMap.get(deviceInfo.getDeviceType()));
+
+                        if(!CheckParam.isNull(CheckParam.isNull(deviceInfoMap)) && !CheckParam.isNull(deviceTypeMap.get(deviceInfo.getDeviceType()))){
+                            info.setDeviceTypeName(deviceTypeMap.get(deviceInfo.getDeviceType()).getName());
+                        }
+
+
+                        info.setLineOrder(p1.getLineOrder());
+                        info.setDeviceId(p1.getDeviceId());
+
+                        deviceInfoList.add(info);
+                    }
+                });
+
+                spotInspectionPlanDetailWarpResp.setInfoList(deviceInfoList);
+
+                return spotInspectionPlanDetailWarpResp;
+            }
+        }
+
 
         return null;
     }

@@ -4,7 +4,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.*;
 import tech.yozo.factoryrp.config.auth.UserAuthService;
 import tech.yozo.factoryrp.service.SpotInspectionPlanService;
@@ -12,7 +11,7 @@ import tech.yozo.factoryrp.vo.base.ApiResponse;
 import tech.yozo.factoryrp.vo.req.SpotInspectionPlanAddReq;
 import tech.yozo.factoryrp.vo.req.SpotInspectionPlanQueryReq;
 import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionPlanAddResp;
-import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionPlanDeatilQueryResp;
+import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionPlanDetailWarpResp;
 import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionPlanQueryWarpResp;
 import tech.yozo.factoryrp.vo.resp.inspection.mobile.SpotInspectionPlanDeviceQueryResp;
 import tech.yozo.factoryrp.vo.resp.inspection.mobile.SpotInspectionPlanResp;
@@ -109,15 +108,14 @@ public class SpotInspectionPlanController extends BaseController{
      * @return
      */
     @ApiOperation(value = "根据点检计划ID查询点检计划详情-WEB",notes = "根据点检计划ID查询点检计划详情-WEB",httpMethod = "POST")
-    @GetMapping("/querySpotInspectionPlanDetail")
+    @GetMapping("/QuerySpotInspectionPlanDetailByPlanId")
     @ApiImplicitParams({
             @ApiImplicitParam(dataType = "Long" ,name = "planId", paramType = "query" ,
                     value = "巡检ID",required = true,defaultValue = "3")
     })
-    public ApiResponse<SpotInspectionPlanDeatilQueryResp> querySpotInspectionPlanDetail(@RequestParam("planId") Long planId, HttpServletRequest request){
+    public ApiResponse<SpotInspectionPlanDetailWarpResp> querySpotInspectionPlanDetailByPlanId(@RequestParam("planId") Long planId, HttpServletRequest request){
         Long corporateIdentify = userAuthService.getCurrentUserCorporateIdentify(request);
-        //spotInspectionPlanService.findByPage(spotInspectionPlanQueryReq, corporateIdentify)
-        return apiResponse();
+        return apiResponse(spotInspectionPlanService.querySpotInspectionPlanDetailByPlanId(planId, corporateIdentify));
     }
 
 

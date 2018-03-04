@@ -35,19 +35,12 @@ public class SpotInspectionPlanDeviceInfoResp implements Serializable{
      * 路线顺序
      */
     @ApiModelProperty(value = "路线顺序",notes ="路线顺序" )
-    private String lineOrder;
-
-
-    /**
-     * 适用设备类型
-     */
-    @ApiModelProperty(value = "适用设备类型",notes ="适用设备类型" )
-    private String deviceType;
+    private Integer lineOrder;
 
     /**
      * 适用设备类型名称
      */
-    @ApiModelProperty(value = "适用设备类型名称",notes ="适用设备类型名称" )
+    @ApiModelProperty(value = "适用设备类型名称",notes ="适用设备类型" )
     private String deviceTypeName;
 
     /**

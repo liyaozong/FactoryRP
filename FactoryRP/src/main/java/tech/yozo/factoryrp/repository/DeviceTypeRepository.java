@@ -1,5 +1,6 @@
 package tech.yozo.factoryrp.repository;
 
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import tech.yozo.factoryrp.entity.DeviceTroubleType;
 import tech.yozo.factoryrp.entity.DeviceType;
@@ -9,6 +10,17 @@ import java.util.List;
 
 @Repository
 public interface DeviceTypeRepository extends BaseRepository<DeviceType,Long>{
+
+
+    /**
+     * 根据伟业唯一标识和主键集合进行IN查询
+     * @param corporateIdentify
+     * @param ids
+     * @return
+     */
+    @Query("select d from DeviceType d where d.corporateIdentify = :corporateIdentify and d.id in :ids")
+    List<DeviceType> findByCorporateIdentifyAndIdIn(@Param("corporateIdentify")Long corporateIdentify, @Param("ids") List<Long> ids);
+
     /**
      * 根据企业标识和数据有效性查询设备类型列表
      * @param corporateIdentify

@@ -3,6 +3,7 @@ package tech.yozo.factoryrp.service;
 import tech.yozo.factoryrp.vo.req.SpotInspectionPlanAddReq;
 import tech.yozo.factoryrp.vo.req.SpotInspectionPlanQueryReq;
 import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionPlanAddResp;
+import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionPlanDetailWarpResp;
 import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionPlanQueryWarpResp;
 import tech.yozo.factoryrp.vo.resp.inspection.mobile.SpotInspectionPlanDeviceQueryResp;
 import tech.yozo.factoryrp.vo.resp.inspection.mobile.SpotInspectionPlanResp;
@@ -16,6 +17,14 @@ import java.util.List;
  * @description
  */
 public interface SpotInspectionPlanService {
+
+    /**
+     * 根据点检计划ID查询点检计划详情-WEB
+     * @param planId
+     * @param corporateIdentify
+     * @return
+     */
+    SpotInspectionPlanDetailWarpResp querySpotInspectionPlanDetailByPlanId(Long planId, Long corporateIdentify);
 
     /**
      * 查询巡检计划关联的设备
