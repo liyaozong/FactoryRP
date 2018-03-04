@@ -19,18 +19,22 @@ import tech.yozo.factoryrp.ui.fragment.*;
 import tech.yozo.factoryrp.utils.BottomNavigationViewHelper;
 import tech.yozo.factoryrp.utils.Constant;
 import tech.yozo.factoryrp.utils.HttpClient;
+import tech.yozo.factoryrp.vo.req.MaintainDetailSubmitReq;
 import tech.yozo.factoryrp.vo.resp.MaintainDetailResp;
 import tech.yozo.factoryrp.vo.resp.device.trouble.UsedSparePartsVo;
 import tech.yozo.factoryrp.vo.resp.device.trouble.WorkTimeVo;
 
 import java.util.List;
 
-public class MaintainDetailActivity extends AppCompatActivity implements HttpClient.OnHttpListener, RepairPartsFragment.OnFragmentInteractionListener, RepairWorkloadFragment.OnFragmentInteractionListener {
+public class MaintainDetailActivity extends AppCompatActivity implements HttpClient.OnHttpListener,
+        RepairPartsFragment.OnFragmentInteractionListener, RepairWorkloadFragment.OnFragmentInteractionListener,
+        MaintainAdviceFragment.OnFragmentInteractionListener {
 
     private ViewPager mViewPageContianer;
     private BottomNavigationView mNavigation;
 
     private MaintainDetailResp detailVo;
+    private MaintainDetailSubmitReq submitReq;
     private List<UsedSparePartsVo> modifyParts;
     private List<WorkTimeVo> modifyWorkTimes;
     private long id;
@@ -204,9 +208,17 @@ public class MaintainDetailActivity extends AppCompatActivity implements HttpCli
     }
 
     private void attemptSubmitMaintain() {
-        if(!cancelForParts && !cancelForTimes) {
+        if(!cancelForParts && !cancelForTimes && submitReq != null) {
             HttpClient client = HttpClient.getInstance();
+            submitReq.setMaintainPlanId(detailVo.getMaintainPlanId());
+            submitReq.setMaintainLevel(detailVo.getMaintainLevel());
+            submitReq.setRepairGroupId(detailVo.getRepairGroupId());
             //TODO
+            submitReq.setMaintainStatus(1);
+
+            submitReq.setWorkTimes(modifyWorkTimes);
+            submitReq.setReplaceSpares(modifyParts);
+            client.requestMaintainSubmit(this, this, submitReq);
         }
     }
 
@@ -219,6 +231,9 @@ public class MaintainDetailActivity extends AppCompatActivity implements HttpCli
                 mViewPageContianer.setAdapter(mFragmentPagerAdapter);
                 mViewPageContianer.setOnPageChangeListener(mOnPageChangeListener);
                 mViewPageContianer.setCurrentItem(mCurrentFragment);
+                break;
+            case HttpClient.REQUEST_MAINTAIN_SUBMIT:
+                finish();
                 break;
         }
     }
@@ -236,5 +251,10 @@ public class MaintainDetailActivity extends AppCompatActivity implements HttpCli
     @Override
     public void onModifyWorkTimes(List<WorkTimeVo> workTimes) {
         modifyWorkTimes = workTimes;
+    }
+
+    @Override
+    public void onModifyAdvice(MaintainDetailSubmitReq advice) {
+        submitReq = advice;
     }
 }

@@ -1,17 +1,27 @@
 package tech.yozo.factoryrp.ui.fragment;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 import tech.yozo.factoryrp.R;
+import tech.yozo.factoryrp.ui.dialog.TimePickerDialog;
+import tech.yozo.factoryrp.vo.req.MaintainDetailSubmitReq;
 import tech.yozo.factoryrp.vo.resp.MaintainDetailResp;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -43,9 +53,15 @@ public class MaintainAdviceFragment extends Fragment {
     EditText editTextTotalTime;
     Unbinder unbinder;
 
+    private Context mContext;
+    private OnFragmentInteractionListener mListener;
+
     private int mParam_mode;
     private MaintainDetailResp mParam_obj;
+    private MaintainDetailSubmitReq advice;
 
+    private SimpleDateFormat df = new SimpleDateFormat("yyyy年MM月dd日 HH:mm");
+    private TimePickerDialog mTimePickerDialog;
 
     public MaintainAdviceFragment() {
         // Required empty public constructor
@@ -70,11 +86,32 @@ public class MaintainAdviceFragment extends Fragment {
     }
 
     @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mContext = context;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mParam_mode = getArguments().getInt(ARG_PARAM1);
             mParam_obj = (MaintainDetailResp) getArguments().getSerializable(ARG_PARAM2);
+        }
+
+        if (mContext instanceof OnFragmentInteractionListener) {
+            advice = new MaintainDetailSubmitReq();
+            mListener = (OnFragmentInteractionListener) mContext;
+            mListener.onModifyAdvice(advice);
+        } else {
+            throw new RuntimeException(mContext.toString()
+                    + " must implement OnFragmentInteractionListener");
         }
     }
 
@@ -87,6 +124,88 @@ public class MaintainAdviceFragment extends Fragment {
 
         unbinder = ButterKnife.bind(this, view);
         tvMaintainGroup.setText(mParam_obj.getRepairGroupName());
+        rgNeedStop.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                switch (i) {
+                    case R.id.rb_stop_yes:
+                        advice.setStoped(1);
+                        break;
+                    case R.id.rb_stop_no:
+                        advice.setStoped(0);
+                        break;
+                }
+            }
+        });
+        editTextTotalTime.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if(editable.length() > 0) {
+                    advice.setCostHour(Integer.decode(editable.toString()));
+                }
+            }
+        });
+        editTextStopTime.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if(editable.length() > 0) {
+                    advice.setStopedHour(Integer.decode(editable.toString()));
+                }
+            }
+        });
+        editTextMaintainCost.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                advice.setMaintainAmount(editable.toString());
+            }
+        });
+        editTextMaintainDesc.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                advice.setMaintainRemark(editable.toString());
+            }
+        });
+
         return view;
     }
 
@@ -94,5 +213,71 @@ public class MaintainAdviceFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+    }
+
+    public interface OnFragmentInteractionListener {
+        void onModifyAdvice(MaintainDetailSubmitReq advice);
+    }
+
+    @OnClick({R.id.tv_start_time, R.id.tv_end_time})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.tv_start_time:
+            case R.id.tv_end_time:
+                openDateDialog(view.getId());
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void openDateDialog(final int id) {
+        mTimePickerDialog = new TimePickerDialog(getContext(), new TimePickerDialog.TimePickerDialogInterface() {
+            @Override
+            public void positiveListener() {
+                StringBuffer buffer = new StringBuffer();
+                buffer.append(mTimePickerDialog.getYear()).append("年")
+                        .append(mTimePickerDialog.getMonth()).append("月")
+                        .append(mTimePickerDialog.getDay()).append("日 ")
+                        .append(mTimePickerDialog.getHour()).append(":")
+                        .append(mTimePickerDialog.getMinute());
+                switch (id) {
+                    case R.id.tv_start_time:
+                        tvStartTime.setText(buffer);
+                        advice.setStartTime(buffer.toString());
+                        calcWorkTime(tvStartTime.getText(), tvEndTime.getText());
+                        break;
+                    case R.id.tv_end_time:
+                        tvEndTime.setText(buffer);
+                        advice.setEndTime(buffer.toString());
+                        calcWorkTime(tvStartTime.getText(), tvEndTime.getText());
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            @Override
+            public void negativeListener() {
+
+            }
+        });
+        mTimePickerDialog.showDateAndTimePickerDialog();
+    }
+
+    private void calcWorkTime(CharSequence start, CharSequence end) {
+        Date hasStart = null;
+        Date hasEnd = null;
+        try {
+            hasStart = df.parse(start.toString());
+            hasEnd = df.parse(end.toString());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        if(hasStart != null && hasEnd != null) {
+            long useTime = (hasEnd.getTime() - hasStart.getTime())/3600000;
+            editTextTotalTime.setText(String.valueOf(useTime));
+            advice.setCostHour((int) useTime);
+        }
     }
 }

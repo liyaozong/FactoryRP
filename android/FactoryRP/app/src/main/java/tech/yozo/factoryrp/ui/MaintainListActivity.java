@@ -14,7 +14,6 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import tech.yozo.factoryrp.R;
-import tech.yozo.factoryrp.ui.fragment.RepairRecordListFragment;
 import tech.yozo.factoryrp.utils.HttpClient;
 import tech.yozo.factoryrp.vo.req.MaintainTaskReq;
 import tech.yozo.factoryrp.vo.resp.MaintainTaskResp;

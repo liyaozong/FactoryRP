@@ -81,10 +81,11 @@ public class HttpClient {
     private static final String INSPECT_TASK = "api/spotInspectionPlan/queryMobilePlan";  //获取当前用户的巡检任务
     private static final String INSPECT_DEVICES = "api/spotInspectionPlan/querySpotInspectionPlanDevices";  //获取巡检任务关联的设备
     private static final String INSPECT_ITEM = "api/spotInspectionStandard/queryMobileInspectionItemByPlanIdAndDeviceId";  //获取某个设备的巡检项目
-    private static final String SUBMIT_INSPECT_RESULT = "";  //提交巡检结果
+    private static final String SUBMIT_INSPECT_RESULT = "api/spotInspectionRecord/spotInspectionItemsRecordMobileAdd";  //提交巡检结果
     private static final String MAINTAIN_TASK = "maintainPlan/simpleList";  //获取保养计划列表
     private static final String MAINTAIN_TASK_COUNT = "maintainPlan/getCount";  //获取保养计划统计数字
     private static final String MAINTAIN_DETAIL = "maintainPlan/getDetail";  //保养计划详情
+    private static final String MAINTAIN_SUBMIT = "maintainPlan/submit";  //保养任务提交
 
 
     public static final int REQUEST_LOGIN = 1;
@@ -123,6 +124,7 @@ public class HttpClient {
     public static final int REQUEST_MAINTAIN_TASK = 35;
     public static final int REQUEST_MAINTAIN_TASK_COUNT = 36;
     public static final int REQUEST_MAINTAIN_DETAIL = 37;
+    public static final int REQUEST_MAINTAIN_SUBMIT = 38;
 
 
     private AsyncHttpClient client;
@@ -452,6 +454,11 @@ public class HttpClient {
         client.get(context, getAbsoluteUrl(INSPECT_ITEM), headers.toArray(new Header[headers.size()]), params, new FactoryHttpResponseHandler(context, listener, REQUEST_INSPECT_ITEM));
     }
 
+    public void requestInspectSubmit(Context context, OnHttpListener listener, InspectRecordSubmitReq req) {
+        StringEntity params = new StringEntity(JSON.toJSONString(req), Charset.forName("UTF-8"));
+        client.post(context, getAbsoluteUrl(SUBMIT_INSPECT_RESULT), headers.toArray(new Header[headers.size()]), params, CONTENT_TYPE, new FactoryHttpResponseHandler(context, listener, REQUEST_SUBMIT_INSPECT_RESULT));
+    }
+
     public void requestMaintainTask(Context context, OnHttpListener listener, MaintainTaskReq req) {
         StringEntity params = new StringEntity(JSON.toJSONString(req), Charset.forName("UTF-8"));
         client.post(context, getAbsoluteUrl(MAINTAIN_TASK), headers.toArray(new Header[headers.size()]), params, CONTENT_TYPE, new FactoryHttpResponseHandler(context, listener, REQUEST_MAINTAIN_TASK));
@@ -463,6 +470,11 @@ public class HttpClient {
 
     public void requestMaintainDetail(Context context, OnHttpListener listener, RequestParams params) {
         client.get(context, getAbsoluteUrl(MAINTAIN_DETAIL), headers.toArray(new Header[headers.size()]), params, new FactoryHttpResponseHandler(context,listener, REQUEST_MAINTAIN_DETAIL));
+    }
+
+    public void requestMaintainSubmit(Context context, OnHttpListener listener, MaintainDetailSubmitReq req) {
+        StringEntity params = new StringEntity(JSON.toJSONString(req), Charset.forName("UTF-8"));
+        client.post(context, getAbsoluteUrl(MAINTAIN_SUBMIT), headers.toArray(new Header[headers.size()]), params, CONTENT_TYPE, new FactoryHttpResponseHandler(context, listener, REQUEST_MAINTAIN_SUBMIT));
     }
 
     public interface OnHttpListener {
@@ -653,7 +665,10 @@ public class HttpClient {
                             InspectDeviceDetailResp inspectItemResp = JSON.parseObject(response.getString("data"), InspectDeviceDetailResp.class);
                             mListener.onHttpSuccess(mRequestType, inspectItemResp, null);
                             break;
-
+                        case REQUEST_SUBMIT_INSPECT_RESULT:
+                            Toast.makeText(mContext, R.string.hint_finish_repair_success, Toast.LENGTH_SHORT).show();
+                            mListener.onHttpSuccess(mRequestType, null, null);
+                            break;
                         case REQUEST_MAINTAIN_TASK_COUNT:
                             MaintainTaskCount count = JSON.parseObject(response.getString("data"), MaintainTaskCount.class);
                             mListener.onHttpSuccess(mRequestType, count, null);
@@ -665,6 +680,10 @@ public class HttpClient {
                         case REQUEST_MAINTAIN_DETAIL:
                             MaintainDetailResp maintainTaskResp = JSON.parseObject(response.getString("data"), MaintainDetailResp.class);
                             mListener.onHttpSuccess(mRequestType, maintainTaskResp, null);
+                            break;
+                        case REQUEST_MAINTAIN_SUBMIT:
+                            Toast.makeText(mContext, R.string.hint_finish_repair_success, Toast.LENGTH_SHORT).show();
+                            mListener.onHttpSuccess(mRequestType, null, null);
                             break;
                         default:
                             break;
