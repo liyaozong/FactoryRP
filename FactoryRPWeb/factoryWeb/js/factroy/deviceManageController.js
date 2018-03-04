@@ -798,7 +798,7 @@ factoryParameterSettingApp.controller('deviceManageController',function ($scope,
                     $scope.installationAddressMaintenance=$scope.oneDeviceType.installationAddress;
 
                     // 设备类型
-                    $("#deviceTypeTrouble option").each(function(){
+                    $("#deviceTypeTroubleMaintenance option").each(function(){
                         if($(this).text()==$scope.oneDeviceType.deviceType){
                             $(this).prop("selected",true);
 //                        $scope.deviceTypeEdit=$(this).val();
@@ -806,7 +806,7 @@ factoryParameterSettingApp.controller('deviceManageController',function ($scope,
                     });
 
                     // 使用部门
-                    $("#useDeptTrouble option").each(function(){
+                    $("#useDeptMaintenance option").each(function(){
                         if($(this).text()==$scope.oneDeviceType.useDept){
                             $(this).prop("selected",true);
 //                        $scope.useDeptEdit=$(this).val();

@@ -1090,9 +1090,9 @@
         <div class="titleDiv">
             <span class="tips">设备信息</span>
             <p>
-                <label for="deviceTypeTrouble" >
+                <label for="deviceTypeTroubleMaintenance" >
                     <span style="width: 100px;text-align: right">设备分类:</span>
-                    <select ng-disabled="deviceTypes=='1'" id="deviceTypeMaintenance" ng-model="deviceTypeMaintenance" ng-options="deviceTypeListDetail.id as deviceTypeListDetail.name for deviceTypeListDetail in deviceTypeList">
+                    <select ng-disabled="deviceTypes=='1'" id="deviceTypeTroubleMaintenance" ng-model="deviceTypeTroubleMaintenance" ng-options="deviceTypeListDetail.id as deviceTypeListDetail.name for deviceTypeListDetail in deviceTypeList">
                         <option value="">请选择设备类型</option>
                         <option value="1">呵呵</option>
                     </select>
@@ -1164,57 +1164,51 @@
             <p>
                 <label for="cycleDateTime">
                     <span style="width: 100px;text-align: right">循环周期:</span>
-                    <input style="width: 66px;" id="cycleDateTime" ng-model="cycleDateTime" type="number" placeholder="请输入设备位置"/>
+                    <input style="width: 66px;" id="cycleDateTime" ng-model="cycleDateTime" type="number" placeholder=""/>
                     <select style="width: 66px;" ng-model="cycleDateType" id="cycleDateType">
-                        <option value="天">天</option>
+                        <option ng-selected="1" value="天">天</option>
                         <option value="月">月</option>
                         <option value="年">年</option>
                     </select>
                 </label>
-                <label for="troubleAddRemark">
+                <label for="maintainPart">
                     <span style="width: 100px;text-align: right">保养部位:<i>*</i></span>
-                    <input id="deviceUserPhone" ng-model="deviceUserPhone" type="text" placeholder="请输入操作者电话"/>
+                    <input id="maintainPart" ng-model="maintainPart" type="text" placeholder="请输入保养部位"/>
                 </label>
-                <label for="troubleAddRemark">
+                <label for="maintainStandard">
                     <span style="width: 100px;text-align: right">保养标准:<i>*</i></span>
-                    <input id="deviceUserPhone" ng-model="deviceUserPhone" type="text" placeholder="请输入操作者电话"/>
+                    <input id="maintainStandard" ng-model="maintainStandard" type="text" placeholder="请输入保养标准"/>
                 </label>
             </p>
             <p>
-                <label for="happendDate" >
+                <label for="lastMaintainTime" >
                     <span style="width: 100px;text-align: right">上次保养:<i>*</i></span>
-                    <input type="date" id="happendDate" placeholder="yyyy-MM-dd" min="20160601 | date:'yyyyMMdd" max="20201231 | date:'yyyyMMdd" required="" ng-model="happendDate">
+                    <input type="date" id="lastMaintainTime" placeholder="yyyy-MM-dd" min="20160601 | date:'yyyyMMdd" max="20201231 | date:'yyyyMMdd" required="" ng-model="lastMaintainTime">
                 </label>
-                <label for="deviceUser">
+                <label for="planMaintainTimeStart">
                     <span style="width: 100px;text-align: right">计划保养:</span>
-                    <input type="date" id="happendDate" placeholder="yyyy-MM-dd" min="20160601 | date:'yyyyMMdd" max="20201231 | date:'yyyyMMdd" required="" ng-model="happendDate">
+                    <input type="date" id="planMaintainTimeStart" placeholder="yyyy-MM-dd" min="20160601 | date:'yyyyMMdd" max="20201231 | date:'yyyyMMdd" required="" ng-model="planMaintainTimeStart">
                 </label>
                 <label for="deviceUserPhone">
                     <span style="width: 100px;text-align: right">到:</span>
-                    <input type="date" id="happendDate" placeholder="yyyy-MM-dd" min="20160601 | date:'yyyyMMdd" max="20201231 | date:'yyyyMMdd" required="" ng-model="happendDate">
+                    <input type="date" id="planMaintainTimeEnd" placeholder="yyyy-MM-dd" min="20160601 | date:'yyyyMMdd" max="20201231 | date:'yyyyMMdd" required="" ng-model="planMaintainTimeEnd">
                 </label>
             </p>
-        </div>
-        <div class="titleDiv">
-            <span class="tips">故障图片</span>
-            <p>
-                <label for="remarkEdit">
-                    <span style="width: 100px;text-align: right">图片上传:</span>
-                    <input style="width: 553px;border: 1px solid #e6e6e6;height: 30px;line-height: 30px;" type="file" placeholder="选择上传的图片">
-                    <button style="font-size: 12px;" class="btn">上传</button>
+            <p style="text-align: left">
+                <label style="margin-left: 29px;" for="planManagerId">
+                    <span style="width: 100px;text-align: right">保养人员:<i>*</i></span>
+                    <input id="planManagerId" ng-model="planManagerId" type="text" placeholder="请输入操作者电话"/>
                 </label>
             </p>
             <p>
-                <label for="remarkEdit">
-                    <span style="width: 100px;text-align: right">已上传图片:</span>
-                    <b style="    display: inline-block;width: 636px;height: auto;min-height: 85px;border: 1px solid #e6e6e6;vertical-align: top;">
-
-                    </b>
+                <label for="planRemark">
+                    <span style="width: 100px;text-align: right">计划描述:<i>*</i></span>
+                    <textarea placeholder="请输入计划描述" name="planRemark" id="planRemark" ng-model="planRemark"></textarea>
                 </label>
             </p>
         </div>
         <div class="submitBtn1" style="text-align: center;padding-left: 40px;">
-            <button type="button" ng-click="addTroubleRecordSure()" value="" class="btn">保存</button>
+            <button type="button" ng-click="addMaintenanceRecordSure()" value="" class="btn">保存</button>
             <button type="button" value="" class="btn" onClick="hideDiv('addMaintenanceRecordBalance')">取消</button>
         </div>
     </div>
