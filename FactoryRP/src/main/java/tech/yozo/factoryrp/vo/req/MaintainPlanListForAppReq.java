@@ -13,7 +13,7 @@ import java.io.Serializable;
 @Data
 public class MaintainPlanListForAppReq extends BaseRequest implements Serializable {
 
-    @ApiModelProperty(value = "计划状态(1:今日可以执行计划；2：今日新增计划；3：今日到期计划；4：明日可执行计划；5：明日新增计划；6：明日到期计划；7：已过期计划)",example = "1")
+    @ApiModelProperty(value = "计划状态(1:今日计划；2：明日计划；3：已过期计划)",example = "1")
     private Integer planType;
 
     @ApiModelProperty(value = "设备名称")

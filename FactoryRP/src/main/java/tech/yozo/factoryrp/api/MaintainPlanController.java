@@ -61,4 +61,12 @@ public class MaintainPlanController extends BaseController{
         Long corporateIdentify =userAuthService.getCurrentUserCorporateIdentify(request);
         return apiResponse(maintainPlanService.findSimpleListByPage(param,corporateIdentify));
     }
+
+    @RequestMapping("getCount")
+    @ApiOperation(value = "首页展示保养计划数量--Mobile",notes = "首页展示保养计划数量--Mobile",httpMethod = "POST")
+    public ApiResponse countWorkOrderList(HttpServletRequest request){
+        Long corporateIdentify =userAuthService.getCurrentUserCorporateIdentify(request);
+        AuthUser user = userAuthService.getCurrentUser(request);
+        return apiResponse(maintainPlanService.getCount(corporateIdentify,user));
+    }
 }

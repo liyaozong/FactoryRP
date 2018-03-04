@@ -9,12 +9,8 @@ import tech.yozo.factoryrp.utils.CheckParam;
 public enum PlanStatusEnum {
 
     TODAY(1,"今日可执行"),
-    TODAY_NEW(2,"今日新增"),
-    TODAY_EXPIRED(3,"今日到期"),
-    TOMO(4,"明日可执行"),
-    TOMO_NEW(5,"明日新增"),
-    TOMO_EXPIRED(6,"明日到期"),
-    EXPIRED(7,"已过期");
+    TOMO(2,"明日可执行"),
+    EXPIRED(3,"已过期");
 
     private Integer code;
     private String name;

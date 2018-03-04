@@ -18,6 +18,7 @@ import tech.yozo.factoryrp.repository.MaintainPlanRepository;
 import tech.yozo.factoryrp.service.DepartmentService;
 import tech.yozo.factoryrp.service.DeviceTypeService;
 import tech.yozo.factoryrp.service.MaintainPlanService;
+import tech.yozo.factoryrp.vo.MaintainPlanCountVo;
 import tech.yozo.factoryrp.vo.req.AddMaintainPlanReq;
 import tech.yozo.factoryrp.vo.req.MaintainPlanListForAppReq;
 import tech.yozo.factoryrp.vo.req.MaintainPlanListReq;
@@ -177,6 +178,51 @@ public class MaintainPlanServiceImpl implements MaintainPlanService{
         MaintainPlan maintainPlan = maintainPlanRepository.getOne(id);
         MaintainPlanDetailVo vo = new MaintainPlanDetailVo();
         BeanUtils.copyProperties(maintainPlan,vo);
+        return vo;
+    }
+
+    @Override
+    public MaintainPlanCountVo getCount(Long corporateIdentify,AuthUser user) {
+        Long todayCount = maintainPlanRepository.count(new Specification<MaintainPlan>() {
+            @Override
+            public Predicate toPredicate(Root<MaintainPlan> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
+                List<Predicate> listCon = new ArrayList<>();
+                listCon.add(criteriaBuilder.equal(root.get("planStatus").as(Long.class),PlanStatusEnum.TODAY.getCode()));
+                listCon.add(criteriaBuilder.equal(root.get("corporateIdentify").as(Long.class),corporateIdentify));
+                listCon.add(criteriaBuilder.equal(root.get("planManagerId").as(Long.class),user.getUserId()));
+                Predicate[] predicates = new Predicate[listCon.size()];
+                predicates = listCon.toArray(predicates);
+                return criteriaBuilder.and(predicates);
+            }
+        });
+        Long tomorrowCount = maintainPlanRepository.count(new Specification<MaintainPlan>() {
+            @Override
+            public Predicate toPredicate(Root<MaintainPlan> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
+                List<Predicate> listCon = new ArrayList<>();
+                listCon.add(criteriaBuilder.equal(root.get("planStatus").as(Long.class),PlanStatusEnum.TOMO.getCode()));
+                listCon.add(criteriaBuilder.equal(root.get("corporateIdentify").as(Long.class),corporateIdentify));
+                listCon.add(criteriaBuilder.equal(root.get("planManagerId").as(Long.class),user.getUserId()));
+                Predicate[] predicates = new Predicate[listCon.size()];
+                predicates = listCon.toArray(predicates);
+                return criteriaBuilder.and(predicates);
+            }
+        });
+        Long expiredCount = maintainPlanRepository.count(new Specification<MaintainPlan>() {
+            @Override
+            public Predicate toPredicate(Root<MaintainPlan> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
+                List<Predicate> listCon = new ArrayList<>();
+                listCon.add(criteriaBuilder.equal(root.get("planStatus").as(Long.class),PlanStatusEnum.EXPIRED.getCode()));
+                listCon.add(criteriaBuilder.equal(root.get("corporateIdentify").as(Long.class),corporateIdentify));
+                listCon.add(criteriaBuilder.equal(root.get("planManagerId").as(Long.class),user.getUserId()));
+                Predicate[] predicates = new Predicate[listCon.size()];
+                predicates = listCon.toArray(predicates);
+                return criteriaBuilder.and(predicates);
+            }
+        });
+        MaintainPlanCountVo vo = new MaintainPlanCountVo();
+        vo.setTodayPlanNum(todayCount);
+        vo.setTomorrowPlanNum(tomorrowCount);
+        vo.setExpiredNum(expiredCount);
         return vo;
     }
 }

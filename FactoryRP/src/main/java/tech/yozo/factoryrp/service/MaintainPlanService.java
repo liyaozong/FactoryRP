@@ -1,6 +1,7 @@
 package tech.yozo.factoryrp.service;
 
 import tech.yozo.factoryrp.page.Pagination;
+import tech.yozo.factoryrp.vo.MaintainPlanCountVo;
 import tech.yozo.factoryrp.vo.req.AddMaintainPlanReq;
 import tech.yozo.factoryrp.vo.req.MaintainPlanListForAppReq;
 import tech.yozo.factoryrp.vo.req.MaintainPlanListReq;
@@ -44,4 +45,11 @@ public interface MaintainPlanService {
      * @return
      */
     public MaintainPlanDetailVo getDetailById(Long id);
+
+    /**
+     * 统计当前登陆人的保养计划数量
+     * @param corporateIdentify
+     * @return
+     */
+    public MaintainPlanCountVo getCount(Long corporateIdentify,AuthUser user);
 }
