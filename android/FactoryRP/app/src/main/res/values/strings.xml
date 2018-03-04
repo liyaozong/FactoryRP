@@ -75,6 +75,8 @@
     <string name="title_select_maintainer">选择维修人员</string>
     <string name="title_inspect_devices">点检设备列表</string>
     <string name="title_inspect_detail">设备点检项</string>
+    <string name="title_maintain_task">保养任务列表</string>
+    <string name="title_maintain_detail">保养任务</string>
 
     <string name="title_repair_info">故障信息</string>
     <string name="title_repair_advice">处理意见</string>
@@ -134,5 +136,8 @@
     <string name="submit_hint_2">未填写工作量，工时统计将会少于实际工作时间</string>
     <string name="submit_positive_2">继续提交</string>
     <string name="submit_negative">返回填写</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

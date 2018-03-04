@@ -24,15 +24,15 @@ public class DeviceDetailActivity extends AppCompatActivity {
             DeviceInfoFragment.class.getName(),
             PartsListFragment.class.getName(),
             RepairRecordListFragment.class.getName(),
-            MaintainRecordListFragment.class.getName(),
-            CheckRecordListFragment.class.getName()
+//            MaintainRecordListFragment.class.getName(),
+//            CheckRecordListFragment.class.getName()
     };
     private int[] bottomNavigationItems = {
             R.id.navigation_device_info,
             R.id.navigation_device_parts_list,
             R.id.navigation_repair_record_list,
-            R.id.navigation_maintain_record_list,
-            R.id.navigation_check_record_list
+//            R.id.navigation_maintain_record_list,
+//            R.id.navigation_check_record_list
     };
 
     private int mCurrentFragment = 0;

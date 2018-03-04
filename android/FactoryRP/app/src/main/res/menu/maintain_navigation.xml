@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+            android:id="@+id/navigation_maintain_info"
+            android:icon="@drawable/ic_device_info"
+            android:title="@string/title_maintain_detail"/>
+
+    <item
+            android:id="@+id/navigation_maintain_advice"
+            android:icon="@drawable/ic_device_info"
+            android:title="@string/title_repair_advice"/>
+
+    <item
+            android:id="@+id/navigation_maintain_workload"
+            android:icon="@drawable/ic_device_info"
+            android:title="@string/title_repair_workload"/>
+
+    <item
+            android:id="@+id/navigation_maintain_parts"
+            android:icon="@drawable/ic_device_info"
+            android:title="@string/title_repair_parts"/>
+
+</menu>
