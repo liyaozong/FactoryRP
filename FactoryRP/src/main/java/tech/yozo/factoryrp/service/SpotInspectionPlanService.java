@@ -59,4 +59,12 @@ public interface SpotInspectionPlanService {
      */
     SpotInspectionPlanQueryWarpResp findByPage(SpotInspectionPlanQueryReq spotInspectionPlanQueryReq, Long corporateIdentify);
 
+
+    /**
+     * 删除巡检计划
+     * @param planId
+     * @param corporateIdentify
+     */
+    void deleteSpotInspectionPlanDetailByPlanId(Long planId, Long corporateIdentify);
+
 }

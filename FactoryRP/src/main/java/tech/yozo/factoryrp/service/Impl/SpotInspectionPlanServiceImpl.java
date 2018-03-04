@@ -440,4 +440,32 @@ public class SpotInspectionPlanServiceImpl implements SpotInspectionPlanService 
         return null;
     }
 
+
+    /**
+     * 删除巡检计划
+     * @param planId
+     * @param corporateIdentify
+     */
+    public void deleteSpotInspectionPlanDetailByPlanId(Long planId, Long corporateIdentify){
+
+        SpotInspectionPlan plan = spotInspectionPlanRepository.findOne(planId);
+
+        if(CheckParam.isNull(plan)){
+            throw new BussinessException(ErrorCode.NO_SPOTINSPECTIONPLAN__EXIST_ERROR.getCode(),
+                    ErrorCode.NO_SPOTINSPECTIONPLAN__EXIST_ERROR.getMessage());
+        }
+
+        List<SpotInspectionPlanDevice> planDeviceList = spotInspectionPlanDeviceRepository.findByCorporateIdentifyAndSpotInspectionPlan(corporateIdentify,
+                planId);
+
+        /**
+         * 删除巡检计划需要删除巡检计划相关信息
+         */
+        if(!CheckParam.isNull(planDeviceList) && !planDeviceList.isEmpty()){
+            spotInspectionPlanRepository.delete(plan);
+            spotInspectionPlanDeviceRepository.delete(planDeviceList);
+        }
+
+    }
+
 }

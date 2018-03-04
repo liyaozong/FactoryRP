@@ -119,4 +119,20 @@ public class SpotInspectionPlanController extends BaseController{
     }
 
 
+    /**
+     * 删除巡检计划
+     * @param planId
+     */
+    @ApiOperation(value = "删除巡检计划-WEB",notes = "删除巡检计划-WEB",httpMethod = "POST")
+    @GetMapping("/deleteSpotInspectionPlanDetailByPlanId")
+    @ApiImplicitParams({
+            @ApiImplicitParam(dataType = "Long" ,name = "planId", paramType = "query" ,
+                    value = "巡检ID",required = true,defaultValue = "3")
+    })
+    public ApiResponse deleteSpotInspectionPlanDetailByPlanId(Long planId,HttpServletRequest request){
+        Long corporateIdentify = userAuthService.getCurrentUserCorporateIdentify(request);
+        spotInspectionPlanService.deleteSpotInspectionPlanDetailByPlanId(planId,corporateIdentify);
+        return apiResponse();
+    }
+
 }

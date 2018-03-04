@@ -1,5 +1,8 @@
 package tech.yozo.factoryrp.service.Impl;
 
+import com.alibaba.fastjson.JSON;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Sort;
 import org.springframework.transaction.annotation.Transactional;
 import tech.yozo.factoryrp.entity.*;
@@ -16,6 +19,7 @@ import tech.yozo.factoryrp.service.ProcessService;
 import tech.yozo.factoryrp.service.TroubleRecordService;
 import tech.yozo.factoryrp.utils.CheckParam;
 import tech.yozo.factoryrp.utils.DateTimeUtil;
+import tech.yozo.factoryrp.utils.ErrorCode;
 import tech.yozo.factoryrp.vo.req.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +33,7 @@ import tech.yozo.factoryrp.vo.resp.device.trouble.*;
 import tech.yozo.factoryrp.vo.resp.process.DeviceProcessDetailWarpResp;
 import tech.yozo.factoryrp.vo.resp.process.DeviceProcessHandlerResp;
 
+import javax.annotation.Resource;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
@@ -56,6 +61,11 @@ public class TroubleRecordServiceImpl implements TroubleRecordService {
     private TroubleRecordUserRelRepository troubleRecordUserRelRepository;
     @Autowired
     private ProcessService processService;
+
+    @Resource
+    private DeviceInfoRepository deviceInfoRepository;
+
+    private static Logger logger = LoggerFactory.getLogger(TroubleRecordServiceImpl.class);
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -117,6 +127,9 @@ public class TroubleRecordServiceImpl implements TroubleRecordService {
 
     @Override
     public Pagination<SimpleTroubleRecordVo> findByPage(TroubleListReq param) {
+
+        logger.info(">>>>>>>>>>>>>>>>>>设备对应的故障列表请求参数<<<<<<<<<<<<<<<<<<<<<<<<<"+ JSON.toJSONString(param));
+
         Integer currentPage = param.getCurrentPage();
         Integer itemsPerPage = param.getItemsPerPage();
         if(null==currentPage){
@@ -128,15 +141,29 @@ public class TroubleRecordServiceImpl implements TroubleRecordService {
         if (currentPage > 0) {
             currentPage-=1;
         }
+
+        /*DeviceInfo deviceInfo = deviceInfoRepository.findOne(param.getDeviceId());
+
+        if(CheckParam.isNull(deviceInfo)){
+            throw new BussinessException(ErrorCode.NO_DEVICEINFO_ERROR.getCode(),
+                    ErrorCode.NO_DEVICEINFO_ERROR.getMessage());
+        }*/
+
         Pageable p = new PageRequest(currentPage, itemsPerPage);
         Page<TroubleRecord> page = troubleRecordRepository.findAll(new Specification<TroubleRecord>() {
             @Override
             public Predicate toPredicate(Root<TroubleRecord> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
                 List<Predicate> conList = new ArrayList<>();
                 criteriaQuery.orderBy(criteriaBuilder.desc(root.get("createTime")));
-                DeviceInfo d = new DeviceInfo();
-                d.setId(param.getDeviceId());
-                return criteriaBuilder.equal(root.get("deviceInfo").as(DeviceInfo.class),d);
+
+                //if(!CheckParam.isNull(deviceInfo)){
+                    DeviceInfo d = new DeviceInfo();
+                    d.setId(param.getDeviceId());
+                    return criteriaBuilder.equal(root.get("deviceInfo").as(DeviceInfo.class),d);
+                    //return criteriaBuilder.equal(root.get("deviceInfo").as(DeviceInfo.class),deviceInfo);
+               // }else{
+               //     return null;
+               // }
             }
         },p);
         Pagination<SimpleTroubleRecordVo> res = new Pagination(currentPage+1,itemsPerPage,page.getTotalElements());

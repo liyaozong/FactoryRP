@@ -42,7 +42,8 @@ public enum ErrorCode {
     SPOTINSPECTIONSTANDARD_REPET_ERROR("0000024","点检标准重复"),
     SPOTINSPECTIONPLAN_REPET_ERROR("0000025","点检计划重复"),
     TIMEPARSE_ERROR("0000026","出现时间转换异常"),
-    NO_DEVICEINFO_ERROR("0000027","设备信息不存在");
+    NO_DEVICEINFO_ERROR("0000027","设备信息不存在"),
+    NO_SPOTINSPECTIONPLAN__EXIST_ERROR("0000028","巡检计划不存在");
 
 
     private String code;
