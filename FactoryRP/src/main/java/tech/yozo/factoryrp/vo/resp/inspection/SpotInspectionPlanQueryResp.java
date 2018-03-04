@@ -19,6 +19,13 @@ import java.util.List;
 @Data
 public class SpotInspectionPlanQueryResp implements Serializable {
 
+
+    /**
+     * 巡检项目ID
+     */
+    @ApiModelProperty(value = "巡检项目ID",notes ="巡检项目ID" )
+    private Long id;
+
     /**
      * 巡检项目名称
      */

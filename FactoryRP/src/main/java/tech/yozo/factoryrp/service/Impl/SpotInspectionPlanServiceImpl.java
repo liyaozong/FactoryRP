@@ -211,15 +211,23 @@ public class SpotInspectionPlanServiceImpl implements SpotInspectionPlanService 
 
             List<SpotInspectionPlanResp> planResultList = new ArrayList<>();
 
+            spotInspectionPlans = spotInspectionPlans.stream().filter(s1 -> JSON.parseArray(s1.getExecutors(), Long.class).contains(userId)).collect(Collectors.toList());
 
+            /*for (SpotInspectionPlan plan: spotInspectionPlans) {
+                List<Long> executorList = JSON.parseArray(plan.getExecutors(), Long.class);
+                if(executorList.contains(userId)){
+                    spotInspectionPlans.add(plan);
+                }
+            }
+*/
             //选出当前userId执行的任务
-            spotInspectionPlans.stream().forEach(s1 -> {
+            /*spotInspectionPlans.stream().forEach(s1 -> {
                 List<Long> executorList = JSON.parseArray(s1.getExecutors(), Long.class);
 
                 if(executorList.contains(userId)){
                     spotInspectionPlans.add(s1);
                 }
-            });
+            });*/
 
             if(!CheckParam.isNull(spotInspectionPlans) && !spotInspectionPlans.isEmpty()){
 
@@ -330,6 +338,7 @@ public class SpotInspectionPlanServiceImpl implements SpotInspectionPlanService 
                 spotInspectionPlanQueryResp.setNextExecuteTime(s1.getNextExecuteTime());
                 spotInspectionPlanQueryResp.setExecutors(JSON.parseArray(s1.getExecutors(),Long.class));
                 spotInspectionPlanQueryResp.setRecyclePeriod(SpotInspectionPlanRecycleTypeEnum.handlerRecycleTimer(s1.getRecyclePeriod(),s1.getRecyclePeriodType()));
+                spotInspectionPlanQueryResp.setId(s1.getId());
 
                 spotInspectionPlanQueryRespList.add(spotInspectionPlanQueryResp);
             });
