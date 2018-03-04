@@ -8,10 +8,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tech.yozo.factoryrp.entity.*;
 import tech.yozo.factoryrp.enums.inspection.SpotInspectionItemsRecordTypeEnum;
+import tech.yozo.factoryrp.enums.inspection.SpotInspectionPlanRecycleTypeEnum;
 import tech.yozo.factoryrp.exception.BussinessException;
 import tech.yozo.factoryrp.repository.*;
 import tech.yozo.factoryrp.service.SpotInspectionStandardService;
 import tech.yozo.factoryrp.utils.CheckParam;
+import tech.yozo.factoryrp.utils.DateTimeUtil;
 import tech.yozo.factoryrp.utils.ErrorCode;
 import tech.yozo.factoryrp.vo.req.SpotInspectionStandardAddReq;
 import tech.yozo.factoryrp.vo.req.SpotInspectionStandardQueryReq;
@@ -25,9 +27,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -56,6 +56,15 @@ public class SpotInspectionStandardServiceImpl implements SpotInspectionStandard
     @Resource
     private SpotInspectionPlanDeviceRepository spotInspectionPlanDeviceRepository;
 
+    @Resource
+    private SpotInspectionRecordDetailRepository spotInspectionRecordDetailRepository;
+
+    @Resource
+    private SpotInspectionRecordRepository spotInspectionRecordRepository;
+
+    @Resource
+    private SpotInspectionPlanRepository spotInspectionPlanRepository;
+
 
     /**
      * 手机端根据巡检计划ID和设备code查询巡检项目
@@ -81,10 +90,25 @@ public class SpotInspectionStandardServiceImpl implements SpotInspectionStandard
 
                 List<SpotInspectionItems> spotInspectionItemsList = spotInspectionItemsRepository.findByStandardAndCorporateIdentify(spotInspectionPlanDevice.getSpotInspectionStandard(), corporateIdentify);
 
+                List<SpotInspectionRecord> recordList = spotInspectionRecordRepository.findByCorporateIdentifyAndPlanId(corporateIdentify, planId);
 
                 if (!CheckParam.isNull(spotInspectionItemsList) && !spotInspectionItemsList.isEmpty()) {
 
                     List<SpotInspectionStandardItemsQueryResp> itemList = new ArrayList<>();
+
+                    List<Long> itemIdList = new ArrayList<>();
+
+                    spotInspectionItemsList.forEach(s1 -> {
+                        itemIdList.add(s1.getId());
+                    });
+
+                    SpotInspectionPlan plan = spotInspectionPlanRepository.findOne(spotInspectionPlanDevice.getSpotInspectionPlan());
+
+
+                    //计算当前时间减去周期之后的时间
+                    Date date = DateTimeUtil.plusDateByParam(plan.getNextExecuteTime(), plan.getRecyclePeriod(), plan.getRecyclePeriodType());
+                    Map<Long, Integer> executeResultMap = inspectionExecuteResult(corporateIdentify, date, itemIdList);
+
 
                     spotInspectionItemsList.stream().forEach(s1 -> {
                         SpotInspectionStandardItemsQueryResp spotInspectionStandardItemsQueryResp = new SpotInspectionStandardItemsQueryResp();
@@ -95,6 +119,20 @@ public class SpotInspectionStandardServiceImpl implements SpotInspectionStandard
                         spotInspectionStandardItemsQueryResp.setName(s1.getName());
                         spotInspectionStandardItemsQueryResp.setRecordTypeName(s1.getRecordType());
 
+
+                        //该计划下面没有过巡检记录表示没有进行过巡检
+                       /* if(CheckParam.isNull(recordList) || recordList.isEmpty()){
+                            spotInspectionStandardItemsQueryResp.setInspectionStatus(2);
+                        }*/
+
+
+
+                        //设置在规定巡检周期内，是否执行过，1执行2未执行
+                        if(!CheckParam.isNull(executeResultMap.get(s1.getId()))){
+                            spotInspectionStandardItemsQueryResp.setInspectionStatus(executeResultMap.get(s1.getId()));
+                        }else{
+                            spotInspectionStandardItemsQueryResp.setInspectionStatus(2);
+                        }
 
                         itemList.add(spotInspectionStandardItemsQueryResp);
 
@@ -114,9 +152,49 @@ public class SpotInspectionStandardServiceImpl implements SpotInspectionStandard
             }
 
         }
-            return null;
+                throw new BussinessException(ErrorCode.NO_DEVICEINFO_ERROR.getCode(),ErrorCode.NO_DEVICEINFO_ERROR.getMessage());
     }
 
+
+    /**
+     * 返回执行结果 是否执行了提交 1执行2未执行
+     * @param corporateIdentify
+     * @param compareTime
+     * @param itemIdList
+     * @return
+     */
+    public Map<Long,Integer> inspectionExecuteResult(Long corporateIdentify,Date compareTime, List<Long> itemIdList){
+
+        //查询出规定周期内执行过的记录
+        List<SpotInspectionRecordDetail> detailList = spotInspectionRecordDetailRepository.findByCorporateIdentifyAndStandardItemIdInAndCreateTimeGreaterThan(corporateIdentify, itemIdList, compareTime);
+
+        Map<Long,Integer> resultMap = new HashMap<>();
+
+
+        //如果查询出来为空全部设置为未执行
+        if(!CheckParam.isNull(detailList) && !detailList.isEmpty()){
+            itemIdList.stream().forEach(m1 -> {
+                resultMap.put(m1,2);
+            });
+
+            return resultMap;
+        }
+
+
+        detailList.stream().forEach(d1 -> {
+
+            //如果能比对到说明执行过，比对不到的就说明未执行过
+            if(itemIdList.contains(d1.getStandardItemId())){
+                resultMap.put(d1.getStandardItemId(),1);
+            }else{
+                resultMap.put(d1.getStandardItemId(),2);
+            }
+
+        });
+
+        return resultMap;
+
+    }
 
     /**
      * 根据设备ID查询点检标准

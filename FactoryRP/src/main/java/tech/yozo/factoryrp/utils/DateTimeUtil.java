@@ -257,6 +257,42 @@ public class DateTimeUtil {
 	}
 
 
+	/**
+	 * 时间相减
+	 * @param date
+	 * @param period
+	 * @param type
+	 * @return
+	 */
+	public static Date subtractDateByParam(Date date,int period,String type){
+
+		try {
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(date);
+
+			if(SpotInspectionPlanRecycleTypeEnum.SPOT_INSPECTION_PLAN_RECYCLE_TYPE_MONTH.equals(type)){
+				int currMonth = Calendar.DAY_OF_MONTH;
+				calendar.set(currMonth, calendar.get(currMonth) - period);
+			}else if(SpotInspectionPlanRecycleTypeEnum.SPOT_INSPECTION_PLAN_RECYCLE_TYPE_YEAR.getCode().equals(type)){
+				int currYear = Calendar.YEAR;
+				calendar.set(currYear, calendar.get(currYear) - period);
+			}else if(SpotInspectionPlanRecycleTypeEnum.SPOT_INSPECTION_PLAN_RECYCLE_TYPE_DAY.getCode().equals(type)){
+				int currDay = Calendar.DAY_OF_MONTH;
+				calendar.set(currDay, calendar.get(currDay) - period);
+			}else if(SpotInspectionPlanRecycleTypeEnum.SPOT_INSPECTION_PLAN_RECYCLE_TYPE_HOUR.getCode().equals(type)){
+				int currHour = Calendar.HOUR_OF_DAY;
+				calendar.set(currHour, calendar.get(currHour) - period);
+			}else if(!SpotInspectionPlanRecycleTypeEnum.verifyIsExist(type)){{
+				return new Date();
+			}
+
+			}
+			return calendar.getTime();
+		} catch (Exception ex) {
+			return null;
+		}
+	}
+
     /**
      * 根据参数在指定日期上面加上指定的时间
      * @param date
@@ -297,10 +333,12 @@ public class DateTimeUtil {
         Date date = new Date();
         Date parsedDate = plusDateByParam(date, 10, SpotInspectionPlanRecycleTypeEnum.SPOT_INSPECTION_PLAN_RECYCLE_TYPE_HOUR.getCode());
         Date parsedDateYear = plusDateByParam(date, 1, SpotInspectionPlanRecycleTypeEnum.SPOT_INSPECTION_PLAN_RECYCLE_TYPE_YEAR.getCode());
+        Date parsedDateYear2 = subtractDateByParam(date, 1, SpotInspectionPlanRecycleTypeEnum.SPOT_INSPECTION_PLAN_RECYCLE_TYPE_YEAR.getCode());
 
 
         System.out.println(parsedDate);
         System.out.println(parsedDateYear);
+        System.out.println(parsedDateYear2);
     }
 
 	/**

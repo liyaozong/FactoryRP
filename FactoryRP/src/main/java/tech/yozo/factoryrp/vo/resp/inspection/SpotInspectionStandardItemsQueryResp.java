@@ -52,4 +52,10 @@ public class SpotInspectionStandardItemsQueryResp implements Serializable {
     @ApiModelProperty(value = "下限值",notes ="下限值" )
     private Integer lowerLimit;
 
+    /**
+     * 是否执行了提交 1执行2未执行
+     */
+    @ApiModelProperty(value = "是否执行了提交 1执行2未执行",notes ="是否执行了提交 1执行2未执行" )
+    private Integer inspectionStatus;
+
 }
