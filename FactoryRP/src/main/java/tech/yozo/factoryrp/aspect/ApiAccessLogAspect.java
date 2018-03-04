@@ -1,5 +1,6 @@
 package tech.yozo.factoryrp.aspect;
 
+import com.alibaba.fastjson.JSON;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.AfterThrowing;
@@ -10,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import tech.yozo.factoryrp.utils.CheckParam;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -68,6 +70,9 @@ public class ApiAccessLogAspect {
         logger.info("HTTP_METHOD : " + request.getMethod());
         logger.info("IP : " + request.getRemoteAddr());
         logger.info("CLASS_METHOD : " + joinPoint.getSignature().getDeclaringTypeName() + "." + joinPoint.getSignature().getName());
+
+        logger.info(">>>>>>>>>>>>>>>>>>接口请求参数<<<<<<<<<<<<<:"+(CheckParam.isNull(request) &&CheckParam.isNull(request.getParameterMap()) ?  "" :JSON.toJSONString(request.getParameterMap())));
+
         //logger.info("ARGS : " + JSON.toJSONString(joinPoint.getArgs()));
     }
 
