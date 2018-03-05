@@ -47,7 +47,7 @@ public interface MaintainPlanService {
      * @param id
      * @return
      */
-    public MaintainPlanDetailVo getDetailById(Long id);
+    public AddMaintainPlanReq getDetailById(Long id);
 
     /**
      * 统计当前登陆人的保养计划数量

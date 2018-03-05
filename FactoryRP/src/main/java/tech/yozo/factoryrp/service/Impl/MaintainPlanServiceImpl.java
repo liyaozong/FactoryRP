@@ -18,6 +18,7 @@ import tech.yozo.factoryrp.repository.*;
 import tech.yozo.factoryrp.service.MaintainPlanService;
 import tech.yozo.factoryrp.utils.CheckParam;
 import tech.yozo.factoryrp.utils.DateTimeUtil;
+import tech.yozo.factoryrp.utils.ReflectUtil;
 import tech.yozo.factoryrp.vo.req.*;
 import tech.yozo.factoryrp.vo.resp.*;
 import tech.yozo.factoryrp.vo.resp.auth.AuthUser;
@@ -53,13 +54,28 @@ public class MaintainPlanServiceImpl implements MaintainPlanService{
 
     @Override
     public void addMaintainPlan(AddMaintainPlanReq plan, Long corporateIdentify, AuthUser AuthUser) {
-        MaintainPlan maintainPlan = new MaintainPlan();
-        BeanUtils.copyProperties(plan,maintainPlan);
-        maintainPlan.setPlanStatus(PlanStatusEnum.TODAY.getCode());
-        maintainPlan.setCorporateIdentify(corporateIdentify);
-        maintainPlan.setCreateTime(new Date());
-        maintainPlan.setUpdateTime(new Date());
-        maintainPlanRepository.save(maintainPlan);
+        Long id = plan.getId();
+        if (null!=id && 0!=id){
+            //修改
+            MaintainPlan old = maintainPlanRepository.getOne(id);
+            if (null != old){
+                BeanUtils.copyProperties(plan,old, ReflectUtil.getNullPropertyNames(plan));
+                old.setUpdateTime(new Date());
+                maintainPlanRepository.save(old);
+            }else {
+                BussinessException biz = new BussinessException("10000","保养计划不存在,修改失败");
+                throw biz;
+            }
+        }else {
+            //新增
+            MaintainPlan maintainPlan = new MaintainPlan();
+            BeanUtils.copyProperties(plan,maintainPlan);
+            maintainPlan.setPlanStatus(PlanStatusEnum.TODAY.getCode());
+            maintainPlan.setCorporateIdentify(corporateIdentify);
+            maintainPlan.setCreateTime(new Date());
+            maintainPlan.setUpdateTime(new Date());
+            maintainPlanRepository.save(maintainPlan);
+        }
     }
 
     @Override
@@ -224,9 +240,9 @@ public class MaintainPlanServiceImpl implements MaintainPlanService{
     }
 
     @Override
-    public MaintainPlanDetailVo getDetailById(Long id) {
+    public AddMaintainPlanReq getDetailById(Long id) {
         MaintainPlan maintainPlan = maintainPlanRepository.getOne(id);
-        MaintainPlanDetailVo vo = new MaintainPlanDetailVo();
+        AddMaintainPlanReq vo = new AddMaintainPlanReq();
         BeanUtils.copyProperties(maintainPlan,vo);
         return vo;
     }

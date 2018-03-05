@@ -33,7 +33,7 @@ public class MaintainPlanController extends BaseController{
     private UserAuthService userAuthService;
 
     @RequestMapping("add")
-    @ApiOperation(value = "新增保养计划接口--WEB",notes = "新增保养计划接口接口--WEB",httpMethod = "POST")
+    @ApiOperation(value = "新增/修改保养计划接口--WEB",notes = "新增/修改保养计划接口接口--WEB",httpMethod = "POST")
     public ApiResponse addTroubleRecord(@RequestBody AddMaintainPlanReq param, HttpServletRequest request){
         Long corporateIdentify =userAuthService.getCurrentUserCorporateIdentify(request);
         AuthUser user = userAuthService.getCurrentUser(request);
@@ -57,7 +57,7 @@ public class MaintainPlanController extends BaseController{
 
     @RequestMapping("get")
     @ApiOperation(value = "根据主键查询保养计划接口--WEB",notes = "根据主键查询保养计划接口--WEB",httpMethod = "POST")
-    public ApiResponse<MaintainPlanDetailVo> addTroubleRecord(Long id){
+    public ApiResponse<AddMaintainPlanReq> getDetailById(Long id){
         return apiResponse(maintainPlanService.getDetailById(id));
     }
 
@@ -88,7 +88,7 @@ public class MaintainPlanController extends BaseController{
 
     @PostMapping("submit")
     @ApiOperation(value = "保养提交--Mobile",notes = "保养提交--Mobile",httpMethod = "POST")
-    public ApiResponse submitRepair(HttpServletRequest request,@RequestBody MaintainDetailSubmitReq param){
+    public ApiResponse submitMaintainPlan(HttpServletRequest request,@RequestBody MaintainDetailSubmitReq param){
         AuthUser user = userAuthService.getCurrentUser(request);
         maintainPlanService.appSubmit(param,user);
         return apiResponse();
