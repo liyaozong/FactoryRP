@@ -51,16 +51,28 @@ public class TroubleRecordController extends BaseController{
     }
 
     /**
+     * 查询当前企业当前登录人的待审核工单
+     * @param request
+     * @return
+     */
+    @RequestMapping("myWaitAuditList")
+    @ApiOperation(value = "查询当前登陆人待审核的故障列表--Web",notes = "查询当前登陆人待审核的故障列表--Web",httpMethod = "POST")
+    public ApiResponse ownWaitAudtiList(HttpServletRequest request,@RequestBody WorkOrderListReq req){
+        Long corporateIdentify =userAuthService.getCurrentUserCorporateIdentify(request);
+        AuthUser user = userAuthService.getCurrentUser(request);
+        return apiResponse(troubleRecordService.findWaitAuditWorkOrder(req,corporateIdentify,user));
+    }
+
+    /**
      * 查询当前企业所有的待审核工单
      * @param request
      * @return
      */
     @RequestMapping("waitAuditList")
-    @ApiOperation(value = "查询本人待审核的故障列表--Mobile",notes = "查询本人待审核的故障列表--Mobile",httpMethod = "POST")
+    @ApiOperation(value = "查询待审核的故障列表--Mobile",notes = "查询待审核的故障列表--Mobile",httpMethod = "POST")
     public ApiResponse waitAudtiList(HttpServletRequest request,@RequestBody WorkOrderListReq req){
         Long corporateIdentify =userAuthService.getCurrentUserCorporateIdentify(request);
-        AuthUser user = userAuthService.getCurrentUser(request);
-        return apiResponse(troubleRecordService.findWaitAuditWorkOrder(req,corporateIdentify,user));
+        return apiResponse(troubleRecordService.findWorkOrderByPage(req,corporateIdentify, TroubleStatusEnum.WAIT_AUDIT.getCode(),null));
     }
 
     /**

@@ -13,6 +13,8 @@ import java.util.Date;
  **/
 @Data
 public class AddMaintainPlanReq implements Serializable{
+    @ApiModelProperty(value = "主键,新增的时候为空，修改的时候不能为空",example = "2")
+    private Long id;
     @ApiModelProperty(value = "设备主键",example = "2")
     private Long deviceId;
     @ApiModelProperty(value = "设备编号",example = "123114")

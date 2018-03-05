@@ -5,6 +5,8 @@ import tech.yozo.factoryrp.vo.req.*;
 import tech.yozo.factoryrp.vo.resp.*;
 import tech.yozo.factoryrp.vo.resp.auth.AuthUser;
 
+import java.util.List;
+
 /**
  * @author chenxiang
  * @create 2018-03-02 下午2:25
@@ -45,7 +47,7 @@ public interface MaintainPlanService {
      * @param id
      * @return
      */
-    public MaintainPlanDetailVo getDetailById(Long id);
+    public AddMaintainPlanReq getDetailById(Long id);
 
     /**
      * 统计当前登陆人的保养计划数量
@@ -67,4 +69,10 @@ public interface MaintainPlanService {
      * @param param
      */
     public void appSubmit(MaintainDetailSubmitReq param,AuthUser user);
+
+    /**
+     * 批量删除
+     * @param ids
+     */
+    public void batchDelete(List<Long> ids);
 }
