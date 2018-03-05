@@ -311,6 +311,19 @@ factoryParameterSettingApp.factory('factoryParameterSettingService', function($r
         });
     };
     /*批量删除保养计划 end*/
+
+    /*查询当前登陆人待审核的故障列表 start*/
+    var _queryMyWaitAuditList = function(Param,successFunc){
+        var queryMyWaitAuditList = $resource(UrlService.getUrl('troubleRecordServe') + 'troubleRecord/myWaitAuditList');
+        queryMyWaitAuditList.save(Param,function (data) {
+            if (successFunc) {
+                successFunc(data);
+            }
+        }, function (err) {
+
+        });
+    };
+    /*查询当前登陆人待审核的故障列表 end*/
     return {
         saveContactCompany:_saveContactCompany,
         deleteContactCompany:_deleteContactCompany,
@@ -335,6 +348,7 @@ factoryParameterSettingApp.factory('factoryParameterSettingService', function($r
         queryCorporateAllUser:_queryCorporateAllUser,
         queryMaintenanceRecordById:_queryMaintenanceRecordById,
         addMaintainPlan:_addMaintainPlan,
+        queryMyWaitAuditList:_queryMyWaitAuditList,
         batchDeleteMaintenanceRecord:_batchDeleteMaintenanceRecord,
         queryOrder: function(queryParam, successFunc) {
             queryOrder(queryParam, successFunc);

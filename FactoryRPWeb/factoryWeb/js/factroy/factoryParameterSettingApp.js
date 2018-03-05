@@ -82,4 +82,15 @@ var factoryParameterSettingApp = angular.module('myApp.factoryParameterSetting',
                     }
                 }
             })
+            .state("main.InternalRepair", {
+                showName:"故障报修（内修）",
+                tabShow:true,
+                url: "/InternalRepair",
+                views:{
+                    'content@main':{
+                        templateUrl:FF_API.baseTpl+'factory/internalRepair.html',
+                        controller:'InternalRepairController'
+                    }
+                }
+            })
     });
