@@ -1070,6 +1070,34 @@ factoryParameterSettingApp.controller('deviceManageController',function ($scope,
         }
     };
     /*批量删除保养计划 end*/
+    /*执行保养计划 start*/
+    $scope.dealAllMaintenanceRecords=function () {
+        popupDiv('dealMaintenanceRecordBalance');
+        $scope.workTimes=[];
+        var maintainPersonList={
+            planManagerIdDealChoose:'',
+            planMaintainTimeStartDealChoose:'',
+            planMaintainTimeEndDealChoose:'',
+            maintainUseTimeChoose:''
+        };
+        $scope.workTimes.push(maintainPersonList);
+        $scope.addPersonMaintain=function () {
+            var maintainPersonList={
+                planManagerIdDealChoose:'',
+                planMaintainTimeStartDealChoose:'',
+                planMaintainTimeEndDealChoose:'',
+                maintainUseTimeChoose:''
+            };
+            $scope.workTimes.push(maintainPersonList);
+        };
+        $scope.deletePersonMaintain=function (res,$index) {
+            $scope.workTimes.splice($index,1);
+        };
+        $scope.dealMaintenanceRecordSure=function () {
+            console.log($scope.workTimes)
+        };
+    };
+    /*执行保养计划 end*/
     $scope.$watch('paginationConf.currentPage + paginationConf.itemsPerPage', $scope.onQuery);
     $scope.$watch('paginationConf1.currentPage + paginationConf1.itemsPerPage', $scope.queryTroubleRecordList);
     $scope.$watch('paginationConf2.currentPage + paginationConf2.itemsPerPage', $scope.queryMaintenanceRecordList);

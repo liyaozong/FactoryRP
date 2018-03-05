@@ -18,6 +18,9 @@
     .ImportantNote input[type='date']{
         width: 133px;
     }
+    .ImportantNote input[type='number']{
+        width: 133px;
+    }
     .ImportantNote .titleDiv p textarea{
         width: 612px;
     }
@@ -30,6 +33,9 @@
     }
     .ImportantNote{
         max-height: 500px !important;
+    }
+    .ImportantNote table tbody tr:hover{
+        background: none;
     }
 </style>
 <div class="rightinfo mainContain">
@@ -1381,6 +1387,180 @@
     </div>
 </div>
 <!--修改保养计划 end-->
+<!--执行保养计划 start-->
+<div class="ImportantNote dealMaintenanceRecordBalance">
+    <div class="headline">
+        <span>执行保养计划</span>
+        <img onClick="hideDiv('dealMaintenanceRecordBalance')" class="companyCloseImg" src="image/comm/diffClosed.png" width="22" height="22">
+    </div>
+    <div style="padding: 30px 0 20px 0;width: 840px;max-height: 380px;height: auto;overflow-y: hidden; overflow: auto;" class="businessAuth">
+        <div class="titleDiv">
+            <span class="tips">保养信息</span>
+            <p>
+                <label for="deviceCodeMaintenanceDeal">
+                    <span style="width: 100px;text-align: right">设备编号:</span>
+                    <input ng-disabled="1" id="deviceCodeMaintenanceDeal" ng-model="deviceCodeMaintenanceDeal" type="text" placeholder="请输入设备编号"/>
+                </label>
+                <label for="useDeptMaintenanceDeal">
+                    <span style="width: 100px;text-align: right">使用部门:</span>
+                    <select ng-disabled="1" id="useDeptMaintenanceDeal" ng-model="useDeptMaintenanceDeal" ng-options="departmentListDetail.id as departmentListDetail.name for departmentListDetail in departmentList">
+                        <option value="">请选择使用部门</option>
+                        <option value="1">呵呵</option>
+                    </select>
+                </label>
+                <label style="opacity: 1">
+                    <span style="width: 100px;text-align: right">选择设备:</span>
+                    <button style="width: 135px;font-size: 12px;" class="btn">选择设备</button>
+                </label>
+            </p>
+            <p>
+                <label for="deviceNameMaintenanceDeal">
+                    <span style="width: 100px;text-align: right">设备名称:<i>*</i></span>
+                    <input ng-disabled="1" id="deviceNameMaintenanceDeal" ng-model="deviceNameMaintenanceDeal" type="text" placeholder="请输入设备名称"/>
+                </label>
+
+                <label for="specificationMaintenanceDeal">
+                    <span style="width: 100px;text-align: right">规格型号:</span>
+                    <input ng-disabled="1" id="specificationMaintenanceDeal" ng-model="specificationMaintenanceDeal" type="text" placeholder="请输入规格型号"/>
+                </label>
+                <label for="deviceTypeTroubleMaintenanceDeal" >
+                    <span style="width: 100px;text-align: right">设备分类:</span>
+                    <select ng-disabled="1" id="deviceTypeTroubleMaintenanceDeal" ng-model="deviceTypeTroubleMaintenanceDeal" ng-options="deviceTypeListDetail.id as deviceTypeListDetail.name for deviceTypeListDetail in deviceTypeList">
+                        <option value="">请选择设备类型</option>
+                        <option value="1">呵呵</option>
+                    </select>
+                </label>
+            </p>
+            <p style="text-align: left">
+                <label style="margin-left: 29px;" for="maintenanceNumber">
+                    <span style="width: 100px;text-align: right">保养单号:</span>
+                    <input ng-disabled="1" id="maintenanceNumber" ng-model="maintenanceNumber" type="text" placeholder="<自动生成>"/>
+                </label>
+                <label for="sendRepairMan">
+                    <span style="width: 100px;text-align: right">报修人:</span>
+                    <input ng-disabled="1" id="sendRepairMan" ng-model="sendRepairMan" type="text" placeholder="请输入设备位置"/>
+                </label>
+                <label for="planMaintainTimeStartDeals">
+                    <span style="width: 100px;text-align: right">计划保养时间:</span>
+                    <input type="date" id="planMaintainTimeStartDeals" placeholder="yyyy-MM-dd" min="20160601 | date:'yyyyMMdd" max="20201231 | date:'yyyyMMdd" required="" ng-model="planMaintainTimeStartDeals">
+                </label>
+            </p>
+        </div>
+
+        <div class="titleDiv">
+            <span class="tips">处理情况</span>
+            <p>
+                <label for="repairGroupIdMaintenanceDeal">
+                    <span style="width: 100px;text-align: right">维保工段:</span>
+                    <select id="repairGroupIdMaintenanceDeal" ng-model="repairGroupIdMaintenanceDeal" ng-options="repairGroupDetail.id as repairGroupDetail.name for repairGroupDetail in repairGroupList">
+                        <option value="">请选择维保工段</option>
+                        <option value="1">呵呵</option>
+                    </select>
+                </label>
+                <label for="planManagerIdDeal">
+                    <span style="width: 100px;text-align: right">保养人员:<i>*</i></span>
+                    <select id="planManagerIdDeal" ng-model="planManagerIdDeal" ng-options="corporateAllUsersDetail.userId as corporateAllUsersDetail.userName for corporateAllUsersDetail in corporateAllUsers">
+                        <option value="">请选择保养人员</option>
+                        <option value="1">呵呵</option>
+                    </select>
+                </label>
+                <label for="maintenanceStatusDeal">
+                    <span style="width: 100px;text-align: right">保养状态:<i>*</i></span>
+                    <select id="maintenanceStatusDeal" ng-model="maintenanceStatusDeal">
+                        <option value="">请选择保养状态</option>
+                        <option value="1">保养中</option>
+                        <option value="2">待停机保养</option>
+                        <option value="3">已完成</option>
+                    </select>
+                </label>
+            </p>
+            <p>
+                <label for="maintenanceLevelDeal">
+                    <span style="width: 100px;text-align: right">保养级别:</span>
+                    <select id="maintenanceLevelDeal" ng-model="maintenanceLevelDeal" ng-options="deviceMaintenanceLevelDetail.type as deviceMaintenanceLevelDetail.name for deviceMaintenanceLevelDetail in deviceMaintenanceLevel">
+                        <option value="">请选择保养级别</option>
+                        <option value="1">呵呵</option>
+                    </select>
+                </label>
+                <label for="planMaintainTimeStartDeal">
+                    <span style="width: 100px;text-align: right">开始时间:</span>
+                    <input type="date" id="planMaintainTimeStartDeal" placeholder="yyyy-MM-dd" min="20160601 | date:'yyyyMMdd" max="20201231 | date:'yyyyMMdd" required="" ng-model="planMaintainTimeStartDeal">
+                </label>
+                <label for="planMaintainTimeEndDeal">
+                    <span style="width: 100px;text-align: right">结束时间:</span>
+                    <input type="date" id="planMaintainTimeEndDeal" placeholder="yyyy-MM-dd" min="20160601 | date:'yyyyMMdd" max="20201231 | date:'yyyyMMdd" required="" ng-model="planMaintainTimeEndDeal">
+                </label>
+            </p>
+            <p>
+                <label for="maintainUseTime">
+                    <span style="width: 100px;text-align: right">保养用时:</span>
+                    <input id="maintainUseTime" ng-model="maintainUseTime" type="number" min='0' placeholder=""/>
+                </label>
+                <label style="width: 239px;text-align: left;display: inline-block;" for="isDownMaintain">
+                    <span style="width: 100px;text-align: right">是否停机:</span>
+                    <input id="isDownMaintain" ng-model="isDownMaintain" name="isDownMaintain" type="checkbox"/>
+                </label>
+                <label for="downMaintainTime">
+                    <span style="width: 100px;text-align: right">停机时长:</span>
+                    <input id="downMaintainTime" ng-model="downMaintainTime" type="number" min='0' placeholder=""/>
+                </label>
+            </p>
+            <p style="text-align: left">
+                <label style="margin-left: 29px" for="maintainUseMoney">
+                    <span style="width: 100px;text-align: right">保养费用:</span>
+                    <input id="maintainUseMoney" ng-model="maintainUseMoney" type="number" min='0' placeholder=""/>
+                </label>
+            </p>
+            <p>
+                <label for="maintainRemark">
+                    <span style="width: 100px;text-align: right">保养过程:</span>
+                    <textarea placeholder="请输入保养过程" name="maintainRemark" id="maintainRemark" ng-model="maintainRemark"></textarea>
+                </label>
+            </p>
+        </div>
+        <div class="titleDiv">
+            <span class="tips">保养工作量</span>
+            <div>
+                <table style="width: 100%">
+                    <thead>
+                    <tr>
+                        <th><button ng-click="addPersonMaintain()" class="btn">增加人员</button></th>
+                        <th>姓名</th>
+                        <th>保养开始时间</th>
+                        <th>保养结束时间</th>
+                        <th>保养用时</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="maintainPersonDetail in workTimes" ng-init="outerIndex=$index+1" class="{{$index}} sectionNew">
+                        <td><a ng-click="deletePersonMaintain(maintainPersonDetail,$index)" href="javascript:void(0)">删除</a></td>
+                        <td>
+                            <select name="planManagerIdDealChoose{{outerIndex}}" id="planManagerIdDealChoose{{outerIndex}}" ng-model="maintainPersonDetail.planManagerIdDealChoose" ng-options="corporateAllUsersDetail.userId as corporateAllUsersDetail.userName for corporateAllUsersDetail in corporateAllUsers">
+                                <option value="">请选择保养人员{{outerIndex}}</option>
+                                <option value="1">呵呵</option>
+                            </select>
+                        </td>
+                        <td>
+                            <input type="date" name="planMaintainTimeStartDealChoose{{outerIndex}}" id="planMaintainTimeStartDealChoose{{outerIndex}}" placeholder="yyyy-MM-dd" min="20160601 | date:'yyyyMMdd" max="20201231 | date:'yyyyMMdd" required="" ng-model="maintainPersonDetail.planMaintainTimeStartDealChoose">
+                        </td>
+                        <td>
+                            <input type="date" name="planMaintainTimeEndDealChoose{{outerIndex}}" id="planMaintainTimeEndDealChoose{{outerIndex}}" placeholder="yyyy-MM-dd" min="20160601 | date:'yyyyMMdd" max="20201231 | date:'yyyyMMdd" required="" ng-model="maintainPersonDetail.planMaintainTimeEndDealChoose">
+                        </td>
+                        <td>
+                            <input name="maintainUseTimeChoose{{outerIndex}}" id="maintainUseTimeChoose{{outerIndex}}" ng-model="maintainPersonDetail.maintainUseTimeChoose" type="number" min='0' placeholder=""/>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="submitBtn1" style="text-align: center;padding-left: 40px;">
+            <button type="button" ng-click="dealMaintenanceRecordSure()" value="" class="btn">保存</button>
+            <button type="button" value="" class="btn" onClick="hideDiv('dealMaintenanceRecordBalance')">取消</button>
+        </div>
+    </div>
+</div>
+<!--执行保养计划 end-->
 <script type="text/javascript">
     $(document).ready(function(){
         $(".click").click(function(){

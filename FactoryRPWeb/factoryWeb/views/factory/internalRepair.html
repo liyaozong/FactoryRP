@@ -1,0 +1,397 @@
+<style>
+    .ImportantNote textarea{
+        font-size: 14px;
+        width: 155px;
+        height: 32px;
+        border: 1px solid #e6e6e6;
+        vertical-align: middle;
+    }
+    .mainContain .tableListDiv tr td{
+        font-size: 12px;
+    }
+    .mainContain .tableListDiv tr th{
+        font-size: 12px;
+    }
+</style>
+<div class="rightinfo mainContain" id="mainContain1">
+    <div style="padding: 0;width: 100%" class="queryDiv" >
+        <ul>
+            <li>
+                <label style="margin-left: 10px" for="dealStatus">
+                    <span style="width: auto">处理状态：</span>
+                    <select id="dealStatus" ng-model="dealStatus">
+                        <option value="">选择处理状态</option>
+                        <option value="1">处理中</option>
+                        <option value="2">处理完成</option>
+                        <option value="3">被否决</option>
+                    </select>
+                </label>
+                <label ng-show="dealStatus=='1'" style="margin-left: 10px" for="dealStatusChild">
+                    <span style="width: auto">处理子状态：</span>
+                    <select id="dealStatusChild" ng-model="dealStatusChild">
+                        <option value="">选择处理子状态</option>
+                        <option value="1">待我审核</option>
+                        <option value="2">所有待审核</option>
+                        <option value="3">暂不处理</option>
+                        <option value="4">列入计划</option>
+                        <option value="5">等待维修</option>
+                        <option value="6">维修中</option>
+                        <option value="7">维修结束待认证</option>
+                    </select>
+                </label>
+                <label>
+                    <button class="btn" ng-click="onQuery()">查询</button>
+                </label>
+            </li>
+        </ul>
+    </div>
+    <div style="max-height: 400px;overflow: auto;" class="tableListDiv data-container jurisdiction">
+        <table>
+            <thead>
+            <tr>
+                <th style="min-width:50px;">全选<input style="vertical-align: middle;margin-left: 5px" type="checkbox" value="1" onclick="selAll(this)" id="allSelected"/></th>
+                <th>序号</th>
+                <th>编号</th>
+                <th>处理状态</th>
+                <th>设备编号</th>
+                <th>设备名称</th>
+                <th>规格型号</th>
+                <th>使用部门</th>
+                <th>发生时间</th>
+                <th>记录时间</th>
+                <th>维修班组</th>
+                <th>故障等级</th>
+                <th>故障类别</th>
+                <th>确认时间</th>
+                <th>确认人</th>
+                <th>故障描述</th>
+                <th>处理意见</th>
+                <th>差评理由</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody id="apply_infos_table">
+            <tr ng-repeat="myWaitAuditDetail in myWaitAuditList" ng-if="myWaitAuditList.length>0">
+                <td class="firstTd">{{$index+1}}<input style="margin-left: 5px;vertical-align: middle;" type="checkbox" name="che"  value="{{orderDetail.id}}"/></td>
+                <td>{{$index+1}}</td>
+                <td>{{myWaitAuditDetail.code||'--'}}</td>
+                <td>{{myWaitAuditDetail.status||'--'}}</td>
+                <td>{{myWaitAuditDetail.name||'--'}}</td>
+                <td>{{myWaitAuditDetail.name||'--'}}</td>
+                <td>{{myWaitAuditDetail.specification||'--'}}</td>
+                <td>{{myWaitAuditDetail.specification||'--'}}</td>
+                <td>{{myWaitAuditDetail.happenTime||'--'|date:'yyyy-MM-dd'}}</td>
+                <td>{{myWaitAuditDetail.happenTime||'--'|date:'yyyy-MM-dd'}}</td>
+                <td>{{myWaitAuditDetail.troubleLevel||'--'}}</td>
+                <td>{{myWaitAuditDetail.troubleLevel||'--'}}</td>
+                <td>{{myWaitAuditDetail.troubleLevel||'--'}}</td>
+                <td>{{myWaitAuditDetail.happenTime||'--'|date:'yyyy-MM-dd'}}</td>
+                <td>{{myWaitAuditDetail.troubleLevel||'--'}}</td>
+                <td>{{myWaitAuditDetail.troubleLevel||'--'}}</td>
+                <td>{{myWaitAuditDetail.troubleLevel||'--'}}</td>
+                <td>{{myWaitAuditDetail.troubleLevel||'--'}}</td>
+                <td>
+                    <a href="javascript:void(0)" class="resBtn editBtn" ng-click="editSparePartsFuc(myWaitAuditDetail)">
+                        详细
+                    </a>
+                    <a href="javascript:void(0)" class="resBtn deleteBtn" ng-click="deleteContactCompanyBalance(myWaitAuditDetail)">
+                        审核
+                    </a>
+                    <a href="javascript:void(0)" class="resBtn deleteBtn" ng-click="deleteContactCompanyBalance(myWaitAuditDetail)">
+                        维修单
+                    </a>
+                    <a href="javascript:void(0)" class="resBtn deleteBtn" ng-click="deleteContactCompanyBalance(myWaitAuditDetail)">
+                        验证
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+            <tfoot ng-if="myWaitAuditList.length>0">
+            <tr>
+                <td>
+                    <a href="javascript:void(0)" class="resBtn deleteBtn" ng-click="deleteSparePartsBalance(orderDetail)">
+                        <img src="image/comm/resBtnDelete.png" alt="删除"/>
+                        <b class="title">删除</b>
+                    </a>
+                </td>
+                <td style="text-align: center" colspan="18"><tm-pagination conf="paginationConf"></tm-pagination></td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+    <div class="tip">
+        <div class="tiptop"><span>提示信息</span><a></a></div>
+        <div class="tipinfo">
+            <span><img src="images/ticon.png" /></span>
+            <div class="tipright">
+                <p>是否确认对信息的修改 ？</p>
+                <cite>如果是请点击确定按钮 ，否则请点取消。</cite>
+            </div>
+        </div>
+
+        <div class="tipbtn">
+            <input name="" type="button"  class="sure" value="确定" />&nbsp;
+            <input name="" type="button"  class="cancel" value="取消" />
+        </div>
+    </div>
+</div>
+<!--新增备件 start-->
+<div class="ImportantNote addSparePartsPop">
+    <div class="headline">
+        <span>新增备件</span>
+        <img onClick="hideDiv('addSparePartsPop')" class="companyCloseImg" src="image/comm/diffClosed.png" width="22" height="22">
+    </div>
+    <div style="padding: 30px 0 20px 0;width: 840px;height: auto;overflow-y: hidden; overflow: auto;" class="businessAuth">
+        <div class="titleDiv" id="addP">
+            <span class="tips">新增备件</span>
+            <p>
+                <label for="sparePartType1" >
+                    <span style="width: 100px;text-align: right">备件类型:</span>
+                    <select id="sparePartType1" ng-model="editSpareParts.sparePartType" ng-options="AllCompanyDetail.id as AllCompanyDetail.name for AllCompanyDetail in sparePartTypeLists">
+                        <option value="">请选择备件类型</option>
+                    </select>
+                </label>
+                <label for="suppliers" style="position: relative;">
+                    <span style="width: 100px;text-align: right">供应商:</span>
+                    <input id="suppliers" ng-model="editSpareParts.suppliersName" dd="editSpareParts.suppliers" type="text" min="0" placeholder="请选择供应商" disabled/>
+                    <span class="changedDiv" ng-click="openCC(2)">...</span>
+                </label>
+                <label for="deviceType" >
+                    <span style="width: 100px;text-align: right">关联设备:</span>
+                    <select id="deviceType" ng-model="editSpareParts.deviceInfoId" ng-options="deviceTypeListDetail.id as deviceTypeListDetail.name for deviceTypeListDetail in deviceTypeList">
+                        <option value="">请选择关联设备</option>
+                    </select>
+                </label>
+            </p>
+            <p>
+                <label for="name1">
+                    <span style="width: 100px;text-align: right">备件名称:</span>
+                    <input id="name1" ng-model="editSpareParts.name" type="text" placeholder="请输入设备名称"/>
+                </label>
+                <label for="code1">
+                    <span style="width: 100px;text-align: right">备件编号:</span>
+                    <input id="code1" ng-model="editSpareParts.code" type="text" placeholder="请输入设备编号"/>
+                </label>
+                <label for="barCode1">
+                    <span style="width: 100px;text-align: right">条形码:</span>
+                    <input id="barCode1" ng-model="editSpareParts.barCode" type="text" placeholder="请输入条形码"/>
+                </label>
+            </p>
+            <p>
+                <label for="specificationsAndodels1">
+                    <span style="width: 100px;text-align: right">规格型号:</span>
+                    <input id="specificationsAndodels1" ng-model="editSpareParts.specificationsAndodels" type="text" min="0" placeholder="请输入规格型号"/>
+                </label>
+                <label for="measuringUnit" >
+                    <span style="width: 100px;text-align: right">计量单位:</span>
+                    <select id="measuringUnit" ng-model="editSpareParts.measuringUnit" ng-options="AllCompanyDetail.id as AllCompanyDetail.name for AllCompanyDetail in measuringUnitLists">
+                        <option value="">请选择计量单位</option>
+                    </select>
+                </label>
+                <label for="replacementCycle">
+                    <span style="width: 100px;text-align: right">更换周期:</span>
+                    <input id="replacementCycle" ng-model="editSpareParts.replacementCycle" type="number" min="0" placeholder="请输入更换周期"/> 天
+                </label>
+            </p>
+            <p>
+                <label for="manufacturer11"  style="position: relative">
+                    <span style="width: 100px;text-align: right">生产厂商:</span>
+                    <input id="manufacturer11" ng-model="editSpareParts.manufacturerName" dd="editSpareParts.manufacturer" type="text" min="0" placeholder="请选择生产厂商" disabled/>
+                    <span class="changedDiv" ng-click="openCC(1)">...</span>
+                </label>
+                <label for="inventoryFloor1" >
+                    <span style="width: 100px;text-align: right">库存下限:</span>
+                    <input id="inventoryFloor1" ng-model="editSpareParts.inventoryFloor" type="number" min="0" placeholder="请输入库存下限"/>
+                </label>
+                <label for="inventoryUpperLimit1" >
+                    <span style="width: 100px;text-align: right">库存上限:</span>
+                    <input id="inventoryUpperLimit1" ng-model="editSpareParts.inventoryUpperLimit" type="number" min="0" placeholder="请输入库存上限"/>
+                </label>
+            </p>
+            <p>
+                <label for="referencePrice" >
+                    <span style="width: 100px;text-align: right">参考价:</span>
+                    <input id="referencePrice" ng-model="editSpareParts.referencePrice" type="text" placeholder="请输入参考价"/>
+                </label>
+                <label for="unitConversion" >
+                    <span style="width: 100px;text-align: right">换算单位:</span>
+                    <select id="unitConversion" ng-model="editSpareParts.unitConversion" ng-options="AllCompanyDetail.id as AllCompanyDetail.name for AllCompanyDetail in measuringUnitLists">
+                        <option value="">请选择换算单位</option>
+                    </select>
+                </label>
+                <label for="materialProperties" >
+                    <span style="width: 100px;text-align: right">物料属性:</span>
+                    <input id="materialProperties" ng-model="editSpareParts.materialProperties" type="text" placeholder="请输入物料属性"/>
+                </label>
+            </p>
+            <p>
+                <label for="extendFieldTwo" >
+                    <span style="width: 100px;text-align: right">文本型2:</span>
+                    <input id="extendFieldTwo" ng-model="editSpareParts.extendFieldTwo" type="text" placeholder="请输入文本型2"/>
+                </label>
+                <label for="extendFieldThree" >
+                    <span style="width: 100px;text-align: right">文本型3:</span>
+                    <input id="extendFieldThree" ng-model="editSpareParts.extendFieldThree" type="text" placeholder="请输入文本型3"/>
+                </label>
+                <label for="extendFieldFour" >
+                    <span style="width: 100px;text-align: right">文本型4:</span>
+                    <input id="extendFieldFour" ng-model="editSpareParts.extendFieldFour" type="text" placeholder="请输入文本型4"/>
+                </label>
+            </p>
+            <p>
+                <label for="extendFieldFive" >
+                    <span style="width: 100px;text-align: right">文本型5:</span>
+                    <input id="extendFieldFive" ng-model="editSpareParts.extendFieldFive" type="text" placeholder="请输入文本型5"/>
+                </label>
+                <label for="extendFieldSix" >
+                    <span style="width: 100px;text-align: right">文本型6:</span>
+                    <input id="extendFieldSix" ng-model="editSpareParts.extendFieldSix" type="text" placeholder="请输入文本型6"/>
+                </label>
+                <label for="conversionRatio" >
+                    <span style="width: 100px;text-align: right">换算比例:</span>
+                    <input id="conversionRatio" ng-model="editSpareParts.conversionRatio" type="number" step="0.01" placeholder="请输入换算比例"/>
+                </label>
+            </p>
+            <p>
+                <label for="extendFieldSeven" >
+                    <span style="width: 100px;text-align: right">文本型7:</span>
+                    <input id="extendFieldSeven" ng-model="editSpareParts.extendFieldSeven" type="text" placeholder="请输入文本型7"/>
+                </label>
+                <label for="extendDateFieldOne" >
+                    <span style="width: 100px;text-align: right">自定义日期1:</span>
+                    <input id="extendDateFieldOne" ng-model="editSpareParts.extendDateFieldOne" type="date" placeholder="请输入自定义日期1"/>
+                </label>
+                <label for="extendDateFieldTwo" >
+                    <span style="width: 100px;text-align: right">自定义日期2:</span>
+                    <input id="extendDateFieldTwo" ng-model="editSpareParts.extendDateFieldTwo" type="date" placeholder="请输入自定义日期2"/>
+                </label>
+            </p>
+            <p>
+                <label for="remark">
+                    <span style="width: 100px;text-align: right">备注:</span>
+                    <textarea placeholder="请输入备注" name="remark" id="remark" ng-model="editSpareParts.remark"></textarea>
+                </label>
+            </p>
+        </div>
+        <div class="errP" style="text-align: center" ng-show="errFlog">表单有空值!!!</div>
+        <div class="submitBtn1" style="text-align: center;padding-left: 40px;">
+            <button type="button" ng-click="addSparePartsSure()" value="" class="btn">保存</button>
+            <button type="button" value="" class="btn" onClick="hideDiv('addSparePartsPop')">取消</button>
+        </div>
+    </div>
+</div>
+<!--新增备件 end-->
+
+<!--生产厂商和供应商弹出层-->
+<div class="ImportantNote contactCompanyListPop mainContain" id="contactCompanyListPop">
+    <div class="headline">
+        <span>选择{{contactCompanyName}}</span>
+        <img onClick="hideDiv('contactCompanyListPop');popupDiv('addSparePartsPop');" class="companyCloseImg" src="image/comm/diffClosed.png" width="22" height="22">
+    </div>
+    <div style="padding: 0;width: 100%" class="queryDiv" >
+        <ul>
+            <li>
+                <label style="margin-left: 10px" for="code2"><span>单位编码：</span>
+                    <input type="text" id="code2" placeholder="请输入单位编码" ng-model="ccQuery.code"/>
+                </label>
+                <label style="margin-left: 10px" for="contactName"><span>联系人名称：</span>
+                    <input type="text" id="contactName" placeholder="请输入联系人名称" ng-model="ccQuery.contactName"/>
+                </label>
+                <label style="margin-left: 10px" for="name2"><span>单位名称：</span>
+                    <input type="text" id="name2" placeholder="请输入单位名称" ng-model="ccQuery.name"/>
+                </label>
+                <label>
+                    <button class="btn" ng-click="onQuery_cc()">查询</button>
+                </label>
+            </li>
+        </ul>
+    </div>
+    <div class="tableListDiv data-container jurisdiction">
+        <table>
+            <thead>
+            <tr>
+                <th style="min-width: 30px;">序号</th>
+                <th>单位名称</th>
+                <th>默认联系人</th>
+                <th>联系电话</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="orderDetail in orderList | filter:QueryName | orderBy:orderDetail.orderNumber" ng-click="changeCC(orderDetail.id,orderDetail.name,$event)" ng-if="orderList.length>0">
+                <td class="firstTd">{{$index+1}}</td>
+                <td>{{orderDetail.name||'--'}}</td>
+                <td>{{orderDetail.contactName||'--'}}</td>
+                <td>{{orderDetail.contactPhone||'--'}}</td>
+            </tr>
+            <tr ng-if="orderList.length<=0||orderList==''||orderList==null||orderList==undefined">
+                <td colspan="4">暂无数据</td>
+            </tr>
+            </tbody>
+            <tfoot ng-if="orderList.length>0">
+            <tr>
+                <td style="text-align: center" colspan="14"><tm-pagination conf="paginationConf_CC"></tm-pagination></td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    <div class="submitBtn1" style="text-align: center;padding-left: 40px;">
+        <button type="button" ng-click="changeCCSure()" value="" class="btn">保存</button>
+        <button type="button" value="" class="btn" onClick="hideDiv('contactCompanyListPop');popupDiv('addSparePartsPop');">取消</button>
+    </div>
+</div>
+
+
+<!--保存成功start-->
+<div class="ImportantNote SaveSuccess">
+    <div class="headline">
+        <span>重要提示</span>
+        <img onClick="hideDiv('SaveSuccess')" class="companyCloseImg" src="image/comm/diffClosed.png" width="22" height="22">
+    </div>
+    <div class="businessAuth">
+        <p><img src="image/comm/attentionPlease.png" alt="注意："/><span class="Message"></span></p>
+        <div class="submitBtn1" style="text-align: right;">
+            <input ng-click="reload()" onClick="hideDiv('SaveSuccess')" type="button" value="确定" class="btn">
+        </div>
+    </div>
+</div>
+<!--保存成功end-->
+<!--单个删除弹出框start-->
+<div class="ImportantNote deleteSparePartsPop">
+    <div class="headline">
+        <span>删除备件信息</span>
+        <img onClick="hideDiv('deleteSparePartsPop')" class="companyCloseImg" src="image/comm/diffClosed.png" width="22" height="22">
+    </div>
+    <div class="businessAuth">
+        <p><img src="image/comm/attentionPlease.png" alt="注意："/>确认删除选中的备件信息？</p>
+        <div class="submitBtn1" style="text-align: center;">
+            <input type="button" value="删除"  class="btn" ng-click="deleteSparePartsSure()"/>
+            <input type="button" value="取消" class="btn" onClick="hideDiv('deleteSparePartsPop')">
+        </div>
+    </div>
+</div>
+<!--单个删除弹出框end-->
+<script type="text/javascript">
+    $(document).ready(function(){
+        $(".click").click(function(){
+            $(".tip").fadeIn(200);
+        });
+
+        $(".tiptop a").click(function(){
+            $(".tip").fadeOut(200);
+        });
+
+        $(".sure").click(function(){
+            $(".tip").fadeOut(100);
+        });
+
+        $(".cancel").click(function(){
+            $(".tip").fadeOut(100);
+        });
+
+    });
+</script>
+<script type="text/javascript">
+    $('.tablelist tbody tr:odd').addClass('odd');
+</script>
+
