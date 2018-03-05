@@ -1072,8 +1072,17 @@ factoryParameterSettingApp.controller('deviceManageController',function ($scope,
     /*批量删除保养计划 end*/
     /*执行保养计划 start*/
     $scope.dealAllMaintenanceRecords=function () {
-        popupDiv('dealMaintenanceRecordBalance');
-        $scope.workTimes=[];
+
+    };
+    $scope.workTimes=[];
+    var maintainPersonList={
+        planManagerIdDealChoose:'',
+        planMaintainTimeStartDealChoose:'',
+        planMaintainTimeEndDealChoose:'',
+        maintainUseTimeChoose:''
+    };
+    $scope.workTimes.push(maintainPersonList);
+    $scope.addPersonMaintain=function () {
         var maintainPersonList={
             planManagerIdDealChoose:'',
             planMaintainTimeStartDealChoose:'',
@@ -1081,21 +1090,12 @@ factoryParameterSettingApp.controller('deviceManageController',function ($scope,
             maintainUseTimeChoose:''
         };
         $scope.workTimes.push(maintainPersonList);
-        $scope.addPersonMaintain=function () {
-            var maintainPersonList={
-                planManagerIdDealChoose:'',
-                planMaintainTimeStartDealChoose:'',
-                planMaintainTimeEndDealChoose:'',
-                maintainUseTimeChoose:''
-            };
-            $scope.workTimes.push(maintainPersonList);
-        };
-        $scope.deletePersonMaintain=function (res,$index) {
-            $scope.workTimes.splice($index,1);
-        };
-        $scope.dealMaintenanceRecordSure=function () {
-            console.log()
-        };
+    };
+    $scope.deletePersonMaintain=function (res,$index) {
+        $scope.workTimes.splice($index,1);
+    };
+    $scope.dealMaintenanceRecordSure=function () {
+
     };
     /*执行保养计划 end*/
     $scope.$watch('paginationConf.currentPage + paginationConf.itemsPerPage', $scope.onQuery);

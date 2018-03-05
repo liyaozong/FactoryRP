@@ -93,4 +93,15 @@ var factoryParameterSettingApp = angular.module('myApp.factoryParameterSetting',
                     }
                 }
             })
+            .state("main.outSideRepair", {
+                showName:"外委维修",
+                tabShow:true,
+                url: "/outSideRepair",
+                views:{
+                    'content@main':{
+                        templateUrl:FF_API.baseTpl+'factory/outSideRepair.html',
+                        controller:'outSideRepairController'
+                    }
+                }
+            })
     });
