@@ -104,6 +104,18 @@ public class AuthorizationServiceImpl implements AuthorizationService {
      */
     public void deleteUserRoleByUserId(UserRoleDeleteReq userRoleDeleteReq,Long corporateIdentify){
 
+        User user = userRepository.findByUserIdAndCorporateIdentify(userRoleDeleteReq.getUserId(), corporateIdentify);
+
+
+        if(CheckParam.isNull(user)){
+            if(CheckParam.isNull(user)){
+                throw new BussinessException(ErrorCode.CORPORATE_USER__NOTEXIST_ERROR.getCode(),ErrorCode.CORPORATE_USER__NOTEXIST_ERROR.getMessage());
+            }
+        }
+
+        //ROLE里面是采用user的主键关联的
+        userRoleDeleteReq.setUserId(user.getId());
+
         List<UserRole> userRoleList = userRoleRepository.findByUserIdAndCorporateIdentifyAndRoleIdIn(userRoleDeleteReq.getUserId(),
                 corporateIdentify, userRoleDeleteReq.getRoleList());
 
@@ -591,7 +603,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
      */
     public List<RoleResp> queryRoleByUserId(Long userId, Long corporateIdentify){
 
-        User user = userRepository.findByIdAndCorporateIdentify(userId,corporateIdentify);
+        User user = userRepository.findByUserIdAndCorporateIdentify(userId,corporateIdentify);
 
         if(!CheckParam.isNull(user)){
             List<RoleResp> roleResps = new ArrayList<>();
@@ -619,12 +631,6 @@ public class AuthorizationServiceImpl implements AuthorizationService {
      * @return
      */
     public UserAddResp addUser(UserAddReq userAddReq,Long corporateIdentify){
-
-       /* Corporate corporate = corporateRepository.findByCorporateIdentify(userAddReq.getCorporateIdentify());
-
-        if(CheckParam.isNull(corporate)){
-            throw new BussinessException(ErrorCode.CORPORATE__NOTEXIST_ERROR.getCode(),ErrorCode.CORPORATE__NOTEXIST_ERROR.getMessage());
-        }*/
 
         User userInCorporate = userRepository.findByUserNameAndCorporateIdentify(userAddReq.getUserName(), corporateIdentify);
 

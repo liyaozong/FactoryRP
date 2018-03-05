@@ -3,21 +3,21 @@ package tech.yozo.factoryrp.api;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import tech.yozo.factoryrp.config.auth.UserAuthService;
 import tech.yozo.factoryrp.service.SpotInspectionRecordService;
 import tech.yozo.factoryrp.vo.base.ApiResponse;
 import tech.yozo.factoryrp.vo.req.SpotInspectionRecordAddReq;
 import tech.yozo.factoryrp.vo.req.SpotInspectionRecordMobileAddReq;
 import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionRecordAddResp;
+import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionRecordResp;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * 巡检记录相关接口
@@ -61,6 +61,23 @@ public class SpotInspectionRecordController extends BaseController {
         Long corporateIdentify = userAuthService.getCurrentUserCorporateIdentify(request);
         Long userId = userAuthService.getCurrentUserId(request);
         return apiResponse(spotInspectionRecordService.spotInspectionItemsRecordMobileAdd(spotInspectionRecordMobileAddReq, corporateIdentify,userId));
+    }
+
+
+    /**
+     * 根据巡检ID查询巡检记录
+     * @param planId
+     * @return
+     */
+    @ApiOperation(value = "根据巡检ID查询巡检记录-WEB",notes = "根据巡检ID查询巡检记录-WEB",httpMethod = "GET")
+    @GetMapping("/querySpotInspectionRecordByPlanId")
+    @ApiImplicitParams({
+            @ApiImplicitParam(dataType = "Long" ,name = "planId", paramType = "query" ,
+                    value = "巡检ID",required = true,defaultValue = "3")
+    })
+    public ApiResponse<List<SpotInspectionRecordResp>> querySpotInspectionRecordByPlanId(@RequestParam("planId") Long planId, HttpServletRequest request){
+        Long corporateIdentify = userAuthService.getCurrentUserCorporateIdentify(request);
+        return apiResponse(spotInspectionRecordService.querySpotInspectionRecordByPlanId(planId, corporateIdentify));
     }
 
 }

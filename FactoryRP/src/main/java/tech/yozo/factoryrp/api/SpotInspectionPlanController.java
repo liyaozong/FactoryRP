@@ -107,7 +107,7 @@ public class SpotInspectionPlanController extends BaseController{
      * @param request
      * @return
      */
-    @ApiOperation(value = "根据点检计划ID查询点检计划详情-WEB",notes = "根据点检计划ID查询点检计划详情-WEB",httpMethod = "POST")
+    @ApiOperation(value = "根据点检计划ID查询点检计划详情-WEB",notes = "根据点检计划ID查询点检计划详情-WEB",httpMethod = "GET")
     @GetMapping("/QuerySpotInspectionPlanDetailByPlanId")
     @ApiImplicitParams({
             @ApiImplicitParam(dataType = "Long" ,name = "planId", paramType = "query" ,

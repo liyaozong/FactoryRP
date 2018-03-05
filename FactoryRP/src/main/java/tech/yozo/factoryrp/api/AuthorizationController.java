@@ -273,8 +273,10 @@ public class AuthorizationController extends BaseController{
     public ApiResponse<List<RoleResp>> queryRoleUserId(@RequestParam(value="userId",required = true,defaultValue = "1")
                                                                    Long userId,HttpServletRequest request){
         Long corporateIdentify = userAuthService.getCurrentUserCorporateIdentify(request);
+        Long id = userAuthService.getCurrentUserId(request);
         return apiResponse(authorizationService.queryRoleByUserId(userId,corporateIdentify));
     }
+
 
     /**
      * 没有token的返回接口，没啥用

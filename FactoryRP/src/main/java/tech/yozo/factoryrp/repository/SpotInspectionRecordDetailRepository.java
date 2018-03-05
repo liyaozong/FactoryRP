@@ -29,6 +29,16 @@ public interface SpotInspectionRecordDetailRepository extends BaseRepository<Spo
                                                                                          @Param("standardItemId") Long standardItemId,
                                                                                          @Param("recordId") Long recordId);
 
+    /**
+     * 根据企业唯一标识,巡检记录ID进行IN查询
+     * @param corporateIdentify
+     * @param recordIdList
+     * @return
+     */
+    @Query(value = "select s from SpotInspectionRecordDetail s where s.corporateIdentify = :corporateIdentify " +
+            "and s.recordId in :recordIdList")
+    List<SpotInspectionRecordDetail> findByCorporateIdentifyAndRecordIdIn(@Param("corporateIdentify") Long corporateIdentify,
+                                                                          @Param("recordIdList") List<Long> recordIdList);
 
     /**
      * 根据企业唯一标识和巡检项目ID进行IN和时间比较查询 小于

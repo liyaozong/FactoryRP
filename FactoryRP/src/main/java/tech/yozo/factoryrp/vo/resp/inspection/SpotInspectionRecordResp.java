@@ -1,31 +1,32 @@
-package tech.yozo.factoryrp.entity;
+package tech.yozo.factoryrp.vo.resp.inspection;
 
-import com.alibaba.fastjson.annotation.JSONField;
-import com.fasterxml.jackson.annotation.JsonFormat;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.Date;
 
-
 /**
- * 巡检记录实体
+ * 巡检记录查询Resp
+ * @author created by Singer email:313402703@qq.com
+ * @time 2018/3/5
+ * @description
  */
-@Table(name = "spot_inspection_record")
-@Entity
+@ApiModel
 @Data
-public class SpotInspectionRecord extends BaseEntity implements Serializable {
+public class SpotInspectionRecordResp implements Serializable {
+
+    /**
+     * 记录ID
+     */
+    @ApiModelProperty(value = "记录ID",notes ="记录ID",example = "1")
+    private Long recordId;
 
     /**
      * 巡检计划名称
      */
     @ApiModelProperty(value = "巡检标准ID",notes ="巡检标准ID",example = "1")
-    @Column(name = "standard",length = 20)
     private Long standard;
 
 
@@ -33,7 +34,6 @@ public class SpotInspectionRecord extends BaseEntity implements Serializable {
      * 巡检计划名称
      */
     @ApiModelProperty(value = "巡检计划名称",notes ="巡检计划名称",example = "1")
-    @Column(name = "plan_name",length = 50)
     private String planName;
 
 
@@ -41,17 +41,12 @@ public class SpotInspectionRecord extends BaseEntity implements Serializable {
      * 巡检计划ID
      */
     @ApiModelProperty(value = "巡检计划ID",notes ="巡检计划ID",example = "1")
-    @Column(name = "plan_id",length = 50)
     private Long planId;
 
     /**
      * 巡检时间
      */
     @ApiModelProperty(value = "巡检时间",notes ="巡检时间",example = "1")
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
-    @JSONField(format="yyyy-MM-dd HH:mm:ss")
-    @Column(name = "execute_time")
     private Date executeTime;
 
 
@@ -59,18 +54,13 @@ public class SpotInspectionRecord extends BaseEntity implements Serializable {
      * 执行者
      */
     @ApiModelProperty(value = "执行者",notes ="执行者",example = "1")
-    @Column(name = "executor",length = 50)
-    private Long executor;
+    private String executor;
 
 
     /**
      * 计划时间
      */
     @ApiModelProperty(value = "计划时间",notes ="计划时间",example = "1")
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
-    @JSONField(format="yyyy-MM-dd HH:mm:ss")
-    @Column(name = "plan_time")
     private Date planTime;
 
 
@@ -78,7 +68,6 @@ public class SpotInspectionRecord extends BaseEntity implements Serializable {
      * 循环周期类型 周，年，天，小时，月等
      */
     @ApiModelProperty(value = "循环周期类型",notes ="循环周期类型" )
-    @Column(name = "recycle_period_type",length = 20)
     private String recyclePeriodType;
 
 
@@ -86,14 +75,32 @@ public class SpotInspectionRecord extends BaseEntity implements Serializable {
      * 循环周期
      */
     @ApiModelProperty(value = "循环周期",notes ="循环周期" )
-    @Column(name = "recycle_period",length = 20)
     private Integer recyclePeriod;
 
-    /**
-     * 设备ID
-     */
-    @ApiModelProperty(value = "设备ID",notes ="设备ID" )
-    @Column(name = "device_id",length = 20)
-    private Long deviceId;
 
+    /**
+     * 设备异常数
+     */
+    @ApiModelProperty(value = "设备异常数",notes ="设备异常数" )
+    private Integer abnormalDeviceCount;
+
+
+    /**
+     * 设备漏检数
+     */
+    @ApiModelProperty(value = "设备漏检数",notes ="设备漏检数" )
+    private Integer missCount;
+
+
+    /**
+     * 延误天数
+     */
+    @ApiModelProperty(value = "延误天数",notes ="延误天数" )
+    private Integer delayDayCount;
+
+    /**
+     * 异常处理情况描述
+     */
+    @ApiModelProperty(value = "异常处理情况描述",notes ="异常处理情况描述" )
+    private String abnormalHandelDesc;
 }
