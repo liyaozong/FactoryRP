@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 import tech.yozo.factoryrp.config.auth.UserAuthService;
 import tech.yozo.factoryrp.service.SpotInspectionPlanService;
+import tech.yozo.factoryrp.utils.CheckParam;
 import tech.yozo.factoryrp.vo.base.ApiResponse;
 import tech.yozo.factoryrp.vo.req.SpotInspectionPlanAddReq;
 import tech.yozo.factoryrp.vo.req.SpotInspectionPlanQueryReq;
@@ -19,7 +20,9 @@ import tech.yozo.factoryrp.vo.resp.inspection.mobile.SpotInspectionPlanResp;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * 巡检计划前端控制器
@@ -123,7 +126,7 @@ public class SpotInspectionPlanController extends BaseController{
      * 删除巡检计划
      * @param planId
      */
-    @ApiOperation(value = "删除巡检计划-WEB",notes = "删除巡检计划-WEB",httpMethod = "POST")
+    @ApiOperation(value = "删除巡检计划-WEB",notes = "删除巡检计划-WEB",httpMethod = "GET")
     @GetMapping("/deleteSpotInspectionPlanDetailByPlanId")
     @ApiImplicitParams({
             @ApiImplicitParam(dataType = "Long" ,name = "planId", paramType = "query" ,
@@ -132,6 +135,29 @@ public class SpotInspectionPlanController extends BaseController{
     public ApiResponse deleteSpotInspectionPlanDetailByPlanId(Long planId,HttpServletRequest request){
         Long corporateIdentify = userAuthService.getCurrentUserCorporateIdentify(request);
         spotInspectionPlanService.deleteSpotInspectionPlanDetailByPlanId(planId,corporateIdentify);
+        return apiResponse();
+    }
+
+    /**
+     * 批量删除点检标准
+     * @param ids
+     */
+    @RequestMapping("/deleteSpotInspectionStandardByIds")
+    @ApiOperation(value = "批量删除点检标准--WEB",notes = "批量删除点检标准--WEB",httpMethod = "GET")
+    @ApiImplicitParams(@ApiImplicitParam(paramType = "query",dataType = "String",name = "ids",
+            value = "需要删除的主键，多个主键用逗号分割",required = true,defaultValue = "1,2"))
+    public ApiResponse batchDeleteSpotInspectionPlanDetailByPlanId(String ids,HttpServletRequest request){
+        Long corporateIdentify = userAuthService.getCurrentUserCorporateIdentify(request);
+        List<Long> idList = new ArrayList<>();
+        if (!CheckParam.isNull(ids)){
+            String[] idArray =ids.split(",");
+            if (idArray.length>0){
+                Stream.of(idArray).forEach(s1 -> {
+                    idList.add(Long.parseLong(s1));
+                });
+            }
+        }
+        spotInspectionPlanService.batchDeleteSpotInspectionPlanDetailByPlanId(idList,corporateIdentify);
         return apiResponse();
     }
 

@@ -67,4 +67,12 @@ public interface SpotInspectionPlanService {
      */
     void deleteSpotInspectionPlanDetailByPlanId(Long planId, Long corporateIdentify);
 
+
+    /**
+     * 批量删除巡检计划
+     * @param ids
+     * @param corporateIdentify
+     */
+    void batchDeleteSpotInspectionPlanDetailByPlanId(List<Long> ids, Long corporateIdentify);
+
 }

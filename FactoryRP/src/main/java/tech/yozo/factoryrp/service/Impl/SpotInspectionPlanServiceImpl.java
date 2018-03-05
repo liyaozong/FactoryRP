@@ -468,4 +468,30 @@ public class SpotInspectionPlanServiceImpl implements SpotInspectionPlanService 
 
     }
 
+    /**
+     * 批量删除巡检计划
+     * @param ids
+     * @param corporateIdentify
+     */
+    public void batchDeleteSpotInspectionPlanDetailByPlanId(List<Long> ids, Long corporateIdentify){
+
+        List<SpotInspectionPlan> planList = spotInspectionPlanRepository.findByCorporateIdentifyAndIdIn(corporateIdentify, ids);
+
+
+        if(!CheckParam.isNull(planList) && !planList.isEmpty()){
+
+            List<Long> idList = new ArrayList<>();
+
+            List<SpotInspectionPlanDevice> planDeviceList = spotInspectionPlanDeviceRepository.findByCorporateIdentifyAndSpotInspectionPlanIn(corporateIdentify, idList);
+
+            spotInspectionPlanRepository.deleteInBatch(planList);
+
+            if(!CheckParam.isNull(planDeviceList) && !planDeviceList.isEmpty()) {
+                spotInspectionPlanDeviceRepository.deleteInBatch(planDeviceList);
+            }
+
+        }
+
+    }
+
 }

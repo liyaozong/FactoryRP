@@ -1,5 +1,7 @@
 package tech.yozo.factoryrp.repository;
 
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import tech.yozo.factoryrp.entity.SpotInspectionPlan;
 
@@ -29,5 +31,15 @@ public interface SpotInspectionPlanRepository extends BaseRepository<SpotInspect
      * @return
      */
     SpotInspectionPlan findByNameAndCorporateIdentify(String name,Long corporateIdentify);
+
+
+    /**
+     * 根据企业唯一标识和ID进行IN查询
+     * @param corporateIdentify
+     * @param ids
+     * @return
+     */
+    @Query("select s from SpotInspectionPlan s where s.corporateIdentify = :corporateIdentify and s.id in :ids")
+    List<SpotInspectionPlan> findByCorporateIdentifyAndIdIn(@Param("corporateIdentify") Long corporateIdentify,@Param("ids") List<Long> ids);
 
 }

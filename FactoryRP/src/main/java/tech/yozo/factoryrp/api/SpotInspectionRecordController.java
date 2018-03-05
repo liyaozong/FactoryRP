@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 import tech.yozo.factoryrp.config.auth.UserAuthService;
 import tech.yozo.factoryrp.service.SpotInspectionRecordService;
+import tech.yozo.factoryrp.utils.CheckParam;
 import tech.yozo.factoryrp.vo.base.ApiResponse;
 import tech.yozo.factoryrp.vo.req.SpotInspectionRecordAddReq;
 import tech.yozo.factoryrp.vo.req.SpotInspectionRecordMobileAddReq;
@@ -17,7 +18,9 @@ import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionRecordResp;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * 巡检记录相关接口
@@ -79,6 +82,7 @@ public class SpotInspectionRecordController extends BaseController {
         Long corporateIdentify = userAuthService.getCurrentUserCorporateIdentify(request);
         return apiResponse(spotInspectionRecordService.querySpotInspectionRecordByPlanId(planId, corporateIdentify));
     }
+
 
 }
 

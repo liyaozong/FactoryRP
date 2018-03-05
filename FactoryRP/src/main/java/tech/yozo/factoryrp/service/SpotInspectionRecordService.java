@@ -3,6 +3,7 @@ package tech.yozo.factoryrp.service;
 import tech.yozo.factoryrp.vo.req.SpotInspectionRecordAddReq;
 import tech.yozo.factoryrp.vo.req.SpotInspectionRecordMobileAddReq;
 import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionRecordAddResp;
+import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionRecordDetailWarpResp;
 import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionRecordResp;
 
 import java.util.List;
@@ -12,6 +13,14 @@ import java.util.List;
  */
 public interface SpotInspectionRecordService {
 
+
+    /**
+     * 根据点检记录ID查询点检详情
+     * @param recordId
+     * @param corporateIdentify
+     * @return
+     */
+    SpotInspectionRecordDetailWarpResp querySpotInspectionRecordDetailByRecordId(Long recordId,Long corporateIdentify);
 
     /**
      * 根据巡检ID查询巡检记录

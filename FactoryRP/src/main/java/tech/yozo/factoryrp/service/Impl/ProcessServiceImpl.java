@@ -7,10 +7,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import tech.yozo.factoryrp.entity.*;
-import tech.yozo.factoryrp.enums.process.DeviceProcessTypeEnum;
 import tech.yozo.factoryrp.exception.BussinessException;
 import tech.yozo.factoryrp.page.Pagination;
 import tech.yozo.factoryrp.repository.*;
@@ -27,7 +25,9 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -419,7 +419,17 @@ public class ProcessServiceImpl implements ProcessService {
         DeviceProcessType deviceProcessType = deviceProcessTypeRepository.findOne(deviceProcessAddReq.getProcessType());
         DeviceProcessPhase deviceProcessPhase = deviceProcessPhaseRepository.findOne(deviceProcessAddReq.getProcessStage());
 
-        DeviceProcess deviceProcess = deviceProcessRepository.findByProcessTypeAndProcessStageAndCorporateIdentifyAndProcessName(CheckParam             .isNull(deviceProcessType) ? null : deviceProcessType.getCode(),CheckParam.isNull(deviceProcessPhase) ? null : deviceProcessType            .getCode(), corporateIdentify,deviceProcessAddReq.getProcessName());
+        if(CheckParam.isNull(deviceProcessType) || CheckParam.isNull(deviceProcessPhase)){
+            throw new BussinessException(ErrorCode.PROCESS_DIC_NOTEXIST_ERROR.getCode(),ErrorCode.PROCESS_DIC_NOTEXIST_ERROR.getMessage());
+
+        }
+
+        /*DeviceProcess deviceProcess = deviceProcessRepository.findByProcessTypeAndProcessStageAndCorporateIdentifyAndProcessName(CheckParam.isNull(deviceProcessType) ? null : deviceProcessType.getCode(),
+                CheckParam.isNull(deviceProcessPhase) ? null : deviceProcessType.getCode(),
+                corporateIdentify,deviceProcessAddReq.getProcessName());*/
+
+        DeviceProcess deviceProcess = deviceProcessRepository.findByProcessTypeAndProcessStageAndCorporateIdentifyAndProcessName(deviceProcessType.getCode(),
+                deviceProcessType.getCode(),corporateIdentify,deviceProcessAddReq.getProcessName());
 
         if(!CheckParam.isNull(deviceProcess)){
             throw new BussinessException(ErrorCode.PROCESS_NAME_REPET_ERROR.getCode(),ErrorCode.PROCESS_NAME_REPET_ERROR.getMessage());

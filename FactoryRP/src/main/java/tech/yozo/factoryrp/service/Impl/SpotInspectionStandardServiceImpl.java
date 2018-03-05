@@ -281,9 +281,9 @@ public class SpotInspectionStandardServiceImpl implements SpotInspectionStandard
 
         }
 
-
-
     }
+
+
 
     /**
      * 点检标准新增方法

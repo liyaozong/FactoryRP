@@ -16,6 +16,8 @@ import tech.yozo.factoryrp.utils.ErrorCode;
 import tech.yozo.factoryrp.vo.req.SpotInspectionRecordAddReq;
 import tech.yozo.factoryrp.vo.req.SpotInspectionRecordMobileAddReq;
 import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionRecordAddResp;
+import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionRecordDeatailResp;
+import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionRecordDetailWarpResp;
 import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionRecordResp;
 
 import javax.annotation.Resource;
@@ -304,5 +306,44 @@ public class SpotInspectionRecordServiceImpl implements SpotInspectionRecordServ
         return null;
     }
 
+    /**
+     * 根据点检记录ID查询点检详情
+     * @param recordId
+     * @param corporateIdentify
+     * @return
+     */
+    public SpotInspectionRecordDetailWarpResp querySpotInspectionRecordDetailByRecordId(Long recordId,Long corporateIdentify){
+
+        SpotInspectionRecord record = spotInspectionRecordRepository.findOne(recordId);
+
+        SpotInspectionPlan plan = spotInspectionPlanRepository.findOne(record.getPlanId());
+
+        User user = userRepository.findOne(record.getExecutor());
+
+        SpotInspectionRecordDetailWarpResp restResp = new SpotInspectionRecordDetailWarpResp();
+
+        List<SpotInspectionRecordDetail> itemDetailList = spotInspectionRecordDetailRepository.findByCorporateIdentifyAndRecordId(corporateIdentify, recordId);
+
+
+
+        restResp.setPlanName(plan.getName());
+        restResp.setExceptionHandleDesc("");
+        restResp.setExecutor(user.getUserName());
+        restResp.setExecuteTime(DateTimeUtil.dateToStr(record.getExecuteTime()));
+
+        if(!CheckParam.isNull(itemDetailList) && !itemDetailList.isEmpty()){
+
+            List<SpotInspectionRecordDeatailResp> detailList = new ArrayList<>();
+
+
+            itemDetailList.stream().forEach(d1 -> {
+
+            });
+
+        }
+
+
+        return null;
+    }
 
 }

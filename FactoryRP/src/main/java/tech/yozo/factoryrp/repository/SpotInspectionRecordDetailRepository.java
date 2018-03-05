@@ -15,6 +15,17 @@ import java.util.List;
 @Repository
 public interface SpotInspectionRecordDetailRepository extends BaseRepository<SpotInspectionRecordDetail,Long>  {
 
+    /**
+     * 根据企业唯一标识,巡检记录ID进行查询
+     * @param corporateIdentify
+     * @param recordId
+     * @return
+     */
+    @Query(value = "select s from SpotInspectionRecordDetail s where s.corporateIdentify = :corporateIdentify " +
+            "and s.recordId = :recordId")
+    List<SpotInspectionRecordDetail> findByCorporateIdentifyAndRecordId(@Param("corporateIdentify") Long corporateIdentify,
+                                                                                         @Param("recordId") Long recordId);
+
 
     /**
      * 根据企业唯一标识,巡检项目ID和巡检记录ID进行查询
