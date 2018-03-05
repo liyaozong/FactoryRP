@@ -17,9 +17,17 @@ import java.io.Serializable;
 public class SpotInspectionRecordDeatailResp implements Serializable {
 
     /**
-     * 名称
+     * 巡检项目名称
      */
-    @ApiModelProperty(value = "名称",notes ="名称",example = "1")
-    private String planName;
+    @ApiModelProperty(value = "巡检项目名称",notes ="巡检项目名称",example = "标准点检")
+    private String inspectionItemName;
+
+    /**
+     * 巡检项目ID
+     */
+    @ApiModelProperty(value = "巡检项目ID",notes ="巡检项目ID",example = "1")
+    private Long inspectionItemId;
+
+
 
 }

@@ -371,6 +371,13 @@ public class SpotInspectionPlanServiceImpl implements SpotInspectionPlanService 
             spotInspectionPlanDetailWarpResp.setRecyclePeriod(plan.getRecyclePeriod());
             spotInspectionPlanDetailWarpResp.setRecyclePeriodType(plan.getRecyclePeriodType());
             spotInspectionPlanDetailWarpResp.setSpotInspectionRange(plan.getSpotInspectionRange());
+            spotInspectionPlanDetailWarpResp.setName(plan.getName());
+
+            List<User> userList = userRepository.findByCorporateIdentifyAndUserIdIn(corporateIdentify, JSON.parseArray(plan.getExecutors(), Long.class));
+
+            if(!CheckParam.isNull(userList) && !userList.isEmpty()){
+                spotInspectionPlanDetailWarpResp.setExecutors(userList.stream().map(User::getUserId).collect(Collectors.toList()));
+            }
 
             List<SpotInspectionPlanDeviceInfoResp> deviceInfoList = new ArrayList<>();
 

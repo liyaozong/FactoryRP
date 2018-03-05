@@ -82,10 +82,10 @@ public class SpotInspectionPlanDetailWarpResp implements Serializable {
     private Date endTime;
 
     /**
-     * 执行者
+     * 执行者ID集合
      */
-    @ApiModelProperty(value = "执行者集合",notes ="执行者集合" )
-    private List<String> executors;
+    @ApiModelProperty(value = "执行者ID集合",notes ="执行者ID集合" )
+    private List<Long> executors;
 
 
     /**
