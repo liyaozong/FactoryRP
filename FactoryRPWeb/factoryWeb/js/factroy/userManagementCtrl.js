@@ -14,7 +14,7 @@ myApp.controller('userManagementCtrl',['$filter','$rootScope','$location','$scop
         popupDiv('addUserPop');
         $scope.addUsersSure=function(){
             var userAddReq={
-                corporateIdentify:$scope.corporateIdentify,
+                // corporateIdentify:$scope.corporateIdentify,
                 password:$scope.password,
                 userName:$scope.userName,
                 requestTime:$filter('date')(new Date(),'yyyy-MM-dd HH:mm:ss')

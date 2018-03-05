@@ -98,6 +98,34 @@ myApp.factory("inspectionPlan",["AppHttp","FF_API",function(AppHttp,FF_API){
             data:data
         });
     };
+    //分页查询巡检计划
+    inspectionPlan.QuerySpotInspectionPlanDetailByPlanId=function(id){
+        return AppHttp({
+            method: 'get',
+            url: FF_API.base + FF_API.QuerySpotInspectionPlanDetailByPlanIdPath+'?planId='+id
+        });
+    };
+    //单个删除巡检计划
+    inspectionPlan.deleteSpotInspectionPlanDetailByPlanId=function(id){
+        return AppHttp({
+            method: 'get',
+            url: FF_API.base + FF_API.deleteSpotInspectionPlanDetailByPlanIdPath+'?planId='+id
+        });
+    };
+    //批量删除巡检计划
+    inspectionPlan.deleteSpotInspectionStandardByIdsIP=function(id){
+        return AppHttp({
+            method: 'get',
+            url: FF_API.base + FF_API.deleteSpotInspectionStandardByIdsIPPath+'?ids='+id
+        });
+    };
+    //批量删除巡检计划
+    inspectionPlan.querySpotInspectionRecordByPlanId=function(id){
+        return AppHttp({
+            method: 'get',
+            url: FF_API.base + FF_API.querySpotInspectionRecordByPlanIdPath+'?planId='+id
+        });
+    };
 
     return inspectionPlan;
 }]);

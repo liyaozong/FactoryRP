@@ -66,14 +66,14 @@
             </thead>
             <tbody id="apply_infos_table">
             <tr ng-repeat="orderDetail in spotInspectionPlanLists" ng-if="spotInspectionPlanLists.length>0" class="prossTr" ng-click="changeDetail(orderDetail.id,$event)">
-                <td class="firstTd">{{$index+1}}<input style="margin-left: 5px;vertical-align: middle;" class="SISListsInput" type="checkbox" name="che"  value="{{orderDetail.id}}" ng-click="stopUp($event)"/></td>
+                <td class="firstTd">{{$index+1}}<input style="margin-left: 5px;vertical-align: middle;" class="SIPListsInput" type="checkbox" name="che"  value="{{orderDetail.id}}" ng-click="stopUp($event)"/></td>
                 <td>{{$index+1}}</td>
-                <td>{{orderDetail.expiredStatus==1?'未过期':'过期'||'--'}}</td>
+                <td>{{orderDetail.expiredStatus?orderDetail.expiredStatus==1?'未过期':'过期':'--'}}</td>
                 <td>{{orderDetail.name||'--'}}</td>
                 <td>{{orderDetail.departmentName||'--'}}</td>
                 <td>{{orderDetail.lastExecuteTime||'--'}}</td>
                 <td>{{orderDetail.nextExecuteTime||'--'}}</td>
-                <td>{{orderDetail.recyclePeroid||'--'}}</td>
+                <td>{{orderDetail.recyclePeriod||'--'}}</td>
                 <td>{{orderDetail.executorsName||'--'}}</td>
                 <td>{{orderDetail.deviceCount||'--'}}</td>
                 <td>
@@ -99,7 +99,7 @@
             <tfoot ng-if="spotInspectionPlanLists.length>0">
             <tr>
                 <td>
-                    <a href="javascript:void(0)" class="resBtn deleteBtn" ng-click="deleteSISBalance()">
+                    <a href="javascript:void(0)" class="resBtn deleteBtn" ng-click="deleteSIPBalance()">
                         <img src="image/comm/resBtnDelete.png" alt="删除"/>
                         <b class="title">删除</b>
                     </a>
@@ -147,7 +147,7 @@
                     </a>
                 </td>
             </tr>
-            <tr ng-if="changeDetailLists.length<=0">
+            <tr ng-if="changeDetailLists==null||changeDetailLists==undefined||changeDetailLists.length<=0">
                 <td colspan="9">暂无数据</td>
             </tr>
             </tbody>
@@ -187,7 +187,7 @@
                 <label for="processAuditor1" style="position: relative;">
                     <span style="width: 100px;text-align: right">执行班组/人:</span>
                     <input id="processAuditor1" ng-model="iPlanReq.nameStrs" type="text" min="0" placeholder="请选择执行班组/人" disabled/>
-                    <span class="changedDiv" ng-click="openPA()">...</span>
+                    <span class="changedDiv" ng-click="openPA()" ng-if="iPlanType!=2">...</span>
                 </label>
             </p>
             <p>
@@ -240,7 +240,7 @@
                             <b class="title">删除</b>
                         </a>
                     </td>
-                    <td ng-bind="$index"></td>
+                    <td ng-bind="$index+1"></td>
                     <td ng-bind="item.name"></td>
                     <td ng-bind="item.code"></td>
                     <td ng-bind="item.specification"></td>
@@ -475,16 +475,16 @@
 </div>
 <!--保存成功end-->
 <!--单个删除弹出框start-->
-<div class="ImportantNote deleteSISPop">
+<div class="ImportantNote deleteSIPPop">
     <div class="headline">
-        <span>删除巡检标准</span>
-        <img onClick="hideDiv('deleteSISPop')" class="companyCloseImg" src="image/comm/diffClosed.png" width="22" height="22">
+        <span>删除巡检计划</span>
+        <img onClick="hideDiv('deleteSIPPop')" class="companyCloseImg" src="image/comm/diffClosed.png" width="22" height="22">
     </div>
     <div class="businessAuth">
-        <p><img src="image/comm/attentionPlease.png" alt="注意："/>确认删除选中的巡检标准？</p>
+        <p><img src="image/comm/attentionPlease.png" alt="注意："/>确认删除选中的巡检计划？</p>
         <div class="submitBtn1" style="text-align: center;">
-            <input type="button" value="删除"  class="btn" ng-click="deleteSISPopSure()"/>
-            <input type="button" value="取消" class="btn" onClick="hideDiv('deleteSISPop')">
+            <input type="button" value="删除"  class="btn" ng-click="deleteSIPPopSure()"/>
+            <input type="button" value="取消" class="btn" onClick="hideDiv('deleteSIPPop')">
         </div>
     </div>
 </div>

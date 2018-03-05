@@ -68,6 +68,10 @@ var myApp = angular.module('myApp', [
         queryStanardByDeviceIdPath:'/api/spotInspectionStandard/queryStanardByDeviceId',   //根据部门ID查询巡检标准
         addSpotInspectionPlanPath:'/api/spotInspectionPlan/addSpotInspectionPlan',   //新增点检计划
         spotInspectionPlanFindByPagePath:'/api/spotInspectionPlan/findByPage',   //新增点检计划
+        deleteSpotInspectionPlanDetailByPlanIdPath:'/api/spotInspectionPlan/deleteSpotInspectionPlanDetailByPlanId',   //单个删除点检计划
+        QuerySpotInspectionPlanDetailByPlanIdPath:'/api/spotInspectionPlan/QuerySpotInspectionPlanDetailByPlanId',   //根据点检计划ID查询点检计划详情
+        deleteSpotInspectionStandardByIdsIPPath:'/api/spotInspectionPlan/deleteSpotInspectionStandardByIds',   //批量删除点检计划
+        querySpotInspectionRecordByPlanIdPath:'/api/spotInspectionRecord/querySpotInspectionRecordByPlanId',   //根据巡检ID查询巡检记录
         getxjsjPath:'service/getxjsj',   //巡检计划状态
         getxjlxPath:'service/getxjlx'   //巡检计划名称
 
@@ -95,37 +99,53 @@ var myApp = angular.module('myApp', [
                 var flog=true;var crumbNavArr=[];$rootScope.topMenulists=[];
                 // console.log(AuthUserMenu);
                 if(AuthUserMenu!=undefined&&loginUrl!='login'){
-                    if(stateUrl=='home'){
-                        $rootScope.publicTwoMenu=AuthUserMenu[1].twoMenu;
-                        $rootScope.liMenu=AuthUserMenu[1].name;
-                        $rootScope.topMenuLi='home';
-                        AuthUserMenu.forEach(function (n,i) {
-                            if(n.url==stateUrl){
+                    // if(stateUrl=='home'){
+                    //     $rootScope.publicTwoMenu=AuthUserMenu[1].twoMenu;
+                    //     $rootScope.liMenu=AuthUserMenu[1].name;
+                    //     $rootScope.topMenuLi='home';
+                    //     AuthUserMenu.forEach(function (n,i) {
+                    //         if(n.url==stateUrl){
+                    //             flog=false;
+                    //             crumbNavArr.push({'name':n.name});
+                    //         }
+                    //
+                    //     });
+                    //     if(flog){
+                    //         $state.go('main.'+AuthUserMenu[0].url)
+                    //     }
+                    // }else {
+                    //     AuthUserMenu.forEach(function (n,i) {
+                    //         n.twoMenu.forEach(function (v,k) {
+                    //             if(v.url==stateUrl){
+                    //                 flog=false;
+                    //                 // console.log(n,v,'---');
+                    //                 $rootScope.publicTwoMenu=n.twoMenu;
+                    //                 $rootScope.liMenu=n.name;
+                    //                 $rootScope.topMenuLi=n.twoMenu[0].url;
+                    //                 // console.log($rootScope.topMenuLi,'---');
+                    //                 crumbNavArr=[{'name':n.name},{'name':v.name}];
+                    //             }
+                    //         });
+                    //     });
+                    //     if(flog){
+                    //         $state.go('main.'+AuthUserMenu[0].url)
+                    //     }
+                    // }
+                    AuthUserMenu.forEach(function (n,i) {
+                        n.twoMenu.forEach(function (v,k) {
+                            if(v.url==stateUrl){
                                 flog=false;
-                                crumbNavArr.push({'name':n.name});
+                                // console.log(n,v,'---');
+                                $rootScope.publicTwoMenu=n.twoMenu;
+                                $rootScope.liMenu=n.name;
+                                $rootScope.topMenuLi=n.twoMenu[0].url;
+                                // console.log($rootScope.topMenuLi,'---');
+                                crumbNavArr=[{'name':n.name},{'name':v.name}];
                             }
-
                         });
-                        if(flog){
-                            $state.go('main.'+AuthUserMenu[0].url)
-                        }
-                    }else {
-                        AuthUserMenu.forEach(function (n,i) {
-                            n.twoMenu.forEach(function (v,k) {
-                                if(v.url==stateUrl){
-                                    flog=false;
-                                    // console.log(n,v,'---');
-                                    $rootScope.publicTwoMenu=n.twoMenu;
-                                    $rootScope.liMenu=n.name;
-                                    $rootScope.topMenuLi=n.twoMenu[0].url;
-                                    // console.log($rootScope.topMenuLi,'---');
-                                    crumbNavArr=[{'name':n.name},{'name':v.name}];
-                                }
-                            });
-                        });
-                        if(flog){
-                            $state.go('main.'+AuthUserMenu[0].url)
-                        }
+                    });
+                    if(flog){
+                        $state.go('main.'+AuthUserMenu[0].url)
                     }
                     $rootScope.urlLists=crumbNavArr;
                 }
@@ -169,7 +189,7 @@ var myApp = angular.module('myApp', [
 
 }])
 .config(function ($stateProvider, $urlRouterProvider) {
-  $urlRouterProvider.when("", "/main/home");
+  $urlRouterProvider.when("", "/main/login");
   $urlRouterProvider.otherwise("/main/home");
 })
 .config(function ($stateProvider, $urlRouterProvider,FF_API) {

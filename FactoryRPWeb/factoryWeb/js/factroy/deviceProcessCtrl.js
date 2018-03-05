@@ -277,6 +277,16 @@ myApp.controller('deviceProcessCtrl',['$timeout','$filter','$rootScope','$locati
         $scope.nextFlog=false;
         $scope.nextPop=false;
     };
+    //编辑审核流程
+    $scope.editSparePartsFuc=function (obj,$event) {
+        alert('接口调试中');
+        $event.stopPropagation();
+    };
+    //删除审核流程
+    $scope.deleteContactCompanyBalance=function (obj,$event) {
+        alert('接口调试中');
+        $event.stopPropagation();
+    };
     //新增审核流程确定
     $scope.addDeviceProcessSure=function () {
         var addReq={
@@ -320,17 +330,18 @@ myApp.controller('deviceProcessCtrl',['$timeout','$filter','$rootScope','$locati
             }else if($scope.sureFlog==2){
                 addReq.id=$scope.editSpareParts.id;
                 console.log('编辑',addReq);
-                spareParts.editSpareParts(addReq).success(function (data) {
-                    if(data.errorCode=='000000'){
-                        hideDiv('addDeviceProcessPop');
-                        popupDiv('SaveSuccess');
-                        $('.SaveSuccess .Message').html(data.errorMessage);
-                    }else{
-                        hideDiv('addDeviceProcessPop');
-                        popupDiv('SaveSuccess');
-                        $('.SaveSuccess .Message').html(data.errorMessage);
-                    }
-                })
+                // spareParts.editSpareParts(addReq).success(function (data) {
+                //     if(data.errorCode=='000000'){
+                //         hideDiv('addDeviceProcessPop');
+                //         popupDiv('SaveSuccess');
+                //         $('.SaveSuccess .Message').html(data.errorMessage);
+                //     }else{
+                //         hideDiv('addDeviceProcessPop');
+                //         popupDiv('SaveSuccess');
+                //         $('.SaveSuccess .Message').html(data.errorMessage);
+                //     }
+                // })
+                alert('接口调试中');
             }
         }else {
             $scope.errFlog=true;

@@ -315,12 +315,12 @@ factoryParameterSettingApp.controller('sparePartsManageController',function ($sc
         $('#extendDateFieldTwo').val($filter('date')(res.extendDateFieldTwo,'yyyy-MM-dd'));
         $("#sparePartType1 option").each(function(){
             if($(this).val()==$scope.editSpareParts.sparePartType){
-                $(this).prop("selected",true);
+                $(this).attr("selected",true);
             }
         });
         $("#deviceType option").each(function(){
             if($(this).val()==$scope.editSpareParts.deviceInfoId){
-                $(this).prop("selected",true);
+                $(this).attr("selected",true);
             }
         });
         $scope.orderList.forEach(function (n,i) {
