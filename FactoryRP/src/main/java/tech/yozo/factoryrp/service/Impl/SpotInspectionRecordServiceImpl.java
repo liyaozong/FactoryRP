@@ -36,12 +36,6 @@ import java.util.stream.Collectors;
 public class SpotInspectionRecordServiceImpl implements SpotInspectionRecordService {
 
     @Resource
-    private SpotInspectionItemsRepository spotInspectionItemsRepository;
-
-    @Resource
-    private SpotInspectionStandardRepository spotInspectionStandardRepository;
-
-    @Resource
     private DeviceInfoRepository deviceInfoRepository;
 
     @Resource
@@ -62,6 +56,13 @@ public class SpotInspectionRecordServiceImpl implements SpotInspectionRecordServ
     @Resource
     private UserRepository userRepository;
 
+    @Resource
+    private SpotInspectionItemsRepository spotInspectionItemsRepository;
+
+    @Resource
+    private SpotInspectionStandardRepository spotInspectionStandardRepository;
+
+
     private static Logger logger = LoggerFactory.getLogger(SpotInspectionRecordServiceImpl.class);
 
     /**
@@ -79,11 +80,11 @@ public class SpotInspectionRecordServiceImpl implements SpotInspectionRecordServ
         spotInspectionRecord.setExecuteTime(DateTimeUtil.strToDate(spotInspectionRecordAddReq.getExecuteTime()));
         spotInspectionRecord.setExecutor(spotInspectionRecordAddReq.getExecutor());
         spotInspectionRecord.setPlanId(spotInspectionRecordAddReq.getPlanId());
-        spotInspectionRecord.setPlanName(spotInspectionRecord.getPlanName());
-        spotInspectionRecord.setPlanTime(spotInspectionRecord.getPlanTime());
-        spotInspectionRecord.setRecyclePeriod(spotInspectionRecord.getRecyclePeriod());
+        spotInspectionRecord.setPlanName(spotInspectionRecordAddReq.getPlanName());
+        spotInspectionRecord.setPlanTime(spotInspectionRecordAddReq.getPlanTime());
+        spotInspectionRecord.setRecyclePeriod(spotInspectionRecordAddReq.getRecyclePeriod());
         spotInspectionRecord.setRecyclePeriodType(spotInspectionRecordAddReq.getRecyclePeriodType());
-        spotInspectionRecord.setStandard(spotInspectionRecord.getStandard());
+        spotInspectionRecord.setStandard(spotInspectionRecordAddReq.getStandard());
         spotInspectionRecord.setCorporateIdentify(corporateIdentify);
 
         //设置计划执行时间，需要取计划表里面的下次执行时间 同时在巡检记录保存成功之后更新巡检计划的下次执行时间和最后一次的执行时间
@@ -320,6 +321,8 @@ public class SpotInspectionRecordServiceImpl implements SpotInspectionRecordServ
 
         User user = userRepository.findOne(record.getExecutor());
 
+        //spotInspectionStandardRepository.findBy
+
         SpotInspectionRecordDetailWarpResp restResp = new SpotInspectionRecordDetailWarpResp();
 
         List<SpotInspectionRecordDetail> itemDetailList = spotInspectionRecordDetailRepository.findByCorporateIdentifyAndRecordId(corporateIdentify, recordId);
@@ -330,14 +333,14 @@ public class SpotInspectionRecordServiceImpl implements SpotInspectionRecordServ
         restResp.setExecuteTime(DateTimeUtil.dateToStr(record.getExecuteTime()));
 
         if(!CheckParam.isNull(itemDetailList) && !itemDetailList.isEmpty()){
-
+            //
             List<SpotInspectionRecordDeatailResp> detailList = new ArrayList<>();
 
 
             itemDetailList.stream().forEach(d1 -> {
 
-              /*  SpotInspectionRecordDeatailResp detail = new SpotInspectionRecordDeatailResp();
-                detail.s*/
+                SpotInspectionRecordDeatailResp detail = new SpotInspectionRecordDeatailResp();
+                //detail.setInspectionItemId();
             });
 
         }

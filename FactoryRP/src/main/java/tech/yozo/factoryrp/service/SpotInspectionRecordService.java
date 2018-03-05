@@ -14,6 +14,8 @@ import java.util.List;
 public interface SpotInspectionRecordService {
 
 
+
+
     /**
      * 根据点检记录ID查询点检详情
      * @param recordId

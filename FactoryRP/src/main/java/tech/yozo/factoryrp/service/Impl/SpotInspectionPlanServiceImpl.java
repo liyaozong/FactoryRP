@@ -182,6 +182,8 @@ public class SpotInspectionPlanServiceImpl implements SpotInspectionPlanService 
                 spotInspectionPlanDevice.setSpotInspectionPlan(spotInspectionPlan.getId());
                 spotInspectionPlanDevice.setLineOrder(d1.getLineOrder());
                 spotInspectionPlanDevice.setSpotInspectionStandard(d1.getSpotInspectionStandard());
+                spotInspectionPlanDevice.setDeviceId(d1.getDeviceId());
+                spotInspectionPlanDevice.setDeviceType(d1.getDeviceType());
 
                 spotInspectionPlanDeviceList.add(spotInspectionPlanDevice);
             });
@@ -422,6 +424,7 @@ public class SpotInspectionPlanServiceImpl implements SpotInspectionPlanService 
 
                         if(!CheckParam.isNull(CheckParam.isNull(deviceInfoMap)) && !CheckParam.isNull(deviceTypeMap.get(deviceInfo.getDeviceType()))){
                             info.setDeviceTypeName(deviceTypeMap.get(deviceInfo.getDeviceType()).getName());
+                            info.setDeviceId(deviceTypeMap.get(deviceInfo.getDeviceType()).getId());
 
                         }
 
