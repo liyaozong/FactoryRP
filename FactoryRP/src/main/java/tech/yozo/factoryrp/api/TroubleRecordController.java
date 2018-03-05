@@ -64,6 +64,20 @@ public class TroubleRecordController extends BaseController{
     }
 
     /**
+     * 审核
+     * @param request
+     * @param req
+     * @return
+     */
+    @RequestMapping("audit")
+    @ApiOperation(value = "审核故障工单--Web",notes = "审核故障工单--Web",httpMethod = "POST")
+    public ApiResponse audit(HttpServletRequest request,@RequestBody AuditWorkNumReq req){
+        AuthUser user = userAuthService.getCurrentUser(request);
+        troubleRecordService.audit(req,user);
+        return apiResponse();
+    }
+
+    /**
      * 查询当前企业所有的待审核工单
      * @param request
      * @return

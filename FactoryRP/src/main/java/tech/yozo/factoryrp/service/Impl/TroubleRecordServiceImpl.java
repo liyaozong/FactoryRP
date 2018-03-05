@@ -660,4 +660,23 @@ public class TroubleRecordServiceImpl implements TroubleRecordService {
             throw biz;
         }
     }
+
+    @Override
+    public void audit(AuditWorkNumReq param, AuthUser user) {
+        TroubleRecord old = troubleRecordRepository.findOne(param.getTroubleRecordId());
+        if (null!=old && old.getStatus() == TroubleStatusEnum.WAIT_AUDIT.getCode()){
+            if (param.getDealStatus()==1){
+                //审核通过
+                old.setStatus(TroubleStatusEnum.NEED_REPAIR.getCode());
+            }else if (param.getDealStatus() == 2){
+                old.setStatus(TroubleStatusEnum.REFUSED.getCode());
+            }
+            old.setSuggest(param.getDealSuggest());
+            old.setUpdateTime(new Date());
+            troubleRecordRepository.save(old);
+        }else{
+            BussinessException biz = new BussinessException("10000","工单不存在或状态不正确");
+            throw biz;
+        }
+    }
 }

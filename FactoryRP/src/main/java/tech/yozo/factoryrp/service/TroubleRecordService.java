@@ -101,4 +101,11 @@ public interface TroubleRecordService {
      * 验证工单
      */
     public void validate(ValidateRepairReq param, AuthUser user);
+
+    /**
+     * 审核工单
+     * @param param
+     * @param user
+     */
+    public void audit(AuditWorkNumReq param,AuthUser user);
 }
