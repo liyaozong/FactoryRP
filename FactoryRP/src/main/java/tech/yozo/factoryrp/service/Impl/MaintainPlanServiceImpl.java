@@ -15,16 +15,11 @@ import tech.yozo.factoryrp.enums.device.DeviceParamDicEnum;
 import tech.yozo.factoryrp.exception.BussinessException;
 import tech.yozo.factoryrp.page.Pagination;
 import tech.yozo.factoryrp.repository.*;
-import tech.yozo.factoryrp.service.DepartmentService;
-import tech.yozo.factoryrp.service.DeviceTypeService;
 import tech.yozo.factoryrp.service.MaintainPlanService;
 import tech.yozo.factoryrp.utils.CheckParam;
 import tech.yozo.factoryrp.utils.DateTimeUtil;
-import tech.yozo.factoryrp.vo.req.MaintainDetailSubmitReq;
+import tech.yozo.factoryrp.vo.req.*;
 import tech.yozo.factoryrp.vo.resp.*;
-import tech.yozo.factoryrp.vo.req.AddMaintainPlanReq;
-import tech.yozo.factoryrp.vo.req.MaintainPlanListForAppReq;
-import tech.yozo.factoryrp.vo.req.MaintainPlanListReq;
 import tech.yozo.factoryrp.vo.resp.auth.AuthUser;
 import tech.yozo.factoryrp.vo.resp.device.trouble.UsedSparePartsVo;
 import tech.yozo.factoryrp.vo.resp.device.trouble.WorkTimeVo;
@@ -84,6 +79,50 @@ public class MaintainPlanServiceImpl implements MaintainPlanService{
 
 
         Page<MaintainPlan> page = maintainPlanRepository.findByCorporateIdentify(corporateIdentify,p);
+        Pagination<MaintainPlanListVo> res = new Pagination(currentPage+1,itemsPerPage,page.getTotalElements());
+        if (page.hasContent()){
+            List<MaintainPlanListVo> list = new ArrayList<>();
+            page.getContent().forEach(maintainPlan -> {
+                MaintainPlanListVo v = new MaintainPlanListVo();
+                BeanUtils.copyProperties(maintainPlan,v);
+                switch (maintainPlan.getCycleType()){
+                    case 1:
+                        v.setCycleType("单次");
+                        break;
+                    case 2:
+                        v.setCycleType("循环多次");
+                        break;
+                }
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                v.setStartTime(sdf.format(maintainPlan.getPlanMaintainTimeStart()));
+                v.setLastTime(sdf.format(maintainPlan.getLastMaintainTime()));
+                v.setEndTime(sdf.format(maintainPlan.getPlanMaintainTimeEnd()));
+                v.setPlanStatus(PlanStatusEnum.getByCode(maintainPlan.getPlanStatus()).getName());
+                list.add(v);
+            });
+            res.setList(list);
+        }
+        return res;
+    }
+
+    @Override
+    public Pagination<MaintainPlanListVo> findListByDeviceId(MaintainPlanListForDeviceReq param, Long corporateIdentify) {
+
+        Integer currentPage = param.getCurrentPage();
+        Integer itemsPerPage = param.getItemsPerPage();
+        if(null==currentPage){
+            currentPage=0;
+        }
+        if (null==itemsPerPage){
+            itemsPerPage=10;
+        }
+        if (currentPage > 0) {
+            currentPage-=1;
+        }
+        Pageable p = new PageRequest(currentPage, itemsPerPage);
+
+
+        Page<MaintainPlan> page = maintainPlanRepository.findByCorporateIdentifyAndDeviceId(corporateIdentify,param.getDeviceId(),p);
         Pagination<MaintainPlanListVo> res = new Pagination(currentPage+1,itemsPerPage,page.getTotalElements());
         if (page.hasContent()){
             List<MaintainPlanListVo> list = new ArrayList<>();

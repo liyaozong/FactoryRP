@@ -13,4 +13,6 @@ import tech.yozo.factoryrp.entity.MaintainPlan;
 public interface MaintainPlanRepository extends BaseRepository<MaintainPlan,Long>{
 
     public Page<MaintainPlan> findByCorporateIdentify(Long corporateIdentify,Pageable pageable);
+
+    public Page<MaintainPlan> findByCorporateIdentifyAndDeviceId(Long corporateIdentify,Long deviceId,Pageable pageable);
 }

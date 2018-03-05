@@ -1,11 +1,8 @@
 package tech.yozo.factoryrp.service;
 
 import tech.yozo.factoryrp.page.Pagination;
-import tech.yozo.factoryrp.vo.req.MaintainDetailSubmitReq;
+import tech.yozo.factoryrp.vo.req.*;
 import tech.yozo.factoryrp.vo.resp.*;
-import tech.yozo.factoryrp.vo.req.AddMaintainPlanReq;
-import tech.yozo.factoryrp.vo.req.MaintainPlanListForAppReq;
-import tech.yozo.factoryrp.vo.req.MaintainPlanListReq;
 import tech.yozo.factoryrp.vo.resp.auth.AuthUser;
 
 /**
@@ -28,6 +25,12 @@ public interface MaintainPlanService {
      * @return
      */
     public Pagination<MaintainPlanListVo> findByPage(MaintainPlanListReq param,Long corporateIdentify);
+
+    /**
+     * 根据设备分页查询保养计划列表
+     * @return
+     */
+    public Pagination<MaintainPlanListVo> findListByDeviceId(MaintainPlanListForDeviceReq param, Long corporateIdentify);
 
     /**
      * 查询保养计划简略信息列表

@@ -45,6 +45,13 @@ public class MaintainPlanController extends BaseController{
         return apiResponse(maintainPlanService.findByPage(param,corporateIdentify));
     }
 
+    @PostMapping("listForDevice")
+    @ApiOperation(value = "根据设备主键查询保养计划列表--WEB",notes = "根据设备主键查询保养计划列表--WEB",httpMethod = "POST")
+    public ApiResponse<Pagination<MaintainPlanListVo>> getListByDeviceId(@RequestBody MaintainPlanListForDeviceReq param,HttpServletRequest request){
+        Long corporateIdentify =userAuthService.getCurrentUserCorporateIdentify(request);
+        return apiResponse(maintainPlanService.findListByDeviceId(param,corporateIdentify));
+    }
+
     @RequestMapping("get")
     @ApiOperation(value = "根据主键查询保养计划接口--WEB",notes = "根据主键查询保养计划接口--WEB",httpMethod = "POST")
     public ApiResponse<MaintainPlanDetailVo> addTroubleRecord(Long id){
