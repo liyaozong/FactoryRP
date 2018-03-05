@@ -323,8 +323,8 @@ public class SpotInspectionPlanServiceImpl implements SpotInspectionPlanService 
                 }
 
                 spotInspectionPlanQueryResp.setPlanStatus(s1.getPlanStatus());
-                spotInspectionPlanQueryResp.setLastExecuteTime(s1.getLastExecuteTime());
-                spotInspectionPlanQueryResp.setNextExecuteTime(s1.getNextExecuteTime());
+                spotInspectionPlanQueryResp.setLastExecuteTime(DateTimeUtil.dateToStr(s1.getLastExecuteTime()));
+                spotInspectionPlanQueryResp.setNextExecuteTime(DateTimeUtil.dateToStr(s1.getNextExecuteTime()));
                 spotInspectionPlanQueryResp.setExecutors(JSON.parseArray(s1.getExecutors(),Long.class));
                 spotInspectionPlanQueryResp.setRecyclePeriod(SpotInspectionPlanRecycleTypeEnum.handlerRecycleTimer(s1.getRecyclePeriod(),s1.getRecyclePeriodType()));
                 spotInspectionPlanQueryResp.setId(s1.getId());

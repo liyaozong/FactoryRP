@@ -38,7 +38,7 @@ public class SpotInspectionPlanQueryResp implements Serializable {
      */
     @JSONField(format="yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty(value = "下次执行时间",notes ="下次执行时间" )
-    private Date nextExecuteTime;
+    private String nextExecuteTime;
 
 
     /**
@@ -64,7 +64,7 @@ public class SpotInspectionPlanQueryResp implements Serializable {
      * 上次执行时间
      */
     @ApiModelProperty(value = "上次执行时间",notes ="上次执行时间" )
-    private Date lastExecuteTime;
+    private String lastExecuteTime;
 
 
     /**
