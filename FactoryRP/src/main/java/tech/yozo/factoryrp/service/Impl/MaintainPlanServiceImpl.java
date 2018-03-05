@@ -424,6 +424,14 @@ public class MaintainPlanServiceImpl implements MaintainPlanService{
         }
     }
 
+    @Override
+    public void batchDelete(List<Long> ids) {
+        List<MaintainPlan> oldList = maintainPlanRepository.findAll(ids);
+        if (!CheckParam.isNull(oldList)){
+            maintainPlanRepository.deleteInBatch(oldList);
+        }
+    }
+
     public static void main(String args[]){
         Calendar nowDate = Calendar.getInstance();
         nowDate.setTime(new Date());

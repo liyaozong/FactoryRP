@@ -9,12 +9,15 @@ import org.springframework.web.bind.annotation.*;
 import tech.yozo.factoryrp.config.auth.UserAuthService;
 import tech.yozo.factoryrp.page.Pagination;
 import tech.yozo.factoryrp.service.MaintainPlanService;
+import tech.yozo.factoryrp.utils.CheckParam;
 import tech.yozo.factoryrp.vo.base.ApiResponse;
 import tech.yozo.factoryrp.vo.req.*;
 import tech.yozo.factoryrp.vo.resp.*;
 import tech.yozo.factoryrp.vo.resp.auth.AuthUser;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author chenxiang
@@ -88,6 +91,28 @@ public class MaintainPlanController extends BaseController{
     public ApiResponse submitRepair(HttpServletRequest request,@RequestBody MaintainDetailSubmitReq param){
         AuthUser user = userAuthService.getCurrentUser(request);
         maintainPlanService.appSubmit(param,user);
+        return apiResponse();
+    }
+
+    /**
+     * 批量删除故障信息
+     * @param ids
+     */
+    @RequestMapping("batchDelete")
+    @ApiOperation(value = "批量删除保养计划信息--WEB",notes = "批量删除保养计划信息--WEB",httpMethod = "GET")
+    @ApiImplicitParams(@ApiImplicitParam(paramType = "query",dataType = "String",name = "ids",
+            value = "需要删除的主键，多个主键用逗号分割",required = true,defaultValue = "1,2"))
+    public ApiResponse deleteRelInfoByIds(String ids){
+        List<Long> idsList = new ArrayList<>();
+        if (!CheckParam.isNull(ids)){
+            String[] idsArray =ids.split(",");
+            if (idsArray.length>0){
+                for(String id : idsArray){
+                    idsList.add(Long.parseLong(id));
+                }
+            }
+        }
+        maintainPlanService.batchDelete(idsList);
         return apiResponse();
     }
 }
