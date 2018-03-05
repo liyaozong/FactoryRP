@@ -420,8 +420,8 @@ public class SpotInspectionPlanServiceImpl implements SpotInspectionPlanService 
 
                         //格式化巡检标准名称
                         if(!CheckParam.isNull(CheckParam.isNull(standardMap)) && !CheckParam.isNull(standardMap.get(p1.getSpotInspectionStandard()))){
-                            info.setStandardName(deviceTypeMap.get(p1.getSpotInspectionStandard()).getName());
-                            info.setStandardId(deviceTypeMap.get(p1.getSpotInspectionStandard()).getId());
+                            info.setStandardName(standardMap.get(p1.getSpotInspectionStandard()).getName());
+                            info.setStandardId(standardMap.get(p1.getSpotInspectionStandard()).getId());
                         }
 
 
