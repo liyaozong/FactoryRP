@@ -32,7 +32,7 @@ factoryParameterSettingApp.factory('factoryParameterSettingService', function($r
         });
     };
     /* 查看所有设备字典code end*/
-   /*新增或修改往来单位 start*/
+    /*新增或修改往来单位 start*/
     var _saveContactCompany = function(Param,successFunc){
         var saveContactCompanys = $resource(UrlService.getUrl('factoryServe') + 'contactCompany/save');
         saveContactCompanys.save(Param,function (data) {
@@ -241,7 +241,7 @@ factoryParameterSettingApp.factory('factoryParameterSettingService', function($r
     /* 查询所有设备状态 end*/
     /*设备对应的维修计划列表 start*/
     var _queryMaintenanceRecordLists = function(Param,successFunc){
-        var queryMaintenanceRecordLists = $resource(UrlService.getUrl('troubleRecordServe') + 'maintainPlan/list');
+        var queryMaintenanceRecordLists = $resource(UrlService.getUrl('troubleRecordServe') + 'maintainPlan/listForDevice');
         queryMaintenanceRecordLists.save(Param,function (data) {
             if (successFunc) {
                 successFunc(data);
@@ -251,6 +251,66 @@ factoryParameterSettingApp.factory('factoryParameterSettingService', function($r
         });
     };
     /*设备对应的维修计划列表 end*/
+    /*查询全部维修计划 start*/
+    var _queryMaintenanceRecordAllLists = function(Param,successFunc){
+        var queryMaintenanceRecordAllLists = $resource(UrlService.getUrl('troubleRecordServe') + 'maintainPlan/list');
+        queryMaintenanceRecordAllLists.save(Param,function (data) {
+            if (successFunc) {
+                successFunc(data);
+            }
+        }, function (err) {
+
+        });
+    };
+    /*查询全部维修计划 end*/
+    /*添加维修计划 start*/
+    var _addMaintainPlan = function(Param,successFunc){
+        var addMaintainPlan = $resource(UrlService.getUrl('troubleRecordServe') + 'maintainPlan/add');
+        addMaintainPlan.save(Param,function (data) {
+            if (successFunc) {
+                successFunc(data);
+            }
+        }, function (err) {
+
+        });
+    };
+    /*添加维修计划 end*/
+    /*根据主键查询保养计划 start*/
+    var _queryMaintenanceRecordById = function(Param,successFunc){
+        var queryMaintenanceRecordById = $resource(UrlService.getUrl('troubleRecordServe') + 'maintainPlan/get');
+        queryMaintenanceRecordById.get(Param,function (data) {
+            if (successFunc) {
+                successFunc(data);
+            }
+        }, function (err) {
+
+        });
+    };
+    /*根据主键查询保养计划 end*/
+    /*查询企业所有用户信息 start*/
+    var _queryCorporateAllUser = function(Param,successFunc){
+        var queryCorporateAllUser = $resource(UrlService.getUrl('troubleRecordServe') + 'api/authorization/queryCorporateAllUser');
+        queryCorporateAllUser.get(Param,function (data) {
+            if (successFunc) {
+                successFunc(data);
+            }
+        }, function (err) {
+
+        });
+    };
+    /*查询企业所有用户信息 end*/
+    /*批量删除保养计划 start*/
+    var _batchDeleteMaintenanceRecord = function(Param,successFunc){
+        var batchDeleteMaintenanceRecord = $resource(UrlService.getUrl('troubleRecordServe') + 'maintainPlan/batchDelete');
+        batchDeleteMaintenanceRecord.get(Param,function (data) {
+            if (successFunc) {
+                successFunc(data);
+            }
+        }, function (err) {
+
+        });
+    };
+    /*批量删除保养计划 end*/
     return {
         saveContactCompany:_saveContactCompany,
         deleteContactCompany:_deleteContactCompany,
@@ -269,8 +329,13 @@ factoryParameterSettingApp.factory('factoryParameterSettingService', function($r
         batchDeleteTroubleRecords:_batchDeleteTroubleRecords,
         queryTroubleRecordLists:_queryTroubleRecordLists,
         queryMaintenanceRecordLists:_queryMaintenanceRecordLists,
+        queryMaintenanceRecordAllLists:_queryMaintenanceRecordAllLists,
         queryAlldDeviceTroubleType:_queryAlldDeviceTroubleType,
         queryAllDeviceStatus:_queryAllDeviceStatus,
+        queryCorporateAllUser:_queryCorporateAllUser,
+        queryMaintenanceRecordById:_queryMaintenanceRecordById,
+        addMaintainPlan:_addMaintainPlan,
+        batchDeleteMaintenanceRecord:_batchDeleteMaintenanceRecord,
         queryOrder: function(queryParam, successFunc) {
             queryOrder(queryParam, successFunc);
 

@@ -24,7 +24,7 @@ factoryParameterSettingApp.controller('deviceManageController',function ($scope,
     };
     $scope.paginationConf1 = {
         currentPage: 1,
-        itemsPerPage: 5
+        itemsPerPage: 1
     };
     $scope.paginationConf2 = {
         currentPage: 1,
@@ -121,6 +121,21 @@ factoryParameterSettingApp.controller('deviceManageController',function ($scope,
     $scope.queryDepartmentList();
 
     /*查询所有部门 end*/
+    /*查询所有用户 start*/
+    $scope.queryCorporateAllUsers=function () {
+        factoryParameterSettingService.queryCorporateAllUser({
+        }, function(response){
+            if(response.data.userRespList!=''&&response.data.userRespList!=null&&response.data.userRespList!=undefined&&response.errorCode=='000000'){
+                $scope.corporateAllUsers=response.data.userRespList;
+            }else{
+                $scope.corporateAllUsers=[];
+                console.log(response.errorMessage);
+            }
+        });
+    };
+    $scope.queryCorporateAllUsers();
+
+    /*查询所有用户 end*/
     /*查询使用状态，设备标志，设备状态 start*/
     $scope.queryUseStatus=function () {
         factoryParameterSettingService.queryDeviceDictionary({
@@ -204,6 +219,24 @@ factoryParameterSettingApp.controller('deviceManageController',function ($scope,
     };
     $scope.deviceTroubleLevels();
     /*查询故障等级 end*/
+    /*查询保养级别 start*/
+    $scope.deviceMaintenanceLevels=function () {
+        factoryParameterSettingService.queryDeviceDictionary({
+            code:'device_maintenance_level'//字典类型code
+        }, function(response){
+            if(response.errorCode=='000000'){
+                if(response.data!=null&&response.data!=''&&response.data!=undefined){
+                    $scope.deviceMaintenanceLevel=response.data;
+                }else{
+                    $scope.deviceMaintenanceLevel=[];
+                }
+            }else{
+                $scope.deviceMaintenanceLevel=[];
+            }
+        });
+    };
+    $scope.deviceMaintenanceLevels();
+    /*查询保养级别 end*/
     /*查询维修工段/班组列表 start*/
     $scope.queryRepairGroupLists=function() {
         $scope.RepairGroupLists = factoryParameterSettingService.queryRepairGroupList({}, function (res) {
@@ -568,8 +601,8 @@ factoryParameterSettingApp.controller('deviceManageController',function ($scope,
         localStorage.setItem('dataAudit',dataId);
         var data =localStorage.getItem('dataAudit');
         $scope.dataAudit=data;
-        $scope.queryTroubleRecordList(deviceInfo.id);
-        $scope.queryMaintenanceRecordList(deviceInfo.id);
+        $scope.queryTroubleRecordList($scope.dataAudit);
+        $scope.queryMaintenanceRecordList($scope.dataAudit);
 
     };
     /*查询设备对应的故障列表 end*/
@@ -794,70 +827,81 @@ factoryParameterSettingApp.controller('deviceManageController',function ($scope,
                     console.log($scope.oneDeviceType);
                     $scope.deviceNameMaintenance=$scope.oneDeviceType.name;
                     $scope.deviceCodeMaintenance=$scope.oneDeviceType.code;
+                    $scope.deviceTypeIdMaintenance=$scope.oneDeviceType.deviceTypeId;
+                    $scope.deviceTypeMaintenance=$scope.oneDeviceType.deviceType;
                     $scope.specificationMaintenance=$scope.oneDeviceType.specification;
                     $scope.installationAddressMaintenance=$scope.oneDeviceType.installationAddress;
-
-                    // 设备类型
-                    $("#deviceTypeTroubleMaintenance option").each(function(){
-                        if($(this).text()==$scope.oneDeviceType.deviceType){
-                            $(this).prop("selected",true);
-//                        $scope.deviceTypeEdit=$(this).val();
-                        }
-                    });
-
                     // 使用部门
-                    $("#useDeptMaintenance option").each(function(){
-                        if($(this).text()==$scope.oneDeviceType.useDept){
-                            $(this).prop("selected",true);
-//                        $scope.useDeptEdit=$(this).val();
-                        }
-                    });
-
+                    if($scope.oneDeviceType.useDept!=null&&$scope.oneDeviceType.useDept!=''&&$scope.oneDeviceType.useDept!=undefined){
+                        $("#useDeptMaintenance option").each(function(){
+                            if($(this).text()==$scope.oneDeviceType.useDept){
+                                $(this).prop("selected",true);
+//                                $scope.useDeptMaintenance=$(this).val().split(':')[1];
+                            }
+                        });
+                    }
                 }else{
                     console.log(response.errorMessage);
                 }
             });
             popupDiv('addMaintenanceRecordBalance');
-            $scope.addTroubleRecordSure=function () {
-                if($scope.happendDate==''||$scope.happendDate==null||$scope.happendDate==undefined){
-                    $("#happendDate").focus()
-                }else if($scope.deviceUser==''||$scope.deviceUser==null||$scope.deviceUser==undefined){
-                    $("#deviceUser").focus()
-                }else if($scope.deviceUserPhone==''||$scope.deviceUserPhone==null||$scope.deviceUserPhone==undefined){
-                    $("#deviceUserPhone").focus()
-                }else if($scope.troubleLevel==''||$scope.troubleLevel==null||$scope.troubleLevel==undefined){
-                    $("#troubleLevel").focus()
-                }else if($scope.deviceStatus==''||$scope.deviceStatus==null||$scope.deviceStatus==undefined){
-                    $("#deviceStatus").focus()
-                }else if($scope.troubleType==''||$scope.troubleType==null||$scope.troubleType==undefined){
-                    $("#troubleType").focus()
-                }else if($scope.repairGroupId==''||$scope.repairGroupId==null||$scope.repairGroupId==undefined){
-                    $("#repairGroupId").focus()
-                }else if($scope.deviceAddress==''||$scope.deviceAddress==null||$scope.deviceAddress==undefined){
-                    $("#deviceAddress").focus()
-                }else if($scope.troubleAddRemark==''||$scope.troubleAddRemark==null||$scope.troubleAddRemark==undefined){
-                    $("#troubleAddRemark").focus()
+            $scope.cycleDateType='月';
+            $scope.cycleDateTime=1;
+            $scope.maintenanceCycleType='2';
+            $scope.addMaintenanceRecordSure=function () {
+                if($scope.maintenanceLevel==''||$scope.maintenanceLevel==null||$scope.maintenanceLevel==undefined){
+                    $("#maintenanceLevel").focus()
+                }else if($scope.repairGroupIdMaintenance==''||$scope.repairGroupIdMaintenance==null||$scope.repairGroupIdMaintenance==undefined){
+                    $("#repairGroupIdMaintenance").focus()
+                }else if($scope.maintainPart==''||$scope.maintainPart==null||$scope.maintainPart==undefined){
+                    $("#maintainPart").focus()
+                }else if($scope.maintainStandard==''||$scope.maintainStandard==null||$scope.maintainStandard==undefined){
+                    $("#maintainStandard").focus()
+                }else if($scope.lastMaintainTime==''||$scope.lastMaintainTime==null||$scope.lastMaintainTime==undefined){
+                    $("#lastMaintainTime").focus()
+                }else if($scope.planMaintainTimeStart==''||$scope.planMaintainTimeStart==null||$scope.planMaintainTimeStart==undefined){
+                    $("#planMaintainTimeStart").focus()
+                }else if($scope.planMaintainTimeEnd==''||$scope.planMaintainTimeEnd==null||$scope.planMaintainTimeEnd==undefined){
+                    $("#planMaintainTimeEnd").focus()
+                }else if($scope.planManagerId==''||$scope.planManagerId==null||$scope.planManagerId==undefined){
+                    $("#planManagerId").focus()
                 }else{
-                    $scope.happenTimes=$filter('date')($scope.happenTime,'yyyy-MM-dd');
+                    console.log($("#useDeptMaintenance").val());
+
+                    $scope.lastMaintainTimes=$filter('date')($scope.lastMaintainTime,'yyyy-MM-dd');
+                    $scope.planMaintainTimeStarts=$filter('date')($scope.planMaintainTimeStart,'yyyy-MM-dd');
+                    $scope.planMaintainTimeEnds=$filter('date')($scope.planMaintainTimeEnd,'yyyy-MM-dd');
                     var pa={
-                        deviceId:$scope.dataAudit,
-                        deviceStatus:$scope.deviceStatus,
-                        deviceUser:$scope.deviceUser,
-                        happenTime:$scope.happenTimes,
-                        phone:$scope.deviceUserPhone,
-                        remark:$scope.troubleAddRemark,
-                        repairGroupId:$scope.repairGroupId,
-                        // requestTime:$scope.deviceStatus,
-                        troubleLevel:$scope.troubleLevel,
-                        troubleType:$scope.troubleType
+                        deviceId:$scope.dataAudit,//设备主键
+                        cycleTimeUnit:$scope.cycleDateType,//循环周期单位（天；月；年）
+                        cycleTimeValue:$scope.cycleDateTime,//循环周期值 ,
+                        cycleType:parseInt($scope.maintenanceCycleType),//循环方式（1:单次；2:循环多次））
+                        deviceAddress:$scope.installationAddressMaintenance,//设备位置
+                        deviceCode:$scope.deviceCodeMaintenance,//设备编号
+                        deviceName:$scope.deviceNameMaintenance,//设备名称 ,
+                        deviceSpec:$scope.specificationMaintenance,//设备规格,
+                        deviceType:$scope.deviceTypeIdMaintenance,//设备类型主键
+                        deviceTypeName:$scope.deviceTypeMaintenance,//设备类型名称
+                        deviceUseDeptId:$("#useDeptMaintenance").val().split(':')[1],//设备使用部门主键
+                        deviceUseDeptName:$("#useDeptMaintenance option:selected").text(),//设备使用部门名称
+                        lastMaintainTime:$scope.lastMaintainTimes,//上次保养时间(格式：yyyy-MM-dd) ,
+                        maintainLevel:$scope.maintenanceLevel,//保养级别
+                        maintainPart:$scope.maintainPart,//保养部位
+                        maintainStandard:$scope.maintainStandard,//保养标准
+                        planMaintainTimeEnd:$scope.planMaintainTimeEnds,//计划结束时间(格式：yyyy-MM-dd) ,
+                        planMaintainTimeStart:$scope.planMaintainTimeStarts,//计划开始时间(格式：yyyy-MM-dd) ,
+                        planManagerId:$scope.planManagerId,//保养负责人主键 ,
+                        planManagerName:$("#planManagerId option:selected").text(),//保养负责人姓名 ,
+                        planRemark:$scope.planRemark,//计划描述 ,
+                        repairGroupId:$scope.repairGroupIdMaintenance//维修班组主键
                     };
-                    $scope.addTroubleRecord = factoryParameterSettingService.addTroubleRecords(pa, function (res) {
+                    $scope.addMaintainPlan = factoryParameterSettingService.addMaintainPlan(pa, function (res) {
                         if (res.errorCode == '000000' && res.data!=''&& res.data!=null&& res.data!=undefined) {
-                            hideDiv('addTroubleRecordBalance');
+                            hideDiv('addMaintenanceRecordBalance');
                             popupDiv('SaveSuccess');
                             $('.SaveSuccess .Message').html(res.errorMessage);
                         } else {
-                            hideDiv('addTroubleRecordBalance');
+                            hideDiv('addMaintenanceRecordBalance');
                             popupDiv('SaveSuccess');
                             $('.SaveSuccess .Message').html(res.errorMessage);
                             console.log(res.errorMessage);
@@ -870,6 +914,162 @@ factoryParameterSettingApp.controller('deviceManageController',function ($scope,
         }
     };
     /*新增保养计划 end*/
+
+    /*编辑保养计划 start*/
+    $scope.editMaintenanceRecord=function (res) {
+        if($scope.dataAudit==''||$scope.dataAudit==null||$scope.dataAudit==undefined){
+            alert('请至少选择一个设备');
+        }else{
+            factoryParameterSettingService.queryMaintenanceRecordById({
+                id:res.id
+            }, function(response){
+                if(response.data!=''&&response.data!=null&&response.data!=undefined&&response.errorCode=='000000'){
+                    $scope.oneMaintenanceType=response.data;
+                    console.log($scope.oneMaintenanceType);
+                    // 设备类型
+                    $scope.deviceTypeTroubleMaintenanceEdit=$scope.oneMaintenanceType.deviceType;//设备类型
+                    $scope.deviceCodeMaintenanceEdit=$scope.oneMaintenanceType.deviceCode;//设备编号
+                    $scope.deviceNameMaintenanceEdit=$scope.oneMaintenanceType.deviceName;//设备名称
+                    $scope.specificationMaintenanceEdit=$scope.oneMaintenanceType.deviceSpec;//规格型号
+                    $scope.useDeptMaintenanceEdit=$scope.oneMaintenanceType.deviceUseDeptName;//所在部门
+                    //所在部门
+                    $("#useDeptMaintenanceEdit option").each(function(){
+                        if($(this).text()==$scope.oneMaintenanceType.deviceUseDeptName){
+                            $(this).prop("selected",true);
+//                        $scope.deviceTypeEdit=$(this).val();
+                        }
+                    });
+                    $scope.installationAddressMaintenanceEdit=$scope.oneMaintenanceType.deviceAddress;//设备位置
+                    $scope.maintenanceLevelEdit=$scope.oneMaintenanceType.maintainLevel;//保养级别
+                    $scope.repairGroupIdMaintenanceEdit=$scope.oneMaintenanceType.repairGroupId;//维修班组
+                    $scope.maintenanceCycleTypeEdit=$scope.oneMaintenanceType.cycleType;//循环方式
+                    if($scope.oneMaintenanceType.cycleTimeValue!=null&&$scope.oneMaintenanceType.cycleTimeValue!=''&&$scope.oneMaintenanceType.cycleTimeValue!=undefined){
+                        $scope.cycleDateTimeEdit=parseInt($scope.oneMaintenanceType.cycleTimeValue);//循环周期值
+                    }else{
+                        $scope.cycleDateTimeEdit=0;
+                    }
+                    $scope.cycleDateTypeEdit=$scope.oneMaintenanceType.cycleTimeUnit;//循环周期单位
+                    $scope.maintainPartEdit=$scope.oneMaintenanceType.maintainPart;//保养部位
+                    $scope.maintainStandardEdit=$scope.oneMaintenanceType.maintainStandard;//保养标准
+//                    $scope.lastMaintainTimeEdit=$scope.oneMaintenanceType.lastMaintainTime;//上次保养时间
+                    $("#lastMaintainTimeEdit").val($filter('date')($scope.oneMaintenanceType.lastMaintainTime,'yyyy-MM-dd'));//上次保养时间
+                    $("#planMaintainTimeStartEdit").val($filter('date')($scope.oneMaintenanceType.planMaintainTimeStart,'yyyy-MM-dd'));//计划保养开始时间
+                    $("#planMaintainTimeEndEdit").val($filter('date')($scope.oneMaintenanceType.planMaintainTimeEnd,'yyyy-MM-dd'));//计划保养结束时间
+                    $scope.planManagerIdEdit=$scope.oneMaintenanceType.planManagerId;//保养人员
+                    $scope.planRemarkEdit=$scope.oneMaintenanceType.planRemark;//计划描述
+                }else{
+                    console.log(response.errorMessage);
+                }
+            });
+            popupDiv('editMaintenanceRecordBalance');
+            $scope.editMaintenanceRecordSure=function(){
+                if($scope.maintenanceLevelEdit==''||$scope.maintenanceLevelEdit==null||$scope.maintenanceLevelEdit==undefined){
+                    $("#maintenanceLevelEdit").focus()
+                }else if($scope.repairGroupIdMaintenanceEdit==''||$scope.repairGroupIdMaintenanceEdit==null||$scope.repairGroupIdMaintenanceEdit==undefined){
+                    $("#repairGroupIdMaintenanceEdit").focus()
+                }else if($scope.maintainPartEdit==''||$scope.maintainPartEdit==null||$scope.maintainPartEdit==undefined){
+                    $("#maintainPartEdit").focus()
+                }else if($scope.maintainStandardEdit==''||$scope.maintainStandardEdit==null||$scope.maintainStandardEdit==undefined){
+                    $("#maintainStandardEdit").focus()
+                }else if($("#lastMaintainTimeEdit").val()==''||$("#lastMaintainTimeEdit").val()==null||$("#lastMaintainTimeEdit").val()==undefined){
+                    $("#lastMaintainTimeEdit").focus()
+                }else if($("#planMaintainTimeStartEdit").val()==''||$("#planMaintainTimeStartEdit").val()==null||$("#planMaintainTimeStartEdit").val()==undefined){
+                    $("#planMaintainTimeStartEdit").focus()
+                }else if($("#planMaintainTimeEndEdit").val()==''||$("#planMaintainTimeEndEdit").val()==null||$("#planMaintainTimeEndEdit").val()==undefined){
+                    $("#planMaintainTimeEndEdit").focus()
+                }else if($scope.planManagerIdEdit==''||$scope.planManagerIdEdit==null||$scope.planManagerIdEdit==undefined){
+                    $("#planManagerIdEdit").focus()
+                }else{
+                    console.log($("#useDeptMaintenance").val());
+
+                    $scope.lastMaintainTimeEdits=$filter('date')($("#lastMaintainTimeEdit").val(),'yyyy-MM-dd');
+                    $scope.planMaintainTimeStartEdits=$filter('date')($("#planMaintainTimeStartEdit").val(),'yyyy-MM-dd');
+                    $scope.planMaintainTimeEndEdits=$filter('date')($("#planMaintainTimeEndEdit").val(),'yyyy-MM-dd');
+                    var pa={
+                        id:res.id,
+                        deviceId:$scope.dataAudit,//设备主键
+                        cycleTimeUnit:$scope.cycleDateTypeEdit,//循环周期单位（天；月；年）
+                        cycleTimeValue:$scope.cycleDateTimeEdit,//循环周期值 ,
+                        cycleType:parseInt($scope.maintenanceCycleTypeEdit),//循环方式（1:单次；2:循环多次））
+                        deviceAddress:$scope.installationAddressMaintenanceEdit,//设备位置
+                        deviceCode:$scope.deviceCodeMaintenanceEdit,//设备编号
+                        deviceName:$scope.deviceNameMaintenanceEdit,//设备名称 ,
+                        deviceSpec:$scope.specificationMaintenanceEdit,//设备规格,
+                        deviceType:$scope.deviceTypeTroubleMaintenanceEdit,//设备类型主键
+                        deviceTypeName:$("#deviceTypeTroubleMaintenanceEdit option:selected").text(),//设备类型名称
+                        deviceUseDeptId:$("#useDeptMaintenanceEdit").val().split(':')[1],//设备使用部门主键
+                        deviceUseDeptName:$("#useDeptMaintenanceEdit option:selected").text(),//设备使用部门名称
+                        lastMaintainTime:$scope.lastMaintainTimeEdits,//上次保养时间(格式：yyyy-MM-dd) ,
+                        maintainLevel:$scope.maintenanceLevelEdit,//保养级别
+                        maintainPart:$scope.maintainPartEdit,//保养部位
+                        maintainStandard:$scope.maintainStandardEdit,//保养标准
+                        planMaintainTimeEnd:$scope.planMaintainTimeEndEdits,//计划结束时间(格式：yyyy-MM-dd) ,
+                        planMaintainTimeStart:$scope.planMaintainTimeStartEdits,//计划开始时间(格式：yyyy-MM-dd) ,
+                        planManagerId:$scope.planManagerIdEdit,//保养负责人主键 ,
+                        planManagerName:$("#planManagerIdEdit option:selected").text(),//保养负责人姓名 ,
+                        planRemark:$scope.planRemarkEdit,//计划描述 ,
+                        repairGroupId:$scope.repairGroupIdMaintenanceEdit//维修班组主键
+                    };
+                    $scope.addMaintainPlan = factoryParameterSettingService.addMaintainPlan(pa, function (res) {
+                        if (res.errorCode == '000000' && res.data!=''&& res.data!=null&& res.data!=undefined) {
+                            hideDiv('editMaintenanceRecordBalance');
+                            popupDiv('SaveSuccess');
+                            $('.SaveSuccess .Message').html(res.errorMessage);
+                        } else {
+                            hideDiv('editMaintenanceRecordBalance');
+                            popupDiv('SaveSuccess');
+                            $('.SaveSuccess .Message').html(res.errorMessage);
+                            console.log(res.errorMessage);
+                        }
+                    }, function (err) {
+                        console.log(err);
+                    });
+                }
+            }
+        }
+    };
+    /*编辑保养计划 end*/
+    /*批量删除保养计划 start*/
+    $scope.chooseMaintenanceRecord=function ($event,res) {
+        var dataId = $($event.target).parents('tr').data("appid");
+        localStorage.setItem('dataChooseMaintenance',dataId);
+        var data =localStorage.getItem('dataChooseMaintenance');
+        $scope.dataChooseMaintenance=data;
+    };
+    $scope.deleteAllMaintenanceRecord=function(){
+        if($(".tableListDiv tr td input[name='maintenanceRecord']:checked").length<1){
+            popupDiv('SaveSuccessNoReload');
+            $('.SaveSuccessNoReload .Message').html('请至少选中一个需要删除的保养计划');
+        }else{
+            popupDiv('deleteMaintenanceRecords');
+            $scope.ids='';
+            $(".tableListDiv tr td input[name='maintenanceRecord']:checked").each(function(){
+                var sfruit=$(this).val();
+                $scope.ids +=','+sfruit;
+            });
+            $scope.ids=$scope.ids.substr(1,$scope.ids.length);
+            console.log($scope.ids);
+            $scope.deleteMaintenanceRecordSure=function(){
+                $scope.deleteMaintenanceRecords = factoryParameterSettingService.batchDeleteMaintenanceRecord({
+                    ids:$scope.ids
+                }, function (res) {
+                    if (res.errorCode == '000000' && res.data!=''&& res.data!=null&& res.data!=undefined) {
+                        hideDiv('deleteMaintenanceRecords');
+                        popupDiv('SaveSuccess');
+                        $('.SaveSuccess .Message').html(res.errorMessage);
+                    } else {
+                        hideDiv('deleteMaintenanceRecords');
+                        popupDiv('SaveSuccess');
+                        $('.SaveSuccess .Message').html(res.errorMessage);
+                        console.log(res.errorMessage);
+                    }
+                }, function (err) {
+                    console.log(err);
+                });
+            }
+        }
+    };
+    /*批量删除保养计划 end*/
     $scope.$watch('paginationConf.currentPage + paginationConf.itemsPerPage', $scope.onQuery);
     $scope.$watch('paginationConf1.currentPage + paginationConf1.itemsPerPage', $scope.queryTroubleRecordList);
     $scope.$watch('paginationConf2.currentPage + paginationConf2.itemsPerPage', $scope.queryMaintenanceRecordList);
