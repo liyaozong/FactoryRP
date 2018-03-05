@@ -324,8 +324,6 @@ public class SpotInspectionRecordServiceImpl implements SpotInspectionRecordServ
 
         List<SpotInspectionRecordDetail> itemDetailList = spotInspectionRecordDetailRepository.findByCorporateIdentifyAndRecordId(corporateIdentify, recordId);
 
-
-
         restResp.setPlanName(plan.getName());
         restResp.setExceptionHandleDesc("");
         restResp.setExecutor(user.getUserName());
@@ -338,6 +336,8 @@ public class SpotInspectionRecordServiceImpl implements SpotInspectionRecordServ
 
             itemDetailList.stream().forEach(d1 -> {
 
+              /*  SpotInspectionRecordDeatailResp detail = new SpotInspectionRecordDeatailResp();
+                detail.s*/
             });
 
         }

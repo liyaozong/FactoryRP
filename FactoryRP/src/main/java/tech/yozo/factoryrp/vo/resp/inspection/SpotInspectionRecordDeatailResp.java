@@ -1,6 +1,7 @@
 package tech.yozo.factoryrp.vo.resp.inspection;
 
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -15,6 +16,10 @@ import java.io.Serializable;
 @Data
 public class SpotInspectionRecordDeatailResp implements Serializable {
 
-
+    /**
+     * 名称
+     */
+    @ApiModelProperty(value = "名称",notes ="名称",example = "1")
+    private String planName;
 
 }

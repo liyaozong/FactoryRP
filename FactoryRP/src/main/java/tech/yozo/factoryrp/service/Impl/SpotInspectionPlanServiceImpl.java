@@ -62,6 +62,9 @@ public class SpotInspectionPlanServiceImpl implements SpotInspectionPlanService 
     @Resource
     private DeviceTypeRepository deviceTypeRepository;
 
+    @Resource
+    private SpotInspectionStandardRepository spotInspectionStandardRepository;
+
 
     private static Logger logger = LoggerFactory.getLogger(SpotInspectionPlanServiceImpl.class);
 
@@ -215,22 +218,6 @@ public class SpotInspectionPlanServiceImpl implements SpotInspectionPlanService 
 
             spotInspectionPlans = spotInspectionPlans.stream().filter(s1 -> JSON.parseArray(s1.getExecutors(), Long.class).contains(userId)).collect(Collectors.toList());
 
-            /*for (SpotInspectionPlan plan: spotInspectionPlans) {
-                List<Long> executorList = JSON.parseArray(plan.getExecutors(), Long.class);
-                if(executorList.contains(userId)){
-                    spotInspectionPlans.add(plan);
-                }
-            }
-*/
-            //选出当前userId执行的任务
-            /*spotInspectionPlans.stream().forEach(s1 -> {
-                List<Long> executorList = JSON.parseArray(s1.getExecutors(), Long.class);
-
-                if(executorList.contains(userId)){
-                    spotInspectionPlans.add(s1);
-                }
-            });*/
-
             if(!CheckParam.isNull(spotInspectionPlans) && !spotInspectionPlans.isEmpty()){
 
 
@@ -376,6 +363,7 @@ public class SpotInspectionPlanServiceImpl implements SpotInspectionPlanService 
             Department department = departmentRepository.findOne(plan.getDepartment());
 
             spotInspectionPlanDetailWarpResp.setDepartmentName(CheckParam.isNull(department) ? null : department.getName());
+            spotInspectionPlanDetailWarpResp.setDepartment(CheckParam.isNull(department) ? null : department.getId());
             spotInspectionPlanDetailWarpResp.setEndTime(plan.getEndTime());
             spotInspectionPlanDetailWarpResp.setLastExecuteTime(plan.getLastExecuteTime());
             spotInspectionPlanDetailWarpResp.setNextExecuteTime(plan.getNextExecuteTime());
@@ -388,10 +376,13 @@ public class SpotInspectionPlanServiceImpl implements SpotInspectionPlanService 
 
             List<Long> deviceInfoIds = new ArrayList<>();
             List<Long> deviceTypeIds = new ArrayList<>();
+            List<Long> planStandardList = new ArrayList<>();
+
 
             planDeviceList.forEach(p1 -> {
                 deviceInfoIds.add(p1.getDeviceId());
                 deviceTypeIds.add(p1.getDeviceType());
+                planStandardList.add(p1.getSpotInspectionStandard());
             });
 
             List<DeviceInfo> deviceInfos = deviceInfoRepository.findByIdsIn(deviceInfoIds);
@@ -403,6 +394,10 @@ public class SpotInspectionPlanServiceImpl implements SpotInspectionPlanService 
 
                 List<DeviceType> deviceTypeList = deviceTypeRepository.findByCorporateIdentifyAndIdIn(corporateIdentify, deviceTypeIds);
                 Map<Long,DeviceType> deviceTypeMap = deviceTypeList.stream().collect(Collectors.toMap(DeviceType::getId, Function.identity()));
+
+                List<SpotInspectionStandard> standardList = spotInspectionStandardRepository.findByCorporateIdentifyAndIdIn(corporateIdentify, planStandardList);
+                Map<Long, SpotInspectionStandard> standardMap = standardList.stream().collect(Collectors.toMap(SpotInspectionStandard::getId, Function.identity()));
+
 
                 planDeviceList.stream().forEach(p1 -> {
 
@@ -416,16 +411,22 @@ public class SpotInspectionPlanServiceImpl implements SpotInspectionPlanService 
                         info.setDeviceName(deviceInfo.getName());
                         info.setDeviceSpecification(deviceInfo.getSpecification());
 
-                        boolean b = !CheckParam.isNull(CheckParam.isNull(deviceInfoMap)) && !CheckParam.isNull(deviceTypeMap.get(deviceInfo.getDeviceType()));
+                        //boolean b = !CheckParam.isNull(CheckParam.isNull(deviceInfoMap)) && !CheckParam.isNull(deviceTypeMap.get(deviceInfo.getDeviceType()));
 
                         if(!CheckParam.isNull(CheckParam.isNull(deviceInfoMap)) && !CheckParam.isNull(deviceTypeMap.get(deviceInfo.getDeviceType()))){
                             info.setDeviceTypeName(deviceTypeMap.get(deviceInfo.getDeviceType()).getName());
+
+                        }
+
+                        //格式化巡检标准名称
+                        if(!CheckParam.isNull(CheckParam.isNull(standardMap)) && !CheckParam.isNull(standardMap.get(p1.getSpotInspectionStandard()))){
+                            info.setStandardName(deviceTypeMap.get(p1.getSpotInspectionStandard()).getName());
+                            info.setStandardId(deviceTypeMap.get(p1.getSpotInspectionStandard()).getId());
                         }
 
 
                         info.setLineOrder(p1.getLineOrder());
                         info.setDeviceId(p1.getDeviceId());
-
                         deviceInfoList.add(info);
                     }
                 });

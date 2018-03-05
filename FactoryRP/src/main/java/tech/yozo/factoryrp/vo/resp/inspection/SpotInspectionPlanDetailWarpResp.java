@@ -50,6 +50,12 @@ public class SpotInspectionPlanDetailWarpResp implements Serializable {
     private String departmentName;
 
     /**
+     * 部门ID
+     */
+    @ApiModelProperty(value = "部门ID",notes ="部门ID" )
+    private Long department;
+
+    /**
      * 所在范围
      */
     @ApiModelProperty(value = "所在范围",notes ="所在范围" )
