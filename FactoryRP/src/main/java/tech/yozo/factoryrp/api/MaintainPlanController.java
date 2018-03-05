@@ -87,7 +87,7 @@ public class MaintainPlanController extends BaseController{
     }
 
     @PostMapping("submit")
-    @ApiOperation(value = "保养提交--Mobile",notes = "保养提交--Mobile",httpMethod = "POST")
+    @ApiOperation(value = "保养提交/执行计划--Mobile/Web",notes = "保养提交/执行计划--Mobile/Web",httpMethod = "POST")
     public ApiResponse submitMaintainPlan(HttpServletRequest request,@RequestBody MaintainDetailSubmitReq param){
         AuthUser user = userAuthService.getCurrentUser(request);
         maintainPlanService.appSubmit(param,user);
