@@ -21,12 +21,6 @@ import java.util.Date;
 @Data
 public class SpotInspectionRecord extends BaseEntity implements Serializable {
 
-    /**
-     * 巡检计划名称
-     */
-    @ApiModelProperty(value = "巡检标准ID",notes ="巡检标准ID",example = "1")
-    @Column(name = "standard",length = 20)
-    private Long standard;
 
 
     /**
@@ -88,12 +82,5 @@ public class SpotInspectionRecord extends BaseEntity implements Serializable {
     @ApiModelProperty(value = "循环周期",notes ="循环周期" )
     @Column(name = "recycle_period",length = 20)
     private Integer recyclePeriod;
-
-    /**
-     * 设备ID
-     */
-    @ApiModelProperty(value = "设备ID",notes ="设备ID" )
-    @Column(name = "device_id",length = 20)
-    private Long deviceId;
 
 }

@@ -13,6 +13,7 @@ import tech.yozo.factoryrp.vo.base.ApiResponse;
 import tech.yozo.factoryrp.vo.req.SpotInspectionRecordAddReq;
 import tech.yozo.factoryrp.vo.req.SpotInspectionRecordMobileAddReq;
 import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionRecordAddResp;
+import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionRecordDetailWarpResp;
 import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionRecordResp;
 
 import javax.annotation.Resource;
@@ -83,6 +84,24 @@ public class SpotInspectionRecordController extends BaseController {
         return apiResponse(spotInspectionRecordService.querySpotInspectionRecordByPlanId(planId, corporateIdentify));
     }
 
+    /**
+     * 根据点检记录ID查询点检详情
+     * @param recordId
+     * @param planId
+     * @return
+     */
+    @ApiOperation(value = "根据巡检ID查询巡检记录-WEB",notes = "根据巡检ID查询巡检记录-WEB",httpMethod = "GET")
+    @GetMapping("/querySpotInspectionRecordDetailByRecordId")
+    @ApiImplicitParams({
+            @ApiImplicitParam(dataType = "Long" ,name = "recordId", paramType = "query" ,
+                    value = "巡检记录ID",required = true,defaultValue = "13"),
+            @ApiImplicitParam(dataType = "Long" ,name = "planId", paramType = "query" ,
+                    value = "巡检ID",required = true,defaultValue = "8")
+    })
+    public ApiResponse<SpotInspectionRecordDetailWarpResp> querySpotInspectionRecordDetailByRecordId(@RequestParam("recordId")Long recordId,@RequestParam("planId") Long planId,HttpServletRequest request){
+        Long corporateIdentify = userAuthService.getCurrentUserCorporateIdentify(request);
+        return apiResponse(spotInspectionRecordService.querySpotInspectionRecordDetailByRecordId(recordId,planId, corporateIdentify));
+    }
 
 }
 

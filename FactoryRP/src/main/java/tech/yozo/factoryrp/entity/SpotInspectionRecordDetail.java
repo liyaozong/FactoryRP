@@ -17,6 +17,19 @@ import java.io.Serializable;
 @Data
 public class SpotInspectionRecordDetail extends BaseEntity implements Serializable {
 
+    /**
+     * 设备ID
+     */
+    @ApiModelProperty(value = "设备ID",notes ="设备ID" )
+    @Column(name = "device_id",length = 20)
+    private Long deviceId;
+
+    /**
+     * 巡检标准ID
+     */
+    @ApiModelProperty(value = "巡检标准ID",notes ="巡检标准ID",example = "1")
+    @Column(name = "standard",length = 20)
+    private Long standard;
 
     /**
      * 巡检记录ID

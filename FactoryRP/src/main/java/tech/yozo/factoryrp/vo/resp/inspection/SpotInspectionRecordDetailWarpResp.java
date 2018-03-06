@@ -47,6 +47,6 @@ public class SpotInspectionRecordDetailWarpResp implements Serializable {
      * 巡检记录详情
      */
     @ApiModelProperty(value = "巡检记录详情",notes ="巡检记录详情",example = "List")
-    private List<SpotInspectionRecordDeatailResp> detailList;
+    private List<SpotInspectionRecordDetailResp> detailList;
 
 }

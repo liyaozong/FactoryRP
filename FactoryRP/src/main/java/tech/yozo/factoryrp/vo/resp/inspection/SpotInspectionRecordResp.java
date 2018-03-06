@@ -23,12 +23,6 @@ public class SpotInspectionRecordResp implements Serializable {
     @ApiModelProperty(value = "记录ID",notes ="记录ID",example = "1")
     private Long recordId;
 
-    /**
-     * 巡检计划名称
-     */
-    @ApiModelProperty(value = "巡检标准ID",notes ="巡检标准ID",example = "1")
-    private Long standard;
-
 
     /**
      * 巡检计划名称

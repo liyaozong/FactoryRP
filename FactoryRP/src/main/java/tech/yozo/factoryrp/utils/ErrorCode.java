@@ -44,7 +44,8 @@ public enum ErrorCode {
     TIMEPARSE_ERROR("0000026","出现时间转换异常"),
     NO_DEVICEINFO_ERROR("0000027","设备信息不存在"),
     NO_SPOTINSPECTIONPLAN__EXIST_ERROR("0000028","巡检计划不存在"),
-    PROCESS_DIC_NOTEXIST_ERROR("0000029","流程枚举参数不存在");
+    PROCESS_DIC_NOTEXIST_ERROR("0000029","流程枚举参数不存在"),
+    SPOTINSPECTION_RECORD_NOTEXIST_ERROR("0000030","巡检记录不存在");
 
 
     private String code;

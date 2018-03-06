@@ -19,10 +19,11 @@ public interface SpotInspectionRecordService {
     /**
      * 根据点检记录ID查询点检详情
      * @param recordId
+     * @param planId
      * @param corporateIdentify
      * @return
      */
-    SpotInspectionRecordDetailWarpResp querySpotInspectionRecordDetailByRecordId(Long recordId,Long corporateIdentify);
+    SpotInspectionRecordDetailWarpResp querySpotInspectionRecordDetailByRecordId(Long recordId,Long planId,Long corporateIdentify);
 
     /**
      * 根据巡检ID查询巡检记录

@@ -1,5 +1,6 @@
 package tech.yozo.factoryrp.repository;
 
+import com.sun.tools.doclets.formats.html.resources.standard;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import tech.yozo.factoryrp.entity.SpotInspectionItems;
@@ -25,6 +26,15 @@ public interface SpotInspectionItemsRepository extends BaseRepository<SpotInspec
      */
     List<SpotInspectionItems> findByStandardAndCorporateIdentify(Long standard ,Long corporateIdentify);
 
+
+    /**
+     * 根据企业唯一标识和点检标准集合进行IN查询
+     * @param corporateIdentify
+     * @param standardIds
+     * @return
+     */
+    @Query(value = "select s from SpotInspectionItems s where s.corporateIdentify = :corporateIdentify and s.standard in :standardIds")
+    List<SpotInspectionItems> findByCorporateIdentifyAndStandardIn(@Param("corporateIdentify") Long corporateIdentify,@Param("standardIds")List<Long> standardIds);
 
     /**
      * 根据巡检标准ID和企业唯一标识进行in查询

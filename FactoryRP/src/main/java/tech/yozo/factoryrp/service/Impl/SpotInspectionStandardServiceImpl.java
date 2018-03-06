@@ -109,10 +109,6 @@ public class SpotInspectionStandardServiceImpl implements SpotInspectionStandard
                     //Date date = DateTimeUtil.subtractDateByParam(new Date(), plan.getRecyclePeriod(), plan.getRecyclePeriodType());
                     Date date = DateTimeUtil.subtractDateByParam(new Date(), plan.getRecyclePeriod(), plan.getRecyclePeriodType());
 
-                    /*String s = JSON.toJSONString(date);
-
-                    String s2 = DateTimeUtil.dateToStr(date);*/
-
                     Map<Long, Integer> executeResultMap = inspectionExecuteResult(corporateIdentify, date, itemIdList);
 
 

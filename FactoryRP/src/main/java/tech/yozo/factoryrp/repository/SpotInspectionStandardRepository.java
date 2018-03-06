@@ -44,4 +44,14 @@ public interface SpotInspectionStandardRepository extends BaseRepository<SpotIns
     @Query(value = "select s from SpotInspectionStandard s where s.corporateIdentify = :corporateIdentify and s.id in :ids")
     List<SpotInspectionStandard> findByCorporateIdentifyAndIdIn(@Param("corporateIdentify") Long corporateIdentify,@Param("ids") List<Long> ids);
 
+
+    /**
+     * 根据企业唯一标识和ID进行查询
+     * @param corporateIdentify
+     * @param id
+     * @return
+     */
+    @Query(value = "select s from SpotInspectionStandard s where s.corporateIdentify = :corporateIdentify and s.id = :id")
+    SpotInspectionStandard findByCorporateIdentifyAndId(@Param("corporateIdentify") Long corporateIdentify,@Param("id") Long id);
+
 }
