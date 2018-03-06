@@ -1,5 +1,6 @@
 package tech.yozo.factoryrp.vo.resp.device.trouble;
 
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import java.io.Serializable;
@@ -9,6 +10,7 @@ import java.io.Serializable;
  * @create 2018-03-06 下午9:16
  **/
 @Data
+@ApiModel("待审核故障信息")
 public class WorkOrderWebListVo implements Serializable{
 
     @ApiModelProperty(value = "故障记录主键")
