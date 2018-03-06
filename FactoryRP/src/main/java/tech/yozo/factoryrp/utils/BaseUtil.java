@@ -145,7 +145,7 @@ public class BaseUtil {
 		return strToDate(str + "");
 	}
 
-	public static final Date strToDateTime(String str) throws ParseException {
+	public static Date strToDateTime(String str) throws ParseException {
 		if (CheckParam.isNull(str)) {
 			return null;
 		}

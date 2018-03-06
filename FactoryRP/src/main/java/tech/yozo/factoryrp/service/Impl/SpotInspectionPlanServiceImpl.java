@@ -425,7 +425,7 @@ public class SpotInspectionPlanServiceImpl implements SpotInspectionPlanService 
 
                         //boolean b = !CheckParam.isNull(CheckParam.isNull(deviceInfoMap)) && !CheckParam.isNull(deviceTypeMap.get(deviceInfo.getDeviceType()));
 
-                        if(!CheckParam.isNull(CheckParam.isNull(deviceInfoMap)) && !CheckParam.isNull(deviceTypeMap.get(deviceInfo.getDeviceType()))){
+                        if(!CheckParam.isNull(CheckParam.isNull(deviceTypeMap)) && !CheckParam.isNull(deviceTypeMap.get(deviceInfo.getDeviceType()))){
                             info.setDeviceTypeName(deviceTypeMap.get(deviceInfo.getDeviceType()).getName());
                             info.setDeviceTypeId(deviceTypeMap.get(deviceInfo.getDeviceType()).getId());
 
@@ -537,10 +537,10 @@ public class SpotInspectionPlanServiceImpl implements SpotInspectionPlanService 
 
         try {
         if(!CheckParam.isNull(spotInspectionPlanEditReq.getEndTime())){
-            plan.setEndTime(BaseUtil.strToDate(spotInspectionPlanEditReq.getEndTime()));
+            plan.setEndTime(spotInspectionPlanEditReq.getEndTime());
         }
         if(!CheckParam.isNull(spotInspectionPlanEditReq.getNextExecuteTime())){
-            plan.setNextExecuteTime(BaseUtil.strToDate(spotInspectionPlanEditReq.getNextExecuteTime()));
+            plan.setNextExecuteTime(BaseUtil.strToDateTime(spotInspectionPlanEditReq.getNextExecuteTime()));
         }
         } catch (ParseException e) {
             logger.error("日期字符串转换异常 :"+e.getMessage(),e);
