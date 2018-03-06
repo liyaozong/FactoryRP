@@ -143,26 +143,26 @@ public class ProcessServiceImpl implements ProcessService {
 
             List<DeviceProcessDetail> deviceProcessDetailList = deviceProcessDetailRepository.findByProcessIdAndAndCorporateIdentify(processId, corporateIdentify);
 
-            List<DeciceProcessDetailQueryResp> processDetailList = new ArrayList<>();
+            List<DeviceProcessDetailQueryResp> processDetailList = new ArrayList<>();
 
             List<Long> userIds = new ArrayList<>();
 
             deviceProcessDetailList.stream().forEach(d1 -> {
-                DeciceProcessDetailQueryResp deciceProcessDetailQueryResp = new DeciceProcessDetailQueryResp();
+                DeviceProcessDetailQueryResp deviceProcessDetailQueryResp = new DeviceProcessDetailQueryResp();
 
-                deciceProcessDetailQueryResp.setAuditType(d1.getAuditType());
-                deciceProcessDetailQueryResp.setHandleDemandType(d1.getHandleDemandType());
+                deviceProcessDetailQueryResp.setAuditType(d1.getAuditType());
+                deviceProcessDetailQueryResp.setHandleDemandType(d1.getHandleDemandType());
 
                 List<Long> auditorList = JSON.parseArray(d1.getProcessAuditor(), Long.class);
 
                 //设置审核人的名称所用
                 userIds.addAll(auditorList);
 
-                deciceProcessDetailQueryResp.setProcessAuditorList(JSON.parseArray(d1.getProcessAuditor(), String.class));
-                deciceProcessDetailQueryResp.setProcessId(d1.getProcessId());
-                deciceProcessDetailQueryResp.setProcessStep(d1.getProcessStep());
+                deviceProcessDetailQueryResp.setProcessAuditorList(JSON.parseArray(d1.getProcessAuditor(), String.class));
+                deviceProcessDetailQueryResp.setProcessId(d1.getProcessId());
+                deviceProcessDetailQueryResp.setProcessStep(d1.getProcessStep());
 
-                processDetailList.add(deciceProcessDetailQueryResp);
+                processDetailList.add(deviceProcessDetailQueryResp);
             });
 
             //去重操作，真正用来查询的用户集合

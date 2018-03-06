@@ -204,7 +204,7 @@ public class SpotInspectionStandardServiceImpl implements SpotInspectionStandard
      * @param corporateIdentify
      * @return
      */
-    public List<SpotInspectionStandardQueryResp> queryStanardByDeviceId(Long deviceId,Long corporateIdentify){
+    public List<SpotInspectionStandardQueryResp> queryStandardByDeviceId(Long deviceId, Long corporateIdentify){
 
 
             DeviceInfo deviceInfo = deviceInfoRepository.findOne(deviceId);
@@ -564,4 +564,66 @@ public class SpotInspectionStandardServiceImpl implements SpotInspectionStandard
 
     }
 
+
+    /**
+     * 通过巡检标准ID进行查询
+     * @param standardId
+     * @param planId
+     * @param corporateIdentify
+     * @return
+     */
+    public List<SpotInspectionStandardItemsQueryResp> findSpotInspectionStandardItemByStandardIdAndPlanId(Long standardId, Long planId, Long corporateIdentify) {
+
+        SpotInspectionPlan plan = spotInspectionPlanRepository.findOne(planId);
+
+        if (CheckParam.isNull(plan)) {
+            throw new BussinessException(ErrorCode.NO_SPOTINSPECTIONPLAN__EXIST_ERROR.getCode(),
+                    ErrorCode.NO_SPOTINSPECTIONPLAN__EXIST_ERROR.getMessage());
+        }
+
+        List<SpotInspectionItems> spotInspectionItemsList = spotInspectionItemsRepository.findByStandardAndCorporateIdentify(standardId, corporateIdentify);
+
+        if (!CheckParam.isNull(spotInspectionItemsList) && !spotInspectionItemsList.isEmpty()) {
+
+            List<SpotInspectionStandardItemsQueryResp> itemList = new ArrayList<>();
+
+            List<Long> itemIdList = new ArrayList<>();
+
+            spotInspectionItemsList.forEach(s1 -> {
+                itemIdList.add(s1.getId());
+            });
+
+            //计算当前时间减去周期之后的时间 注意，此处和计划的下次执行时间无关
+            //Date date = DateTimeUtil.subtractDateByParam(new Date(), plan.getRecyclePeriod(), plan.getRecyclePeriodType());
+            Date date = DateTimeUtil.subtractDateByParam(new Date(), plan.getRecyclePeriod(), plan.getRecyclePeriodType());
+
+            Map<Long, Integer> executeResultMap = inspectionExecuteResult(corporateIdentify, date, itemIdList);
+
+
+            spotInspectionItemsList.stream().forEach(s1 -> {
+                SpotInspectionStandardItemsQueryResp spotInspectionStandardItemsQueryResp = new SpotInspectionStandardItemsQueryResp();
+
+                spotInspectionStandardItemsQueryResp.setUpperLimit(s1.getUpperLimit());
+                spotInspectionStandardItemsQueryResp.setLowerLimit(s1.getLowerLimit());
+                spotInspectionStandardItemsQueryResp.setInputLimitValue(JSON.parseArray(s1.getVaildateRegular(), String.class));
+                spotInspectionStandardItemsQueryResp.setName(s1.getName());
+                spotInspectionStandardItemsQueryResp.setRecordTypeName(s1.getRecordType());
+                spotInspectionStandardItemsQueryResp.setItemId(s1.getId());
+
+
+                //设置在规定巡检周期内，是否执行过，1执行2未执行
+                if (!CheckParam.isNull(executeResultMap.get(s1.getId()))) {
+                    spotInspectionStandardItemsQueryResp.setInspectionStatus(executeResultMap.get(s1.getId()));
+                } else {
+                    spotInspectionStandardItemsQueryResp.setInspectionStatus(2);
+                }
+
+                itemList.add(spotInspectionStandardItemsQueryResp);
+
+            });
+
+            return itemList;
+        }
+            return null;
+    }
 }

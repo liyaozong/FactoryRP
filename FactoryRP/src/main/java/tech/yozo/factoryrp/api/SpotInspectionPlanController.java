@@ -10,10 +10,9 @@ import tech.yozo.factoryrp.service.SpotInspectionPlanService;
 import tech.yozo.factoryrp.utils.CheckParam;
 import tech.yozo.factoryrp.vo.base.ApiResponse;
 import tech.yozo.factoryrp.vo.req.SpotInspectionPlanAddReq;
+import tech.yozo.factoryrp.vo.req.SpotInspectionPlanEditReq;
 import tech.yozo.factoryrp.vo.req.SpotInspectionPlanQueryReq;
-import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionPlanAddResp;
-import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionPlanDetailWarpResp;
-import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionPlanQueryWarpResp;
+import tech.yozo.factoryrp.vo.resp.inspection.*;
 import tech.yozo.factoryrp.vo.resp.inspection.mobile.SpotInspectionPlanDeviceQueryResp;
 import tech.yozo.factoryrp.vo.resp.inspection.mobile.SpotInspectionPlanResp;
 
@@ -122,6 +121,8 @@ public class SpotInspectionPlanController extends BaseController{
     }
 
 
+
+
     /**
      * 删除巡检计划
      * @param planId
@@ -158,6 +159,35 @@ public class SpotInspectionPlanController extends BaseController{
             }
         }
         spotInspectionPlanService.batchDeleteSpotInspectionPlanDetailByPlanId(idList,corporateIdentify);
+        return apiResponse();
+    }
+
+    /**
+     * 编辑巡检计划
+     * @param spotInspectionPlanEditReq
+     */
+    @ApiOperation(value = "编辑巡检计划",notes = "编辑巡检计划",httpMethod = "POST")
+    @PostMapping("/editSpotInspectionPlan")
+    @ApiImplicitParam(dataType = "SpotInspectionPlanEditReq" ,name = "spotInspectionPlanEditReq", paramType = "VO" ,
+            value = "编辑巡检计划",required = true)
+    public ApiResponse editSpotInspectionPlan(@Valid @RequestBody SpotInspectionPlanEditReq spotInspectionPlanEditReq,HttpServletRequest request){
+        Long corporateIdentify = userAuthService.getCurrentUserCorporateIdentify(request);
+        spotInspectionPlanService.editSpotInspectionPlan(spotInspectionPlanEditReq,corporateIdentify);
+        return apiResponse();
+    }
+
+    /**
+     * 执行巡检计划
+     * @param spotInspectionPlanExecuteWarpReq
+     */
+    @ApiOperation(value = "执行巡检计划",notes = "编辑巡检计划",httpMethod = "POST")
+    @PostMapping("/executeSpotInspectionPlan")
+    @ApiImplicitParam(dataType = "spotInspectionPlanExecuteWarpReq" ,name = "corporateIdentify", paramType = "VO" ,
+            value = "执行巡检计划",required = true)
+    public ApiResponse executeSpotInspectionPlan(@Valid @RequestBody SpotInspectionPlanExecuteWarpReq spotInspectionPlanExecuteWarpReq,HttpServletRequest request){
+        Long corporateIdentify = userAuthService.getCurrentUserCorporateIdentify(request);
+        Long userId = userAuthService.getCurrentUserId(request);
+        spotInspectionPlanService.executeSpotInspectionPlan(spotInspectionPlanExecuteWarpReq,corporateIdentify,userId);
         return apiResponse();
     }
 

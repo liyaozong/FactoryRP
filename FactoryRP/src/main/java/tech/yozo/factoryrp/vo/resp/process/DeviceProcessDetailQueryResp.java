@@ -15,7 +15,7 @@ import java.util.List;
  */
 @ApiModel
 @Data
-public class DeciceProcessDetailQueryResp implements Serializable {
+public class DeviceProcessDetailQueryResp implements Serializable {
 
     private static final long serialVersionUID = -5014092912334704882L;
 

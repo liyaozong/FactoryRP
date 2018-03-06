@@ -2,10 +2,7 @@ package tech.yozo.factoryrp.service;
 
 import tech.yozo.factoryrp.vo.req.SpotInspectionStandardAddReq;
 import tech.yozo.factoryrp.vo.req.SpotInspectionStandardQueryReq;
-import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionStandardAddResp;
-import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionStandardDetailQueryResp;
-import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionStandardQueryResp;
-import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionStandardQueryWarpResp;
+import tech.yozo.factoryrp.vo.resp.inspection.*;
 import tech.yozo.factoryrp.vo.resp.inspection.mobile.SpotInspectionItemsQueryWarpResp;
 import tech.yozo.factoryrp.vo.resp.inspection.mobile.SpotInspectionStandardDetailMobileQueryResp;
 
@@ -35,7 +32,7 @@ public interface SpotInspectionStandardService {
      * @param corporateIdentify
      * @return
      */
-    List<SpotInspectionStandardQueryResp> queryStanardByDeviceId(Long deviceId,Long corporateIdentify);
+    List<SpotInspectionStandardQueryResp> queryStandardByDeviceId(Long deviceId, Long corporateIdentify);
 
     /**
      * 批量删除点检标准
@@ -77,6 +74,15 @@ public interface SpotInspectionStandardService {
      */
     SpotInspectionStandardAddResp addSpotInspectionStandard(SpotInspectionStandardAddReq spotInspectionStandardAddReq, Long corporateIdentify);
 
+
+    /**
+     * 通过巡检标准ID和巡检计划ID进行查询巡检项目相关数据
+     * @param standardId
+     * @param planId
+     * @param corporateIdentify
+     * @return
+     */
+    List<SpotInspectionStandardItemsQueryResp> findSpotInspectionStandardItemByStandardIdAndPlanId(Long standardId, Long planId, Long corporateIdentify);
 
     /**
      * 删除巡检标准

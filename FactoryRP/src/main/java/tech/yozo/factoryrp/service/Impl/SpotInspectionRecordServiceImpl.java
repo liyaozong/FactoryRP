@@ -150,25 +150,29 @@ public class SpotInspectionRecordServiceImpl implements SpotInspectionRecordServ
      */
     public SpotInspectionRecordAddResp spotInspectionItemsRecordMobileAdd(SpotInspectionRecordMobileAddReq spotInspectionRecordMobileAddReq,Long corporateIdentify,Long userId) {
 
-
-        SpotInspectionRecord spotInspectionRecord = new SpotInspectionRecord();
-
-        Date currentDate = new Date();
-
-        spotInspectionRecord.setExecuteTime(currentDate);
-        spotInspectionRecord.setExecutor(userId); //执行者
-        spotInspectionRecord.setPlanId(spotInspectionRecordMobileAddReq.getPlanId());
-        spotInspectionRecord.setCorporateIdentify(corporateIdentify);
-
         //设置计划执行时间，需要取计划表里面的下次执行时间 同时在巡检记录保存成功之后更新巡检计划的下次执行时间和最后一次的执行时间
         SpotInspectionPlan plan = spotInspectionPlanRepository.findOne(spotInspectionRecordMobileAddReq.getPlanId());
 
-        if (!CheckParam.isNull(plan)) {
-            spotInspectionRecord.setPlanTime(plan.getNextExecuteTime());
+            if (CheckParam.isNull(plan)) {
+                throw new BussinessException(ErrorCode.NO_SPOTINSPECTIONPLAN__EXIST_ERROR.getCode(),
+                        ErrorCode.NO_SPOTINSPECTIONPLAN__EXIST_ERROR.getMessage());
+        }
 
+        Date currentTime = new Date();
+
+        //保证在一个巡检计划周期内，巡检记录只能有一条
+        Date date = DateTimeUtil.subtractDateByParam(currentTime, plan.getRecyclePeriod(), plan.getRecyclePeriodType());
+
+        //如果能查询出来表示执行过
+        SpotInspectionRecord record = spotInspectionRecordRepository.findByCorporateIdentifyAndPlanIdAndCreateTimeGreaterThan(corporateIdentify, plan.getId(), date);
+
+        if(CheckParam.isNull(record)){
+            record = new SpotInspectionRecord();
+        }
+
+        record.setPlanTime(plan.getNextExecuteTime());
             try {
-                Date date = DateTimeUtil.plusDateByParam(new Date(), plan.getRecyclePeriod(), plan.getRecyclePeriodType());
-                plan.setNextExecuteTime(date);
+                plan.setNextExecuteTime(DateTimeUtil.plusDateByParam(new Date(), plan.getRecyclePeriod(), plan.getRecyclePeriodType()));
             } catch (Exception e) {
                 logger.info("时间转换出现异常 :" + e.getMessage(), e);
                 throw new BussinessException(ErrorCode.TIMEPARSE_ERROR.getCode(),
@@ -178,22 +182,31 @@ public class SpotInspectionRecordServiceImpl implements SpotInspectionRecordServ
 
             spotInspectionPlanRepository.save(plan);
 
-            spotInspectionRecord.setPlanName(plan.getName());
-            spotInspectionRecord.setPlanTime(plan.getNextExecuteTime());
-            spotInspectionRecord.setRecyclePeriod(plan.getRecyclePeriod());
-            spotInspectionRecord.setRecyclePeriodType(plan.getRecyclePeriodType());
 
-            spotInspectionRecordRepository.save(spotInspectionRecord);
+        record.setExecuteTime(currentTime);
+        record.setExecutor(userId); //执行者
+        record.setPlanId(spotInspectionRecordMobileAddReq.getPlanId());
+        record.setCorporateIdentify(corporateIdentify);
+
+        record.setPlanName(plan.getName());
+        record.setPlanTime(plan.getNextExecuteTime());
+        record.setRecyclePeriod(plan.getRecyclePeriod());
+        record.setRecyclePeriodType(plan.getRecyclePeriodType());
+
+        spotInspectionRecordRepository.save(record);
 
             if (!CheckParam.isNull(spotInspectionRecordMobileAddReq.getDetailList()) && !spotInspectionRecordMobileAddReq.getDetailList().isEmpty()) {
 
                 List<SpotInspectionRecordDetail> detailList = new ArrayList<>();
 
+                //巡检记录ID
+                Long recordId = record.getId();
+
                 spotInspectionRecordMobileAddReq.getDetailList().stream().forEach(s1 -> {
                     SpotInspectionRecordDetail spotInspectionRecordDetail = new SpotInspectionRecordDetail();
 
                     spotInspectionRecordDetail.setAbnormalDesc(s1.getAbnormalDesc());
-                    spotInspectionRecordDetail.setRecordId(spotInspectionRecord.getId());
+                    spotInspectionRecordDetail.setRecordId(recordId);
                     spotInspectionRecordDetail.setRecordResult(s1.getRecordResult());
                     spotInspectionRecordDetail.setRemark(s1.getRemark());
                     spotInspectionRecordDetail.setStandardItemId(s1.getItemId());
@@ -203,16 +216,14 @@ public class SpotInspectionRecordServiceImpl implements SpotInspectionRecordServ
                 });
 
                 spotInspectionRecordDetailRepository.save(detailList);
-                spotInspectionRecordDetailRepository.save(detailList);
 
                 SpotInspectionRecordAddResp spotInspectionRecordAddResp = new SpotInspectionRecordAddResp();
 
-                spotInspectionRecordAddResp.setId(spotInspectionRecord.getId());
+                spotInspectionRecordAddResp.setId(record.getId());
 
                 return spotInspectionRecordAddResp;
             }
 
-        }
         return null;
     }
 

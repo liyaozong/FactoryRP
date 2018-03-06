@@ -18,6 +18,12 @@ public class SpotInspectionPlanDeviceInfoResp implements Serializable{
 
 
     /**
+     * 巡检计划-设备对应ID
+     */
+    @ApiModelProperty(value = "巡检计划-设备对应ID",notes ="巡检计划-设备对应ID" )
+    private Long planDeviceId;
+
+    /**
      * 设备ID
      */
     @ApiModelProperty(value = "设备ID",notes ="设备ID" )

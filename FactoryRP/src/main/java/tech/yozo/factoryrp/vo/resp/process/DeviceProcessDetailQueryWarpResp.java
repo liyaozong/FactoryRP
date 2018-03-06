@@ -35,6 +35,6 @@ public class DeviceProcessDetailQueryWarpResp implements Serializable{
      * 流程细节集合
      */
     @ApiModelProperty(value = "流程细节集合",required = true,notes = "流程细节集合",example = "processDetailList")
-    private List<DeciceProcessDetailQueryResp> processDetailList;
+    private List<DeviceProcessDetailQueryResp> processDetailList;
 
 }

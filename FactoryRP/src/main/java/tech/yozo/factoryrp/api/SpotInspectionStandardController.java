@@ -13,6 +13,7 @@ import tech.yozo.factoryrp.vo.req.SpotInspectionStandardAddReq;
 import tech.yozo.factoryrp.vo.req.SpotInspectionStandardQueryReq;
 import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionStandardAddResp;
 import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionStandardDetailQueryResp;
+import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionStandardItemsQueryResp;
 import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionStandardQueryResp;
 import tech.yozo.factoryrp.vo.resp.inspection.mobile.SpotInspectionItemsQueryWarpResp;
 
@@ -157,9 +158,28 @@ public class SpotInspectionStandardController extends BaseController{
     @ApiOperation(value = "根据设备ID查询点检标准",notes = "根据设备ID查询点检标准",httpMethod = "GET")
     @ApiImplicitParams(@ApiImplicitParam(paramType = "query",dataType = "Long",name = "deviceId",
             value = "设备ID",required = true,defaultValue = "1"))
-    public ApiResponse<List<SpotInspectionStandardQueryResp>> queryStanardByDeviceId(@RequestParam(name = "deviceId",required = true) Long deviceId,HttpServletRequest request){
+    public ApiResponse<List<SpotInspectionStandardQueryResp>> queryStanardByDeviceId(@RequestParam(name = "deviceId",required = true) Long deviceId,HttpServletRequest request) {
         Long corporateIdentify = userAuthService.getCurrentUserCorporateIdentify(request);
-        return apiResponse(spotInspectionStandardService.queryStanardByDeviceId(deviceId,corporateIdentify));
+        return apiResponse(spotInspectionStandardService.queryStandardByDeviceId(deviceId, corporateIdentify));
+    }
+
+        /**
+         * 通过巡检标准ID和巡检计划ID进行查询巡检项目相关数据
+         * @param standardId
+         * @param planId
+         * @return
+         */
+        @ApiOperation(value = "通过巡检标准ID和巡检计划ID进行查询巡检项目相关数据-WEB",notes = "通过巡检标准ID和巡检计划ID进行查询巡检项目相关数据-WEB",httpMethod = "GET")
+        @GetMapping("/findSpotInspectionStandardItemByStandardIdAndPlanId")
+        @ApiImplicitParams({
+                @ApiImplicitParam(dataType = "Long" ,name = "standardId", paramType = "query" ,
+                        value = "标准ID",required = true,defaultValue = "3"),
+                @ApiImplicitParam(dataType = "Long" ,name = "planId", paramType = "query" ,
+                        value = "巡检计划ID",required = true,defaultValue = "3")
+        })
+        public ApiResponse<List<SpotInspectionStandardItemsQueryResp>> findSpotInspectionStandardItemByStandardIdAndPlanId(@RequestParam("standardId")Long standardId,@RequestParam("planId") Long planId,HttpServletRequest request){
+            Long corporateIdentify = userAuthService.getCurrentUserCorporateIdentify(request);
+            return apiResponse(spotInspectionStandardService.findSpotInspectionStandardItemByStandardIdAndPlanId(standardId,planId,corporateIdentify));
     }
 
 }

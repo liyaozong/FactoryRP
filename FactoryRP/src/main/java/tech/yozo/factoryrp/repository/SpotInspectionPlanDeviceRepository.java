@@ -38,6 +38,14 @@ public interface SpotInspectionPlanDeviceRepository extends BaseRepository<SpotI
 
 
     /**
+     * 根据主键进行IN查询
+     * @param ids
+     * @return
+     */
+    @Query(value = "select s from SpotInspectionPlanDevice s where s.id in :ids")
+    List<SpotInspectionPlanDevice> findByIdIn(@Param("ids") List<Long> ids);
+
+    /**
      * 根据企业唯一标识，设备ID和巡检计划ID进行查询
      * @param corporateIdentify
      * @param deviceId

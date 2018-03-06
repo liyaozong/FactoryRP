@@ -1,9 +1,11 @@
 package tech.yozo.factoryrp.service;
 
 import tech.yozo.factoryrp.vo.req.SpotInspectionPlanAddReq;
+import tech.yozo.factoryrp.vo.req.SpotInspectionPlanEditReq;
 import tech.yozo.factoryrp.vo.req.SpotInspectionPlanQueryReq;
 import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionPlanAddResp;
 import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionPlanDetailWarpResp;
+import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionPlanExecuteWarpReq;
 import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionPlanQueryWarpResp;
 import tech.yozo.factoryrp.vo.resp.inspection.mobile.SpotInspectionPlanDeviceQueryResp;
 import tech.yozo.factoryrp.vo.resp.inspection.mobile.SpotInspectionPlanResp;
@@ -74,5 +76,22 @@ public interface SpotInspectionPlanService {
      * @param corporateIdentify
      */
     void batchDeleteSpotInspectionPlanDetailByPlanId(List<Long> ids, Long corporateIdentify);
+
+
+    /**
+     * 编辑巡检计划
+     * @param spotInspectionPlanEditReq
+     * @param corporateIdentify
+     */
+    void editSpotInspectionPlan(SpotInspectionPlanEditReq spotInspectionPlanEditReq,Long corporateIdentify);
+
+
+    /**
+     * 执行巡检计划
+     * @param spotInspectionPlanExecuteWarpReq
+     * @param corporateIdentify
+     * @param userId
+     */
+    void executeSpotInspectionPlan(SpotInspectionPlanExecuteWarpReq spotInspectionPlanExecuteWarpReq,Long corporateIdentify,Long userId);
 
 }
