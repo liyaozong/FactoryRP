@@ -24,12 +24,29 @@ factoryParameterSettingApp.controller('deviceManageController',function ($scope,
     };
     $scope.paginationConf1 = {
         currentPage: 1,
-        itemsPerPage: 1
+        itemsPerPage: 5
     };
     $scope.paginationConf2 = {
         currentPage: 1,
         itemsPerPage: 5
     };
+    /*查询所有备件信息 queryAllSpareParts start*/
+    $scope.queryAllSparePart=function(){
+        $scope.queryAllSparePartsss = factoryParameterSettingService.queryAllSpareParts({
+            currentPage: 1,
+            itemsPerPage: 100000
+        }, function (response) {
+            if(response.errorCode=='000000'&&response.data.totalCount>=1){
+                $scope.allSpareParts=response.data.list;
+            }else{
+                $scope.allSpareParts=[];
+            }
+        }, function (err) {
+            console.log(err);
+        });
+    };
+    $scope.queryAllSparePart();
+    /*查询所有备件信息 end*/
     /*查询设备故障信息列表 公用方法 start*/
     $scope.queryTroubleRecordList=function(){
         $scope.queryTroubleRecordListss = factoryParameterSettingService.queryTroubleRecordLists({
@@ -1033,9 +1050,9 @@ factoryParameterSettingApp.controller('deviceManageController',function ($scope,
     $scope.chooseMaintenanceRecord=function ($event,res) {
         var dataId = $($event.target).parents('tr').data("appid");
         localStorage.setItem('dataChooseMaintenance',dataId);
-        var data =localStorage.getItem('dataChooseMaintenance');
-        $scope.dataChooseMaintenance=data;
+        $scope.dataChooseMaintenance=localStorage.getItem('dataChooseMaintenance');
     };
+    $scope.dataChooseMaintenance=localStorage.getItem('dataChooseMaintenance');
     $scope.deleteAllMaintenanceRecord=function(){
         if($(".tableListDiv tr td input[name='maintenanceRecord']:checked").length<1){
             popupDiv('SaveSuccessNoReload');
@@ -1072,15 +1089,50 @@ factoryParameterSettingApp.controller('deviceManageController',function ($scope,
     /*批量删除保养计划 end*/
     /*执行保养计划 start*/
     $scope.dealAllMaintenanceRecords=function () {
+        if($scope.dataChooseMaintenance==null||$scope.dataChooseMaintenance==''||$scope.dataChooseMaintenance==undefined){
+            popupDiv('SaveSuccessNoReload');
+            $('.SaveSuccessNoReload .Message').html('请至少选中一个需要删除的保养计划');
+            return false;
+        }
+        console.log($scope.dataChooseMaintenance);
+        factoryParameterSettingService.queryMaintenanceRecordById({
+            id:$scope.dataChooseMaintenance
+        }, function(response){
+            if(response.data!=''&&response.data!=null&&response.data!=undefined&&response.errorCode=='000000'){
+                $scope.oneMaintenanceType=response.data;
+                console.log($scope.oneMaintenanceType);
+                // 设备类型
+                $scope.deviceTypeTroubleMaintenanceDeal=$scope.oneMaintenanceType.deviceType;//设备类型
+                $scope.deviceCodeMaintenanceDeal=$scope.oneMaintenanceType.deviceCode;//设备编号
+                $scope.deviceNameMaintenanceDeal=$scope.oneMaintenanceType.deviceName;//设备名称
+                $scope.specificationMaintenanceDeal=$scope.oneMaintenanceType.deviceSpec;//规格型号
+                $("#planMaintainTimeStartDeals").val($filter('date')($scope.oneMaintenanceType.planMaintainTimeStart,'yyyy-MM-dd'));//计划保养时间
+                //所在部门
+                $("#useDeptMaintenanceDeal option").each(function(){
+                    if($(this).text()==$scope.oneMaintenanceType.deviceUseDeptName){
+                        $(this).prop("selected",true);
+//                        $scope.deviceTypeEdit=$(this).val();
+                    }
+                });
+                $scope.repairGroupIdMaintenanceDeal=$scope.oneMaintenanceType.repairGroupId;//维保工段
+                $scope.planManagerIdDeal=$scope.oneMaintenanceType.planManagerId;//保养人员
+                $scope.maintenanceLevelDeal=$scope.oneMaintenanceType.maintainLevel;//保养级别
+                $scope.maintainPartDeal=$scope.oneMaintenanceType.maintainPart;//保养部位
+            }else{
+                console.log(response.errorMessage);
+            }
+        });
+
         popupDiv('dealMaintenanceRecordBalance');
-        $scope.workTimes=[];
+        /*工作量 start*/
+        $scope.maintainPersonLists=[];//工作量
         var maintainPersonList={
             planManagerIdDealChoose:'',
             planMaintainTimeStartDealChoose:'',
             planMaintainTimeEndDealChoose:'',
             maintainUseTimeChoose:''
         };
-        $scope.workTimes.push(maintainPersonList);
+        $scope.maintainPersonLists.push(maintainPersonList);
         $scope.addPersonMaintain=function () {
             var maintainPersonList={
                 planManagerIdDealChoose:'',
@@ -1088,13 +1140,261 @@ factoryParameterSettingApp.controller('deviceManageController',function ($scope,
                 planMaintainTimeEndDealChoose:'',
                 maintainUseTimeChoose:''
             };
-            $scope.workTimes.push(maintainPersonList);
+            $scope.maintainPersonLists.push(maintainPersonList);
         };
         $scope.deletePersonMaintain=function (res,$index) {
-            $scope.workTimes.splice($index,1);
+            $scope.maintainPersonLists.splice($index,1);
         };
+        /*工作量 end*/
+        /*保养部位 start*/
+        $scope.maintainPartLists=[];//保养部位
+        var maintainPartList={
+            maintainPart:'',
+            maintenanceStandards:'',
+            maintainPartSure:'',
+            maintainPartRemark:''
+        };
+        $scope.maintainPartLists.push(maintainPartList);
+        $scope.addPartMaintain=function () {
+            var maintainPartList={
+                maintainPart:'',
+                maintenanceStandards:'',
+                maintainPartSure:'',
+                maintainPartRemark:''
+            };
+            $scope.maintainPartLists.push(maintainPartList);
+        };
+        $scope.deletePartMaintain=function (res,$index) {
+            $scope.maintainPartLists.splice($index,1);
+        };
+        /*保养部位 end*/
+        /*备件更换 start*/
+        $scope.sparePartsLists=[];
+        var sparePartsList={
+            sparePartsCodeName:'',
+            sparePartsName:'',
+            sparePartsAndodel:'',
+            sparePartsUpperLimit:'',
+            sparePartsNumber:'',
+            sparePartsoldOrderNum:'',
+            sparePartsNewOrderNum:''
+        };
+        $scope.sparePartsLists.push(sparePartsList);
+        $scope.addSparePartsMaintain=function () {
+            var sparePartsList={
+                sparePartsCodeName:'',
+                sparePartsName:'',
+                sparePartsAndodel:'',
+                sparePartsUpperLimit:'',
+                sparePartsNumber:'',
+                sparePartsoldOrderNum:'',
+                sparePartsNewOrderNum:''
+            };
+            $scope.sparePartsLists.push(sparePartsList);
+        };
+        $scope.deleteSparePartsMaintain=function (res,$index) {
+            $scope.sparePartsLists.splice($index,1);
+        };
+        $scope.chooseSpareParts=function(sparePartsDetail){
+            console.log(sparePartsDetail);
+            if($scope.allSpareParts!=''&&$scope.allSpareParts!=null&&$scope.allSpareParts!=undefined){
+                $scope.allSpareParts.forEach(function(item1){
+                    if($scope.sparePartsLists!=''&&$scope.sparePartsLists!=null&&$scope.sparePartsLists!=undefined){
+                        $scope.sparePartsLists.forEach(function(item){
+                            if(item.sparePartsCodeName==item1.code){
+                                item.sparePartsName=item1.name;
+                                item.sparePartsAndodel=item1.specificationsAndodels;
+                                item.sparePartsUpperLimit=item1.inventoryUpperLimit;
+                            }
+                        })
+                    }
+                })
+            }
+            console.log($scope.sparePartsLists);
+        };
+        console.log($scope.sparePartsLists);
+        /*备件更换 end*/
+        var inputId = []; //存放所有DOM元素的id
+        var inputNewId = []; //存放所有DOM元素的id
+        $scope.isOkAdd=false;
         $scope.dealMaintenanceRecordSure=function () {
-            console.log($scope.workTimes)
+            $(".sectionNew select").each(function(index, item) {
+                inputNewId.push($(this).attr("name"))
+            });
+            $(".sectionNew input").each(function(index, item) {
+                inputNewId.push($(this).attr("name"))
+            });
+            var _inputNewId = del_repeat(inputNewId);
+            for (var i = 0; i < _inputNewId.length; i++) {
+//            console.log($('#' + _inputNewId[i]));
+                if (_inputNewId[i].substring(0, _inputNewId[i].length - 1) == "planManagerIdDealChoose" &&($('#' + _inputNewId[i]).val() == "" || $('#' + _inputNewId[i]).val() == null || $('#' + _inputNewId[i]).val() == undefined)) {
+                    //$(".informationError").show();
+                    $('#' + _inputNewId[i]).focus();
+                    return false;
+                }
+                else if (_inputNewId[i].substring(0, _inputNewId[i].length - 1) == "planMaintainTimeStartDealChoose" &&($('#' + _inputNewId[i]).val() == "" || $('#' + _inputNewId[i]).val() == null || $('#' + _inputNewId[i]).val() == undefined)) {
+                    //$(".informationError").show();
+                    $('#' + _inputNewId[i]).focus();
+                    return false;
+                }
+                else if (_inputNewId[i].substring(0, _inputNewId[i].length - 1) == "planMaintainTimeEndDealChoose" &&($('#' + _inputNewId[i]).val() == "" || $('#' + _inputNewId[i]).val() == null || $('#' + _inputNewId[i]).val() == undefined)) {
+                    //$(".informationError").show();
+                    $('#' + _inputNewId[i]).focus();
+                    return false;
+                }
+                else if (_inputNewId[i].substring(0, _inputNewId[i].length - 1) == "maintainUseTimeChoose" &&($('#' + _inputNewId[i]).val() == "" || $('#' + _inputNewId[i]).val() == null || $('#' + _inputNewId[i]).val() == undefined)) {
+                    //$(".informationError").show();
+                    $('#' + _inputNewId[i]).focus();
+                    return false;
+                }
+                /*else if (_inputNewId[i].substring(0, _inputNewId[i].length - 1) == "maintainPart" &&($('#' + _inputNewId[i]).val() == "" || $('#' + _inputNewId[i]).val() == null || $('#' + _inputNewId[i]).val() == undefined)) {
+                    //$(".informationError").show();
+                    $('#' + _inputNewId[i]).focus();
+                    return false;
+                }
+                else if (_inputNewId[i].substring(0, _inputNewId[i].length - 1) == "maintenanceStandards" &&($('#' + _inputNewId[i]).val() == "" || $('#' + _inputNewId[i]).val() == null || $('#' + _inputNewId[i]).val() == undefined)) {
+                    //$(".informationError").show();
+                    $('#' + _inputNewId[i]).focus();
+                    return false;
+                }
+                else if (_inputNewId[i].substring(0, _inputNewId[i].length - 1) == "maintainPartSure" &&($('#' + _inputNewId[i]).val() == "" || $('#' + _inputNewId[i]).val() == null || $('#' + _inputNewId[i]).val() == undefined)) {
+                    //$(".informationError").show();
+                    $('#' + _inputNewId[i]).focus();
+                    return false;
+                }
+                else if (_inputNewId[i].substring(0, _inputNewId[i].length - 1) == "maintainPartRemark" &&($('#' + _inputNewId[i]).val() == "" || $('#' + _inputNewId[i]).val() == null || $('#' + _inputNewId[i]).val() == undefined)) {
+                    //$(".informationError").show();
+                    $('#' + _inputNewId[i]).focus();
+                    return false;
+                }*/
+                else if (_inputNewId[i].substring(0, _inputNewId[i].length - 1) == "sparePartsCodeName" &&($('#' + _inputNewId[i]).val() == "" || $('#' + _inputNewId[i]).val() == null || $('#' + _inputNewId[i]).val() == undefined)) {
+                    //$(".informationError").show();
+                    $('#' + _inputNewId[i]).focus();
+                    return false;
+                }
+                else if (_inputNewId[i].substring(0, _inputNewId[i].length - 1) == "sparePartsAndodel" &&($('#' + _inputNewId[i]).val() == "" || $('#' + _inputNewId[i]).val() == null || $('#' + _inputNewId[i]).val() == undefined)) {
+                    //$(".informationError").show();
+                    $('#' + _inputNewId[i]).focus();
+                    return false;
+                }
+                else if (_inputNewId[i].substring(0, _inputNewId[i].length - 1) == "sparePartsUpperLimit" &&($('#' + _inputNewId[i]).val() == "" || $('#' + _inputNewId[i]).val() == null || $('#' + _inputNewId[i]).val() == undefined)) {
+                    //$(".informationError").show();
+                    $('#' + _inputNewId[i]).focus();
+                    return false;
+                }
+                else if (_inputNewId[i].substring(0, _inputNewId[i].length - 1) == "sparePartsNumber" &&($('#' + _inputNewId[i]).val() == "" || $('#' + _inputNewId[i]).val() == null || $('#' + _inputNewId[i]).val() == undefined)) {
+                    //$(".informationError").show();
+                    $('#' + _inputNewId[i]).focus();
+                    return false;
+                }
+                else if (_inputNewId[i].substring(0, _inputNewId[i].length - 1) == "sparePartsoldOrderNum" &&($('#' + _inputNewId[i]).val() == "" || $('#' + _inputNewId[i]).val() == null || $('#' + _inputNewId[i]).val() == undefined)) {
+                    //$(".informationError").show();
+                    $('#' + _inputNewId[i]).focus();
+                    return false;
+                }
+                else if (_inputNewId[i].substring(0, _inputNewId[i].length - 1) == "sparePartsNewOrderNum" &&($('#' + _inputNewId[i]).val() == "" || $('#' + _inputNewId[i]).val() == null || $('#' + _inputNewId[i]).val() == undefined)) {
+                    //$(".informationError").show();
+                    $('#' + _inputNewId[i]).focus();
+                    return false;
+                }
+                else{
+                    $scope.isOkAdd=true;
+                }
+            }
+            if($scope.isOkAdd){
+                var channelsArr = [];
+                $scope.workTimes=[];
+                $scope.maintainPart=[];
+                $scope.replaceSpares=[];
+                /*工作量 start*/
+                for (var j = 0; j < $scope.maintainPersonLists.length; j++) {
+                    var obj = {
+                        costHour: $scope.maintainPersonLists[j].maintainUseTimeChoose,//维修/保养耗时 ,
+                        endTime: $filter('date')($scope.maintainPersonLists[j].planMaintainTimeEndDealChoose,'yyyy-MM-dd HH:mm:ss'), //维修/保养结束时间，格式yyyy-MM-dd HH:mm:ss
+                        startTime: $filter('date')($scope.maintainPersonLists[j].planMaintainTimeStartDealChoose,'yyyy-MM-dd HH:mm:ss'),// 维修/保养开始时间，格式yyyy-MM-dd HH:mm:ss
+                        repairUserId: $scope.maintainPersonLists[j].planManagerIdDealChoose//维修/保养人员主键 ,
+//                        repairUserName:$scope.maintainPersonLists[j].inputLoanTermUnit //维修/保养人员名称 ,
+                    };
+                    if($scope.corporateAllUsers!=''&&$scope.corporateAllUsers!=null&&$scope.corporateAllUsers!=undefined){
+                        $scope.corporateAllUsers.forEach(function(item){
+                            if(item.userId==$scope.maintainPersonLists[j].planManagerIdDealChoose){
+                                obj.repairUserName=item.userName;
+                            }
+                        })
+                    }
+                    $scope.workTimes.push(obj);
+                }
+                /*工作量 end*/
+                /*保养部位 start*/
+                for (var j = 0; j < $scope.maintainPartLists.length; j++) {
+                    var obj = {
+                        maintainPart: $scope.maintainPartLists[j].maintainPart,//保养部位 ,
+                        maintenanceStandards: $scope.maintainPartLists[j].maintenanceStandards,//保养标准,
+                        maintainPartSure: $scope.maintainPartLists[j].maintainPartSure,//确认保养 ,
+                        maintainPartRemark: $scope.maintainPartLists[j].maintainPartRemark//备注 ,
+                    };
+                    $scope.maintainPart.push(obj);
+                }
+                /*保养部位 end*/
+                /*更换配件 start*/
+                for (var j = 0; j < $scope.sparePartsLists.length; j++) {
+                    var obj = {
+                        code: $scope.sparePartsLists[j].sparePartsCodeName,//备件编号 ,
+                        name: $scope.sparePartsLists[j].sparePartsName,// 备件名称 ,
+                        specificationsAndodels: $scope.sparePartsLists[j].sparePartsAndodel,//规格型号
+                        inventoryUpperLimit: $scope.sparePartsLists[j].sparePartsUpperLimit,//当前库存
+                        amount: $scope.sparePartsLists[j].sparePartsNumber,//更换数量 ,
+                        oldOrderNum: $scope.sparePartsLists[j].sparePartsoldOrderNum,//原配件序号 ,
+                        newOrderNum: $scope.sparePartsLists[j].sparePartsNewOrderNum//新换上序号 ,
+                    };
+                    $scope.replaceSpares.push(obj);
+                }
+                /*更换配件 end*/
+                console.log($scope.workTimes);
+                console.log($scope.maintainPart);
+                console.log($scope.replaceSpares);
+                $scope.planMaintainTimeStartDeals=$filter('date')($scope.planMaintainTimeStartDeal,'yyyy-MM-dd HH:mm:ss');
+                $scope.planMaintainTimeEndDeals=$filter('date')($scope.planMaintainTimeEndDeal,'yyyy-MM-dd HH:mm:ss');
+                if($scope.isDownMaintain){
+                    $scope.isDownMaintain=1
+                }else{
+                    $scope.isDownMaintain=0
+                }
+                var pa= {
+//                    maintainPlanId:$scope.maintainPlanId,    //订单ID（放款的订单ID）
+                    maintainPlanId:$scope.dataChooseMaintenance,    //保养计划主键 ,
+                    costHour:$scope.maintainUseTime,    //保养耗时 ,
+                    stoped:$scope.isDownMaintain,    //是否停机，0：否；1：是 ,
+                    stopedHour:$scope.downMaintainTime,    //停机时间 ,
+                    startTime:$scope.planMaintainTimeStartDeals,    // 保养开始时间，格式yyyy-MM-dd HH:mm:ss ,
+                    endTime:$scope.planMaintainTimeEndDeals,    //保养结束时间，格式yyyy-MM-dd HH:mm:ss ,
+                    maintainAmount:$scope.maintainUseMoney,    //保养费用 ,
+                    maintainLevel:$scope.maintenanceLevelDeal,    //保养级别 ,
+                    maintainPart:$scope.maintainPartDeal,    //保养部位,
+                    maintainRemark:$scope.maintainRemark,    //保养过程  ,
+                    maintainStatus:$scope.maintenanceStatusDeal,    //保养状态 ,
+                    repairGroupId:$scope.repairGroupIdMaintenanceDeal,    //维保班组/维保工段 ,
+                    replaceSpares:$scope.replaceSpares,    //更换配件,
+                    workTimes:$scope.replaceSpares    //工作量List
+                };
+                var par={params:pa};
+            console.log(pa);
+                $scope.maintainPlanSubmits = factoryParameterSettingService.maintainPlanSubmit(pa, function(res){
+                    if (res.errorCode == '000000' && res.data!=''&& res.data!=null&& res.data!=undefined) {
+                        hideDiv('dealMaintenanceRecordBalance');
+                        popupDiv('SaveSuccess');
+                        $('.SaveSuccess .Message').html(res.errorMessage);
+                    } else {
+                        hideDiv('dealMaintenanceRecordBalance');
+                        popupDiv('SaveSuccess');
+                        $('.SaveSuccess .Message').html(res.errorMessage);
+                        console.log(res.errorMessage);
+                    }
+                }, function(err){
+                    console.log(err)
+                });
+            }
+            console.log($scope.workTimes);
         };
     };
     /*执行保养计划 end*/
