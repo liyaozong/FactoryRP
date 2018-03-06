@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import tech.yozo.factoryrp.vo.resp.auth.AuthUser;
 import tech.yozo.factoryrp.vo.resp.device.trouble.SimpleTroubleRecordVo;
 import tech.yozo.factoryrp.vo.resp.device.trouble.WorkOrderDetailVo;
+import tech.yozo.factoryrp.vo.resp.device.trouble.WorkOrderWebListVo;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -57,7 +58,7 @@ public class TroubleRecordController extends BaseController{
      */
     @RequestMapping("myWaitAuditList")
     @ApiOperation(value = "查询当前登陆人待审核的故障列表--Web",notes = "查询当前登陆人待审核的故障列表--Web",httpMethod = "POST")
-    public ApiResponse ownWaitAudtiList(HttpServletRequest request,@RequestBody WorkOrderListReq req){
+    public ApiResponse<WorkOrderWebListVo> ownWaitAudtiList(HttpServletRequest request, @RequestBody WorkOrderListReq req){
         Long corporateIdentify =userAuthService.getCurrentUserCorporateIdentify(request);
         AuthUser user = userAuthService.getCurrentUser(request);
         return apiResponse(troubleRecordService.findWaitAuditWorkOrder(req,corporateIdentify,user));

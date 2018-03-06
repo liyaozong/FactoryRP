@@ -38,6 +38,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -61,7 +62,10 @@ public class TroubleRecordServiceImpl implements TroubleRecordService {
     private TroubleRecordUserRelRepository troubleRecordUserRelRepository;
     @Autowired
     private ProcessService processService;
-
+    @Autowired
+    private RepairGroupRepository repairGroupRepository;
+    @Autowired
+    private DeviceTroubleTypeRepository deviceTroubleTypeRepository;
     @Resource
     private DeviceInfoRepository deviceInfoRepository;
 
@@ -242,7 +246,7 @@ public class TroubleRecordServiceImpl implements TroubleRecordService {
     }
 
     @Override
-    public Pagination<WaitAuditWorkOrderVo> findWaitAuditWorkOrder(WorkOrderListReq req, Long corporateIdentify, AuthUser user) {
+    public Pagination<WorkOrderWebListVo> findWaitAuditWorkOrder(WorkOrderListReq req, Long corporateIdentify, AuthUser user) {
         Integer currentPage = req.getCurrentPage();
         Integer itemsPerPage = req.getItemsPerPage();
         if(null==currentPage){
@@ -257,7 +261,7 @@ public class TroubleRecordServiceImpl implements TroubleRecordService {
         Pageable p = new PageRequest(currentPage, itemsPerPage,new Sort(Sort.Direction.DESC,"createTime"));
         Page<TroubleRecordUserRel> page = troubleRecordUserRelRepository.
                 findByDealUserIdAndDealStepStatusAndCorporateIdentifyAndDealStatus(user.getUserId(),0,corporateIdentify,TroubleStatusEnum.WAIT_AUDIT.getCode(),p);
-        Pagination<WaitAuditWorkOrderVo> res = new Pagination(currentPage+1,itemsPerPage,page.getTotalElements());
+        Pagination<WorkOrderWebListVo> res = new Pagination(currentPage+1,itemsPerPage,page.getTotalElements());
         if (page.hasContent()){
             List<Long> troubleRecordIds = new ArrayList<>();
             page.getContent().stream().forEach(troubleRecordUserRel -> {
@@ -267,14 +271,30 @@ public class TroubleRecordServiceImpl implements TroubleRecordService {
             if (null!=troubleRecordIds && troubleRecordIds.size()>0){
                 List<TroubleRecord> tl =troubleRecordRepository.findAll(troubleRecordIds);
                 if (null!=tl && tl.size()>0){
-                    List<WaitAuditWorkOrderVo> list = new ArrayList<>();
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    List<WorkOrderWebListVo> list = new ArrayList<>();
                     tl.stream().forEach(troubleRecord -> {
-                        WaitAuditWorkOrderVo v = new WaitAuditWorkOrderVo();
+                        WorkOrderWebListVo v = new WorkOrderWebListVo();
                         v.setId(troubleRecord.getId());
-                        v.setName(troubleRecord.getDeviceInfo().getName());
-                        v.setSpecification(troubleRecord.getDeviceInfo().getSpecification());
-                        v.setCode(troubleRecord.getDeviceInfo().getCode());
-                        v.setHappenTime(troubleRecord.getHappenTime());
+                        DeviceInfo deviceInfo = troubleRecord.getDeviceInfo();
+                        if (null!=deviceInfo){
+                            v.setDeviceName(deviceInfo.getName());
+                            v.setSpecification(deviceInfo.getSpecification());
+                            v.setDeviceCode(deviceInfo.getCode());
+                            if (null!=deviceInfo.getUseDept() && 0!=deviceInfo.getUseDept()){
+                                Department department =  departmentRepository.findOne(deviceInfo.getUseDept());
+                                if (null!=department){
+                                    v.setUseDept(department.getName());
+                                }
+                            }
+                        }
+                        if (null!=troubleRecord.getHappenTime()){
+                            v.setHappenTime(sdf.format(troubleRecord.getHappenTime()));
+                        }
+                        if (null!=troubleRecord.getCreateTime()){
+                            v.setHappenTime(sdf.format(troubleRecord.getCreateTime()));
+                        }
+
                         v.setOrderNo(troubleRecord.getOrderNo());
                         if (null!=troubleRecord.getTroubleLevel()){
                             if (null!=TroubleLevelEnum.getByCode(troubleRecord.getTroubleLevel())){
@@ -286,7 +306,23 @@ public class TroubleRecordServiceImpl implements TroubleRecordService {
                                 v.setStatus(TroubleStatusEnum.getByCode(troubleRecord.getStatus()).getName());
                             }
                         }
-                        v.setRepairUser(troubleRecord.getRepairUserName());
+                        if (null!=troubleRecord.getRepairGroupId() && 0!=troubleRecord.getRepairGroupId()){
+                            RepairGroup repairGroup = repairGroupRepository.getOne(troubleRecord.getRepairGroupId());
+                            if (null!=repairGroup){
+                                v.setRepairGroup(repairGroup.getName());
+                            }
+                        }
+                        if (null!=troubleRecord.getTroubleType() && 0!=troubleRecord.getTroubleType()){
+                           DeviceTroubleType deviceTroubleType = deviceTroubleTypeRepository.getOne(troubleRecord.getTroubleType());
+                           if (null!=deviceTroubleType){
+                               v.setTroubleType(deviceTroubleType.getName());
+                           }
+                        }
+                        TroubleLevelEnum tle = TroubleLevelEnum.getByCode(troubleRecord.getTroubleLevel());
+                        if (null!=tle){
+                            v.setTroubleLevel(tle.getName());
+                        }
+                        v.setRemark(troubleRecord.getRemark());
                         list.add(v);
                     });
                     res.setList(list);

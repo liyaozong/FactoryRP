@@ -3,10 +3,7 @@ package tech.yozo.factoryrp.service;
 import tech.yozo.factoryrp.page.Pagination;
 import tech.yozo.factoryrp.vo.req.*;
 import tech.yozo.factoryrp.vo.resp.auth.AuthUser;
-import tech.yozo.factoryrp.vo.resp.device.trouble.SimpleTroubleRecordVo;
-import tech.yozo.factoryrp.vo.resp.device.trouble.WaitAuditWorkOrderVo;
-import tech.yozo.factoryrp.vo.resp.device.trouble.WorkOrderCountVo;
-import tech.yozo.factoryrp.vo.resp.device.trouble.WorkOrderDetailVo;
+import tech.yozo.factoryrp.vo.resp.device.trouble.*;
 
 import java.util.List;
 
@@ -48,7 +45,7 @@ public interface TroubleRecordService {
      * 查询当前人员待审核工单
      * @return
      */
-    public Pagination<WaitAuditWorkOrderVo> findWaitAuditWorkOrder(WorkOrderListReq req, Long corporateIdentify,AuthUser user);
+    public Pagination<WorkOrderWebListVo> findWaitAuditWorkOrder(WorkOrderListReq req, Long corporateIdentify, AuthUser user);
 
     /**
      * 工单统计
