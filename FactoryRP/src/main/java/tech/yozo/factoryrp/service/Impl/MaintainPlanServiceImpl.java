@@ -365,6 +365,9 @@ public class MaintainPlanServiceImpl implements MaintainPlanService{
             }else {
                 maintainPlan.setPlanMaintainTimeStart(startTime.getTime());
             }
+            if (!StringUtils.isEmpty(param.getMaintainPart())){
+                maintainPlan.setMaintainPart(param.getMaintainPart());
+            }
             maintainPlanRepository.save(maintainPlan);
             //增加保养记录
             MaintainRecord maintainRecord = new MaintainRecord();
