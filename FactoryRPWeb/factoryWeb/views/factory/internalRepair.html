@@ -62,11 +62,7 @@
                 <th>维修班组</th>
                 <th>故障等级</th>
                 <th>故障类别</th>
-                <th>确认时间</th>
-                <th>确认人</th>
                 <th>故障描述</th>
-                <th>处理意见</th>
-                <th>差评理由</th>
                 <th>操作</th>
             </tr>
             </thead>
@@ -74,34 +70,24 @@
             <tr ng-repeat="myWaitAuditDetail in myWaitAuditList" ng-if="myWaitAuditList.length>0">
                 <td class="firstTd">{{$index+1}}<input style="margin-left: 5px;vertical-align: middle;" type="checkbox" name="che"  value="{{orderDetail.id}}"/></td>
                 <td>{{$index+1}}</td>
-                <td>{{myWaitAuditDetail.code||'--'}}</td>
+                <td>{{myWaitAuditDetail.orderNo||'--'}}</td>
                 <td>{{myWaitAuditDetail.status||'--'}}</td>
-                <td>{{myWaitAuditDetail.name||'--'}}</td>
-                <td>{{myWaitAuditDetail.name||'--'}}</td>
+                <td>{{myWaitAuditDetail.deviceCode||'--'}}</td>
+                <td>{{myWaitAuditDetail.deviceName||'--'}}</td>
                 <td>{{myWaitAuditDetail.specification||'--'}}</td>
-                <td>{{myWaitAuditDetail.specification||'--'}}</td>
+                <td>{{myWaitAuditDetail.useDept||'--'}}</td>
                 <td>{{myWaitAuditDetail.happenTime||'--'|date:'yyyy-MM-dd'}}</td>
-                <td>{{myWaitAuditDetail.happenTime||'--'|date:'yyyy-MM-dd'}}</td>
+                <td>{{myWaitAuditDetail.createTime||'--'|date:'yyyy-MM-dd'}}</td>
+                <td>{{myWaitAuditDetail.repairGroup||'--'}}</td>
                 <td>{{myWaitAuditDetail.troubleLevel||'--'}}</td>
-                <td>{{myWaitAuditDetail.troubleLevel||'--'}}</td>
-                <td>{{myWaitAuditDetail.troubleLevel||'--'}}</td>
-                <td>{{myWaitAuditDetail.happenTime||'--'|date:'yyyy-MM-dd'}}</td>
-                <td>{{myWaitAuditDetail.troubleLevel||'--'}}</td>
-                <td>{{myWaitAuditDetail.troubleLevel||'--'}}</td>
-                <td>{{myWaitAuditDetail.troubleLevel||'--'}}</td>
-                <td>{{myWaitAuditDetail.troubleLevel||'--'}}</td>
+                <td>{{myWaitAuditDetail.troubleType||'--'}}</td>
+                <td>{{myWaitAuditDetail.remark||'--'}}</td>
                 <td>
                     <a href="javascript:void(0)" class="resBtn editBtn" ng-click="editSparePartsFuc(myWaitAuditDetail)">
                         详细
                     </a>
                     <a href="javascript:void(0)" class="resBtn deleteBtn" ng-click="deleteContactCompanyBalance(myWaitAuditDetail)">
                         审核
-                    </a>
-                    <a href="javascript:void(0)" class="resBtn deleteBtn" ng-click="deleteContactCompanyBalance(myWaitAuditDetail)">
-                        维修单
-                    </a>
-                    <a href="javascript:void(0)" class="resBtn deleteBtn" ng-click="deleteContactCompanyBalance(myWaitAuditDetail)">
-                        验证
                     </a>
                 </td>
             </tr>
