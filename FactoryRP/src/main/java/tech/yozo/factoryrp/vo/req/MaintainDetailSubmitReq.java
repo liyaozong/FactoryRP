@@ -32,6 +32,8 @@ public class MaintainDetailSubmitReq implements Serializable {
     private String maintainAmount;
     @ApiModelProperty(value = "保养过程")
     private String maintainRemark;
+    @ApiModelProperty(value = "保养部位")
+    private String maintainPart;
     @ApiModelProperty(value = "保养开始时间，格式yyyy-MM-dd HH:mm:ss")
     private String startTime;
     @ApiModelProperty(value = "保养结束时间，格式yyyy-MM-dd HH:mm:ss")

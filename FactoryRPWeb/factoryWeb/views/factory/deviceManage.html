@@ -1438,7 +1438,7 @@
                 </label>
                 <label for="sendRepairMan">
                     <span style="width: 100px;text-align: right">报修人:</span>
-                    <input ng-disabled="1" id="sendRepairMan" ng-model="sendRepairMan" type="text" placeholder="请输入设备位置"/>
+                    <input ng-disabled="1" id="sendRepairMan" ng-model="sendRepairMan" type="text" placeholder="请输入报修人"/>
                 </label>
                 <label for="planMaintainTimeStartDeals">
                     <span style="width: 100px;text-align: right">计划保养时间:</span>
@@ -1510,6 +1510,11 @@
                     <span style="width: 100px;text-align: right">保养费用:</span>
                     <input id="maintainUseMoney" ng-model="maintainUseMoney" type="number" min='0' placeholder=""/>
                 </label>
+                <label for="maintainPartDeal">
+                    <span style="width: 100px;text-align: right">保养部位:</span>
+                    <input id="maintainPartDeal" ng-model="maintainPartDeal" type="text" placeholder="请输入保养部位"/>
+                </label>
+
             </p>
             <p>
                 <label for="maintainRemark">
@@ -1520,7 +1525,7 @@
         </div>
         <div class="titleDiv">
             <span class="tips">保养工作量</span>
-            <div>
+            <div style="width: 92.5%;margin: auto">
                 <table style="width: 100%">
                     <thead>
                     <tr>
@@ -1532,7 +1537,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="maintainPersonDetail in workTimes" ng-init="outerIndex=$index+1" class="{{$index}} sectionNew">
+                    <tr ng-repeat="maintainPersonDetail in maintainPersonLists" ng-init="outerIndex=$index+1" class="{{$index}} sectionNew">
                         <td><a ng-click="deletePersonMaintain(maintainPersonDetail,$index)" href="javascript:void(0)">删除</a></td>
                         <td>
                             <select name="planManagerIdDealChoose{{outerIndex}}" id="planManagerIdDealChoose{{outerIndex}}" ng-model="maintainPersonDetail.planManagerIdDealChoose" ng-options="corporateAllUsersDetail.userId as corporateAllUsersDetail.userName for corporateAllUsersDetail in corporateAllUsers">
@@ -1548,6 +1553,84 @@
                         </td>
                         <td>
                             <input name="maintainUseTimeChoose{{outerIndex}}" id="maintainUseTimeChoose{{outerIndex}}" ng-model="maintainPersonDetail.maintainUseTimeChoose" type="number" min='0' placeholder=""/>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div style="display: none" class="titleDiv">
+            <span class="tips">保养部位</span>
+            <div style="width: 92.5%;margin: auto">
+                <table style="width: 100%">
+                    <thead>
+                    <tr>
+                        <th><button ng-click="addPartMaintain()" class="btn">增加部位</button></th>
+                        <th>保养部位</th>
+                        <th>保养标准</th>
+                        <th>确认保养</th>
+                        <th>备注</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="maintainPartDetail in maintainPartLists" ng-init="outerIndex1=$index+1" class="{{$index}} sectionNew">
+                        <td><a ng-click="deletePartMaintain(maintainPartDetail,$index)" href="javascript:void(0)">删除</a></td>
+                        <td>
+                            <input type="text" name="maintainPart{{outerIndex1}}" id="maintainPart{{outerIndex1}}" ng-model="maintainPartDetail.maintainPart" placeholder="请输入保养部位{{outerIndex1}}">
+                        </td>
+                        <td>
+                            <input type="text" name="maintenanceStandards{{outerIndex1}}" id="maintenanceStandards{{outerIndex1}}" ng-model="maintainPartDetail.maintenanceStandards" placeholder="请输入保养标准{{outerIndex1}}">
+                        </td>
+                        <td>
+                            <input type="text" name="maintainPartSure{{outerIndex1}}" id="maintainPartSure{{outerIndex1}}" ng-model="maintainPartDetail.maintainPartSure" placeholder="确认保养{{outerIndex1}}">
+                        </td>
+                        <td>
+                            <input type="text" name="maintainPartRemark{{outerIndex1}}" id="maintainPartRemark{{outerIndex1}}" ng-model="maintainPartDetail.maintainPartRemark" placeholder="请输入备注{{outerIndex1}}">
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="titleDiv">
+            <span class="tips">备件更换</span>
+            <div style="width: 92.5%;margin: auto">
+                <table style="width: 100%">
+                    <thead>
+                    <tr>
+                        <th><button ng-click="addSparePartsMaintain()" class="btn">增加备件</button></th>
+                        <th>配件名称</th>
+                        <!--<th>配件编号</th>-->
+                        <th>规格型号</th>
+                        <th>库存数</th>
+                        <th>更换数量</th>
+                        <th>原配件序号</th>
+                        <th>新换上序号</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="sparePartsDetail in sparePartsLists" ng-init="outerIndex2=$index+1" class="{{$index}} sectionNew">
+                        <td><a ng-click="deleteSparePartsMaintain(sparePartsDetail,$index)" href="javascript:void(0)">删除</a></td>
+                        <td>
+                            <select ng-change="chooseSpareParts(sparePartsDetail.sparePartsCodeName)" name="sparePartsCodeName{{outerIndex2}}" id="sparePartsCodeName{{outerIndex2}}" ng-model="sparePartsDetail.sparePartsCodeName" ng-options="allSparePartsDetail.code as allSparePartsDetail.name for allSparePartsDetail in allSpareParts">
+                                <option value="">请选择配件名称{{outerIndex2}}</option>
+                                <option value="1">呵呵</option>
+                            </select>
+                        </td>
+                        <td>
+                            <input style="width: 60px;" disabled type="text" name="sparePartsAndodel{{outerIndex2}}" id="sparePartsAndodel{{outerIndex2}}" ng-model="sparePartsDetail.sparePartsAndodel" placeholder="规格型号{{outerIndex2}}">
+                        </td>
+                        <td>
+                            <input style="width: 60px;" disabled type="text" name="sparePartsUpperLimit{{outerIndex2}}" id="sparePartsUpperLimit{{outerIndex2}}" ng-model="sparePartsDetail.sparePartsUpperLimit" placeholder="库存数{{outerIndex2}}">
+                        </td>
+                        <td>
+                            <input style="width: 60px;" type="text" name="sparePartsNumber{{outerIndex2}}" id="sparePartsNumber{{outerIndex2}}" ng-model="sparePartsDetail.sparePartsNumber" placeholder="数量{{outerIndex2}}">
+                        </td>
+                        <td>
+                            <input style="width: 60px;" type="text" name="sparePartsoldOrderNum{{outerIndex2}}" id="sparePartsoldOrderNum{{outerIndex2}}" ng-model="sparePartsDetail.sparePartsoldOrderNum" placeholder="原序号{{outerIndex2}}">
+                        </td>
+                        <td>
+                            <input style="width: 60px;" type="text" name="sparePartsNewOrderNum{{outerIndex2}}" id="sparePartsNewOrderNum{{outerIndex2}}" ng-model="sparePartsDetail.sparePartsNewOrderNum" placeholder="新序号{{outerIndex2}}">
                         </td>
                     </tr>
                     </tbody>

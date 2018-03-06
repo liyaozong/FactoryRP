@@ -324,6 +324,30 @@ factoryParameterSettingApp.factory('factoryParameterSettingService', function($r
         });
     };
     /*查询当前登陆人待审核的故障列表 end*/
+    /*查询所有备件信息 start*/
+    var _queryAllSpareParts = function(Param,successFunc){
+        var queryAllSpareParts = $resource(UrlService.getUrl('troubleRecordServe') + 'api/spareParts/findByPage');
+        queryAllSpareParts.save(Param,function (data) {
+            if (successFunc) {
+                successFunc(data);
+            }
+        }, function (err) {
+
+        });
+    };
+    /*查询所有备件信息 end*/
+    /*执行保养计划 start*/
+    var _maintainPlanSubmit = function(Param,successFunc){
+        var maintainPlanSubmit = $resource(UrlService.getUrl('troubleRecordServe') + 'maintainPlan/submit');
+        maintainPlanSubmit.save(Param,function (data) {
+            if (successFunc) {
+                successFunc(data);
+            }
+        }, function (err) {
+
+        });
+    };
+    /*执行保养计划 end*/
     return {
         saveContactCompany:_saveContactCompany,
         deleteContactCompany:_deleteContactCompany,
@@ -350,6 +374,8 @@ factoryParameterSettingApp.factory('factoryParameterSettingService', function($r
         addMaintainPlan:_addMaintainPlan,
         queryMyWaitAuditList:_queryMyWaitAuditList,
         batchDeleteMaintenanceRecord:_batchDeleteMaintenanceRecord,
+        queryAllSpareParts:_queryAllSpareParts,
+        maintainPlanSubmit:_maintainPlanSubmit,
         queryOrder: function(queryParam, successFunc) {
             queryOrder(queryParam, successFunc);
 
