@@ -427,7 +427,7 @@ public class SpotInspectionPlanServiceImpl implements SpotInspectionPlanService 
 
                         if(!CheckParam.isNull(CheckParam.isNull(deviceInfoMap)) && !CheckParam.isNull(deviceTypeMap.get(deviceInfo.getDeviceType()))){
                             info.setDeviceTypeName(deviceTypeMap.get(deviceInfo.getDeviceType()).getName());
-                            info.setDeviceId(deviceTypeMap.get(deviceInfo.getDeviceType()).getId());
+                            info.setDeviceTypeId(deviceTypeMap.get(deviceInfo.getDeviceType()).getId());
 
                         }
 
