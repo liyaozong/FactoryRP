@@ -502,23 +502,23 @@
             <p>
                 <label for="AR_name" >
                     <span style="width: 100px;text-align: right">巡检名称:</span>
-                    <input id="AR_name" ng-model="spotInspectionRecordAddReq.name" type="text"/>
+                    <input id="AR_name" ng-model="SpotInspectionPlanExecuteWarpReq.name" type="text" disabled/>
                 </label>
             </p>
             <p>
-                <label for="AR_date" >
+                <label for="executeTime" >
                     <span style="width: 100px;text-align: right">巡检时间:</span>
-                    <input id="AR_date" ng-model="spotInspectionRecordAddReq.name" type="date"/>
+                    <input id="executeTime" ng-model="SpotInspectionPlanExecuteWarpReq.executeTime" type="date" disabled/>
                 </label>
                 <label for="AR_people" >
                     <span style="width: 100px;text-align: right">巡检人:</span>
-                    <input id="AR_people" ng-model="spotInspectionRecordAddReq.name" type="text"/>
+                    <input id="AR_people" ng-model="SpotInspectionPlanExecuteWarpReq.executorName" type="text" disabled/>
                 </label>
             </p>
             <p>
                 <label for="AR_yc" >
                     <span style="width: 100px;text-align: right">异常处理情况:</span>
-                    <input id="AR_yc" ng-model="spotInspectionRecordAddReq.name" type="text"/>
+                    <input id="AR_yc" ng-model="SpotInspectionPlanExecuteWarpReq.abnormalHandleDesc" type="text"/>
                 </label>
             </p>
             <div style="padding-left: 104px;position: relative;padding-right: 5px;box-sizing: border-box;">
@@ -537,21 +537,22 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="item in spotInspectionRecordAddReq.detailList" ng-if="spotInspectionRecordAddReq.detailList.length>0">
-                        <td ng-bind="$index"></td>
-                        <td ng-bind="item.name"></td>
-                        <td ng-bind="item.code"></td>
-                        <td ng-bind="item.specification"></td>
-                        <td ng-bind="item.planStatusName"></td>
-                        <td ng-bind="item.planStatusName"></td>
-                        <td ng-bind="item.planStatusName"></td>
+                    <tr ng-repeat="item in SpotInspectionPlanExecuteWarpReq.detailList" ng-if="SpotInspectionPlanExecuteWarpReq.detailList.length>0">
+                        <td ng-bind="item.lineOrder||'--'"></td>
+                        <td ng-bind="item.standardName||'--'"></td>
+                        <td ng-bind="item.missCount||'--'"></td>
+                        <td ng-bind="item.abnormalDeviceCount||'--'"></td>
+
+                        <td ng-bind="item.deviceCode||'--'"></td>
+                        <td ng-bind="item.deviceName||'--'"></td>
+                        <td ng-bind="item.deviceSpecification||'--'"></td>
                         <td>
-                            <a href="javascript:void(0)" class="resBtn deleteBtn" ng-click="open_ar_lrs(item,$index)">
+                            <a href="javascript:void(0)" class="resBtn deleteBtn" ng-click="open_ar_lrs(item,SpotInspectionPlanExecuteWarpReq.planId,$index)">
                                 录入
                             </a>
                         </td>
                     </tr>
-                    <tr ng-if="spotInspectionRecordAddReq.detailList.length<=0||spotInspectionRecordAddReq.detailList==null||spotInspectionRecordAddReq.detailList==undefined">
+                    <tr ng-if="SpotInspectionPlanExecuteWarpReq.detailList.length<=0||SpotInspectionPlanExecuteWarpReq.detailList==null||SpotInspectionPlanExecuteWarpReq.detailList==undefined">
                         <td colspan="8">暂无数据</td>
                     </tr>
                     </tbody>
@@ -560,7 +561,8 @@
         </div>
     </div>
     <div class="submitBtn1" style="text-align: center;padding-left: 40px;margin-bottom: 18px;">
-        <button type="button" ng-click="closeAR()" value="" class="btn">确定</button>
+        <button type="button" ng-click="closeAR()" value="" class="btn" ng-if="SpotInspectionPlanExecuteWarpReq.inTime==1">确定</button>
+        <button type="button" value="" class="btn" ng-if="SpotInspectionPlanExecuteWarpReq.inTime==2">未到执行时间</button>
         <button type="button" value="" class="btn" ng-click="closeAR1()">取消</button>
     </div>
 </div>
@@ -577,21 +579,21 @@
             <p>
                 <label for="AR_bh" >
                     <span style="width: 100px;text-align: right">设备编号:</span>
-                    <input id="AR_bh" ng-model="spotInspectionRecordAddReq.name" disabled type="text"/>
+                    <input id="AR_bh" ng-model="xjjlDetailList.deviceCode" disabled type="text"/>
                 </label>
                 <label for="AR_mc" >
                     <span style="width: 100px;text-align: right">设备名称:</span>
-                    <input id="AR_mc" ng-model="spotInspectionRecordAddReq.name" disabled type="text"/>
+                    <input id="AR_mc" ng-model="xjjlDetailList.deviceName" disabled type="text"/>
                 </label>
             </p>
             <p>
                 <label for="AR_xh" >
                     <span style="width: 100px;text-align: right">规格型号:</span>
-                    <input id="AR_xh" ng-model="spotInspectionRecordAddReq.name" disabled type="text"/>
+                    <input id="AR_xh" ng-model="xjjlDetailList.deviceSpecification" disabled type="text"/>
                 </label>
                 <label for="AR_bm" >
                     <span style="width: 100px;text-align: right">使用部门:</span>
-                    <input id="AR_bm" ng-model="spotInspectionRecordAddReq.name" disabled type="text"/>
+                    <input id="AR_bm" ng-model="xjjlDetailList.departmentName" disabled type="text"/>
                 </label>
             </p>
             <p>
@@ -613,7 +615,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="item in spotInspectionRecordAddReq.detailList" ng-if="spotInspectionRecordAddReq.detailList.length>0">
+                    <tr ng-repeat="item in xjjlDetailList.list" ng-if="xjjlDetailList.list.length>0">
                         <td ng-bind="$index"></td>
                         <td ng-bind="item.name"></td>
                         <td ng-bind="item.code"></td>
@@ -624,8 +626,8 @@
                             </a>
                         </td>
                     </tr>
-                    <tr ng-if="spotInspectionRecordAddReq.detailList.length<=0||spotInspectionRecordAddReq.detailList==null||spotInspectionRecordAddReq.detailList==undefined">
-                        <td colspan="8">暂无数据</td>
+                    <tr ng-if="xjjlDetailList.list.length<=0||xjjlDetailList.list==null||xjjlDetailList.list==undefined">
+                        <td colspan="5">暂无数据</td>
                     </tr>
                     </tbody>
                 </table>

@@ -509,6 +509,7 @@ myApp.controller('inspectionPlanCtrl',['$filter','$rootScope','$location','$scop
         $scope.iPlanType=type;
         $scope.iPlanTip='巡检计划新增';
         $scope.iPlanReq={
+            planId:null,
             name:'',//计划名称
             range:'',//位置范围
             department:'',//所在部门
@@ -535,7 +536,7 @@ myApp.controller('inspectionPlanCtrl',['$filter','$rootScope','$location','$scop
             // console.log(data);
             if(data.errorCode=='000000') {
                 popupDiv('iPlanPopup');
-                $scope.iPlanType = type;
+                $scope.iPlanType = type;$scope.planDeviceDeleteList=[];
                 $scope.iPlanTip = type==1?'巡检计划编辑':'巡检计划详情';
                 var strsArr=[];var infoList=[];
                 if(data.data.executors){
@@ -559,11 +560,13 @@ myApp.controller('inspectionPlanCtrl',['$filter','$rootScope','$location','$scop
                             planStatusName:n.standardName,
                             deviceType:n.deviceTypeId,
                             deviceTypeName:n.deviceTypeName,
-                            lineOrder:n.lineOrder
+                            lineOrder:n.lineOrder,
+                            planDeviceId:n.planDeviceId
                         })
                     })
                 }
                 $scope.iPlanReq = {
+                    planId:obj.id,
                     name: data.data.name,//计划名称
                     range: data.data.spotInspectionRange,//位置范围
                     department: data.data.department,//所在部门
@@ -594,7 +597,7 @@ myApp.controller('inspectionPlanCtrl',['$filter','$rootScope','$location','$scop
                         $(this).attr("selected",true);
                     }
                 });
-
+                console.log(data.data);
             }else {
                 popupDiv('SaveSuccess');
                 $('.SaveSuccess .Message').html(data.errorMessage);
@@ -606,8 +609,16 @@ myApp.controller('inspectionPlanCtrl',['$filter','$rootScope','$location','$scop
 
     //确认提交巡检计划
     $scope.addIPlanSure=function () {
-        var arr=[];
+        var arr=[];var arr1=[];
         $scope.iPlanReq.list.forEach(function (v,i) {
+            if(v.planDeviceId==null||v.planDeviceId==undefined||v.planDeviceId==''){
+                arr1.push({
+                    deviceId:v.id,
+                    deviceType:v.deviceType,
+                    lineOrder:i+1,
+                    spotInspectionStandard:v.planStatus
+                });
+            }
             arr.push({
                 deviceId:v.id,
                 deviceType:v.deviceType,
@@ -615,19 +626,38 @@ myApp.controller('inspectionPlanCtrl',['$filter','$rootScope','$location','$scop
                 spotInspectionStandard:v.planStatus
             })
         });
-        var req={
-            "department": $scope.iPlanReq.department,
-            "endTime":$filter('date')($scope.iPlanReq.endTime,'yyyy-MM-dd HH:mm:ss')?$filter('date')($scope.iPlanReq.endTime,'yyyy-MM-dd HH:mm:ss'):$('#endTime').val(),
-            "executors": $scope.iPlanReq.executors,
-            "list": arr,
-            "name": $scope.iPlanReq.name,
-            "nextExecuteTime":$filter('date')($scope.iPlanReq.nextExecuteTime,'yyyy-MM-dd HH:mm:ss')?$filter('date')($scope.iPlanReq.nextExecuteTime,'yyyy-MM-dd HH:mm:ss'):$('#nextExecuteTime').val(),
-            "planStatus": $scope.iPlanReq.planStatus,
-            "range": $scope.iPlanReq.range,
-            "recyclePeriod": $scope.iPlanReq.recyclePeriod,
-            "recyclePeriodType": $scope.iPlanReq.recyclePeriodType,
-            "requestTime": $filter('date')(new Date(),'yyyy-MM-dd HH:mm:ss')
-        };
+        if($scope.iPlanType==0){
+            var req={
+                "department": $scope.iPlanReq.department,
+                "endTime":$filter('date')($scope.iPlanReq.endTime,'yyyy-MM-dd HH:mm:ss')?$filter('date')($scope.iPlanReq.endTime,'yyyy-MM-dd HH:mm:ss'):$filter('date')($('#endTime').val(),'yyyy-MM-dd HH:mm:ss'),
+                "executors": $scope.iPlanReq.executors,
+                "list": arr,
+                "name": $scope.iPlanReq.name,
+                "nextExecuteTime":$filter('date')($scope.iPlanReq.nextExecuteTime,'yyyy-MM-dd HH:mm:ss')?$filter('date')($scope.iPlanReq.nextExecuteTime,'yyyy-MM-dd HH:mm:ss'):$filter('date')($('#nextExecuteTime').val(),'yyyy-MM-dd HH:mm:ss'),
+                "planStatus": $scope.iPlanReq.planStatus,
+                "range": $scope.iPlanReq.range,
+                "recyclePeriod": $scope.iPlanReq.recyclePeriod,
+                "recyclePeriodType": $scope.iPlanReq.recyclePeriodType,
+                "requestTime": $filter('date')(new Date(),'yyyy-MM-dd HH:mm:ss')
+            };
+        }else if($scope.iPlanType==1){
+            var req={
+                "planId": $scope.iPlanReq.planId,
+                "department": $scope.iPlanReq.department,
+                "endTime":$filter('date')($scope.iPlanReq.endTime,'yyyy-MM-dd HH:mm:ss')?$filter('date')($scope.iPlanReq.endTime,'yyyy-MM-dd HH:mm:ss'):$filter('date')($('#endTime').val(),'yyyy-MM-dd HH:mm:ss'),
+                "executors": $scope.iPlanReq.executors,
+                "planDeviceDeleteList": [1],
+                "planDeviceList": [1],
+                "name": $scope.iPlanReq.name,
+                "nextExecuteTime":$filter('date')($scope.iPlanReq.nextExecuteTime,'yyyy-MM-dd HH:mm:ss')?$filter('date')($scope.iPlanReq.nextExecuteTime,'yyyy-MM-dd HH:mm:ss'):$filter('date')($('#nextExecuteTime').val(),'yyyy-MM-dd HH:mm:ss'),
+                "planStatus": $scope.iPlanReq.planStatus,
+                "range": $scope.iPlanReq.range,
+                "recyclePeriod": $scope.iPlanReq.recyclePeriod,
+                "recyclePeriodType": $scope.iPlanReq.recyclePeriodType,
+                "requestTime": $filter('date')(new Date(),'yyyy-MM-dd HH:mm:ss')
+            };
+        }
+
         // console.log(req);
         var flog;
         for(var i in req){
@@ -637,10 +667,12 @@ myApp.controller('inspectionPlanCtrl',['$filter','$rootScope','$location','$scop
                 break;
             }
         }
-        if(req.list.length>0){
-            // flog=true;
-        }else {
-            flog=false;
+        if($scope.iPlanType==0){
+            if(req.list.length>0){
+                // flog=true;
+            }else {
+                flog=false;
+            }
         }
         // console.log($scope.iPlanReq.nextExecuteTime,new Date());
         if($scope.iPlanReq.nextExecuteTime<new Date()){
@@ -652,6 +684,7 @@ myApp.controller('inspectionPlanCtrl',['$filter','$rootScope','$location','$scop
         }
         if(flog){
             if($scope.iPlanType==0){
+                // console.log(req,'编辑');
                 inspectionPlan.addSpotInspectionPlan(req).success(function (data) {
                     if(data.errorCode=='000000'){
                         hideDiv('iPlanPopup');
@@ -664,7 +697,20 @@ myApp.controller('inspectionPlanCtrl',['$filter','$rootScope','$location','$scop
                     }
                 })
             }else if($scope.iPlanType==1){
-                alert('接口调试中')
+                req.planDeviceDeleteList=$scope.planDeviceDeleteList;
+                req.planDeviceList=arr1;
+                console.log(req,'编辑');
+                inspectionPlan.editSpotInspectionPlan(req).success(function (data) {
+                    if(data.errorCode=='000000'){
+                        hideDiv('iPlanPopup');
+                        popupDiv('SaveSuccess');
+                        $('.SaveSuccess .Message').html(data.errorMessage);
+                    }else{
+                        hideDiv('iPlanPopup');
+                        popupDiv('SaveSuccess');
+                        $('.SaveSuccess .Message').html(data.errorMessage);
+                    }
+                })
             }
         }else {
             $scope.errFlog=true;
@@ -757,6 +803,9 @@ myApp.controller('inspectionPlanCtrl',['$filter','$rootScope','$location','$scop
 
     //删除包含设备列表中的设备
     $scope.deleteSISBalance_device=function (obj,i) {
+        if($scope.iPlanReq.list[i].planDeviceId){
+            $scope.planDeviceDeleteList.push($scope.iPlanReq.list[i].planDeviceId)
+        }
         $scope.iPlanReq.list.splice(i,1);
     };
 
@@ -812,24 +861,46 @@ myApp.controller('inspectionPlanCtrl',['$filter','$rootScope','$location','$scop
 
     //打开执行巡检计划（添加巡检记录）弹出层
     $scope.openAddRecord=function (obj,$event) {
-        console.log(obj);
-        $scope.spotInspectionRecordAddReq={
-            "detailList": [1,2,3],//巡检记录详情集合
-            "executeTime": "1",//巡检时间
-            "executor": 1,//执行者
-            "planId": 1,//巡检计划ID
-            "planName": "1",//巡检计划名称
-            "planTime": "1",//计划时间
-            "recyclePeriod": 0,//循环周期
-            "recyclePeriodType": "string",//循环周期类型
-            "requestTime": $filter('date')(new Date(),'yyyy-MM-dd HH:mm:ss'),//请求时间
-            "standard": 1//巡检标准ID
-        };
+        // console.log(obj);
+        inspectionPlan.QuerySpotInspectionPlanDetailByPlanId(obj.id).success(function (data) {
+            if(data.errorCode=='000000'){
+                // console.log(data);
+                popupDiv('addRecordPopup');
+                var strsArr=[];
+                if(data.data.executors){
+                    data.data.executors.forEach(function (k) {
+                        $scope.allUserLists.forEach(function (v) {
+                            // console.log(v.userId==k)
+                            if(v.userId==k){
+                                strsArr.push(v.userName);
+                            }
+                        });
+                    });
+                }
+                $scope.SpotInspectionPlanExecuteWarpReq={
+                    name:data.data.name,
+                    // executeTime:$filter('date')(new Date(),'yyyy-MM-dd HH:mm:ss'),
+                    "detailList": data.data.infoList,//巡检记录详情集合
+                    "abnormalHandleDesc": data.data.abnormalHandleDesc,//异常处理情况,
+                    "executor": data.data.executors,//执行者
+                    "executorName": strsArr.join(','),//执行者姓名字符串
+                    "planId": obj.id,//巡检标准ID
+                    missCount:data.data.missCount,//漏检项
+                    abnormalDeviceCount:data.data.abnormalDeviceCount,//异常项
+                    department:data.data.department,//使用部门ID
+                    departmentName:data.data.departmentName,//使用部门名称
+                    inTime:data.data.inTime//是否在执行时间
+                };
+                $('#executeTime').val($filter('date')(new Date(),'yyyy-MM-dd'));
+            }else {
+                popupDiv('SaveSuccess');
+                $('.SaveSuccess .Message').html(data.errorMessage);
+            }
+        });
 
-        popupDiv('addRecordPopup');
         $event.stopPropagation();
     };
-    //关闭执行巡检计划（添加巡检记录）弹出层
+    //关闭执行巡检计划（添加巡检记录）弹出层departmentName
     $scope.closeAR1=function () {
         hideDiv('addRecordPopup');
     };
@@ -839,11 +910,29 @@ myApp.controller('inspectionPlanCtrl',['$filter','$rootScope','$location','$scop
     };
 
     //打开巡检明细录入弹出层
-    $scope.open_ar_lrs=function (obj,$index) {
+    $scope.open_ar_lrs=function (obj,planId,$index) {
+        inspectionPlan.findSpotInspectionStandardItemByStandardIdAndPlanId(obj.standardId,planId).success(function (data) {
+            if(data.errorCode=='000000'){
+                console.log(data,'----');
 
+                hideDiv('addRecordPopup');
+                popupDiv('addRecordPopup2');
 
-        hideDiv('addRecordPopup');
-        popupDiv('addRecordPopup2');
+                $scope.xjjlDetailList={
+                    deviceCode:obj.deviceCode,
+                    deviceId:obj.deviceId,
+                    deviceName:obj.deviceName,
+                    deviceSpecification:obj.deviceSpecification,
+                    // department:$scope.SpotInspectionPlanExecuteWarpReq.department,//使用部门ID
+                    departmentName:obj.departmentName,//使用部门名称
+                    remake:'',
+                    list:data.data
+                }
+
+            }else {
+                alert(data.errorMessage)
+            }
+        });
     };
     //关闭执行巡检计划（添加巡检记录2）弹出层
     $scope.closeAR21=function () {
