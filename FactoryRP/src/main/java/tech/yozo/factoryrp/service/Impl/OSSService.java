@@ -2,7 +2,6 @@ package tech.yozo.factoryrp.service.Impl;
 
 import com.aliyun.oss.OSSClient;
 import com.aliyun.oss.model.ObjectMetadata;
-import com.aliyun.oss.model.PutObjectResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,9 +15,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.UUID;
 
 /**
  * OSS服务
@@ -46,12 +43,6 @@ public class OSSService {
     @Value("${oss.bucketName}")
     private String bucketName;
 
-   /* static String endpoint = "oss.factoryrp.ridewhale.cn";
-    // 云账号AccessKey有所有API访问权限，建议遵循阿里云安全最佳实践，创建并使用RAM子账号进行API访问或日常运维，请登录 https://ram.console.aliyun.com 创建
-    static String accessKeyId = "LTAI15LVPdJNL31Y";
-    static String accessKeySecret = "EXeeltCSSYBfroKmPfczqrLnWTRagh";
-    static String bucketName = "factoryrp"; //bucketName*/
-
 
    /*static {
         client = new OSSClient(endpoint, accessKeyId, accessKeySecret);
@@ -68,24 +59,6 @@ public class OSSService {
    }
 
 
-    public static void main(String[] args) {
-        // 创建OSSClient实例
-        /*String filePath = "D:\\插件.jpg";
-        // 上传文件 第二个参数是文件名称
-        client.putObject(bucketName, "1232321322132", new File(filePath));
-        // 关闭client
-        //ossClient.shutdown();
-        Date expiration = new Date(new Date().getTime() + 3600 * 1000);
-
-        URL url = client.generatePresignedUrl("factoryrp", "1232321322132", expiration);
-
-        System.out.println(url.toString());*/
-
-        String str = "123";
-        System.out.println(EncryptUtils.MD5String(str));
-    }
-
-
     /**
      * 上传文件到OSS
      * @param itemName
@@ -97,10 +70,14 @@ public class OSSService {
         String uploadItemName = EncryptUtils.MD5String(itemName);
 
         // 创建OSSClient实例 ObjectMetadata
-        String filePath = "D:\\插件.jpg";
         // 上传文件 第二个参数是文件名称
-        //client.putObject(bucketName, uploadItemName, new File(filePath));
-        client.putObject(bucketName, uploadItemName, file);
+        ObjectMetadata objectMetadata = new ObjectMetadata();
+        objectMetadata.setContentLength(file.length());
+        objectMetadata.setCacheControl("no-cache");
+        objectMetadata.setHeader("Pragma", "no-cache");
+        objectMetadata.setContentType(getcontentType(itemName.substring(itemName.lastIndexOf("."))));
+        objectMetadata.setContentDisposition("inline;filename=" + itemName);
+        client.putObject(bucketName, uploadItemName, file,objectMetadata);
         // 关闭client
         client.shutdown();
         return uploadItemName;
@@ -245,58 +222,12 @@ public class OSSService {
         return "image/jpeg";
     }
 
-    /**
-     * 通过IO读取文件,尝试转换为Image,并获取image的的width、height,来判断当前文件是否是图片
-     *
-     *            待测试的inputFile
-     * @return true:文件是图片;false:(1)文件不存在 (2)文件不是图片 (3)文件是图片,但获取不到其高度和宽度
-     */
-    /*public static boolean isImage(InputStream inputFile) throws IOException {
-        boolean isImageFile = false;
-        Image img = null;
-        try {
-            img = ImageIO.read(inputFile);
-            if (img != null && img.getWidth(null) != -1 && img.getHeight(null) != -1) {
-                isImageFile = true;
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println("读取图片文件出错！" + e.getMessage());
-            throw e;
-        } finally {
-            if (img != null) {
-                img.flush();
-                img = null;
-            }
-        }
-        return isImageFile;
-    }*/
 
-    private static String randomFileName() {
-        return UUID.randomUUID().toString();
+    
+    public static void main(String[] args) {
+
+        String str = "123";
+        System.out.println(EncryptUtils.MD5String(str));
     }
 
-    private static String getCurrentDateFilePath() {
-        String currentDateFilePath = "";
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(new Date());
-        currentDateFilePath = calendar.get(Calendar.YEAR) + "/" + (calendar.get(Calendar.MONTH) + 1) + "/"
-                + calendar.get(Calendar.DAY_OF_MONTH) + "/";
-        return currentDateFilePath;
-    }
-
-
-    /**
-     * 拿到icon的Url
-     * @param name
-     * @return
-     */
-    public static String getIconUrl(String name){
-        //一年过期
-        Date expiration = new Date(new Date().getTime() + 3600 * 1000 * 24 * 365);
-        //String ossName = ResourceConstants.APP_ICON_PRE+name;
-        //return getOSSUrl(ossName, expiration.getTime());
-
-        return null;
-    }
 }
