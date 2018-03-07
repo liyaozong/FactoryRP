@@ -4,21 +4,21 @@
 myApp.controller("HomeController", function($rootScope,UrlService,$cookies,$state, $scope, $resource, $timeout, $http,$location,$log,AuthorizationService,functionManageService,userManagementService,$window) {
     $("body").removeAttr('id');
     $("body").css('background','#fff');
-    if($location.path()=='/main/deviceManage'){
-        console.log($("#menuLeft .leftmenu .deviceManage"));
-        $("#menuLeft .leftmenu .deviceManage").removeClass('hide');
-        $("#menuLeft .leftmenu .deviceManage").siblings().addClass('hide');
-    }else{
-        $('.leftmenu dd').eq(0).find('.menuson').css('display','block');
-        $('.leftmenu dd').eq(0).siblings().find('.menuson').css('display','none');
-        $('.leftmenu dd').eq(0).find('.menuson').children().eq(0).addClass('active');
-        $("#menuLeft .leftmenu .deviceManage").addClass('hide');
-        $("#menuLeft .leftmenu .deviceManage").siblings().removeClass('hide');
-        $("#menuLeft .leftmenu .sparePartsManage").addClass('hide');
-        $("#menuLeft .leftmenu .sparePartsManage").siblings().removeClass('hide');
-        $("#menuLeft .leftmenu .modelToolsManage").addClass('hide');
-        $("#menuLeft .leftmenu .modelToolsManage").siblings().removeClass('hide');
-    }
+    // if($location.path()=='/main/deviceManage'){
+    //     console.log($("#menuLeft .leftmenu .deviceManage"));
+    //     $("#menuLeft .leftmenu .deviceManage").removeClass('hide');
+    //     $("#menuLeft .leftmenu .deviceManage").siblings().addClass('hide');
+    // }else{
+    //     $('.leftmenu dd').eq(0).find('.menuson').css('display','block');
+    //     $('.leftmenu dd').eq(0).siblings().find('.menuson').css('display','none');
+    //     $('.leftmenu dd').eq(0).find('.menuson').children().eq(0).addClass('active');
+    //     $("#menuLeft .leftmenu .deviceManage").addClass('hide');
+    //     $("#menuLeft .leftmenu .deviceManage").siblings().removeClass('hide');
+    //     $("#menuLeft .leftmenu .sparePartsManage").addClass('hide');
+    //     $("#menuLeft .leftmenu .sparePartsManage").siblings().removeClass('hide');
+    //     $("#menuLeft .leftmenu .modelToolsManage").addClass('hide');
+    //     $("#menuLeft .leftmenu .modelToolsManage").siblings().removeClass('hide');
+    // }
     $scope.username=$cookies.get('username');
     /*登出 start*/
     $scope.onLogout = function(){
@@ -71,7 +71,6 @@ myApp.controller("HomeController", function($rootScope,UrlService,$cookies,$stat
     };
     $scope.onChangeState = function(stateItem){
         $state.go(stateItem.state, stateItem.params);
-
     };
 
     $scope.reload = function(){
@@ -90,7 +89,7 @@ myApp.controller("HomeController", function($rootScope,UrlService,$cookies,$stat
         }, 1000);
     });
 
-    // console.log('$rootScope.publicMenu',$rootScope.publicMenu);
+
 
 
 

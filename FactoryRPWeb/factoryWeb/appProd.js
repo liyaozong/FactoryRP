@@ -68,6 +68,8 @@ var myApp = angular.module('myApp', [
         queryStanardByDeviceIdPath:'/api/spotInspectionStandard/queryStanardByDeviceId',   //根据部门ID查询巡检标准
         addSpotInspectionPlanPath:'/api/spotInspectionPlan/addSpotInspectionPlan',   //新增点检计划
         spotInspectionPlanFindByPagePath:'/api/spotInspectionPlan/findByPage',   //新增点检计划
+        editSpotInspectionPlanPath:'/api/spotInspectionPlan/editSpotInspectionPlan',   //编辑点检计划
+        findSpotInspectionStandardItemByStandardIdAndPlanIdPath:'/api/spotInspectionStandard/findSpotInspectionStandardItemByStandardIdAndPlanId',   //通过巡检标准ID和巡检计划ID进行查询巡检项目相关数据
         deleteSpotInspectionPlanDetailByPlanIdPath:'/api/spotInspectionPlan/deleteSpotInspectionPlanDetailByPlanId',   //单个删除点检计划
         QuerySpotInspectionPlanDetailByPlanIdPath:'/api/spotInspectionPlan/QuerySpotInspectionPlanDetailByPlanId',   //根据点检计划ID查询点检计划详情
         deleteSpotInspectionStandardByIdsIPPath:'/api/spotInspectionPlan/deleteSpotInspectionStandardByIds',   //批量删除点检计划
@@ -145,7 +147,7 @@ var myApp = angular.module('myApp', [
                         });
                     });
                     if(flog){
-                        $state.go('main.'+AuthUserMenu[0].url)
+                        $state.go('main.'+AuthUserMenu[0].twoMenu[0].url)
                     }
                     $rootScope.urlLists=crumbNavArr;
                 }
