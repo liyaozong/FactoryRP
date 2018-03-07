@@ -420,18 +420,29 @@ public class SpotInspectionPlanServiceImpl implements SpotInspectionPlanService 
                 //如果能查询出来表示执行过
                 SpotInspectionRecord record = spotInspectionRecordRepository.findByCorporateIdentifyAndPlanIdAndCreateTimeGreaterThan(corporateIdentify, plan.getId(), date);
 
-                //根据记录ID查询出巡检细节 包含设备ID和点检标准ID
-                List<SpotInspectionRecordDetail> detailList = spotInspectionRecordDetailRepository.findByCorporateIdentifyAndRecordId(corporateIdentify, record.getId());
+
+                List<SpotInspectionRecordDetail> detailList = null;
+
                 //查询出每个巡检标准需要执行的巡检项
-                List<SpotInspectionItems> standardItemList = spotInspectionItemsRepository.findByCorporateIdentifyAndStandardIn(corporateIdentify, planStandardList.stream().distinct().collect(Collectors.toList()));
+                List<SpotInspectionItems> standardItemList = null;
+
+                if(!CheckParam.isNull(record)){
+                    //根据记录ID查询出巡检细节 包含设备ID和点检标准ID
+                    detailList = spotInspectionRecordDetailRepository.findByCorporateIdentifyAndRecordId(corporateIdentify, record.getId());
+                    standardItemList = spotInspectionItemsRepository.findByCorporateIdentifyAndStandardIn(corporateIdentify, planStandardList.stream().distinct().collect(Collectors.toList()));
+                }
 
                 //按照巡检标准ID进行分组
-                Map<Long, List<SpotInspectionItems>> itemMap = standardItemList.stream().collect(groupingBy(SpotInspectionItems::getStandard));
-                Map<Long, List<SpotInspectionRecordDetail>> itemExecuteDetailMap = detailList.stream().collect(groupingBy(SpotInspectionRecordDetail::getStandard));
+                Map<Long, List<SpotInspectionItems>> itemMap = null;
+                if(!CheckParam.isNull(standardItemList) && !standardItemList.isEmpty()){
+                    itemMap = standardItemList.stream().collect(groupingBy(SpotInspectionItems::getStandard));
+                }
+                Map<Long, List<SpotInspectionRecordDetail>> itemExecuteDetailMap = null;
+                if(!CheckParam.isNull(detailList) && !detailList.isEmpty()){
+                    itemExecuteDetailMap = detailList.stream().collect(groupingBy(SpotInspectionRecordDetail::getStandard));
+                }
 
-
-                planDeviceList.stream().forEach(p1 -> {
-
+                for (SpotInspectionPlanDevice p1: planDeviceList) {
                     if(!CheckParam.isNull(deviceInfoMap.get(p1.getDeviceId()))){
 
                         SpotInspectionPlanDeviceInfoResp info = new SpotInspectionPlanDeviceInfoResp();
@@ -493,6 +504,11 @@ public class SpotInspectionPlanServiceImpl implements SpotInspectionPlanService 
 
                         deviceInfoList.add(info);
                     }
+                }
+
+                planDeviceList.stream().forEach(p1 -> {
+
+
                 });
 
                 spotInspectionPlanDetailWarpResp.setInfoList(deviceInfoList);
