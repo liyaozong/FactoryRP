@@ -82,3 +82,8 @@ spring:
       restart:
         enabled: true
 
+oss:
+  endpoint: oss.factoryrp.ridewhale.cn
+  accessKeyId: LTAI15LVPdJNL31Y
+  accessKeySecret: EXeeltCSSYBfroKmPfczqrLnWTRagh
+  bucketName: factoryrp
