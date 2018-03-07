@@ -211,6 +211,8 @@ public class SpotInspectionRecordServiceImpl implements SpotInspectionRecordServ
                     spotInspectionRecordDetail.setRemark(s1.getRemark());
                     spotInspectionRecordDetail.setStandardItemId(s1.getItemId());
                     spotInspectionRecordDetail.setCorporateIdentify(corporateIdentify);
+                    spotInspectionRecordDetail.setDeviceId(spotInspectionRecordMobileAddReq.getDeviceId());
+                    spotInspectionRecordDetail.setStandard(spotInspectionRecordMobileAddReq.getSpotInspectionStandard());
 
                     detailList.add(spotInspectionRecordDetail);
                 });

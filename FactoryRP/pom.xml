@@ -17,6 +17,7 @@
         <junit.version>4.12</junit.version>
         <ehcache.version>2.10.4</ehcache.version>
         <lombok.version>1.16.8</lombok.version>
+        <oss.sdk.version>3.0.0</oss.sdk.version>
     </properties>
 
     <!-- Inherit defaults from Spring Boot -->
@@ -210,6 +211,13 @@
             <artifactId>lombok</artifactId>
             <version>${lombok.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.aliyun.oss</groupId>
+            <artifactId>aliyun-sdk-oss</artifactId>
+            <version>${oss.sdk.version}</version>
+        </dependency>
+
+
     </dependencies>
 
     <build>

@@ -35,6 +35,8 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import static java.util.stream.Collectors.groupingBy;
+
 /**
  * 巡检计划相关服务
  * @author created by Singer email:313402703@qq.com
@@ -70,6 +72,8 @@ public class SpotInspectionPlanServiceImpl implements SpotInspectionPlanService 
     @Resource
     private SpotInspectionRecordRepository spotInspectionRecordRepository;
 
+    @Resource
+    private SpotInspectionItemsRepository spotInspectionItemsRepository;
 
     @Resource
     private SpotInspectionRecordDetailRepository spotInspectionRecordDetailRepository;
@@ -389,7 +393,6 @@ public class SpotInspectionPlanServiceImpl implements SpotInspectionPlanService 
             List<Long> deviceTypeIds = new ArrayList<>();
             List<Long> planStandardList = new ArrayList<>();
 
-
             planDeviceList.forEach(p1 -> {
                 deviceInfoIds.add(p1.getDeviceId());
                 deviceTypeIds.add(p1.getDeviceType());
@@ -408,6 +411,23 @@ public class SpotInspectionPlanServiceImpl implements SpotInspectionPlanService 
 
                 List<SpotInspectionStandard> standardList = spotInspectionStandardRepository.findByCorporateIdentifyAndIdIn(corporateIdentify, planStandardList);
                 Map<Long, SpotInspectionStandard> standardMap = standardList.stream().collect(Collectors.toMap(SpotInspectionStandard::getId, Function.identity()));
+
+
+                //查询巡检记录，方便返回漏检数量和异常数量
+                //保证在一个巡检计划周期内，巡检记录只能有一条
+                Date date = DateTimeUtil.subtractDateByParam(new Date(), plan.getRecyclePeriod(), plan.getRecyclePeriodType());
+
+                //如果能查询出来表示执行过
+                SpotInspectionRecord record = spotInspectionRecordRepository.findByCorporateIdentifyAndPlanIdAndCreateTimeGreaterThan(corporateIdentify, plan.getId(), date);
+
+                //根据记录ID查询出巡检细节 包含设备ID和点检标准ID
+                List<SpotInspectionRecordDetail> detailList = spotInspectionRecordDetailRepository.findByCorporateIdentifyAndRecordId(corporateIdentify, record.getId());
+                //查询出每个巡检标准需要执行的巡检项
+                List<SpotInspectionItems> standardItemList = spotInspectionItemsRepository.findByCorporateIdentifyAndStandardIn(corporateIdentify, planStandardList.stream().distinct().collect(Collectors.toList()));
+
+                //按照巡检标准ID进行分组
+                Map<Long, List<SpotInspectionItems>> itemMap = standardItemList.stream().collect(groupingBy(SpotInspectionItems::getStandard));
+                Map<Long, List<SpotInspectionRecordDetail>> itemExecuteDetailMap = detailList.stream().collect(groupingBy(SpotInspectionRecordDetail::getStandard));
 
 
                 planDeviceList.stream().forEach(p1 -> {
@@ -440,6 +460,37 @@ public class SpotInspectionPlanServiceImpl implements SpotInspectionPlanService 
 
                         info.setLineOrder(p1.getLineOrder());
                         info.setDeviceId(p1.getDeviceId());
+
+
+                        //设置漏检数量和异常数量 设置是否在周期内巡检过
+                        //如果巡检记录不存在说明没有发生过巡检，也没有漏检数量和异常数量
+                        if(CheckParam.isNull(record)){
+                            info.setAbnormalDeviceCount(0);
+                            info.setMissCount(0);
+                            spotInspectionPlanDetailWarpResp.setInTime(2);
+                        }else if(!CheckParam.isNull(detailList) && !detailList.isEmpty()){
+                            //计算漏检数量
+                            if(!CheckParam.isNull(itemMap.get(p1.getSpotInspectionStandard()))){
+
+                                //拿到某个点检标准需要被执行的点检项数量
+                                Long needToExecute = itemMap.get(p1.getSpotInspectionStandard()).stream().count();
+
+                                //拿到某个点检标准已经执行了的数量
+                                Long executeCount = itemExecuteDetailMap.get(p1.getSpotInspectionStandard()).stream().count();
+
+                                //如果需要被检查的数量大于已经检查的数量说明具备漏检项目
+                                if(needToExecute >= executeCount){
+                                    info.setMissCount(Integer.valueOf(String.valueOf(needToExecute - executeCount)));
+                                }else{
+                                    info.setMissCount(0); //如果需要被检查的数量小于已经检查的数量说明出现数据不一致
+                                }
+                                //设置已经在周期内执行过了
+                                spotInspectionPlanDetailWarpResp.setInTime(1);
+                            }
+
+                        }
+
+
                         deviceInfoList.add(info);
                     }
                 });

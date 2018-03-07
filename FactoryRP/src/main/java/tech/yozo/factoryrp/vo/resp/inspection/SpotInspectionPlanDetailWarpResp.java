@@ -81,12 +81,21 @@ public class SpotInspectionPlanDetailWarpResp implements Serializable {
     @ApiModelProperty(value = "截止时间--如果为空表示计划长期有效",notes ="截止时间--如果为空表示计划长期有效" )
     private Date endTime;
 
+    @ApiModelProperty(value = "异常处理情况",notes ="异常处理情况" )
+    private String abnormalHandleDesc;
+
     /**
      * 执行者ID集合
      */
     @ApiModelProperty(value = "执行者ID集合",notes ="执行者ID集合" )
     private List<Long> executors;
 
+
+    /**
+     * 是否在在执行时间 1是2不是
+     */
+    @ApiModelProperty(value = "是否在在执行时间 1是2不是",notes ="是否在在执行时间 1是2不是" )
+    private Integer inTime;
 
     /**
      * 巡检计划设备关联集合
