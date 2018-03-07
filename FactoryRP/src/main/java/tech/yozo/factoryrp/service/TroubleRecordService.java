@@ -93,6 +93,13 @@ public interface TroubleRecordService {
      */
     public WorkOrderDetailVo getDetail(Long id,AuthUser user);
 
+    /**
+     * 根据主键查询故障详情
+     * @param id
+     * @return
+     */
+    public SingleTroubleDetail getDetailById(Long id);
+
 
     /**
      * 验证工单

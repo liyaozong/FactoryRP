@@ -15,6 +15,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import tech.yozo.factoryrp.vo.resp.auth.AuthUser;
 import tech.yozo.factoryrp.vo.resp.device.trouble.SimpleTroubleRecordVo;
+import tech.yozo.factoryrp.vo.resp.device.trouble.SingleTroubleDetail;
 import tech.yozo.factoryrp.vo.resp.device.trouble.WorkOrderDetailVo;
 import tech.yozo.factoryrp.vo.resp.device.trouble.WorkOrderWebListVo;
 
@@ -218,6 +219,15 @@ public class TroubleRecordController extends BaseController{
     public ApiResponse<WorkOrderDetailVo> getDetail(HttpServletRequest request, Long id){
         AuthUser user = userAuthService.getCurrentUser(request);
         WorkOrderDetailVo vo=troubleRecordService.getDetail(id,user);
+        return apiResponse(vo);
+    }
+
+    @GetMapping("getDetail")
+    @ApiOperation(value = "web端查询工单详情--Web",notes = "web端查询工单详情(--Web",httpMethod = "GET")
+    @ApiImplicitParams(@ApiImplicitParam(paramType = "query",dataType = "Long",name = "id",
+            value = "故障主键",required = true))
+    public ApiResponse<SingleTroubleDetail> getTroubleDetail(HttpServletRequest request, Long id){
+        SingleTroubleDetail vo=troubleRecordService.getDetailById(id);
         return apiResponse(vo);
     }
 
