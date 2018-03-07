@@ -1067,6 +1067,7 @@ input:focus{
     border-top: 1px solid rgb(230,230,230);
     margin: 0;
     border-right: 1px solid rgb(230,230,230);
+    white-space: nowrap;
 }
 .mainContain .tableListDiv tr td a{
     color: #3f64a1;
@@ -1163,6 +1164,7 @@ input:focus{
     background: #f6f6f6;
     border-right: 1px solid rgb(230,230,230);
     font-size: 12px;
+    white-space: nowrap;
 }
 
 .mainContain .iframeDiv{

@@ -348,6 +348,30 @@ factoryParameterSettingApp.factory('factoryParameterSettingService', function($r
         });
     };
     /*执行保养计划 end*/
+    /*查询审核详情 start*/
+    var _getTroubleRecordDetail = function(Param,successFunc){
+        var getTroubleRecordDetail = $resource(UrlService.getUrl('troubleRecordServe') + 'troubleRecord/getDetail');
+        getTroubleRecordDetail.get(Param,function (data) {
+            if (successFunc) {
+                successFunc(data);
+            }
+        }, function (err) {
+
+        });
+    };
+    /*查询审核详情 end*/
+    /*审核提交 start*/
+    var _auditTroubleRecord = function(Param,successFunc){
+        var auditTroubleRecord = $resource(UrlService.getUrl('troubleRecordServe') + 'troubleRecord/audit');
+        auditTroubleRecord.save(Param,function (data) {
+            if (successFunc) {
+                successFunc(data);
+            }
+        }, function (err) {
+
+        });
+    };
+    /*审核提交 end*/
     return {
         saveContactCompany:_saveContactCompany,
         deleteContactCompany:_deleteContactCompany,
@@ -376,6 +400,8 @@ factoryParameterSettingApp.factory('factoryParameterSettingService', function($r
         batchDeleteMaintenanceRecord:_batchDeleteMaintenanceRecord,
         queryAllSpareParts:_queryAllSpareParts,
         maintainPlanSubmit:_maintainPlanSubmit,
+        getTroubleRecordDetail:_getTroubleRecordDetail,
+        auditTroubleRecord:_auditTroubleRecord,
         queryOrder: function(queryParam, successFunc) {
             queryOrder(queryParam, successFunc);
 
