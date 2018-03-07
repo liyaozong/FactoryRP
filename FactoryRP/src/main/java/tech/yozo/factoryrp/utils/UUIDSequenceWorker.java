@@ -125,6 +125,15 @@ public class UUIDSequenceWorker {
         return u.nextId() >> 39;
     }
 
+    /**
+     * 返回较长的唯一ID
+     * @return
+     */
+    public static Long longUniqueSequenceId(){
+        UUIDSequenceWorker u = new UUIDSequenceWorker();
+        return u.nextId();
+    }
+
     public static void main(String[] args) {
         /*System.out.println(954589177876316160L >> 36);
         System.out.println(uniqueSequenceId());*/
