@@ -614,10 +614,10 @@ factoryParameterSettingApp.controller('deviceManageController',function ($scope,
     $scope.deviceTroubleRecord=function ($event,deviceInfo) {
         // $($event.target).parent().css('background','#FBF5E1');
         // $($event.target).parent().siblings().css('background','#fff');
-        var dataId = $($event.target).parents('tr').data("appid");
+        var dataId = $($event.target).parents('tr').attr("data-appid");
+        console.log(dataId);
         localStorage.setItem('dataAudit',dataId);
-        var data =localStorage.getItem('dataAudit');
-        $scope.dataAudit=data;
+        $scope.dataAudit = localStorage.getItem('dataAudit');
         $scope.queryTroubleRecordList($scope.dataAudit);
         $scope.queryMaintenanceRecordList($scope.dataAudit);
 
@@ -791,10 +791,9 @@ factoryParameterSettingApp.controller('deviceManageController',function ($scope,
     /*故障信息详情查询 end*/
     /*批量删除故障 start*/
     $scope.chooseTroubleRecord=function ($event,res) {
-        var dataId = $($event.target).parents('tr').data("appid");
+        var dataId = $($event.target).parents('tr').attr("data-appid");
         localStorage.setItem('dataChooseTrouble',dataId);
-        var data =localStorage.getItem('dataChooseTrouble');
-        $scope.dataChooseTrouble=data;
+        $scope.dataChooseTrouble =localStorage.getItem('dataChooseTrouble');
     };
     $scope.deleteAllTroubleRecords=function(){
         if($(".tableListDiv tr td input[name='che1']:checked").length<1){
@@ -1048,7 +1047,7 @@ factoryParameterSettingApp.controller('deviceManageController',function ($scope,
     /*编辑保养计划 end*/
     /*批量删除保养计划 start*/
     $scope.chooseMaintenanceRecord=function ($event,res) {
-        var dataId = $($event.target).parents('tr').data("appid");
+        var dataId = $($event.target).parents('tr').attr("data-appid");
         localStorage.setItem('dataChooseMaintenance',dataId);
         $scope.dataChooseMaintenance=localStorage.getItem('dataChooseMaintenance');
     };
