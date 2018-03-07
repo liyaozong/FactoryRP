@@ -10,6 +10,7 @@ import tech.yozo.factoryrp.enums.RepairStatusEnum;
 import tech.yozo.factoryrp.enums.TroubleDealPhaseEnum;
 import tech.yozo.factoryrp.enums.TroubleLevelEnum;
 import tech.yozo.factoryrp.enums.TroubleStatusEnum;
+import tech.yozo.factoryrp.enums.device.DeviceStatusEnum;
 import tech.yozo.factoryrp.enums.process.DeviceProcessPhaseEnum;
 import tech.yozo.factoryrp.enums.process.DeviceProcessTypeEnum;
 import tech.yozo.factoryrp.exception.BussinessException;
@@ -67,7 +68,7 @@ public class TroubleRecordServiceImpl implements TroubleRecordService {
     @Autowired
     private DeviceTroubleTypeRepository deviceTroubleTypeRepository;
     @Resource
-    private DeviceInfoRepository deviceInfoRepository;
+    private DeviceTypeRepository deviceTypeRepository;
 
     private static Logger logger = LoggerFactory.getLogger(TroubleRecordServiceImpl.class);
 
@@ -670,6 +671,64 @@ public class TroubleRecordServiceImpl implements TroubleRecordService {
                }
                vo.setReplaceSpares(replaceSpares);
            }
+        }else{
+            BussinessException biz = new BussinessException("10000","工单不存在");
+            throw biz;
+        }
+        return vo;
+    }
+
+    @Override
+    public SingleTroubleDetail getDetailById(Long id) {
+        SingleTroubleDetail vo = new SingleTroubleDetail();
+        TroubleRecord old = troubleRecordRepository.findOne(id);
+        if (null!=old ){
+            vo.setTroubleRecordId(old.getId());
+            //设备信息
+            DeviceInfo deviceInfo = old.getDeviceInfo();
+            if (null!=deviceInfo){
+                vo.setDeviceName(deviceInfo.getName());
+                vo.setSpecification(deviceInfo.getSpecification());
+                vo.setDeviceCode(deviceInfo.getCode());
+                vo.setInstallationAddress(deviceInfo.getInstallationAddress());
+                if (null!=deviceInfo.getDeviceType()){
+                  DeviceType deviceType = deviceTypeRepository.getOne(deviceInfo.getDeviceType());
+                  if (null!=deviceType){
+                      vo.setDeviceType(deviceType.getName());
+                  }
+                }
+                if (null!=deviceInfo.getUseDept()){
+                    Department department =  departmentRepository.findOne(deviceInfo.getUseDept());
+                    if (null!=department){
+                        vo.setUseDept(department.getName());
+                    }
+                }
+            }
+            //故障信息
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            vo.setHappenTime(sdf.format(old.getHappenTime()));
+            vo.setOrderNo(old.getOrderNo());
+            vo.setDeviceUser(old.getDeviceUser());
+            vo.setPhone(old.getPhone());
+            vo.setCreateUser(old.getCreateUser());
+            vo.setRemark(old.getRemark());
+            vo.setCreateTime(sdf.format(old.getCreateTime()));
+            //维修单信息
+            if (null!=old.getTroubleType() && 0!=old.getTroubleType()){
+                DeviceTroubleType troubleType = deviceTroubleTypeRepository.getOne(old.getTroubleType());
+                if (null!=troubleType){
+                    vo.setTroubleType(troubleType.getName());
+                }
+            }
+            TroubleLevelEnum troubleLevelEnum = TroubleLevelEnum.getByCode(old.getTroubleLevel());
+            if (null!=troubleLevelEnum){
+                vo.setTroubleLevel(troubleLevelEnum.getName());
+            }
+            vo.setRemark(old.getRemark());
+            DeviceStatusEnum deviceStatusEnum = DeviceStatusEnum.getByCode(old.getDeviceStatus());
+            if (null!=deviceStatusEnum){
+                vo.setDeveiceStatus(deviceStatusEnum.getName());
+            }
         }else{
             BussinessException biz = new BussinessException("10000","工单不存在");
             throw biz;
