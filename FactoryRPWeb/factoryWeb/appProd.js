@@ -74,6 +74,8 @@ var myApp = angular.module('myApp', [
         QuerySpotInspectionPlanDetailByPlanIdPath:'/api/spotInspectionPlan/QuerySpotInspectionPlanDetailByPlanId',   //根据点检计划ID查询点检计划详情
         deleteSpotInspectionStandardByIdsIPPath:'/api/spotInspectionPlan/deleteSpotInspectionStandardByIds',   //批量删除点检计划
         querySpotInspectionRecordByPlanIdPath:'/api/spotInspectionRecord/querySpotInspectionRecordByPlanId',   //根据巡检ID查询巡检记录
+        uploadToOSSPath:'/api/itemUpload/uploadToOSS',   //上传图片
+        executeSpotInspectionPlanPath:'/api/spotInspectionPlan/executeSpotInspectionPlan',   //执行巡检计划
         getxjsjPath:'service/getxjsj',   //巡检计划状态
         getxjlxPath:'service/getxjlx'   //巡检计划名称
 

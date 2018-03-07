@@ -106,6 +106,14 @@ myApp.factory("inspectionPlan",["AppHttp","FF_API",function(AppHttp,FF_API){
             data:data
         });
     };
+    //执行巡检计划
+    inspectionPlan.executeSpotInspectionPlan=function(data){
+        return AppHttp({
+            method: 'post',
+            url: FF_API.base + FF_API.executeSpotInspectionPlanPath,
+            data:data
+        });
+    };
     //分页查询巡检计划
     inspectionPlan.QuerySpotInspectionPlanDetailByPlanId=function(id){
         return AppHttp({

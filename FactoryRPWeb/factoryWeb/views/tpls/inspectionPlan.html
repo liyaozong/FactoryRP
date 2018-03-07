@@ -562,7 +562,7 @@
     </div>
     <div class="submitBtn1" style="text-align: center;padding-left: 40px;margin-bottom: 18px;">
         <button type="button" ng-click="closeAR()" value="" class="btn" ng-if="SpotInspectionPlanExecuteWarpReq.inTime==1">确定</button>
-        <button type="button" value="" class="btn" ng-if="SpotInspectionPlanExecuteWarpReq.inTime==2">未到执行时间</button>
+        <button type="button" value="" class="btn" ng-if="SpotInspectionPlanExecuteWarpReq.inTime==2" style="background-color: #e6e6e6">未到执行时间</button>
         <button type="button" value="" class="btn" ng-click="closeAR1()">取消</button>
     </div>
 </div>
@@ -599,7 +599,7 @@
             <p>
                 <label for="AR_bz" >
                     <span style="width: 100px;text-align: right">备注:</span>
-                    <textarea id="AR_bz"></textarea>
+                    <textarea id="AR_bz" ng-model="xjjlDetailList.remake"></textarea>
                 </label>
             </p>
             <div style="padding-left: 104px;position: relative;padding-right: 5px;box-sizing: border-box;">
@@ -617,15 +617,20 @@
                     <tbody>
                     <tr ng-repeat="item in xjjlDetailList.list" ng-if="xjjlDetailList.list.length>0">
                         <td ng-bind="item.name||'--'"></td>
-                        <td ng-bind="item.recordResult"></td>
-                        <td ng-bind="item.abnormalDesc"></td>
-                        <td ng-bind="item.remark"></td>
+                        <td ng-if="item.recordResult=='1'">偏高</td>
+                        <td ng-if="item.recordResult=='2'">正常</td>
+                        <td ng-if="item.recordResult=='3'">偏低</td>
+                        <td ng-if="item.recordResult!=1&&item.recordResult!=2&&item.recordResult!=3">--</td>
+                        <td ng-if="item.abnormalDesc==1">无异常</td>
+                        <td ng-if="item.abnormalDesc==2">有异常</td>
+                        <td ng-if="item.abnormalDesc!=2&&item.abnormalDesc!=1">--</td>
+                        <td ng-bind="item.remark||'--'"></td>
                         <td>
-                            <a ng-if="item.inspectionStatus==2" href="javascript:void(0)" class="resBtn deleteBtn" ng-click="open_ar_lrs2(item,$index)">
+                            <a ng-if="item.inspectionStatus!=1" href="javascript:void(0)" class="resBtn deleteBtn" ng-click="open_ar_lrs2(item,$index)">
                                 录入
                             </a>
-                            <a ng-if="item.inspectionStatus==1" href="javascript:void(0)" class="resBtn deleteBtn">
-                                录入
+                            <a ng-if="item.inspectionStatus==1" style="color: #e6e6e6" href="javascript:void(0)" class="resBtn deleteBtn">
+                                已录入
                             </a>
                         </td>
                     </tr>
@@ -658,7 +663,7 @@
     </div>
     <div class="submitBtn1" style="text-align: center;padding-left: 40px;margin-bottom: 18px;">
         <button type="button" ng-click="closeAR2()" value="" class="btn">确定</button>
-        <button type="button" value="" class="btn" ng-click="closeAR21()">取消</button>
+        <button type="button" value="" class="btn" ng-click="closeAR21(xjjlDetailList)">取消</button>
     </div>
 </div>
 
@@ -703,7 +708,7 @@
         </div>
     </div>
     <div class="submitBtn1" style="text-align: center;padding-left: 40px;margin-bottom: 18px;">
-        <button type="button" ng-click="closeAR3()" value="" class="btn">确定</button>
+        <button type="button" ng-click="closeAR3(xjmxList)" value="" class="btn">确定</button>
         <button type="button" value="" class="btn" ng-click="closeAR31()">取消</button>
     </div>
 </div>

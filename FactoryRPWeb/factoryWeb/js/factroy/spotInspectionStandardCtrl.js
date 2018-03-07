@@ -899,14 +899,20 @@ myApp.controller('inspectionPlanCtrl',['$filter','$rootScope','$location','$scop
                         arr.push({
                             standardId:k.standardId,
                             planDeviceId:k.planDeviceId,
-                            itemList:[]
+                            remake:'',
+                            imageId:'',
+                            itemList:[],
+                            isFlog:false
                         });
                     })
                 }
                 $scope.reqLists={
                     planId:obj.id,
+                    abnormalHandleDesc:'',
                     list:arr
-                }
+                };
+                // $scope.reqList2=[];
+                // console.log($scope.reqLists,'1111');
             }else {
                 popupDiv('SaveSuccess');
                 $('.SaveSuccess .Message').html(data.errorMessage);
@@ -922,28 +928,53 @@ myApp.controller('inspectionPlanCtrl',['$filter','$rootScope','$location','$scop
     $scope.closeAR=function () {//确定添加巡检
         // alert('接口调试中');
         hideDiv('addRecordPopup');
-        var req={
-            planId:$scope.SpotInspectionPlanExecuteWarpReq.planId,
-            list: [{
-                    "itemList": [
-                        {
-                            "abnormalDesc": "1",
-                            "itemId": 1,
-                            "recordResult": "1",
-                            "remark": "1"
-                        }
-                    ],
-                    "planDeviceId": 0,
-                    "standardId": 0
-                }]
+        // console.log('第一层确定',$scope.reqLists);
+        var arr1=[];
+        $scope.reqLists.list.forEach(function (m,i) {
+            // console.log(m,i);
+            var arr2=[];
+            m.itemList.forEach(function (k,l) {
+                // console.log(k,l);
+                if(k.isFlog){
+                    arr2.push({
+                        remark:k.remark,
+                        recordResult:k.recordResult,
+                        itemId:k.itemId,
+                        abnormalDesc:k.abnormalDesc
+                    });
+                }
+            });
+            m.itemList=arr2;
+            if(m.isFlog){
+                arr1.push({
+                    imageId:m.imageId,
+                    itemList:m.itemList,
+                    planDeviceId:m.planDeviceId,
+                    remake:m.remake,
+                    standardId:m.standardId
+                });
+            }
+        });
+        $scope.reqLists.list=arr1;
+        if($scope.reqLists.list.length>0){
+            inspectionPlan.executeSpotInspectionPlan($scope.reqLists).success(function (data) {
+                if(data.errorCode=='000000'){
+                    popupDiv('SaveSuccess');
+                    $('.SaveSuccess .Message').html(data.errorMessage);
+                }else {
+                    popupDiv('SaveSuccess');
+                    $('.SaveSuccess .Message').html(data.errorMessage);
+                }
+            });
         }
+        // console.log($scope.reqLists,'end');
     };
 
     //打开巡检明细录入弹出层
     $scope.open_ar_lrs=function (obj,planId,$index) {
         inspectionPlan.findSpotInspectionStandardItemByStandardIdAndPlanId(obj.standardId,planId).success(function (data) {
             if(data.errorCode=='000000'){
-                console.log(data,'----');
+                // console.log(data,'第二层');
                 $scope.uploadEnd=false;
                 hideDiv('addRecordPopup');
                 popupDiv('addRecordPopup2');
@@ -958,14 +989,25 @@ myApp.controller('inspectionPlanCtrl',['$filter','$rootScope','$location','$scop
                     remake:'',
                     planDeviceId:obj.planDeviceId,
                     list:data.data,
-                    index:$index
+                    standardId:obj.standardId,
+                    imageId:''
                 };
+                var arr2=[];
                 if(data.data){
-                    data.data.forEach(function (n) {
-                        console.log(n,'第二层')
-                    })
+                    data.data.forEach(function (m) {
+                        arr2.push({
+                            "abnormalDesc": "",
+                            "itemId": '',
+                            "recordResult": "",
+                            "remark": "",
+                            isFlog:false
+                        })
+                    });
                 }
-
+                // console.log($scope.reqLists.list[$index],'-------',$index,arr2);
+                $scope.reqLists.list[$index].itemList=arr2;
+                $scope.index2=$index;
+                // console.log($scope.reqLists,'22222');
             }else {
                 alert(data.errorMessage)
             }
@@ -976,15 +1018,16 @@ myApp.controller('inspectionPlanCtrl',['$filter','$rootScope','$location','$scop
         hideDiv('addRecordPopup2');
         popupDiv('addRecordPopup');
     };
-    $scope.closeAR2=function () {//确定执行
+    $scope.closeAR2=function (obj) {//确定执行
         // alert('接口调试中');
         hideDiv('addRecordPopup2');
         popupDiv('addRecordPopup');
-        // $scope.reqList2.push({
-        //     itemList:$scope.reqList3,
-        //     planDeviceId:$scope.xjjlDetailList.deviceId,
-        //     standardId:$scope.xjjlDetailList.planDeviceId
-        // })
+
+        $scope.reqLists.list[$scope.index2].remake=$scope.xjjlDetailList.remake;
+        $scope.reqLists.list[$scope.index2].imageId=$scope.xjjlDetailList.imageId;
+        $scope.reqLists.list[$scope.index2].isFlog=true;
+        // console.log('第二层确定',$scope.reqLists);
+
     };
 
     //打开巡检明细录入弹出层3
@@ -995,10 +1038,18 @@ myApp.controller('inspectionPlanCtrl',['$filter','$rootScope','$location','$scop
         $scope.xjmxList={
             itemId:obj.id,
             name:obj.name,
-            recordResult:'',
-            abnormalDesc:'',
-            remark:''
-        }
+            recordResult:obj.recordResult,
+            abnormalDesc:obj.abnormalDesc,
+            remark:obj.remark
+        };
+        $("#AR_djz option").each(function(){
+            if($(this).val()==obj.recordResult){
+                $(this).attr("selected",true);
+            }
+        });
+        $scope.index3=$index;
+        // $scope.reqLists.list.itemList[$scope.index2].itemList=[]
+        // console.log('第三层')
 
     };
     //关闭执行巡检计划（添加巡检记录3）弹出层
@@ -1006,11 +1057,28 @@ myApp.controller('inspectionPlanCtrl',['$filter','$rootScope','$location','$scop
         hideDiv('addRecordPopup3');
         popupDiv('addRecordPopup2');
     };
-    $scope.closeAR3=function () {//确定编辑
+    $scope.closeAR3=function (obj) {//确定编辑
         // $scope.reqList3.push($scope.xjmxList);
-        alert('接口调试中');
+        // alert('接口调试中');
         hideDiv('addRecordPopup3');
         popupDiv('addRecordPopup2');
+        $scope.xjjlDetailList.list[$scope.index3]={
+            itemId:$scope.xjmxList.itemId,
+            name:$scope.xjmxList.name,
+            recordResult:$scope.xjmxList.recordResult,
+            abnormalDesc:$scope.xjmxList.abnormalDesc,
+            remark:$scope.xjmxList.remark
+        };
+        $scope.reqLists.list[$scope.index2].itemList[$scope.index3]={
+            itemId:$scope.xjmxList.itemId,
+            name:$scope.xjmxList.name,
+            recordResult:$scope.xjmxList.recordResult,
+            abnormalDesc:$scope.xjmxList.abnormalDesc,
+            remark:$scope.xjmxList.remark,
+            isFlog:true
+        };
+
+        // console.log('第三层确定',$scope.reqLists);
     };
 
     // popupDiv('addRecordPopup2');
