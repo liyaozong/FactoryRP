@@ -61,4 +61,24 @@ public class SpotInspectionStandardItemsQueryResp implements Serializable {
     @ApiModelProperty(value = "是否执行了提交 1执行2未执行",notes ="是否执行了提交 1执行2未执行" )
     private Integer inspectionStatus;
 
+    /**
+     * 记录结果
+     */
+    @ApiModelProperty(value = "记录结果 是否有异常 数值等",notes ="记录结果 是否有异常 数值等",example = "1")
+    private String recordResult;
+
+
+    /**
+     * 异常情况描述 1无异常2有异常
+     */
+    @ApiModelProperty(value = "异常情况描述 1无异常2有异常",notes ="异常情况描述 1无异常2有异常",example = "1")
+    private String abnormalDesc;
+
+
+    /**
+     *  备注
+     */
+    @ApiModelProperty(value = "备注",notes ="备注",example = "1")
+    private String remark;
+
 }

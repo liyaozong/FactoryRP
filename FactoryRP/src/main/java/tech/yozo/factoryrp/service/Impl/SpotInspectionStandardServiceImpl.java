@@ -15,6 +15,7 @@ import tech.yozo.factoryrp.service.SpotInspectionStandardService;
 import tech.yozo.factoryrp.utils.CheckParam;
 import tech.yozo.factoryrp.utils.DateTimeUtil;
 import tech.yozo.factoryrp.utils.ErrorCode;
+import tech.yozo.factoryrp.vo.innertransfer.InspectionItemTransferVo;
 import tech.yozo.factoryrp.vo.req.SpotInspectionStandardAddReq;
 import tech.yozo.factoryrp.vo.req.SpotInspectionStandardQueryReq;
 import tech.yozo.factoryrp.vo.resp.inspection.*;
@@ -190,6 +191,53 @@ public class SpotInspectionStandardServiceImpl implements SpotInspectionStandard
                 resultMap.put(d1.getStandardItemId(),1);
             }else{
                 resultMap.put(d1.getStandardItemId(),2);
+            }
+
+        });
+
+        return resultMap;
+
+    }
+
+    /**
+     * 返回执行结果的内部对象
+     * @param corporateIdentify
+     * @param compareTime
+     * @param itemIdList
+     * @return
+     */
+    public Map<Long,InspectionItemTransferVo> queryInnerinspectionExecuteResult(Long corporateIdentify, Date compareTime, List<Long> itemIdList){
+
+        //查询出规定周期内执行过的记录
+        List<SpotInspectionRecordDetail> detailList = spotInspectionRecordDetailRepository.findByCorporateIdentifyAndStandardItemIdInAndCreateTimeGreaterThan(corporateIdentify, itemIdList, compareTime);
+
+        Map<Long,InspectionItemTransferVo> resultMap = new HashMap<>();
+
+        //如果查询出来为空全部设置为未执行
+        if(CheckParam.isNull(detailList) && detailList.isEmpty()){
+            itemIdList.stream().forEach(m1 -> {
+                InspectionItemTransferVo transferVo = new InspectionItemTransferVo();
+                transferVo.setExecuteStatus(2);
+                resultMap.put(m1,transferVo);
+            });
+
+            return resultMap;
+        }
+
+
+        detailList.stream().forEach(d1 -> {
+            InspectionItemTransferVo transferVo = new InspectionItemTransferVo();
+            //如果能比对到说明执行过，比对不到的就说明未执行过
+            if(itemIdList.contains(d1.getStandardItemId())){
+                transferVo.setExecuteStatus(1);
+                transferVo.setAbnormalDesc(d1.getAbnormalDesc());
+                transferVo.setRecordResult(d1.getRecordResult());
+                transferVo.setRemark(d1.getRemark());
+                resultMap.put(d1.getStandardItemId(),transferVo);
+            }else{
+                transferVo.setExecuteStatus(2);
+
+                resultMap.put(d1.getStandardItemId(),transferVo);
             }
 
         });
@@ -597,8 +645,8 @@ public class SpotInspectionStandardServiceImpl implements SpotInspectionStandard
             //Date date = DateTimeUtil.subtractDateByParam(new Date(), plan.getRecyclePeriod(), plan.getRecyclePeriodType());
             Date date = DateTimeUtil.subtractDateByParam(new Date(), plan.getRecyclePeriod(), plan.getRecyclePeriodType());
 
-            Map<Long, Integer> executeResultMap = inspectionExecuteResult(corporateIdentify, date, itemIdList);
-
+            //Map<Long, Integer> executeResultMap = inspectionExecuteResult(corporateIdentify, date, itemIdList);
+            Map<Long, InspectionItemTransferVo> executeResultMap = queryInnerinspectionExecuteResult(corporateIdentify, date, itemIdList);
 
             spotInspectionItemsList.stream().forEach(s1 -> {
                 SpotInspectionStandardItemsQueryResp spotInspectionStandardItemsQueryResp = new SpotInspectionStandardItemsQueryResp();
@@ -613,7 +661,10 @@ public class SpotInspectionStandardServiceImpl implements SpotInspectionStandard
 
                 //设置在规定巡检周期内，是否执行过，1执行2未执行
                 if (!CheckParam.isNull(executeResultMap.get(s1.getId()))) {
-                    spotInspectionStandardItemsQueryResp.setInspectionStatus(executeResultMap.get(s1.getId()));
+                    spotInspectionStandardItemsQueryResp.setInspectionStatus(executeResultMap.get(s1.getId()).getExecuteStatus());
+                    spotInspectionStandardItemsQueryResp.setAbnormalDesc(executeResultMap.get(s1.getId()).getAbnormalDesc());
+                    spotInspectionStandardItemsQueryResp.setRecordResult(executeResultMap.get(s1.getId()).getRecordResult());
+                    spotInspectionStandardItemsQueryResp.setRemark(executeResultMap.get(s1.getId()).getRemark());
                 } else {
                     spotInspectionStandardItemsQueryResp.setInspectionStatus(2);
                 }
