@@ -180,7 +180,7 @@ public class SpotInspectionPlanController extends BaseController{
      * 执行巡检计划
      * @param spotInspectionPlanExecuteWarpReq
      */
-    @ApiOperation(value = "执行巡检计划",notes = "编辑巡检计划",httpMethod = "POST")
+    @ApiOperation(value = "执行巡检计划",notes = "执行巡检计划",httpMethod = "POST")
     @PostMapping("/executeSpotInspectionPlan")
     @ApiImplicitParam(dataType = "spotInspectionPlanExecuteWarpReq" ,name = "corporateIdentify", paramType = "VO" ,
             value = "执行巡检计划",required = true)

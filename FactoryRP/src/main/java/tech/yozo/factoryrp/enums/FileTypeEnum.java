@@ -17,7 +17,7 @@ public enum FileTypeEnum {
 
 
     INSPECTION_IMAGE("inspect","点巡检"),
-    MAINTAIN_IMAGE("inspect","维修"),
+    MAINTAIN_IMAGE("maintain","维修"),
     TROUBLE_IMAGE("trouble","故障"),
     DOCUMENT("document","文档");
 

@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tech.yozo.factoryrp.entity.*;
 import tech.yozo.factoryrp.enums.inspection.SpotInspectionItemsRecordTypeEnum;
-import tech.yozo.factoryrp.enums.inspection.SpotInspectionPlanRecycleTypeEnum;
 import tech.yozo.factoryrp.exception.BussinessException;
 import tech.yozo.factoryrp.repository.*;
 import tech.yozo.factoryrp.service.SpotInspectionStandardService;
@@ -19,9 +18,7 @@ import tech.yozo.factoryrp.vo.innertransfer.InspectionItemTransferVo;
 import tech.yozo.factoryrp.vo.req.SpotInspectionStandardAddReq;
 import tech.yozo.factoryrp.vo.req.SpotInspectionStandardQueryReq;
 import tech.yozo.factoryrp.vo.resp.inspection.*;
-import tech.yozo.factoryrp.vo.resp.inspection.mobile.SpotInspectionItemsQueryResp;
 import tech.yozo.factoryrp.vo.resp.inspection.mobile.SpotInspectionItemsQueryWarpResp;
-import tech.yozo.factoryrp.vo.resp.inspection.mobile.SpotInspectionPlanDeviceQueryResp;
 
 import javax.annotation.Resource;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -206,7 +203,7 @@ public class SpotInspectionStandardServiceImpl implements SpotInspectionStandard
      * @param itemIdList
      * @return
      */
-    public Map<Long,InspectionItemTransferVo> queryInnerinspectionExecuteResult(Long corporateIdentify, Date compareTime, List<Long> itemIdList){
+    public Map<Long,InspectionItemTransferVo> queryInnerInspectionExecuteResult(Long corporateIdentify, Date compareTime, List<Long> itemIdList){
 
         //查询出规定周期内执行过的记录
         List<SpotInspectionRecordDetail> detailList = spotInspectionRecordDetailRepository.findByCorporateIdentifyAndStandardItemIdInAndCreateTimeGreaterThan(corporateIdentify, itemIdList, compareTime);
@@ -233,6 +230,7 @@ public class SpotInspectionStandardServiceImpl implements SpotInspectionStandard
                 transferVo.setAbnormalDesc(d1.getAbnormalDesc());
                 transferVo.setRecordResult(d1.getRecordResult());
                 transferVo.setRemark(d1.getRemark());
+                transferVo.setExecuteDetailId(d1.getId());
                 resultMap.put(d1.getStandardItemId(),transferVo);
             }else{
                 transferVo.setExecuteStatus(2);
@@ -646,7 +644,7 @@ public class SpotInspectionStandardServiceImpl implements SpotInspectionStandard
             Date date = DateTimeUtil.subtractDateByParam(new Date(), plan.getRecyclePeriod(), plan.getRecyclePeriodType());
 
             //Map<Long, Integer> executeResultMap = inspectionExecuteResult(corporateIdentify, date, itemIdList);
-            Map<Long, InspectionItemTransferVo> executeResultMap = queryInnerinspectionExecuteResult(corporateIdentify, date, itemIdList);
+            Map<Long, InspectionItemTransferVo> executeResultMap = queryInnerInspectionExecuteResult(corporateIdentify, date, itemIdList);
 
             spotInspectionItemsList.stream().forEach(s1 -> {
                 SpotInspectionStandardItemsQueryResp spotInspectionStandardItemsQueryResp = new SpotInspectionStandardItemsQueryResp();
@@ -665,6 +663,7 @@ public class SpotInspectionStandardServiceImpl implements SpotInspectionStandard
                     spotInspectionStandardItemsQueryResp.setAbnormalDesc(executeResultMap.get(s1.getId()).getAbnormalDesc());
                     spotInspectionStandardItemsQueryResp.setRecordResult(executeResultMap.get(s1.getId()).getRecordResult());
                     spotInspectionStandardItemsQueryResp.setRemark(executeResultMap.get(s1.getId()).getRemark());
+                    spotInspectionStandardItemsQueryResp.setExecuteDetailId(executeResultMap.get(s1.getId()).getExecuteDetailId());
                 } else {
                     spotInspectionStandardItemsQueryResp.setInspectionStatus(2);
                 }

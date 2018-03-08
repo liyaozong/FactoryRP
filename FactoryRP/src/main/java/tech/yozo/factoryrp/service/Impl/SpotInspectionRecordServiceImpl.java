@@ -426,15 +426,15 @@ public class SpotInspectionRecordServiceImpl implements SpotInspectionRecordServ
                         detail.setAbnormalDeviceCount(0);
                     }
 
-                    //设置已经执行还是未执行
-                    detail.setExecuteStatus(executeCount > 0 ? 1 : 2);
+                    //设置执行状态 1完成2未完成
+                    detail.setExecuteStatus(needToExecute == executeCount ? 1 : 2);
 
                     detailList.add(detail);
                 }else{
                     detail.setAbnormalDeviceCount(0);
                     detail.setMissCount(0);
                     detail.setMissCount(0);
-                    detail.setExecuteStatus(1);
+                    detail.setExecuteStatus(1); //执行状态 1完成2未完成
                 }
 
             });

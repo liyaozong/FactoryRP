@@ -1,5 +1,6 @@
 package tech.yozo.factoryrp.vo.innertransfer;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -13,6 +14,10 @@ import java.io.Serializable;
 @Data
 public class InspectionItemTransferVo implements Serializable {
 
+    /**
+     * 如果inspectionStatus字段返回1该字段会被返回，执行的时候需要这个字段
+     */
+    private Long executeDetailId;
 
     /**
      * 巡检项目是否执行了 是否执行了提交 1执行2未执行

@@ -62,6 +62,12 @@ public class SpotInspectionStandardItemsQueryResp implements Serializable {
     private Integer inspectionStatus;
 
     /**
+     * 如果inspectionStatus字段返回1改字段会被返回，执行的时候需要这个字段
+     */
+    @ApiModelProperty(value = "如果inspectionStatus字段返回1改字段会被返回，执行的时候需要这个字段",notes ="如果inspectionStatus字段返回1改字段会被返回，执行的时候需要这个字段" )
+    private Long executeDetailId;
+
+    /**
      * 记录结果
      */
     @ApiModelProperty(value = "记录结果 是否有异常 数值等",notes ="记录结果 是否有异常 数值等",example = "1")
