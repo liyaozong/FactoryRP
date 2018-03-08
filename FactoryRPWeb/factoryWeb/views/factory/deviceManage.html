@@ -834,7 +834,7 @@
                 </label>
                 <label style="opacity: 1">
                     <span style="width: 100px;text-align: right">选择设备:</span>
-                    <button style="width: 135px;font-size: 12px;" class="btn">选择设备</button>
+                    <button ng-click="chooseDevice()" style="width: 135px;font-size: 12px;" class="btn">选择设备</button>
                 </label>
             </p>
             <p>
@@ -1136,7 +1136,7 @@
                 </label>
                 <label style="opacity: 1">
                     <span style="width: 100px;text-align: right">选择设备:</span>
-                    <button style="width: 135px;font-size: 12px;" class="btn">选择设备</button>
+                    <button ng-click="chooseDevice()" style="width: 135px;font-size: 12px;" class="btn">选择设备</button>
                 </label>
             </p>
             <p>
@@ -1273,7 +1273,7 @@
                 </label>
                 <label style="opacity: 1">
                     <span style="width: 100px;text-align: right">选择设备:</span>
-                    <button style="width: 135px;font-size: 12px;" class="btn">选择设备</button>
+                    <button style="width: 135px;font-size: 12px;background: #ccc" class="btn">选择设备</button>
                 </label>
             </p>
             <p>
@@ -1410,7 +1410,7 @@
                 </label>
                 <label style="opacity: 1">
                     <span style="width: 100px;text-align: right">选择设备:</span>
-                    <button style="width: 135px;font-size: 12px;" class="btn">选择设备</button>
+                    <button style="width: 135px;font-size: 12px;background: #ccc" class="btn">选择设备</button>
                 </label>
             </p>
             <p>
@@ -1644,6 +1644,99 @@
     </div>
 </div>
 <!--执行保养计划 end-->
+<!--设备列表 start-->
+<div class="ImportantNote deviceLists">
+    <div class="headline">
+        <span>设备列表</span>
+        <img ng-click="hideDeviceLists()" class="companyCloseImg" src="image/comm/diffClosed.png" width="22" height="22">
+    </div>
+    <div style="padding: 30px 0 20px 0;width: 840px;max-height: 380px;height: auto;overflow-y: hidden; overflow: auto;" class="businessAuth mainContain">
+        <div style="padding: 0;width: 100%" class="queryDiv" >
+            <ul>
+                <li>
+                    <label style="margin-left: 10px" for="useDeptQuery">
+                        <span style="width: auto">使用部门：</span>
+                        <select id="useDeptQuery" ng-model="useDeptQuery" ng-options="departmentListDetail.id as departmentListDetail.name for departmentListDetail in departmentList">
+                            <option value="">选择使用部门</option>
+                        </select>
+                    </label>
+                    <label for="deviceTypeQuery">
+                        <span style="width: auto">设备类型：</span>
+                        <select ng-model="deviceTypeQuery" name="" id="deviceTypeQuery" ng-options="deviceTypeListDetail.id as deviceTypeListDetail.name for deviceTypeListDetail in deviceTypeList">
+                            <option value="">选择设备类型</option>
+                        </select>
+                    </label>
+                    <label for="useStatusQuery">
+                        <span style="width: auto">使用状态：</span>
+                        <select ng-model="useStatusQuery" name="" id="useStatusQuery" ng-options="useStatusDetail.id as useStatusDetail.name for useStatusDetail in useStatusList">
+                            <option value="">选择使用状态</option>
+                            <option value="1">有</option>
+                            <option value="0">无</option>
+                        </select>
+                    </label>
+                    <label>
+                        <button style="margin:10px 0 0 10px;" class="btn" ng-click="onQuery()">查询</button>
+                    </label>
+                </li>
+            </ul>
+        </div>
+        <div style="padding-left: 10px;display: none" class="tools">
+            <ul class="toolbar">
+                <li>
+                    <span><img style="width: 24px;" src="images/ico06.png" /></span>查询
+                </li>
+                <li ng-click="addContactCompany()"><span><img src="images/t01.png" /></span>添加</li>
+                <!--<li class="click"><span><img src="images/t02.png" /></span>修改</li>-->
+                <!--<li><span><img src="images/t03.png" /></span>删除</li>-->
+                <!--<li><span><img src="images/t04.png" /></span>统计</li>-->
+            </ul>
+            <!--<ul class="toolbar1">-->
+            <!--<li><span><img src="images/t05.png" /></span>设置</li>-->
+            <!--</ul>-->
+        </div>
+        <div style="max-height: 400px;overflow: auto;min-width: 0;" class="tableListDiv data-container jurisdiction">
+            <table>
+                <thead>
+                <tr>
+                    <th style="text-align: left" colspan="17">设备列表</th>
+                </tr>
+                <tr>
+                    <th style="min-width:50px;">全选<input style="vertical-align: middle;margin-left: 5px" type="checkbox" value="1" onclick="selAll(this)" id="allSelected"/></th>
+                    <!--<th>设备编号</th>-->
+                    <th>设备名称</th>
+                    <th>使用部门</th>
+                    <th>规格型号</th>
+                    <th>安装地点</th>
+                    <th>设备类别</th>
+                    <th>设备标记</th>
+                </tr>
+                </thead>
+                <tbody id="apply_infos_table">
+                <tr ng-click="deviceTroubleRecord($event,orderDetail)" data-appid = "{{orderDetail.id}}" ng-class="{'':dataAudit=='','bg-gray':orderDetail.id == dataAudit}"  ng-repeat="orderDetail in deviceListInfos">
+                    <td class="firstTd">{{$index+1}}<input style="margin-left: 5px;vertical-align: middle;" type="checkbox" name="che"  value="{{orderDetail.id}}"/></td>
+                    <!--<td>{{orderDetail.code||'--'}}</td>-->
+                    <td>{{orderDetail.name||'--'}}</td>
+                    <td>{{orderDetail.useDept||'--'}}</td>
+                    <td>{{orderDetail.specification||'--'}}</td>
+                    <td>{{orderDetail.installationAddress||'--'}}</td>
+                    <td>{{orderDetail.deviceType||'--'}}</td>
+                    <td>{{orderDetail.deviceFlag||'--'}}</td>
+                </tr>
+                </tbody>
+                <tfoot>
+                <tr>
+                    <td style="text-align: center" colspan="7"><tm-pagination conf="paginationConf"></tm-pagination></td>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+        <div class="submitBtn1" style="text-align: center;padding-left: 40px;">
+            <button type="button" ng-click="deviceListsRecordSure()" value="" class="btn">确定</button>
+            <button type="button" value="" class="btn" ng-click="hideDeviceLists()">取消</button>
+        </div>
+    </div>
+</div>
+<!--设备列表 end-->
 <script type="text/javascript">
     $(document).ready(function(){
         $(".click").click(function(){

@@ -192,7 +192,7 @@ public class ReportFaultActivity extends AppCompatActivity implements HttpClient
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case REQUEST_CODE_CAMERA:
-                    if (mImageCount <= 3) {
+                    if (mImageCount < 4) {
                         if (data != null && data.hasExtra("data")) {
                             mImageCount++;
                             Bitmap thumbnail = data.getParcelableExtra("data");
@@ -207,18 +207,9 @@ public class ReportFaultActivity extends AppCompatActivity implements HttpClient
                     break;
                 case REQUEST_CODE_SCAN:
                     if (data != null) {
-                        List<SimpleDeviceInfoResp> list = HttpClient.getInstance().getSimpleDeviceInfoList();
-                        if(list != null) {
-                            for (SimpleDeviceInfoResp device : list) {
-                                if (device.getCode().contentEquals(data.getStringExtra(Intents.Scan.RESULT))) {
-                                    showSelectedDevice(device);
-                                }
-                            }
-                        } else {
-                            RequestParams params = new RequestParams();
-                            params.put("code", data.getStringExtra(Intents.Scan.RESULT));
-                            HttpClient.getInstance().requestDeviceByCode(this, this, params);
-                        }
+                        RequestParams params = new RequestParams();
+                        params.put("code", data.getStringExtra(Intents.Scan.RESULT));
+                        HttpClient.getInstance().requestDeviceByCode(this, this, params);
                     }
                     break;
                 case REQUEST_CODE_DEVICE:
@@ -290,6 +281,10 @@ public class ReportFaultActivity extends AppCompatActivity implements HttpClient
         tvDeviceCode.setText(device.getCode());
         tvDeviceType.setText(device.getSpecification());
         tvDeviceUsingDept.setText(device.getUseDept());
+        etDevicePlace.setText(device.getInstallationAddress());
+        if(device instanceof FullDeviceInfoResp) {
+            etOperator.setText(((FullDeviceInfoResp) device).getOperator());
+        }
         tlSelectDevice.setVisibility(View.VISIBLE);
     }
 

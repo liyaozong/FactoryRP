@@ -1,6 +1,13 @@
 package tech.yozo.factoryrp.ui;
 
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.InputType;
@@ -13,6 +20,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.loopj.android.http.RequestParams;
 import tech.yozo.factoryrp.R;
+import tech.yozo.factoryrp.scan.ScanActivity;
+import tech.yozo.factoryrp.utils.Constant;
 import tech.yozo.factoryrp.utils.HttpClient;
 import tech.yozo.factoryrp.vo.req.InspectRecordSubmitReq;
 import tech.yozo.factoryrp.vo.req.InspectionItemAddReq;
@@ -22,6 +31,7 @@ import tech.yozo.factoryrp.vo.resp.inspect.InspectItemResp;
 import java.util.*;
 
 public class InspectDetailActivity extends AppCompatActivity implements HttpClient.OnHttpListener {
+    private static final int REQUEST_CODE_CAMERA = 0x902;
 
     @BindView(R.id.tv_inspect_device_name)
     TextView tvInspectDeviceName;
@@ -29,7 +39,12 @@ public class InspectDetailActivity extends AppCompatActivity implements HttpClie
     LinearLayout llInspectDeviceItem;
     @BindView(R.id.button_inspect_detail_save)
     Button buttonInspectDetailSave;
+    @BindView(R.id.ib_capture)
+    ImageButton ibCapture;
+    @BindView(R.id.ll_images)
+    LinearLayout llImages;
 
+    private int mImageCount;
     private Long taskID;
     private String deviceCode;
     private InspectDeviceDetailResp inspectItemResp;
@@ -49,24 +64,74 @@ public class InspectDetailActivity extends AppCompatActivity implements HttpClie
         HttpClient.getInstance().requestInspectItem(this, this, params);
     }
 
-    @OnClick(R.id.button_inspect_detail_save)
-    public void onViewClicked() {
-        if(inspectionItemAddReqList.size() == 0) {
-            Toast.makeText(this, R.string.failure_save_inspect, Toast.LENGTH_SHORT).show();
+    @OnClick({R.id.button_inspect_detail_save, R.id.ib_capture})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.button_inspect_detail_save: {
+                if(inspectionItemAddReqList.size() == 0) {
+                    Toast.makeText(this, R.string.failure_save_inspect, Toast.LENGTH_SHORT).show();
 //            finish();
-            return;
-        }
-        InspectRecordSubmitReq req = new InspectRecordSubmitReq();
-        req.setPlanId(taskID);
-        req.setDeviceCode(deviceCode);
-        if(inspectItemResp != null) {
-            req.setSpotInspectionStandard(inspectItemResp.getSpotInspectionStandard());
-            req.setDeviceName(inspectItemResp.getDeviceName());
+                    return;
+                }
+                InspectRecordSubmitReq req = new InspectRecordSubmitReq();
+                req.setPlanId(taskID);
+                req.setDeviceCode(deviceCode);
+                if(inspectItemResp != null) {
+                    req.setSpotInspectionStandard(inspectItemResp.getSpotInspectionStandard());
+                    req.setDeviceName(inspectItemResp.getDeviceName());
 
-            req.setDetailList(inspectionItemAddReqList);
+                    req.setDetailList(inspectionItemAddReqList);
+                }
+
+                HttpClient.getInstance().requestInspectSubmit(this, this, req);
+                break;
+            }
+            case R.id.ib_capture: {
+                if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA)!= PackageManager.PERMISSION_GRANTED){
+                    ActivityCompat.requestPermissions(this,new String[]{android.Manifest.permission.CAMERA}, Constant.REQUEST_CAMERA_PERMISSION);
+                }else {
+                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    startActivityForResult(intent, REQUEST_CODE_CAMERA);
+                }
+                break;
+            }
         }
 
-        HttpClient.getInstance().requestInspectSubmit(this, this, req);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case REQUEST_CODE_CAMERA:
+                    if (mImageCount < 4) {
+                        if (data != null && data.hasExtra("data")) {
+                            mImageCount++;
+                            Bitmap thumbnail = data.getParcelableExtra("data");
+                            ImageView view = new ImageView(this);
+                            view.setImageBitmap(thumbnail);
+                            view.setPadding(6, 2, 6, 2);
+                            llImages.addView(view);
+                        }
+                    } else {
+                        Toast.makeText(this, R.string.hint_image_count, Toast.LENGTH_SHORT).show();
+                    }
+                    break;
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        if (requestCode == Constant.REQUEST_CAMERA_PERMISSION) {
+            if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(intent, REQUEST_CODE_CAMERA);
+            } else {
+                Toast.makeText(this, R.string.failure_camera_permission, Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     private void addView(final InspectItemResp item) {
