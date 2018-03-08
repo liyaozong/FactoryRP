@@ -317,6 +317,11 @@ public class HttpClient {
         client.get(context, getAbsoluteUrl(DEVICE_GET_BY_CODE), headers.toArray(new Header[headers.size()]), params, new FactoryHttpResponseHandler(context, listener, REQUEST_DEVICE_GET_BY_CODE));
     }
 
+    public void requestDeviceOfParts(Context context, OnHttpListener listener, QueryDeviceSpareRelReq req) {
+        StringEntity param = new StringEntity(JSON.toJSONString(req), Charset.forName("UTF-8"));
+        client.post(context, getAbsoluteUrl(HttpClient.FIND_PARTS_FOR_DEVICE), headers.toArray(new Header[headers.size()]), param, CONTENT_TYPE, new FactoryHttpResponseHandler(context, listener, REQUEST_FIND_PARTS_FOR_DEVICE));
+    }
+
     public void requestDeptList(Context context, OnHttpListener listener) {
         client.get(context, getAbsoluteUrl(DEPARTMENT_LIST_URL), headers.toArray(new Header[headers.size()]), null, new FactoryHttpResponseHandler(context, listener, REQUEST_DEPARTMENT_LIST_URL));
     }
@@ -607,6 +612,10 @@ public class HttpClient {
                             troubleTypeVoList = JSONArray.parseArray(response.getString("data"), DeviceTroubleTypeVo.class);
                             mListener.onHttpSuccess(mRequestType, null, troubleTypeVoList);
                             break;
+                        case REQUEST_FIND_PARTS_FOR_DEVICE:
+                            List<SparePartsResp> sparePartsRespList = JSONArray.parseArray(response.getJSONObject("data").getString("list"), SparePartsResp.class);
+                            mListener.onHttpSuccess(mRequestType, null, sparePartsRespList);
+                            break;
                         case REQUEST_DEPARTMENT_LIST_URL:
                             departmentList = JSONArray.parseArray(response.getString("data"), Department.class);
                             mListener.onHttpSuccess(mRequestType, null, departmentList);
@@ -694,7 +703,7 @@ public class HttpClient {
                     mListener.onFailure(mRequestType);
                 }
             } catch (JSONException e) {
-                Toast.makeText(mContext, R.string.failure_data_parse, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(mContext, R.string.failure_data_parse, Toast.LENGTH_SHORT).show();
                 mListener.onFailure(mRequestType);
             }
         }

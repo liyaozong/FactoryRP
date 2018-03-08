@@ -14,6 +14,7 @@ import tech.yozo.factoryrp.ui.PartsDetailActivity;
 import tech.yozo.factoryrp.ui.dialog.LoadingDialog;
 import tech.yozo.factoryrp.utils.Constant;
 import tech.yozo.factoryrp.utils.HttpClient;
+import tech.yozo.factoryrp.vo.req.QueryDeviceSpareRelReq;
 import tech.yozo.factoryrp.vo.resp.sparepars.SparePartsResp;
 
 import java.util.List;
@@ -137,8 +138,14 @@ public class PartsListFragment extends BaseFragment implements HttpClient.OnHttp
                 }
                 break;
             case Constant.FOR_DEVICE_ID:
-
-                //TODO
+                LoadingDialog.Builder builder = new LoadingDialog.Builder(getContext())
+                        .setMessage(R.string.loading_loading);
+                dialog = builder.create();
+                dialog.show();
+                QueryDeviceSpareRelReq req = new QueryDeviceSpareRelReq();
+                req.setDeviceId(mParam_id);
+                req.setItemsPerPage(100);
+                client.requestDeviceOfParts(getContext(), this, req);
                 break;
             case Constant.FOR_REPAIR_ID:
                 break;
@@ -168,8 +175,11 @@ public class PartsListFragment extends BaseFragment implements HttpClient.OnHttp
     @Override
     public void onHttpSuccess(int requestType, Object obj, List<?> list) {
         if(requestType == HttpClient.REQUEST_PARTS_LIST) {
-            HttpClient client = HttpClient.getInstance();
-            parts = client.getSparePartsList();
+            parts = HttpClient.getInstance().getSparePartsList();
+            mListAdapter.notifyDataSetChanged();
+            dialog.dismiss();
+        } else if(requestType == HttpClient.REQUEST_FIND_PARTS_FOR_DEVICE) {
+            parts = (List<SparePartsResp>) list;
             mListAdapter.notifyDataSetChanged();
             dialog.dismiss();
         }

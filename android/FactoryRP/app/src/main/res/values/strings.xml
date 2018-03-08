@@ -28,7 +28,7 @@
     <string name="failure_save_inspect">该设备已经完成了点检，请勿重复提交</string>
 
     <string name="hint_parts_count">最多只能添加10个。</string>
-    <string name="hint_image_count">只能添加3张照片。</string>
+    <string name="hint_image_count">只能添加4张照片。</string>
     <string name="hint_is_exist">已经添加过了。</string>
     <string name="hint_device_save_success">设备保存成功。</string>
     <string name="hint_report_fault_success">故障上报成功。</string>
@@ -101,10 +101,10 @@
     <string name="text_device_buy_date">购买时间：</string>
     <string name="text_device_manufacturer">生产厂商：</string>
     <string name="text_device_provider">供应商：</string>
-    <string name="text_device_fault_time">发生时间：</string>
-    <string name="text_device_fault_level">故障等级：</string>
+    <string name="text_device_fault_time">填单时间：</string>
+    <string name="text_device_fault_level">故障紧急程度：</string>
     <string name="text_device_fault_reason">故障原因：</string>
-    <string name="text_device_fault_type">故障类别：</string>
+    <string name="text_device_fault_type">故障现象：</string>
     <string name="text_device_repair_group">维修班组：</string>
     <string name="text_device_status">设备状态：</string>
     <string name="text_device_running_status">设备运行状态：</string>
@@ -112,7 +112,7 @@
     <string name="text_device_operator_phone">操作人电话：</string>
     <string name="text_device_using_place">设备位置：</string>
     <string name="text_device_repair_submitter">报修人：</string>
-    <string name="text_device_fault_desc">故障描述：</string>
+    <string name="text_device_fault_desc">故障文字描述：</string>
     <string name="text_device_desc">备注：</string>
     <string name="text_repair_no">维修工单号：</string>
     <string name="text_maintainer">接单侠：</string>
