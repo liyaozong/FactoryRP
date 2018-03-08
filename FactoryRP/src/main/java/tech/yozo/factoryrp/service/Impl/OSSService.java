@@ -92,7 +92,7 @@ public class OSSService {
     public OSSUploadResp toOSS(String itemName, FileInputStream inputStream){
         initClient();
         //上传的item名称
-        String uploadItemName = EncryptUtils.MD5String(UUIDSequenceWorker.uniqueSequenceId()+itemName);
+        String uploadItemName = EncryptUtils.MD5String(UUIDSequenceWorker.longUniqueSequenceId()+itemName);
 
         // 创建OSSClient实例 ObjectMetadata
         ObjectMetadata objectMetadata = new ObjectMetadata();
@@ -116,7 +116,7 @@ public class OSSService {
         resp.setUrl(String.valueOf(url));
 
         // 关闭client
-        client.shutdown();
+        //client.shutdown();
         return resp;
     }
 

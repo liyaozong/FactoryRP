@@ -369,7 +369,7 @@ myApp.controller('spotInspectionStandardCtrl',['$filter','$rootScope','$timeout'
 
 
 // 巡检计划控制器
-myApp.controller('inspectionPlanCtrl',['$filter','$rootScope','$location','$scope','$cookies','departmentManageService','inspectionPlan','queryCorporateAllUser','factoryParameterSettingService','validate','$timeout','FileUploader',function($filter,$rootScope,$location,$scope,$cookies,departmentManageService,inspectionPlan,queryCorporateAllUser,factoryParameterSettingService,validate,$timeout,FileUploader){
+myApp.controller('inspectionPlanCtrl',['$filter','$rootScope','$location','$scope','$cookies','departmentManageService','inspectionPlan','queryCorporateAllUser','factoryParameterSettingService','validate','$timeout','FileUploader','FF_API',function($filter,$rootScope,$location,$scope,$cookies,departmentManageService,inspectionPlan,queryCorporateAllUser,factoryParameterSettingService,validate,$timeout,FileUploader,FF_API){
     // console.log('巡检计划控制器');
 
     //阻止冒泡
@@ -892,6 +892,27 @@ myApp.controller('inspectionPlanCtrl',['$filter','$rootScope','$location','$scop
                     inTime:data.data.inTime//是否在执行时间
                 };
                 $('#executeTime').val($filter('date')(new Date(),'yyyy-MM-dd'));
+                var arr=[];
+                if(data.data.infoList){
+                    data.data.infoList.forEach(function (k) {
+                        console.log(k,'第一层');
+                        arr.push({
+                            standardId:k.standardId,
+                            planDeviceId:k.planDeviceId,
+                            remake:'',
+                            imageId:'',
+                            itemList:[],
+                            isFlog:false
+                        });
+                    })
+                }
+                $scope.reqLists={
+                    planId:obj.id,
+                    abnormalHandleDesc:'',
+                    list:arr
+                };
+                // $scope.reqList2=[];
+                // console.log($scope.reqLists,'1111');
             }else {
                 popupDiv('SaveSuccess');
                 $('.SaveSuccess .Message').html(data.errorMessage);
@@ -905,16 +926,56 @@ myApp.controller('inspectionPlanCtrl',['$filter','$rootScope','$location','$scop
         hideDiv('addRecordPopup');
     };
     $scope.closeAR=function () {//确定添加巡检
-        alert('接口调试中');
+        // alert('接口调试中');
         hideDiv('addRecordPopup');
+        // console.log('第一层确定',$scope.reqLists);
+        var arr1=[];
+        $scope.reqLists.list.forEach(function (m,i) {
+            // console.log(m,i);
+            var arr2=[];
+            m.itemList.forEach(function (k,l) {
+                // console.log(k,l);
+                if(k.isFlog){
+                    arr2.push({
+                        remark:k.remark,
+                        recordResult:k.recordResult,
+                        itemId:k.itemId,
+                        abnormalDesc:k.abnormalDesc
+                    });
+                }
+            });
+            m.itemList=arr2;
+            if(m.isFlog){
+                arr1.push({
+                    imageId:m.imageId,
+                    itemList:m.itemList,
+                    planDeviceId:m.planDeviceId,
+                    remake:m.remake,
+                    standardId:m.standardId
+                });
+            }
+        });
+        $scope.reqLists.list=arr1;
+        if($scope.reqLists.list.length>0){
+            inspectionPlan.executeSpotInspectionPlan($scope.reqLists).success(function (data) {
+                if(data.errorCode=='000000'){
+                    popupDiv('SaveSuccess');
+                    $('.SaveSuccess .Message').html(data.errorMessage);
+                }else {
+                    popupDiv('SaveSuccess');
+                    $('.SaveSuccess .Message').html(data.errorMessage);
+                }
+            });
+        }
+        // console.log($scope.reqLists,'end');
     };
 
     //打开巡检明细录入弹出层
     $scope.open_ar_lrs=function (obj,planId,$index) {
         inspectionPlan.findSpotInspectionStandardItemByStandardIdAndPlanId(obj.standardId,planId).success(function (data) {
             if(data.errorCode=='000000'){
-                console.log(data,'----');
-
+                // console.log(data,'第二层');
+                $scope.uploadEnd=false;
                 hideDiv('addRecordPopup');
                 popupDiv('addRecordPopup2');
 
@@ -926,9 +987,27 @@ myApp.controller('inspectionPlanCtrl',['$filter','$rootScope','$location','$scop
                     // department:$scope.SpotInspectionPlanExecuteWarpReq.department,//使用部门ID
                     departmentName:obj.departmentName,//使用部门名称
                     remake:'',
-                    list:data.data
+                    planDeviceId:obj.planDeviceId,
+                    list:data.data,
+                    standardId:obj.standardId,
+                    imageId:''
+                };
+                var arr2=[];
+                if(data.data){
+                    data.data.forEach(function (m) {
+                        arr2.push({
+                            "abnormalDesc": "",
+                            "itemId": '',
+                            "recordResult": "",
+                            "remark": "",
+                            isFlog:false
+                        })
+                    });
                 }
-
+                // console.log($scope.reqLists.list[$index],'-------',$index,arr2);
+                $scope.reqLists.list[$index].itemList=arr2;
+                $scope.index2=$index;
+                // console.log($scope.reqLists,'22222');
             }else {
                 alert(data.errorMessage)
             }
@@ -939,35 +1018,80 @@ myApp.controller('inspectionPlanCtrl',['$filter','$rootScope','$location','$scop
         hideDiv('addRecordPopup2');
         popupDiv('addRecordPopup');
     };
-    $scope.closeAR2=function () {//确定执行
-        alert('接口调试中');
+    $scope.closeAR2=function (obj) {//确定执行
+        // alert('接口调试中');
         hideDiv('addRecordPopup2');
         popupDiv('addRecordPopup');
+
+        $scope.reqLists.list[$scope.index2].remake=$scope.xjjlDetailList.remake;
+        $scope.reqLists.list[$scope.index2].imageId=$scope.xjjlDetailList.imageId;
+        $scope.reqLists.list[$scope.index2].isFlog=true;
+        // console.log('第二层确定',$scope.reqLists);
+
     };
 
     //打开巡检明细录入弹出层3
     $scope.open_ar_lrs2=function (obj,$index) {
         hideDiv('addRecordPopup2');
         popupDiv('addRecordPopup3');
+
+        $scope.xjmxList={
+            itemId:obj.id,
+            name:obj.name,
+            recordResult:obj.recordResult,
+            abnormalDesc:obj.abnormalDesc,
+            remark:obj.remark
+        };
+        $("#AR_djz option").each(function(){
+            if($(this).val()==obj.recordResult){
+                $(this).attr("selected",true);
+            }
+        });
+        $scope.index3=$index;
+        // $scope.reqLists.list.itemList[$scope.index2].itemList=[]
+        // console.log('第三层')
+
     };
     //关闭执行巡检计划（添加巡检记录3）弹出层
     $scope.closeAR31=function () {
         hideDiv('addRecordPopup3');
         popupDiv('addRecordPopup2');
     };
-    $scope.closeAR3=function () {//确定编辑
-        alert('接口调试中');
+    $scope.closeAR3=function (obj) {//确定编辑
+        // $scope.reqList3.push($scope.xjmxList);
+        // alert('接口调试中');
         hideDiv('addRecordPopup3');
         popupDiv('addRecordPopup2');
+        $scope.xjjlDetailList.list[$scope.index3]={
+            itemId:$scope.xjmxList.itemId,
+            name:$scope.xjmxList.name,
+            recordResult:$scope.xjmxList.recordResult,
+            abnormalDesc:$scope.xjmxList.abnormalDesc,
+            remark:$scope.xjmxList.remark
+        };
+        $scope.reqLists.list[$scope.index2].itemList[$scope.index3]={
+            itemId:$scope.xjmxList.itemId,
+            name:$scope.xjmxList.name,
+            recordResult:$scope.xjmxList.recordResult,
+            abnormalDesc:$scope.xjmxList.abnormalDesc,
+            remark:$scope.xjmxList.remark,
+            isFlog:true
+        };
+
+        // console.log('第三层确定',$scope.reqLists);
     };
 
     // popupDiv('addRecordPopup2');
 
     //上传文件
     $scope.uploadStatus = $scope.uploadStatus1 = false; //定义两个上传后返回的状态，成功获失败
+    $scope.uploadShow=false;
+    var token=$cookies.get('token');
     var uploader = $scope.uploader = new FileUploader({
-        url: '/service/wordsList',
+        url: FF_API.base+FF_API.uploadToOSSPath+'?token='+token,
+        // url: '/service/wordsList',
         queueLimit: 1,     //文件个数
+        //headers:{'Content-Type':'multipart/form-data'},
         removeAfterUpload: true   //上传后删除文件
     });
     $scope.clearItems = function(){    //重新选择文件时，清空队列，达到覆盖文件的效果
@@ -977,16 +1101,33 @@ myApp.controller('inspectionPlanCtrl',['$filter','$rootScope','$location','$scop
         $scope.fileItem = fileItem._file;    //添加文件之后，把文件信息赋给scope
         //能够在这里判断添加的文件名后缀和文件大小是否满足需求。
         // console.log($scope.fileItem,'添加文件后')
+        $scope.uploadEnd=false;
     };
     uploader.onBeforeUploadItem=function(item){
-        console.log(item,'文件上传之前')
+        console.log(item,'文件上传之前');
+        $scope.uploadShow=true;
     };
     uploader.onProgressItem =function (item, progress) {
-        // console.log(item, progress,'文件上传中');
+        console.log(item, progress,'文件上传中');
+        $('#jdt').css({
+            width:280*(progress/100)
+        })
     };
     uploader.onSuccessItem = function(fileItem, response, status, headers) {
         $scope.uploadStatus = true;   //上传成功则把状态改为true
-        // console.log(fileItem,response,status,headers,'文件上传成功后');
+        console.log(fileItem,response,status,headers,'文件上传成功后');
+        $scope.fileItem='';
+        $scope.uploadShow=false;
+        $scope.uploadEnd=true;
+        $scope.uploadText='文件上传成功';
+    };
+    uploader.onErrorItem = function(fileItem, response, status, headers) {
+        // $scope.uploadStatus = true;   //上传失败则把状态改为true
+        console.log(fileItem,response,status,headers,'文件上传失败后');
+        $scope.fileItem='';
+        $scope.uploadShow=false;
+        $scope.uploadEnd=true;
+        $scope.uploadText='文件上传失败';
     };
     $scope.UploadFile = function(){
         uploader.uploadAll();

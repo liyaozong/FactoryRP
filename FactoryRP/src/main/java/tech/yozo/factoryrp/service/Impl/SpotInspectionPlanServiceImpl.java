@@ -358,7 +358,7 @@ public class SpotInspectionPlanServiceImpl implements SpotInspectionPlanService 
      * @param corporateIdentify
      * @return
      */
-    public SpotInspectionPlanDetailWarpResp querySpotInspectionPlanDetailByPlanId(Long planId, Long corporateIdentify){
+    /*public SpotInspectionPlanDetailWarpResp querySpotInspectionPlanDetailByPlanId(Long planId, Long corporateIdentify){
 
         List<SpotInspectionPlanDevice> planDeviceList = spotInspectionPlanDeviceRepository.findByCorporateIdentifyAndSpotInspectionPlan(corporateIdentify, planId);
 
@@ -454,8 +454,6 @@ public class SpotInspectionPlanServiceImpl implements SpotInspectionPlanService 
                         info.setDeviceSpecification(deviceInfo.getSpecification());
                         info.setPlanDeviceId(p1.getId());
 
-                        //boolean b = !CheckParam.isNull(CheckParam.isNull(deviceInfoMap)) && !CheckParam.isNull(deviceTypeMap.get(deviceInfo.getDeviceType()));
-
                         if(!CheckParam.isNull(CheckParam.isNull(deviceTypeMap)) && !CheckParam.isNull(deviceTypeMap.get(deviceInfo.getDeviceType()))){
                             info.setDeviceTypeName(deviceTypeMap.get(deviceInfo.getDeviceType()).getName());
                             info.setDeviceTypeId(deviceTypeMap.get(deviceInfo.getDeviceType()).getId());
@@ -478,6 +476,8 @@ public class SpotInspectionPlanServiceImpl implements SpotInspectionPlanService 
                         if(CheckParam.isNull(record)){
                             info.setAbnormalDeviceCount(0);
                             info.setMissCount(0);
+
+                            //inTime字段控制前端逻辑是否显示可以执行
                             spotInspectionPlanDetailWarpResp.setInTime(2);
                         }else if(!CheckParam.isNull(detailList) && !detailList.isEmpty()){
                             //计算漏检数量
@@ -506,10 +506,173 @@ public class SpotInspectionPlanServiceImpl implements SpotInspectionPlanService 
                     }
                 }
 
-                planDeviceList.stream().forEach(p1 -> {
+
+                spotInspectionPlanDetailWarpResp.setInfoList(deviceInfoList);
+
+                return spotInspectionPlanDetailWarpResp;
+            }
+        }
 
 
-                });
+        return null;
+    }*/
+
+    public SpotInspectionPlanDetailWarpResp querySpotInspectionPlanDetailByPlanId(Long planId, Long corporateIdentify){
+
+        List<SpotInspectionPlanDevice> planDeviceList = spotInspectionPlanDeviceRepository.findByCorporateIdentifyAndSpotInspectionPlan(corporateIdentify, planId);
+
+        if(!CheckParam.isNull(planDeviceList) && !planDeviceList.isEmpty()){
+
+            SpotInspectionPlan plan = spotInspectionPlanRepository.findOne(planId);
+
+            SpotInspectionPlanDetailWarpResp spotInspectionPlanDetailWarpResp = new SpotInspectionPlanDetailWarpResp();
+
+            Department department = departmentRepository.findOne(plan.getDepartment());
+
+            spotInspectionPlanDetailWarpResp.setDepartmentName(CheckParam.isNull(department) ? null : department.getName());
+            spotInspectionPlanDetailWarpResp.setDepartment(CheckParam.isNull(department) ? null : department.getId());
+            spotInspectionPlanDetailWarpResp.setEndTime(plan.getEndTime());
+            spotInspectionPlanDetailWarpResp.setLastExecuteTime(plan.getLastExecuteTime());
+            spotInspectionPlanDetailWarpResp.setNextExecuteTime(plan.getNextExecuteTime());
+            spotInspectionPlanDetailWarpResp.setPlanStatus(plan.getPlanStatus());
+            spotInspectionPlanDetailWarpResp.setRecyclePeriod(plan.getRecyclePeriod());
+            spotInspectionPlanDetailWarpResp.setRecyclePeriodType(plan.getRecyclePeriodType());
+            spotInspectionPlanDetailWarpResp.setSpotInspectionRange(plan.getSpotInspectionRange());
+            spotInspectionPlanDetailWarpResp.setName(plan.getName());
+
+            List<User> userList = userRepository.findByCorporateIdentifyAndUserIdIn(corporateIdentify, JSON.parseArray(plan.getExecutors(), Long.class));
+
+            if(!CheckParam.isNull(userList) && !userList.isEmpty()){
+                spotInspectionPlanDetailWarpResp.setExecutors(userList.stream().map(User::getUserId).collect(Collectors.toList()));
+            }
+
+            List<SpotInspectionPlanDeviceInfoResp> deviceInfoList = new ArrayList<>();
+
+            List<Long> deviceInfoIds = new ArrayList<>();
+            List<Long> deviceTypeIds = new ArrayList<>();
+            List<Long> planStandardList = new ArrayList<>();
+
+            planDeviceList.forEach(p1 -> {
+                deviceInfoIds.add(p1.getDeviceId());
+                deviceTypeIds.add(p1.getDeviceType());
+                planStandardList.add(p1.getSpotInspectionStandard());
+            });
+
+            List<DeviceInfo> deviceInfos = deviceInfoRepository.findByIdsIn(deviceInfoIds);
+
+            if(!CheckParam.isNull(deviceInfos) && !deviceInfos.isEmpty()){
+
+                //形成设备Map
+                Map<Long, DeviceInfo> deviceInfoMap = deviceInfos.stream().collect(Collectors.toMap(DeviceInfo::getId, Function.identity()));
+
+                List<DeviceType> deviceTypeList = deviceTypeRepository.findByCorporateIdentifyAndIdIn(corporateIdentify, deviceTypeIds);
+                Map<Long,DeviceType> deviceTypeMap = deviceTypeList.stream().collect(Collectors.toMap(DeviceType::getId, Function.identity()));
+
+                List<SpotInspectionStandard> standardList = spotInspectionStandardRepository.findByCorporateIdentifyAndIdIn(corporateIdentify, planStandardList);
+                Map<Long, SpotInspectionStandard> standardMap = standardList.stream().collect(Collectors.toMap(SpotInspectionStandard::getId, Function.identity()));
+
+                Date currentDate = new Date();
+
+                //查询巡检记录，方便返回漏检数量和异常数量
+                //保证在一个巡检计划周期内，巡检记录只能有一条
+                Date date = DateTimeUtil.subtractDateByParam(currentDate, plan.getRecyclePeriod(), plan.getRecyclePeriodType());
+
+                //如果能查询出来表示执行过
+                SpotInspectionRecord record = spotInspectionRecordRepository.findByCorporateIdentifyAndPlanIdAndCreateTimeGreaterThan(corporateIdentify, plan.getId(), date);
+
+
+                List<SpotInspectionRecordDetail> detailList = null;
+
+                //查询出每个巡检标准需要执行的巡检项
+                List<SpotInspectionItems> standardItemList = null;
+
+                if(!CheckParam.isNull(record)){
+                    //根据记录ID查询出巡检细节 包含设备ID和点检标准ID
+                    detailList = spotInspectionRecordDetailRepository.findByCorporateIdentifyAndRecordId(corporateIdentify, record.getId());
+                    standardItemList = spotInspectionItemsRepository.findByCorporateIdentifyAndStandardIn(corporateIdentify, planStandardList.stream().distinct().collect(Collectors.toList()));
+                }
+
+                //按照巡检标准ID进行分组
+                Map<Long, List<SpotInspectionItems>> itemMap = null;
+                if(!CheckParam.isNull(standardItemList) && !standardItemList.isEmpty()){
+                    itemMap = standardItemList.stream().collect(groupingBy(SpotInspectionItems::getStandard));
+                }
+                Map<Long, List<SpotInspectionRecordDetail>> itemExecuteDetailMap = null;
+                if(!CheckParam.isNull(detailList) && !detailList.isEmpty()){
+                    itemExecuteDetailMap = detailList.stream().collect(groupingBy(SpotInspectionRecordDetail::getStandard));
+                }
+
+                for (SpotInspectionPlanDevice p1: planDeviceList) {
+                    if(!CheckParam.isNull(deviceInfoMap.get(p1.getDeviceId()))){
+
+                        SpotInspectionPlanDeviceInfoResp info = new SpotInspectionPlanDeviceInfoResp();
+
+                        DeviceInfo deviceInfo = deviceInfoMap.get(p1.getDeviceId());
+
+                        info.setDeviceCode(deviceInfo.getCode());
+                        info.setDeviceName(deviceInfo.getName());
+                        info.setDeviceSpecification(deviceInfo.getSpecification());
+                        info.setPlanDeviceId(p1.getId());
+
+                        if(!CheckParam.isNull(CheckParam.isNull(deviceTypeMap)) && !CheckParam.isNull(deviceTypeMap.get(deviceInfo.getDeviceType()))){
+                            info.setDeviceTypeName(deviceTypeMap.get(deviceInfo.getDeviceType()).getName());
+                            info.setDeviceTypeId(deviceTypeMap.get(deviceInfo.getDeviceType()).getId());
+
+                        }
+
+                        //格式化巡检标准名称
+                        if(!CheckParam.isNull(CheckParam.isNull(standardMap)) && !CheckParam.isNull(standardMap.get(p1.getSpotInspectionStandard()))){
+                            info.setStandardName(standardMap.get(p1.getSpotInspectionStandard()).getName());
+                            info.setStandardId(standardMap.get(p1.getSpotInspectionStandard()).getId());
+                        }
+
+
+                        info.setLineOrder(p1.getLineOrder());
+                        info.setDeviceId(p1.getDeviceId());
+
+
+                        //设置漏检数量和异常数量 设置是否在周期内巡检过
+                        //如果巡检记录不存在说明没有发生过巡检，也没有漏检数量和异常数量 无论在没在执行时间范围内都可以执行
+                        if(CheckParam.isNull(record)){
+                            info.setAbnormalDeviceCount(0);
+                            info.setMissCount(0);
+                            spotInspectionPlanDetailWarpResp.setInTime(1);
+                        }else{
+                            if(!CheckParam.isNull(detailList) && !detailList.isEmpty()){
+                                //计算漏检数量
+                                if(!CheckParam.isNull(itemMap.get(p1.getSpotInspectionStandard()))){
+
+                                    //拿到某个点检标准需要被执行的点检项数量
+                                    Long needToExecute = itemMap.get(p1.getSpotInspectionStandard()).stream().count();
+
+                                    //拿到某个点检标准已经执行了的数量
+                                    Long executeCount = itemExecuteDetailMap.get(p1.getSpotInspectionStandard()).stream().count();
+
+                                    //如果需要被检查的数量大于已经检查的数量说明具备漏检项目
+                                    if(needToExecute >= executeCount){
+                                        info.setMissCount(Integer.valueOf(String.valueOf(needToExecute - executeCount)));
+                                    }else{
+                                        info.setMissCount(0); //如果需要被检查的数量小于已经检查的数量说明出现数据不一致
+                                    }
+
+                                    /*Date compareDate = DateTimeUtil.plusDateByParam(plan.getLastExecuteTime(), plan.getRecyclePeriod(), plan.getRecyclePeriodType());
+                                    //inTime字段控制前端逻辑是否显示可以执行 上次巡检时间 + 周期 < 当前时间 延误 上次巡检时间 + 周期 > 当前时间 执行过 如果延误说明可以执行 执行过说明不可以执行
+
+                                    if(compareDate.after(currentDate)){
+
+                                    }*/
+                                    //设置已经在周期内执行过了
+                                    spotInspectionPlanDetailWarpResp.setInTime(1);
+                                }
+
+                            }
+                        }
+
+
+                        deviceInfoList.add(info);
+                    }
+                }
+
 
                 spotInspectionPlanDetailWarpResp.setInfoList(deviceInfoList);
 
@@ -520,7 +683,6 @@ public class SpotInspectionPlanServiceImpl implements SpotInspectionPlanService 
 
         return null;
     }
-
 
     /**
      * 删除巡检计划
@@ -693,7 +855,8 @@ public class SpotInspectionPlanServiceImpl implements SpotInspectionPlanService 
         }
         record.setPlanTime(plan.getNextExecuteTime());
         try {
-            plan.setNextExecuteTime(DateTimeUtil.plusDateByParam(new Date(), plan.getRecyclePeriod(), plan.getRecyclePeriodType()));
+            plan.setNextExecuteTime(DateTimeUtil.plusDateByParam(currentTime, plan.getRecyclePeriod(), plan.getRecyclePeriodType()));
+            plan.setLastExecuteTime(currentTime);
         } catch (Exception e) {
             logger.info("时间转换出现异常 :" + e.getMessage(), e);
             throw new BussinessException(ErrorCode.TIMEPARSE_ERROR.getCode(),
@@ -732,6 +895,9 @@ public class SpotInspectionPlanServiceImpl implements SpotInspectionPlanService 
                         spotInspectionRecordDetail.setRemark(s2.getRemark());
                         spotInspectionRecordDetail.setStandardItemId(s2.getItemId());
                         spotInspectionRecordDetail.setCorporateIdentify(corporateIdentify);
+
+                        spotInspectionRecordDetail.setStandard(s1.getStandardId()); //设置巡检标准ID
+                        spotInspectionRecordDetail.setDeviceId(s1.getDeviceId()); //设置设备ID
 
                         detailList.add(spotInspectionRecordDetail);
                     });

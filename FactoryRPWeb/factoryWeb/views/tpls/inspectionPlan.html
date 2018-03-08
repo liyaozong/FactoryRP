@@ -562,7 +562,7 @@
     </div>
     <div class="submitBtn1" style="text-align: center;padding-left: 40px;margin-bottom: 18px;">
         <button type="button" ng-click="closeAR()" value="" class="btn" ng-if="SpotInspectionPlanExecuteWarpReq.inTime==1">确定</button>
-        <button type="button" value="" class="btn" ng-if="SpotInspectionPlanExecuteWarpReq.inTime==2">未到执行时间</button>
+        <button type="button" value="" class="btn" ng-if="SpotInspectionPlanExecuteWarpReq.inTime==2" style="background-color: #e6e6e6">未到执行时间</button>
         <button type="button" value="" class="btn" ng-click="closeAR1()">取消</button>
     </div>
 </div>
@@ -599,7 +599,7 @@
             <p>
                 <label for="AR_bz" >
                     <span style="width: 100px;text-align: right">备注:</span>
-                    <textarea id="AR_bz"></textarea>
+                    <textarea id="AR_bz" ng-model="xjjlDetailList.remake"></textarea>
                 </label>
             </p>
             <div style="padding-left: 104px;position: relative;padding-right: 5px;box-sizing: border-box;">
@@ -616,13 +616,21 @@
                     </thead>
                     <tbody>
                     <tr ng-repeat="item in xjjlDetailList.list" ng-if="xjjlDetailList.list.length>0">
-                        <td ng-bind="$index"></td>
-                        <td ng-bind="item.name"></td>
-                        <td ng-bind="item.code"></td>
-                        <td ng-bind="item.specification"></td>
+                        <td ng-bind="item.name||'--'"></td>
+                        <td ng-if="item.recordResult=='1'">偏高</td>
+                        <td ng-if="item.recordResult=='2'">正常</td>
+                        <td ng-if="item.recordResult=='3'">偏低</td>
+                        <td ng-if="item.recordResult!=1&&item.recordResult!=2&&item.recordResult!=3">--</td>
+                        <td ng-if="item.abnormalDesc==1">无异常</td>
+                        <td ng-if="item.abnormalDesc==2">有异常</td>
+                        <td ng-if="item.abnormalDesc!=2&&item.abnormalDesc!=1">--</td>
+                        <td ng-bind="item.remark||'--'"></td>
                         <td>
-                            <a href="javascript:void(0)" class="resBtn deleteBtn" ng-click="open_ar_lrs2(item,$index)">
+                            <a ng-if="item.inspectionStatus!=1" href="javascript:void(0)" class="resBtn deleteBtn" ng-click="open_ar_lrs2(item,$index)">
                                 录入
+                            </a>
+                            <a ng-if="item.inspectionStatus==1" style="color: #e6e6e6" href="javascript:void(0)" class="resBtn deleteBtn">
+                                已录入
                             </a>
                         </td>
                     </tr>
@@ -635,11 +643,16 @@
             <div style="padding-left: 104px;position: relative;padding-right: 5px;box-sizing: border-box;">
                 <span style="margin-top: 6px;width: 100px;text-align: right;position: absolute;left: 0;top:0">图片上传:</span>
                 <div class="choose-file-area" id="uploadFileDiv">
-                    <input class="file-name" type="text" readonly="readonly" ng-model="fileItem.name"/>
+                    <input class="file-name" type="text" disabled ng-model="fileItem.name"/>
                     <a href="javascript:;" class="choose-book">
                         <input type="file" name="certificate" accept="image/*" nv-file-select uploader="uploader" ng-click="clearItems()"/>浏览
                     </a>
+                    <div ng-show="uploadShow" style="position: absolute;left: 104px;top: 0;width: 297px;height: 32px;">
+                        <div style="width: 100%;height: 100%;position: absolute;z-index: 2;left: 0;top: 0;line-height: 32px;text-align: center">上传中...</div>
+                        <div id="jdt" style="background-color: #d44b26;width: 0;height: 100%;position: absolute;z-index: 1;left: 0;top: 0;"></div>
+                    </div>
                     <button class="uploadFileBtn" type="button" ng-click="UploadFile()">上传</button>
+                    <span ng-show="uploadEnd" ng-bind="uploadEndText"></span>
                 </div>
             </div>
             <div style="padding-left: 104px;position: relative;padding-right: 5px;box-sizing: border-box;">
@@ -650,7 +663,7 @@
     </div>
     <div class="submitBtn1" style="text-align: center;padding-left: 40px;margin-bottom: 18px;">
         <button type="button" ng-click="closeAR2()" value="" class="btn">确定</button>
-        <button type="button" value="" class="btn" ng-click="closeAR21()">取消</button>
+        <button type="button" value="" class="btn" ng-click="closeAR21(xjjlDetailList)">取消</button>
     </div>
 </div>
 
@@ -666,12 +679,12 @@
             <p>
                 <label for="AR_djx" >
                     <span style="width: 100px;text-align: right">点检项:</span>
-                    <input id="AR_djx" ng-model="spotInspectionRecordAddReq.name" disabled type="text"/>
+                    <input id="AR_djx" ng-model="xjmxList.name" disabled type="text"/>
                 </label>
 
                 <label for="AR_djz" >
                     <span style="width: 100px;text-align: right">点检值:</span>
-                    <select id="AR_djz" ng-model="departmentManage" ng-options="deviceTypeListDetail.id as deviceTypeListDetail.name for deviceTypeListDetail in djzLists">
+                    <select id="AR_djz" ng-model="xjmxList.recordResult" ng-options="deviceTypeListDetail.id as deviceTypeListDetail.name for deviceTypeListDetail in djzLists">
                         <option value="">请选择点检值</option>
                     </select>
                 </label>
@@ -681,21 +694,21 @@
                     <span style="width: 100px;text-align: right">有无异常:</span>
 
                     <label for="yyc" style="margin-left: 45px">无异常</label>
-                    <input id="yyc" type="radio" name="ywyc" style="width: auto" ng-value="1">
+                    <input id="yyc" type="radio" name="ywyc" style="width: auto" ng-value="1" ng-model="xjmxList.abnormalDesc">
                     <label for="wyc" style="margin-left: 45px">有异常</label>
-                    <input id="wyc" type="radio" name="ywyc" style="width: auto" ng-value="2">
+                    <input id="wyc" type="radio" name="ywyc" style="width: auto" ng-value="2" ng-model="xjmxList.abnormalDesc">
                 </label>
             </p>
             <p>
                 <label for="AR_bz1" >
                     <span style="width: 100px;text-align: right">备注:</span>
-                    <textarea id="AR_bz1"></textarea>
+                    <textarea id="AR_bz1" ng-model="xjmxList.remark"></textarea>
                 </label>
             </p>
         </div>
     </div>
     <div class="submitBtn1" style="text-align: center;padding-left: 40px;margin-bottom: 18px;">
-        <button type="button" ng-click="closeAR3()" value="" class="btn">确定</button>
+        <button type="button" ng-click="closeAR3(xjmxList)" value="" class="btn">确定</button>
         <button type="button" value="" class="btn" ng-click="closeAR31()">取消</button>
     </div>
 </div>
