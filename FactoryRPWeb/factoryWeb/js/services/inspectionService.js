@@ -114,6 +114,13 @@ myApp.factory("inspectionPlan",["AppHttp","FF_API",function(AppHttp,FF_API){
             data:data
         });
     };
+    //查询巡检记录详情
+    inspectionPlan.querySpotInspectionRecordDetailByRecordId=function(recordId,planId){
+        return AppHttp({
+            method: 'get',
+            url: FF_API.base + FF_API.querySpotInspectionRecordDetailByRecordIdPath+'?recordId='+recordId+'&planId='+planId
+        });
+    };
     //分页查询巡检计划
     inspectionPlan.QuerySpotInspectionPlanDetailByPlanId=function(id){
         return AppHttp({
@@ -147,6 +154,14 @@ myApp.factory("inspectionPlan",["AppHttp","FF_API",function(AppHttp,FF_API){
         return AppHttp({
             method: 'get',
             url: FF_API.base + FF_API.findSpotInspectionStandardItemByStandardIdAndPlanIdPath+'?standardId='+standardId+'&planId='+planId
+        });
+    };
+    //单个获取图片路径
+    inspectionPlan.viewItem=function(data){
+        return AppHttp({
+            method: 'post',
+            url: FF_API.base + FF_API.viewItemPath,
+            data:data
         });
     };
 

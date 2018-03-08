@@ -77,7 +77,7 @@
                 <td>{{orderDetail.executorsName||'--'}}</td>
                 <td>{{orderDetail.deviceCount||'--'}}</td>
                 <td>
-                    <a href="javascript:void(0)" class="resBtn editBtn" ng-click="openAddRecord(orderDetail,$event)">
+                    <a href="javascript:void(0)" class="resBtn editBtn" ng-click="openAddRecord(orderDetail,1,$event)">
                         执行
                     </a>
                     <a href="javascript:void(0)" class="resBtn editBtn" ng-click="openIPlan_detail(1,orderDetail,$event)">
@@ -132,17 +132,17 @@
             </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="orderDetail in changeDetailLists" ng-if="spotInspectionStandardLists.length>0">
+            <tr ng-repeat="orderDetail in changeDetailLists" ng-if="changeDetailLists.length>0">
                 <td>{{$index+1}}</td>
-                <td>{{orderDetail.name||'--'}}</td>
-                <td>{{orderDetail.recordTypeName||'--'}}</td>
-                <td>{{orderDetail.inputLimitValue.join(',')||'--'}}</td>
-                <td>{{orderDetail.lowerLimit||'--'}}</td>
-                <td>{{orderDetail.upperLimit||'--'}}</td>
-                <td>{{orderDetail.upperLimit||'--'}}</td>
-                <td>{{orderDetail.upperLimit||'--'}}</td>
+                <td>{{orderDetail.planTime||'--'}}</td>
+                <td>{{orderDetail.executeTime||'--'}}</td>
+                <td>{{orderDetail.executor||'--'}}</td>
+                <td>{{orderDetail.abnormalDeviceCount||'--'}}</td>
+                <td>{{orderDetail.missCount||'--'}}</td>
+                <td>{{orderDetail.delayDayCount||'--'}}</td>
+                <td>{{orderDetail.abnormalHandelDesc||'--'}}</td>
                 <td>
-                    <a href="javascript:void(0)" class="resBtn editBtn" ng-click="openSIS_detail(2,orderDetail,$event)">
+                    <a href="javascript:void(0)" class="resBtn editBtn" ng-click="openAddRecord(orderDetail,2,$event)">
                         详情
                     </a>
                 </td>
@@ -508,7 +508,7 @@
             <p>
                 <label for="executeTime" >
                     <span style="width: 100px;text-align: right">巡检时间:</span>
-                    <input id="executeTime" ng-model="SpotInspectionPlanExecuteWarpReq.executeTime" type="date" disabled/>
+                    <input id="executeTime" ng-model="SpotInspectionPlanExecuteWarpReq.executeTime" type="text" disabled/>
                 </label>
                 <label for="AR_people" >
                     <span style="width: 100px;text-align: right">巡检人:</span>
@@ -547,8 +547,11 @@
                         <td ng-bind="item.deviceName||'--'"></td>
                         <td ng-bind="item.deviceSpecification||'--'"></td>
                         <td>
-                            <a href="javascript:void(0)" class="resBtn deleteBtn" ng-click="open_ar_lrs(item,SpotInspectionPlanExecuteWarpReq.planId,$index)">
+                            <a ng-if="item.executeStatus!=1" href="javascript:void(0)" class="resBtn deleteBtn" ng-click="open_ar_lrs(item,SpotInspectionPlanExecuteWarpReq.planId,$index)">
                                 录入
+                            </a>
+                            <a ng-if="item.executeStatus==1" href="javascript:void(0)" style="color: #b0b0b0" class="resBtn deleteBtn" ng-click="open_ar_lrs(item,SpotInspectionPlanExecuteWarpReq.planId,$index)">
+                                完成
                             </a>
                         </td>
                     </tr>
@@ -558,11 +561,12 @@
                     </tbody>
                 </table>
             </div>
+            <p style="color: red;text-align: center" ng-show="errShow1">请录入数据</p>
         </div>
     </div>
     <div class="submitBtn1" style="text-align: center;padding-left: 40px;margin-bottom: 18px;">
-        <button type="button" ng-click="closeAR()" value="" class="btn" ng-if="SpotInspectionPlanExecuteWarpReq.inTime==1">确定</button>
-        <button type="button" value="" class="btn" ng-if="SpotInspectionPlanExecuteWarpReq.inTime==2" style="background-color: #e6e6e6">未到执行时间</button>
+        <button type="button" ng-click="closeAR()" value="" class="btn" ng-if="SpotInspectionPlanExecuteWarpReq.inTime==1||recordPopType==2">确定</button>
+        <button type="button" value="" class="btn" ng-if="SpotInspectionPlanExecuteWarpReq.inTime!=1&&recordPopType==1" style="background-color: #e6e6e6">未到执行时间</button>
         <button type="button" value="" class="btn" ng-click="closeAR1()">取消</button>
     </div>
 </div>
@@ -629,8 +633,8 @@
                             <a ng-if="item.inspectionStatus!=1" href="javascript:void(0)" class="resBtn deleteBtn" ng-click="open_ar_lrs2(item,$index)">
                                 录入
                             </a>
-                            <a ng-if="item.inspectionStatus==1" style="color: #e6e6e6" href="javascript:void(0)" class="resBtn deleteBtn">
-                                已录入
+                            <a ng-if="item.inspectionStatus==1" style="color: #b0b0b0" href="javascript:void(0)" class="resBtn deleteBtn" ng-click="open_ar_lrs2(item,$index)">
+                                修改
                             </a>
                         </td>
                     </tr>
@@ -647,18 +651,29 @@
                     <a href="javascript:;" class="choose-book">
                         <input type="file" name="certificate" accept="image/*" nv-file-select uploader="uploader" ng-click="clearItems()"/>浏览
                     </a>
-                    <div ng-show="uploadShow" style="position: absolute;left: 104px;top: 0;width: 297px;height: 32px;">
-                        <div style="width: 100%;height: 100%;position: absolute;z-index: 2;left: 0;top: 0;line-height: 32px;text-align: center">上传中...</div>
+                    <div ng-show="uploadShow" style="position: absolute;background-color: white;left: 104px;top: 0;width: 297px;height: 32px;">
+                        <div style="border: 1px solid #e6e6e6;width: 100%;height: 100%;position: absolute;z-index: 2;left: 0;top: 0;line-height: 32px;text-align: center">上传中...</div>
                         <div id="jdt" style="background-color: #d44b26;width: 0;height: 100%;position: absolute;z-index: 1;left: 0;top: 0;"></div>
                     </div>
                     <button class="uploadFileBtn" type="button" ng-click="UploadFile()">上传</button>
-                    <span ng-show="uploadEnd" ng-bind="uploadEndText"></span>
+                    <span style="color: red" ng-show="uploadEnd" ng-bind="uploadText"></span>
                 </div>
             </div>
             <div style="padding-left: 104px;position: relative;padding-right: 5px;box-sizing: border-box;">
                 <span style="margin-top: 6px;width: 100px;text-align: right;position: absolute;left: 0;top:0">已上传图片:</span>
-                <div style="padding: 5px;box-sizing: border-box;margin-top: 10px;border: 1px solid #e6e6e6">暂无数据</div>
+                <div style="padding: 5px;box-sizing: border-box;margin-top: 10px;border: 1px solid #e6e6e6">
+                    <span ng-if="repsponseData.length<=0">暂无数据</span>
+                    <ul ng-if="repsponseData.length>0">
+                        <li style="display: inline-block;vertical-align: middle;margin-right: 5px;" ng-repeat="item in repsponseData">
+                            <div style="width: 120px;height: 120px;text-align: center">
+                                <img ng-if="item.width>=item.height" ng-src="{{item.url}}" alt="" style="width: 100%;">
+                                <img ng-if="item.width<item.height" ng-src="{{item.url}}" alt="" style="height: 100%;">
+                            </div>
+                        </li>
+                    </ul>
+                </div>
             </div>
+            <p style="color: red;text-align: center" ng-show="errShow2">表单有空值</p>
         </div>
     </div>
     <div class="submitBtn1" style="text-align: center;padding-left: 40px;margin-bottom: 18px;">
@@ -673,7 +688,7 @@
         <span>编辑</span>
         <img ng-click="closeAR31()" class="companyCloseImg" src="image/comm/diffClosed.png" width="22" height="22">
     </div>
-    <div style="padding: 0;width: 840px;height: auto;" class="businessAuth">
+    <div style="padding: 0;min-width: 840px;height: auto;" class="businessAuth">
         <div class="titleDiv" id="p_t_l" style="border: none;">
             <!--<span class="tips">巡检内容</span>-->
             <p>
@@ -705,6 +720,7 @@
                     <textarea id="AR_bz1" ng-model="xjmxList.remark"></textarea>
                 </label>
             </p>
+            <p style="color: red;text-align: center" ng-show="errShow3">表单有空值</p>
         </div>
     </div>
     <div class="submitBtn1" style="text-align: center;padding-left: 40px;margin-bottom: 18px;">

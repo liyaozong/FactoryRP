@@ -425,11 +425,6 @@ myApp.controller('inspectionPlanCtrl',['$filter','$rootScope','$location','$scop
         name:'偏低'
     }];
 
-    //查询执行人
-    queryCorporateAllUser.getData().success(function (data) {
-        $scope.allUserLists=data.data.userRespList;
-        // console.log($scope.allUserLists)
-    });
 
     //查询巡检计划执行时间类型
     inspectionPlan.queryAllSpotInspectionPlanRecycleType().success(function (data) {
@@ -463,7 +458,11 @@ myApp.controller('inspectionPlanCtrl',['$filter','$rootScope','$location','$scop
                 // if(true){
                 $scope.paginationConf.totalItems = data.data.totalCount;
                 $scope.spotInspectionPlanLists=data.data.spotInspectionPlanQueryRespList;
-                $timeout(function () {
+
+                //查询执行人
+                queryCorporateAllUser.getData().success(function (data) {
+                    $scope.allUserLists=data.data.userRespList;
+                    // console.log($scope.allUserLists)
                     if($scope.spotInspectionPlanLists){
                         $scope.spotInspectionPlanLists.forEach(function (k) {
                             var strsArr=[];
@@ -477,6 +476,8 @@ myApp.controller('inspectionPlanCtrl',['$filter','$rootScope','$location','$scop
                             k.executorsName=strsArr.join(',');
                         });
                     }
+                });
+                $timeout(function () {
                     // console.log('----',$scope.spotInspectionPlanLists.length>0)
                     if($scope.spotInspectionPlanLists.length>0){
                         inspectionPlan.querySpotInspectionRecordByPlanId($scope.spotInspectionPlanLists[0].id).success(function (data) {
@@ -499,9 +500,10 @@ myApp.controller('inspectionPlanCtrl',['$filter','$rootScope','$location','$scop
         // console.log($(event.target));
         $(event.target).parent().parent().find('tr').removeClass('ccTr');
         $(event.target).parent().addClass('ccTr');
-        // spotInspectionStandard.queryInspectionStandardDetail(id).success(function (data) {
-        //     $scope.changeDetailLists=data.data.spotInspectionItems;
-        // });
+        inspectionPlan.querySpotInspectionRecordByPlanId(id).success(function (data) {
+            $scope.changeDetailLists=data.data;
+            // console.log($scope.changeDetailLists,'--==')
+        });
     };
 
     //新增巡检计划
@@ -860,64 +862,117 @@ myApp.controller('inspectionPlanCtrl',['$filter','$rootScope','$location','$scop
     };
 
     //打开执行巡检计划（添加巡检记录）弹出层
-    $scope.openAddRecord=function (obj,$event) {
+    $scope.openAddRecord=function (obj,type,$event) {
         // console.log(obj);
-        inspectionPlan.QuerySpotInspectionPlanDetailByPlanId(obj.id).success(function (data) {
-            if(data.errorCode=='000000'){
-                // console.log(data);
-                popupDiv('addRecordPopup');
-                var strsArr=[];
-                if(data.data.executors){
-                    data.data.executors.forEach(function (k) {
-                        $scope.allUserLists.forEach(function (v) {
-                            // console.log(v.userId==k)
-                            if(v.userId==k){
-                                strsArr.push(v.userName);
-                            }
+        $scope.recordPopType=type;
+        if($scope.recordPopType==1){
+            inspectionPlan.QuerySpotInspectionPlanDetailByPlanId(obj.id).success(function (data) {
+                if(data.errorCode=='000000'){
+                    // console.log(data);
+                    popupDiv('addRecordPopup');
+                    $scope.errShow1=false;
+                    var strsArr=[];
+                    if(data.data.executors){
+                        data.data.executors.forEach(function (k) {
+                            $scope.allUserLists.forEach(function (v) {
+                                // console.log(v.userId==k)
+                                if(v.userId==k){
+                                    strsArr.push(v.userName);
+                                }
+                            });
                         });
-                    });
+                    }
+                    $scope.SpotInspectionPlanExecuteWarpReq={
+                        name:data.data.name,
+                        executeTime:$filter('date')(new Date(),'yyyy-MM-dd HH:mm:ss'),
+                        "detailList": data.data.infoList,//巡检记录详情集合
+                        "abnormalHandleDesc": data.data.abnormalHandleDesc,//异常处理情况,
+                        "executor": data.data.executors,//执行者
+                        "executorName": strsArr.join(','),//执行者姓名字符串
+                        "planId": obj.id,//巡检标准ID
+                        missCount:data.data.missCount,//漏检项
+                        abnormalDeviceCount:data.data.abnormalDeviceCount,//异常项
+                        department:data.data.department,//使用部门ID
+                        departmentName:data.data.departmentName,//使用部门名称
+                        inTime:data.data.inTime//是否在执行时间
+                    };
+                    // $('#executeTime').val($filter('date')(new Date(),'yyyy-MM-dd'));
+                    var arr=[];
+                    if(data.data.infoList){
+                        data.data.infoList.forEach(function (k) {
+                            console.log(k,'第一层');
+                            arr.push({
+                                standardId:k.standardId,
+                                planDeviceId:k.planDeviceId,
+                                deviceId:k.deviceId,
+                                remake:'',
+                                imageIdList:[],
+                                itemList:[],
+                                isFlog:false
+                            });
+                        })
+                    }
+                    $scope.reqLists={
+                        planId:obj.id,
+                        abnormalHandleDesc:'',
+                        list:arr
+                    };
+                }else {
+                    popupDiv('SaveSuccess');
+                    $('.SaveSuccess .Message').html(data.errorMessage);
                 }
-                $scope.SpotInspectionPlanExecuteWarpReq={
-                    name:data.data.name,
-                    // executeTime:$filter('date')(new Date(),'yyyy-MM-dd HH:mm:ss'),
-                    "detailList": data.data.infoList,//巡检记录详情集合
-                    "abnormalHandleDesc": data.data.abnormalHandleDesc,//异常处理情况,
-                    "executor": data.data.executors,//执行者
-                    "executorName": strsArr.join(','),//执行者姓名字符串
-                    "planId": obj.id,//巡检标准ID
-                    missCount:data.data.missCount,//漏检项
-                    abnormalDeviceCount:data.data.abnormalDeviceCount,//异常项
-                    department:data.data.department,//使用部门ID
-                    departmentName:data.data.departmentName,//使用部门名称
-                    inTime:data.data.inTime//是否在执行时间
-                };
-                $('#executeTime').val($filter('date')(new Date(),'yyyy-MM-dd'));
-                var arr=[];
-                if(data.data.infoList){
-                    data.data.infoList.forEach(function (k) {
-                        console.log(k,'第一层');
-                        arr.push({
-                            standardId:k.standardId,
-                            planDeviceId:k.planDeviceId,
-                            remake:'',
-                            imageId:'',
-                            itemList:[],
-                            isFlog:false
-                        });
-                    })
+            });
+        }else if($scope.recordPopType==2){
+            console.log(obj);
+            inspectionPlan.querySpotInspectionRecordDetailByRecordId(obj.recordId,obj.planId).success(function (data) {
+                if(data.errorCode=='000000'){
+                    console.log(data.data,'------');
+                    popupDiv('addRecordPopup');
+                    $scope.errShow1=false;
+                    $scope.SpotInspectionPlanExecuteWarpReq={
+                        name:data.data.planName,
+                        executeTime:$filter('date')(data.data.executeTime,'yyyy-MM-dd HH:mm:ss'),
+                        "detailList": data.data.detailList,//巡检记录详情集合
+                        "abnormalHandleDesc": data.data.exceptionHandleDesc,//异常处理情况,
+                        "executor": data.data.executor,//执行者
+                        "executorName": data.data.executor,//执行者姓名字符串
+                        "planId": obj.planId,//巡检标准ID
+                        // missCount:data.data.missCount,//漏检项
+                        // abnormalDeviceCount:data.data.abnormalDeviceCount,//异常项
+                        // department:data.data.department,//使用部门ID
+                        // departmentName:data.data.departmentName,//使用部门名称
+                        inTime:data.data.inTime,//是否在执行时间
+                        executeStatus:data.data.executeStatus
+                    };
+                    // $('#executeTime').val($filter('date')(data.data.executeTime,'yyyy-MM-dd'));
+                    var arr=[];
+                    if(data.data.detailList){
+                        data.data.detailList.forEach(function (k) {
+                            // console.log(k,'第一层');
+                            arr.push({
+                                standardId:k.standardId,
+                                planDeviceId:k.planDeviceId,
+                                deviceId:k.deviceId,
+                                remake:k.remake,
+                                imageIdList:k.imageIdList,
+                                itemList:[],
+                                isFlog:false
+                            });
+                        })
+                    }
+                    $scope.reqLists={
+                        planId:obj.planId,
+                        recordId:obj.recordId,
+                        abnormalHandleDesc:data.data.abnormalHandleDesc,
+                        list:arr
+                    };
+                }else {
+                    popupDiv('SaveSuccess');
+                    $('.SaveSuccess .Message').html(data.errorMessage);
                 }
-                $scope.reqLists={
-                    planId:obj.id,
-                    abnormalHandleDesc:'',
-                    list:arr
-                };
-                // $scope.reqList2=[];
-                // console.log($scope.reqLists,'1111');
-            }else {
-                popupDiv('SaveSuccess');
-                $('.SaveSuccess .Message').html(data.errorMessage);
-            }
-        });
+            });
+        }
+
 
         $event.stopPropagation();
     };
@@ -927,7 +982,6 @@ myApp.controller('inspectionPlanCtrl',['$filter','$rootScope','$location','$scop
     };
     $scope.closeAR=function () {//确定添加巡检
         // alert('接口调试中');
-        hideDiv('addRecordPopup');
         // console.log('第一层确定',$scope.reqLists);
         var arr1=[];
         $scope.reqLists.list.forEach(function (m,i) {
@@ -947,9 +1001,10 @@ myApp.controller('inspectionPlanCtrl',['$filter','$rootScope','$location','$scop
             m.itemList=arr2;
             if(m.isFlog){
                 arr1.push({
-                    imageId:m.imageId,
+                    imageIdList:m.imageIdList,
                     itemList:m.itemList,
                     planDeviceId:m.planDeviceId,
+                    deviceId:m.deviceId,
                     remake:m.remake,
                     standardId:m.standardId
                 });
@@ -958,6 +1013,8 @@ myApp.controller('inspectionPlanCtrl',['$filter','$rootScope','$location','$scop
         $scope.reqLists.list=arr1;
         if($scope.reqLists.list.length>0){
             inspectionPlan.executeSpotInspectionPlan($scope.reqLists).success(function (data) {
+
+                hideDiv('addRecordPopup');
                 if(data.errorCode=='000000'){
                     popupDiv('SaveSuccess');
                     $('.SaveSuccess .Message').html(data.errorMessage);
@@ -966,6 +1023,8 @@ myApp.controller('inspectionPlanCtrl',['$filter','$rootScope','$location','$scop
                     $('.SaveSuccess .Message').html(data.errorMessage);
                 }
             });
+        }else {
+            $scope.errShow1=true;
         }
         // console.log($scope.reqLists,'end');
     };
@@ -974,24 +1033,49 @@ myApp.controller('inspectionPlanCtrl',['$filter','$rootScope','$location','$scop
     $scope.open_ar_lrs=function (obj,planId,$index) {
         inspectionPlan.findSpotInspectionStandardItemByStandardIdAndPlanId(obj.standardId,planId).success(function (data) {
             if(data.errorCode=='000000'){
-                // console.log(data,'第二层');
+                console.log(data,'第二层');
                 $scope.uploadEnd=false;
                 hideDiv('addRecordPopup');
                 popupDiv('addRecordPopup2');
+                $scope.errShow2=false;
+                $scope.repsponseData=[];
+                if($scope.recordPopType==1){
+                    $scope.xjjlDetailList={
+                        deviceCode:obj.deviceCode,
+                        deviceId:obj.deviceId,
+                        deviceName:obj.deviceName,
+                        deviceSpecification:obj.deviceSpecification,
+                        // department:$scope.SpotInspectionPlanExecuteWarpReq.department,//使用部门ID
+                        departmentName:obj.departmentName,//使用部门名称
+                        remake:'',
+                        planDeviceId:obj.planDeviceId,
+                        list:data.data,
+                        standardId:obj.standardId,
+                        imageIdList:[]
+                    };
+                }else if($scope.recordPopType==2){
+                    $scope.xjjlDetailList={
+                        deviceCode:obj.deviceCode,
+                        deviceId:obj.deviceId,
+                        deviceName:obj.deviceName,
+                        deviceSpecification:obj.deviceSpecification,
+                        // department:$scope.SpotInspectionPlanExecuteWarpReq.department,//使用部门ID
+                        departmentName:obj.departmentName,//使用部门名称
+                        remake:obj.remake,
+                        planDeviceId:obj.planDeviceId,
+                        list:data.data,
+                        standardId:obj.standardId,
+                        imageIdList:obj.imageIdList?obj.imageIdList:[]
+                    };
+                    // console.log(obj.imageIdList);
+                    if($scope.xjjlDetailList.imageIdList.length>0){
+                        inspectionPlan.viewItem({fileIdList:obj.imageIdList}).success(function (data) {
+                            $scope.repsponseData.push(data.data);
+                            // $scope.xjjlDetailList.imageIdList.push(data.data.key);
+                        })
+                    }
+                }
 
-                $scope.xjjlDetailList={
-                    deviceCode:obj.deviceCode,
-                    deviceId:obj.deviceId,
-                    deviceName:obj.deviceName,
-                    deviceSpecification:obj.deviceSpecification,
-                    // department:$scope.SpotInspectionPlanExecuteWarpReq.department,//使用部门ID
-                    departmentName:obj.departmentName,//使用部门名称
-                    remake:'',
-                    planDeviceId:obj.planDeviceId,
-                    list:data.data,
-                    standardId:obj.standardId,
-                    imageId:''
-                };
                 var arr2=[];
                 if(data.data){
                     data.data.forEach(function (m) {
@@ -1020,34 +1104,44 @@ myApp.controller('inspectionPlanCtrl',['$filter','$rootScope','$location','$scop
     };
     $scope.closeAR2=function (obj) {//确定执行
         // alert('接口调试中');
-        hideDiv('addRecordPopup2');
-        popupDiv('addRecordPopup');
 
-        $scope.reqLists.list[$scope.index2].remake=$scope.xjjlDetailList.remake;
-        $scope.reqLists.list[$scope.index2].imageId=$scope.xjjlDetailList.imageId;
-        $scope.reqLists.list[$scope.index2].isFlog=true;
         // console.log('第二层确定',$scope.reqLists);
-
+        if($scope.reqLists.list[$scope.index2].itemList){
+            hideDiv('addRecordPopup2');
+            popupDiv('addRecordPopup');
+            $scope.reqLists.list[$scope.index2].remake=$scope.xjjlDetailList.remake;
+            $scope.reqLists.list[$scope.index2].imageIdList=$scope.xjjlDetailList.imageIdList;
+            $scope.reqLists.list[$scope.index2].isFlog=true;
+        }else{
+            $scope.errShow2=true;
+        }
     };
 
     //打开巡检明细录入弹出层3
     $scope.open_ar_lrs2=function (obj,$index) {
         hideDiv('addRecordPopup2');
         popupDiv('addRecordPopup3');
-
+        console.log(obj)
         $scope.xjmxList={
-            itemId:obj.id,
+            itemId:obj.itemId,
             name:obj.name,
             recordResult:obj.recordResult,
             abnormalDesc:obj.abnormalDesc,
-            remark:obj.remark
+            remark:obj.remark,
+            executeDetailId:obj.executeDetailId,
+            inspectionStatus:obj.inspectionStatus
         };
-        $("#AR_djz option").each(function(){
-            if($(this).val()==obj.recordResult){
-                $(this).attr("selected",true);
-            }
-        });
+        // console.log(obj.recordResult)
+        $timeout(function () {
+            $("#AR_djz option").each(function(){
+                // console.log($(this).val().split(':')[1],obj.recordResult,'----')
+                if($(this).val().split(':')[1]==obj.recordResult){
+                    $(this).attr("selected",true);
+                }
+            });
+        },500);
         $scope.index3=$index;
+        $scope.errShow3=false;
         // $scope.reqLists.list.itemList[$scope.index2].itemList=[]
         // console.log('第三层')
 
@@ -1060,23 +1154,47 @@ myApp.controller('inspectionPlanCtrl',['$filter','$rootScope','$location','$scop
     $scope.closeAR3=function (obj) {//确定编辑
         // $scope.reqList3.push($scope.xjmxList);
         // alert('接口调试中');
-        hideDiv('addRecordPopup3');
-        popupDiv('addRecordPopup2');
-        $scope.xjjlDetailList.list[$scope.index3]={
+        var req={
             itemId:$scope.xjmxList.itemId,
             name:$scope.xjmxList.name,
             recordResult:$scope.xjmxList.recordResult,
             abnormalDesc:$scope.xjmxList.abnormalDesc,
             remark:$scope.xjmxList.remark
         };
-        $scope.reqLists.list[$scope.index2].itemList[$scope.index3]={
-            itemId:$scope.xjmxList.itemId,
-            name:$scope.xjmxList.name,
-            recordResult:$scope.xjmxList.recordResult,
-            abnormalDesc:$scope.xjmxList.abnormalDesc,
-            remark:$scope.xjmxList.remark,
-            isFlog:true
-        };
+        var flog;
+        for(var i in req){
+            // console.log(i,":",req[i]);
+            flog=validate.required(req[i]);
+            if(!flog){
+                break;
+            }
+        }
+        if(flog){
+            $scope.xjjlDetailList.list[$scope.index3]={
+                itemId:$scope.xjmxList.itemId,
+                name:$scope.xjmxList.name,
+                recordResult:$scope.xjmxList.recordResult,
+                abnormalDesc:$scope.xjmxList.abnormalDesc,
+                remark:$scope.xjmxList.remark,
+                executeDetailId:$scope.xjmxList.executeDetailId,
+                inspectionStatus:$scope.xjmxList.inspectionStatus
+            };
+            $scope.reqLists.list[$scope.index2].itemList[$scope.index3]={
+                itemId:$scope.xjmxList.itemId,
+                name:$scope.xjmxList.name,
+                recordResult:$scope.xjmxList.recordResult,
+                abnormalDesc:$scope.xjmxList.abnormalDesc,
+                remark:$scope.xjmxList.remark,
+                executeDetailId:$scope.xjmxList.executeDetailId,
+                // inspectionStatus:$scope.xjmxList.inspectionStatus,
+                isFlog:true
+            };
+            hideDiv('addRecordPopup3');
+            popupDiv('addRecordPopup2');
+        }else {
+            $scope.errShow3=true;
+        }
+
 
         // console.log('第三层确定',$scope.reqLists);
     };
@@ -1092,6 +1210,9 @@ myApp.controller('inspectionPlanCtrl',['$filter','$rootScope','$location','$scop
         // url: '/service/wordsList',
         queueLimit: 1,     //文件个数
         //headers:{'Content-Type':'multipart/form-data'},
+        formData:{
+            type:'inspect'
+        },
         removeAfterUpload: true   //上传后删除文件
     });
     $scope.clearItems = function(){    //重新选择文件时，清空队列，达到覆盖文件的效果
@@ -1100,8 +1221,14 @@ myApp.controller('inspectionPlanCtrl',['$filter','$rootScope','$location','$scop
     uploader.onAfterAddingFile = function(fileItem) {
         $scope.fileItem = fileItem._file;    //添加文件之后，把文件信息赋给scope
         //能够在这里判断添加的文件名后缀和文件大小是否满足需求。
-        // console.log($scope.fileItem,'添加文件后')
+        console.log($scope.fileItem,'添加文件后');
         $scope.uploadEnd=false;
+        $scope.uploadFlog=true;
+        if(fileItem._file.size>1048576){
+            $scope.uploadEnd=true;
+            $scope.uploadText='图片过大';
+            $scope.uploadFlog=false;
+        }
     };
     uploader.onBeforeUploadItem=function(item){
         console.log(item,'文件上传之前');
@@ -1120,6 +1247,15 @@ myApp.controller('inspectionPlanCtrl',['$filter','$rootScope','$location','$scop
         $scope.uploadShow=false;
         $scope.uploadEnd=true;
         $scope.uploadText='文件上传成功';
+        if(response.errorCode=='000000'){
+            $scope.repsponseData.push(response.data);
+            $scope.xjjlDetailList.imageIdList.push(response.data.key);
+        }else {
+            $scope.uploadEnd=true;
+            $scope.uploadText=response.errorMessage;
+        }
+
+        // console.log($scope.repsponseData,'图片数组')
     };
     uploader.onErrorItem = function(fileItem, response, status, headers) {
         // $scope.uploadStatus = true;   //上传失败则把状态改为true
@@ -1130,7 +1266,9 @@ myApp.controller('inspectionPlanCtrl',['$filter','$rootScope','$location','$scop
         $scope.uploadText='文件上传失败';
     };
     $scope.UploadFile = function(){
-        uploader.uploadAll();
+        if($scope.uploadFlog){
+            uploader.uploadAll();
+        }
     };
 
 
@@ -1174,6 +1312,11 @@ myApp.controller('inspectionPlanCtrl',['$filter','$rootScope','$location','$scop
                 }
             });
         }
+    };
+
+    //打开历史巡检表格详细
+    $scope.openDetailRecordPopup=function (obj,$event) {
+
     };
 
 
