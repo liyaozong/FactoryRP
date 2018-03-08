@@ -46,7 +46,8 @@ public enum ErrorCode {
     NO_SPOTINSPECTIONPLAN__EXIST_ERROR("0000028","巡检计划不存在"),
     PROCESS_DIC_NOTEXIST_ERROR("0000029","流程枚举参数不存在"),
     SPOTINSPECTION_RECORD_NOTEXIST_ERROR("0000030","巡检记录不存在"),
-    REQUEST_FILE_NOT_EXIST("0000031","上传文件请求错误");
+    REQUEST_FILE_NOT_EXIST("0000031","上传文件请求错误"),
+    UNKONW_IMAGE_TYPE_REEOR("0000032","错误的文件类型");
 
 
     private String code;

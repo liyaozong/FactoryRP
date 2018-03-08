@@ -1,7 +1,6 @@
 package tech.yozo.factoryrp.service.Impl;
 
 
-import com.sun.tools.doclets.formats.html.resources.standard;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -397,7 +396,8 @@ public class SpotInspectionRecordServiceImpl implements SpotInspectionRecordServ
                 }
 
                 detail.setDeviceId(d1.getDeviceId());
-
+                detail.setLineOrder(d1.getLineOrder());
+                detail.setPlanDeviceId(d1.getId());
 
                 //计算漏检数量
                 if(!CheckParam.isNull(itemMap.get(d1.getSpotInspectionStandard()))){
@@ -405,7 +405,11 @@ public class SpotInspectionRecordServiceImpl implements SpotInspectionRecordServ
                     //拿到某个点检标准需要被执行的点检项数量
                     Long needToExecute = itemMap.get(d1.getSpotInspectionStandard()).stream().count();
 
-                    Long executeCount = itemExecuteDetailMap.get(d1.getSpotInspectionStandard()).stream().count();
+                    Long executeCount = 0L;
+
+                    if(!CheckParam.isNull(itemExecuteDetailMap.get(d1.getSpotInspectionStandard()))){
+                        executeCount = itemExecuteDetailMap.get(d1.getSpotInspectionStandard()).stream().count();
+                    }
 
                     //如果需要被检查的数量大于已经检查的数量说明具备漏检项目
                     if(needToExecute >= executeCount){
@@ -414,10 +418,23 @@ public class SpotInspectionRecordServiceImpl implements SpotInspectionRecordServ
                         detail.setMissCount(0); //如果需要被检查的数量小于已经检查的数量说明出现数据不一致
                     }
 
+                    //设置异常数量
+                    if(!CheckParam.isNull(itemExecuteDetailMap) && !CheckParam.isNull(itemExecuteDetailMap.get(d1.getSpotInspectionStandard()))){
+                        Long count = itemExecuteDetailMap.get(d1.getSpotInspectionStandard()).stream().filter(d2 -> d2.getAbnormalDesc().equals(SpotInspectionDeviceAbnormalEnums.SPOT_INSPECTION_ITEMS_ABNORMAL)).count();
+                        detail.setAbnormalDeviceCount(Integer.valueOf(String.valueOf(count))); //设置设备异常数量
+                    }else{
+                        detail.setAbnormalDeviceCount(0);
+                    }
+
                     //设置已经执行还是未执行
                     detail.setExecuteStatus(executeCount > 0 ? 1 : 2);
 
                     detailList.add(detail);
+                }else{
+                    detail.setAbnormalDeviceCount(0);
+                    detail.setMissCount(0);
+                    detail.setMissCount(0);
+                    detail.setExecuteStatus(1);
                 }
 
             });

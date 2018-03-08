@@ -15,6 +15,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -87,9 +88,10 @@ public class OSSService {
      * 上传文件到OSS
      * @param itemName
      * @param inputStream
+     * @param dicName
      * @return
      */
-    public OSSUploadResp toOSS(String itemName, FileInputStream inputStream){
+    public OSSUploadResp toOSS(String itemName, FileInputStream inputStream,String dicName){
         initClient();
         //上传的item名称
         String uploadItemName = EncryptUtils.MD5String(UUIDSequenceWorker.longUniqueSequenceId()+itemName);
@@ -105,6 +107,10 @@ public class OSSService {
         objectMetadata.setHeader("Pragma", "no-cache");
         objectMetadata.setContentType(getcontentType(itemName.substring(itemName.lastIndexOf("."))));
         objectMetadata.setContentDisposition("inline;filename=" + itemName);
+
+        String filePathAndName= "/"+getCurrentDateFilePath()+"/"+uploadItemName;
+
+        //client.putObject(bucketName, uploadItemName, inputStream,objectMetadata);
         client.putObject(bucketName, uploadItemName, inputStream,objectMetadata);
 
         Date expiration = new Date(new Date().getTime() + 3600 * 1000);
@@ -228,6 +234,19 @@ public class OSSService {
 
         String str = "123";
         System.out.println(EncryptUtils.MD5String(str));
+    }
+
+    /**
+     * 文件夹按照日期来区分
+     * @return
+     */
+    private static String getCurrentDateFilePath() {
+        String currentDateFilePath = "";
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        currentDateFilePath = calendar.get(Calendar.YEAR) + "/" + (calendar.get(Calendar.MONTH) + 1) + "/"
+                + calendar.get(Calendar.DAY_OF_MONTH) + "/";
+        return currentDateFilePath;
     }
 
 }

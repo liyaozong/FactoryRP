@@ -28,4 +28,17 @@ public class OSSUploadResp implements Serializable {
      */
     @ApiModelProperty(value = "文件上传访问地址")
     private String url;
+
+    /**
+     * 图片宽度
+     */
+    @ApiModelProperty(value = "图片宽度")
+    private String width;
+
+    /**
+     * 图片高度
+     */
+    @ApiModelProperty(value = "图片高度")
+    private String height;
+
 }

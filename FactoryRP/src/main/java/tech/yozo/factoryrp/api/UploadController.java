@@ -10,8 +10,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import tech.yozo.factoryrp.enums.ImageTypeEnum;
 import tech.yozo.factoryrp.exception.BussinessException;
 import tech.yozo.factoryrp.service.Impl.OSSService;
+import tech.yozo.factoryrp.utils.CheckParam;
 import tech.yozo.factoryrp.utils.ErrorCode;
 import tech.yozo.factoryrp.vo.base.ApiResponse;
 import tech.yozo.factoryrp.vo.resp.OSSUploadResp;
@@ -19,6 +21,8 @@ import tech.yozo.factoryrp.vo.resp.OSSUploadResp;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.io.*;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * 文件上传相关接口
@@ -73,7 +77,12 @@ public class UploadController extends BaseController{
     @PostMapping("/uploadToOSS")
     @ApiImplicitParam(dataType = "MultipartFile" ,name = "file", paramType = "Object" ,
             value = "文件",required = true)
-    public ApiResponse<OSSUploadResp> uploadToOSS(@RequestParam(value = "file", required = true) MultipartFile file){
+    public ApiResponse<OSSUploadResp> uploadToOSS(@RequestParam(value = "file", required = true) MultipartFile file,String type){
+
+        if(CheckParam.isNull(ImageTypeEnum.getByCode(type))){
+            throw new BussinessException(ErrorCode.UNKONW_IMAGE_TYPE_REEOR.getCode(),ErrorCode.UNKONW_IMAGE_TYPE_REEOR.getMessage());
+        }
+
         if(!file.isEmpty()){
             try {
                 String name = file.getOriginalFilename();
@@ -90,7 +99,7 @@ public class UploadController extends BaseController{
                     logger.info(">>>>>>>>>>>>>>>>>>>>>>文件流size<<<<<<<<<<<<<<<<<<<<<<<<" + available);
                     // 上传到阿里云
 
-                    OSSUploadResp ossUploadResp = ossService.toOSS(name, fileInputStream);
+                    OSSUploadResp ossUploadResp = ossService.toOSS(name, fileInputStream,type);
                     newFile.delete();
                     return apiResponse(ossUploadResp);
 
@@ -138,5 +147,19 @@ public class UploadController extends BaseController{
         }
         return "";
     }
+
+    /**
+     * 文件按照当前日期
+     * @return
+     */
+    private static String getCurrentDateFilePath() {
+        String currentDateFilePath = "";
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        currentDateFilePath = calendar.get(Calendar.YEAR) + "/" + (calendar.get(Calendar.MONTH) + 1) + "/"
+                + calendar.get(Calendar.DAY_OF_MONTH) + "/";
+        return currentDateFilePath;
+    }
+
 
 }

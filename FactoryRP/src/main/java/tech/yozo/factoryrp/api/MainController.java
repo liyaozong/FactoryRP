@@ -1,5 +1,6 @@
 package tech.yozo.factoryrp.api;
 
+import tech.yozo.factoryrp.enums.ImageTypeEnum;
 import tech.yozo.factoryrp.enums.device.DeviceParamDicEnum;
 import tech.yozo.factoryrp.enums.device.DeviceStatusEnum;
 import tech.yozo.factoryrp.enums.inspection.SpotInspectionItemsRecordTypeEnum;
@@ -111,6 +112,22 @@ public class MainController extends BaseController{
         apiResponse.setErrorCode(ErrorCode.SUCCESS.getCode());
         apiResponse.setErrorMessage(ErrorCode.SUCCESS.getCode());
         apiResponse.setData(SpotInspectionPlanRecycleTypeEnum.getAllCodesAndName());
+        apiResponse.setRequestSeqNo(UUIDSequenceWorker.uniqueSequenceId().toString());
+        return apiResponse;
+    }
+
+    /**
+     * 查询所有支持的文件上传类型
+     * @return
+     */
+    @ApiOperation(value = "查询所有支持的文件上传类型",notes = "查询所有支持的文件上传类型",httpMethod = "GET")
+    @RequestMapping(value = "/queryAllFileUploadType",method = RequestMethod.GET)
+    @ResponseBody
+    public ApiResponse<List<DicEnumResp>> queryAllFileUploadType(){
+        ApiResponse<List<DicEnumResp>> apiResponse = new ApiResponse<>();
+        apiResponse.setErrorCode(ErrorCode.SUCCESS.getCode());
+        apiResponse.setErrorMessage(ErrorCode.SUCCESS.getCode());
+        apiResponse.setData(ImageTypeEnum.getAllCodesAndName());
         apiResponse.setRequestSeqNo(UUIDSequenceWorker.uniqueSequenceId().toString());
         return apiResponse;
     }

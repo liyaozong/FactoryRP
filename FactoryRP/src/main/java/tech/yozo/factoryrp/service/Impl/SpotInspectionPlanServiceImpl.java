@@ -895,9 +895,8 @@ public class SpotInspectionPlanServiceImpl implements SpotInspectionPlanService 
                         spotInspectionRecordDetail.setRemark(s2.getRemark());
                         spotInspectionRecordDetail.setStandardItemId(s2.getItemId());
                         spotInspectionRecordDetail.setCorporateIdentify(corporateIdentify);
-
                         spotInspectionRecordDetail.setStandard(s1.getStandardId()); //设置巡检标准ID
-                        spotInspectionRecordDetail.setDeviceId(s1.getDeviceId()); //设置设备ID
+                        spotInspectionRecordDetail.setDeviceId(s1.getDeviceId());
 
                         detailList.add(spotInspectionRecordDetail);
                     });

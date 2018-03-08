@@ -29,6 +29,12 @@ public class SpotInspectionRecordDetailResp implements Serializable {
     //private Long itemId
 
     /**
+     * 巡检计划-设备对应ID
+     */
+    @ApiModelProperty(value = "巡检计划-设备对应ID",notes ="巡检计划-设备对应ID" )
+    private Long planDeviceId;
+
+    /**
      * 执行状态 1执行2未执行
      */
     @ApiModelProperty(value = "执行状态 1执行2未执行",notes ="执行状态 1执行2未执行",example = "1")
@@ -50,14 +56,14 @@ public class SpotInspectionRecordDetailResp implements Serializable {
     /**
      * 漏检数
      */
-    @ApiModelProperty(value = "漏检数",notes ="漏检数" )
-    private Integer abnormalCount;
+    @ApiModelProperty(value = "异常数",notes ="异常数" )
+    private Integer abnormalDeviceCount;
 
 
     /**
      * 异常数
      */
-    @ApiModelProperty(value = "异常数",notes ="异常数" )
+    @ApiModelProperty(value = "漏检数",notes ="漏检数" )
     private Integer missCount;
 
     /**
@@ -85,4 +91,10 @@ public class SpotInspectionRecordDetailResp implements Serializable {
      */
     @ApiModelProperty(value = "设备ID",notes ="设备ID" )
     private Long deviceId;
+
+    /**
+     * 顺序路线
+     */
+    @ApiModelProperty(value = "顺序路线",notes ="顺序路线" )
+    private Integer lineOrder;
 }
