@@ -29,6 +29,11 @@ public class SpotInspectionPlanExecuteReq implements Serializable {
     @ApiModelProperty(value = "巡检标准ID",notes ="巡检标准ID" )
     private Long standardId;
 
+    /**
+     * 设备ID
+     */
+    @ApiModelProperty(value = "设备ID",notes ="设备ID" )
+    private Long deviceId;
 
     /**
      * 巡检项集合

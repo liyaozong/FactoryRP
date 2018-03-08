@@ -1091,7 +1091,7 @@ myApp.controller('inspectionPlanCtrl',['$filter','$rootScope','$location','$scop
         url: FF_API.base+FF_API.uploadToOSSPath+'?token='+token,
         // url: '/service/wordsList',
         queueLimit: 1,     //文件个数
-        headers:{'Content-Type':'multipart/form-data'},
+        //headers:{'Content-Type':'multipart/form-data'},
         removeAfterUpload: true   //上传后删除文件
     });
     $scope.clearItems = function(){    //重新选择文件时，清空队列，达到覆盖文件的效果
