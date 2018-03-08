@@ -1,6 +1,6 @@
 package tech.yozo.factoryrp.api;
 
-import tech.yozo.factoryrp.enums.ImageTypeEnum;
+import tech.yozo.factoryrp.enums.FileTypeEnum;
 import tech.yozo.factoryrp.enums.device.DeviceParamDicEnum;
 import tech.yozo.factoryrp.enums.device.DeviceStatusEnum;
 import tech.yozo.factoryrp.enums.inspection.SpotInspectionItemsRecordTypeEnum;
@@ -127,7 +127,7 @@ public class MainController extends BaseController{
         ApiResponse<List<DicEnumResp>> apiResponse = new ApiResponse<>();
         apiResponse.setErrorCode(ErrorCode.SUCCESS.getCode());
         apiResponse.setErrorMessage(ErrorCode.SUCCESS.getCode());
-        apiResponse.setData(ImageTypeEnum.getAllCodesAndName());
+        apiResponse.setData(FileTypeEnum.getAllCodesAndName());
         apiResponse.setRequestSeqNo(UUIDSequenceWorker.uniqueSequenceId().toString());
         return apiResponse;
     }

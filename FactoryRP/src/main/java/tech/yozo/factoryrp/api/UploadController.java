@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import tech.yozo.factoryrp.enums.ImageTypeEnum;
+import tech.yozo.factoryrp.enums.FileTypeEnum;
 import tech.yozo.factoryrp.exception.BussinessException;
 import tech.yozo.factoryrp.service.Impl.OSSService;
 import tech.yozo.factoryrp.utils.CheckParam;
@@ -79,7 +79,7 @@ public class UploadController extends BaseController{
             value = "文件",required = true)
     public ApiResponse<OSSUploadResp> uploadToOSS(@RequestParam(value = "file", required = true) MultipartFile file,String type){
 
-        if(CheckParam.isNull(ImageTypeEnum.getByCode(type))){
+        if(CheckParam.isNull(FileTypeEnum.getByCode(type))){
             throw new BussinessException(ErrorCode.UNKONW_IMAGE_TYPE_REEOR.getCode(),ErrorCode.UNKONW_IMAGE_TYPE_REEOR.getMessage());
         }
 

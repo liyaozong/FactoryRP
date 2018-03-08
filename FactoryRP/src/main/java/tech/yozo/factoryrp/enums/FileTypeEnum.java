@@ -13,36 +13,37 @@ import java.util.List;
  * @time 2018/3/8
  * @description
  */
-public enum ImageTypeEnum {
+public enum FileTypeEnum {
 
 
     INSPECTION_IMAGE("inspect","点巡检"),
     MAINTAIN_IMAGE("inspect","维修"),
-    TROUBLE_IMAGE("trouble","故障"),;
+    TROUBLE_IMAGE("trouble","故障"),
+    DOCUMENT("document","文档");
 
     private String code;
 
     private String name;
 
 
-    ImageTypeEnum(String code, String name) {
+    FileTypeEnum(String code, String name) {
         this.code = code;
         this.name = name;
     }
 
-    public static ImageTypeEnum getByCode(String code) {
-        for (ImageTypeEnum v : ImageTypeEnum.values()) {
+    public static FileTypeEnum getByCode(String code) {
+        for (FileTypeEnum v : FileTypeEnum.values()) {
             if (!CheckParam.isNull(code) && v.getCode().equals(code)) {
                 return v;
             }
         }
         return null;
     }
-    public static ImageTypeEnum getByName(String name) {
+    public static FileTypeEnum getByName(String name) {
         if (CheckParam.isNull(name)) {
             return null;
         }
-        for (ImageTypeEnum v : ImageTypeEnum.values()) {
+        for (FileTypeEnum v : FileTypeEnum.values()) {
             if (v.name().equalsIgnoreCase(name)) {
                 return v;
             }
@@ -57,7 +58,7 @@ public enum ImageTypeEnum {
      */
     public static List<DicEnumResp> getAllCodesAndName(){
         List<DicEnumResp> list = new ArrayList<>();
-        Arrays.stream(ImageTypeEnum.values()).forEach(e1 -> {
+        Arrays.stream(FileTypeEnum.values()).forEach(e1 -> {
             DicEnumResp errorCodeResp = new DicEnumResp();
 
             errorCodeResp.setCode(e1.getCode());
