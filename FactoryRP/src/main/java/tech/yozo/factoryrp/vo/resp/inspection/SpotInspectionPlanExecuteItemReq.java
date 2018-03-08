@@ -18,6 +18,12 @@ public class SpotInspectionPlanExecuteItemReq implements Serializable {
 
 
     /**
+     * 被执行过的巡检项的记录ID
+     */
+    @ApiModelProperty(value = "被执行过的巡检项的记录ID",notes ="被执行过的巡检项的记录ID",example = "1")
+    private Long executeDetailId;
+
+    /**
      * 巡检项ID
      */
     @ApiModelProperty(value = "巡检项ID",notes ="巡检项ID",example = "1")

@@ -10,19 +10,22 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import tech.yozo.factoryrp.enums.FileTypeEnum;
-import tech.yozo.factoryrp.exception.BussinessException;
 import tech.yozo.factoryrp.service.Impl.OSSService;
-import tech.yozo.factoryrp.utils.CheckParam;
-import tech.yozo.factoryrp.utils.ErrorCode;
+import tech.yozo.factoryrp.service.UploadOSSService;
 import tech.yozo.factoryrp.vo.base.ApiResponse;
-import tech.yozo.factoryrp.vo.resp.OSSUploadResp;
+import tech.yozo.factoryrp.vo.req.FileUrlBatchQueryReq;
+import tech.yozo.factoryrp.vo.resp.FileUploadResp;
+import tech.yozo.factoryrp.vo.resp.ImageUploadResp;
 
 import javax.annotation.Resource;
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
+import java.awt.image.BufferedImage;
 import java.io.*;
+import java.net.URL;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 文件上传相关接口
@@ -34,6 +37,10 @@ import java.util.Date;
 @RequestMapping("/api/itemUpload")
 @Api(description = "上传相关接口")
 public class UploadController extends BaseController{
+
+
+    @Resource
+    private UploadOSSService uploadOSSService;
 
 
     @Resource
@@ -54,11 +61,11 @@ public class UploadController extends BaseController{
     private Logger logger = LoggerFactory.getLogger(UploadController.class);
 
     /**
-     * 查询图片访问地址
+     * 查询文件访问地址
      * @param key
      * @return
      */
-    @ApiOperation(value = "查询图片访问地址-WEB",notes = "查询图片访问地址-WEB",httpMethod = "GET")
+    @ApiOperation(value = "查询文件访问地址-WEB",notes = "查询文件访问地址-WEB",httpMethod = "GET")
     @GetMapping("/viewItem")
     @ApiImplicitParams({
             @ApiImplicitParam(dataType = "String" ,name = "key", paramType = "query" ,
@@ -66,6 +73,33 @@ public class UploadController extends BaseController{
     })
     public ApiResponse<String> querySpotInspectionRecordByPlanId(@RequestParam("key") String key, HttpServletRequest request){
         return apiResponse(ossService.getOSSUrl(key));
+    }
+
+    /**
+     * 批量查询OSS图片相关信息
+     * @param fileUrlBatchQueryReq
+     * @return
+     */
+    @ApiOperation(value = "图片批量查询接口-WEB",notes = "图片批量查询接口-WEB",httpMethod = "POST")
+    @PostMapping("/batchQueryImageInfo")
+    @ApiImplicitParam(dataType = "FileUrlBatchQueryReq" ,name = "fileUrlBatchQueryReq", paramType = "VO" ,
+            value = "图片批量查询接口-WEB",required = true)
+    public ApiResponse<List<ImageUploadResp>> batchQueryImageInfo(@RequestBody FileUrlBatchQueryReq fileUrlBatchQueryReq){
+
+        return apiResponse(uploadOSSService.batchQueryImageInfo(fileUrlBatchQueryReq.getFileIdList()));
+    }
+
+    /**
+     * 图片上传接口 会返回图片相关信息
+     * @param file
+     * @return
+     */
+    @ApiOperation(value = "图片上传接口 会返回图片相关信息",notes = "图片上传接口 会返回图片相关信息",httpMethod = "POST")
+    @PostMapping("/uploadImageToOSS")
+    @ApiImplicitParam(dataType = "MultipartFile" ,name = "file", paramType = "Object" ,
+            value = "图片",required = true)
+    public ApiResponse<ImageUploadResp> uploadImageToOSS(@RequestParam(value = "file", required = true) MultipartFile file, String type){
+        return apiResponse(uploadOSSService.imageToOSS(file,type));
     }
 
     /**
@@ -77,39 +111,8 @@ public class UploadController extends BaseController{
     @PostMapping("/uploadToOSS")
     @ApiImplicitParam(dataType = "MultipartFile" ,name = "file", paramType = "Object" ,
             value = "文件",required = true)
-    public ApiResponse<OSSUploadResp> uploadToOSS(@RequestParam(value = "file", required = true) MultipartFile file,String type){
-
-        if(CheckParam.isNull(FileTypeEnum.getByCode(type))){
-            throw new BussinessException(ErrorCode.UNKONW_IMAGE_TYPE_REEOR.getCode(),ErrorCode.UNKONW_IMAGE_TYPE_REEOR.getMessage());
-        }
-
-        if(!file.isEmpty()){
-            try {
-                String name = file.getOriginalFilename();
-
-                File newFile = new File(name);
-                FileOutputStream outStream = null; // 文件输出流用于将数据写入文件
-                    outStream = new FileOutputStream(newFile);
-                    outStream.write(file.getBytes());
-                    outStream.close();
-                    // 关闭文件输出流
-                    file.transferTo(newFile);
-                    FileInputStream fileInputStream = new FileInputStream(newFile);
-                    int available = fileInputStream.available();
-                    logger.info(">>>>>>>>>>>>>>>>>>>>>>文件流size<<<<<<<<<<<<<<<<<<<<<<<<" + available);
-                    // 上传到阿里云
-
-                    OSSUploadResp ossUploadResp = ossService.toOSS(name, fileInputStream,type);
-                    newFile.delete();
-                    return apiResponse(ossUploadResp);
-
-                } catch (Exception e) {
-                    logger.error(">>>>>>>>>>>>>>>>>>上传文件出现异常<<<<<<<<<<<<<<<" + e.getMessage(), e);
-                    return apiResponse("upload exception is"+e.getMessage());
-                }
-            }
-            throw new BussinessException(ErrorCode.REQUEST_FILE_NOT_EXIST.getCode(),
-                    ErrorCode.REQUEST_FILE_NOT_EXIST.getMessage());
+    public ApiResponse<FileUploadResp> uploadToOSS(@RequestParam(value = "file", required = true) MultipartFile file, String type){
+        return apiResponse(uploadOSSService.uploadFileToOSS(file,type));
     }
 
     //单文件上传
@@ -161,5 +164,21 @@ public class UploadController extends BaseController{
         return currentDateFilePath;
     }
 
+
+    public static void main(String[] args) {
+        try {
+        InputStream is = new URL("http://oss.factoryrp.ridewhale.cn/cd4e7cbe22ccbfded476a306bdfc7312?Expires=1520530929&OSSAccessKeyId=LTAI15LVPdJNL31Y&Signature=Zbj0YEAqBwqbBmF7GeZYGtlF4u8%3D").openStream();
+
+        BufferedImage sourceImg = null;
+
+            sourceImg = ImageIO.read(is);
+            System.out.println(sourceImg.getWidth());
+            System.out.println(sourceImg.getHeight());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+//           // System.out.println(String.format("%.1f",picture.length()/1024.0));
+
+    }
 
 }

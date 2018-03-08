@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import tech.yozo.factoryrp.utils.CheckParam;
 import tech.yozo.factoryrp.utils.EncryptUtils;
 import tech.yozo.factoryrp.utils.UUIDSequenceWorker;
-import tech.yozo.factoryrp.vo.resp.OSSUploadResp;
+import tech.yozo.factoryrp.vo.resp.FileUploadResp;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -91,7 +91,7 @@ public class OSSService {
      * @param dicName
      * @return
      */
-    public OSSUploadResp toOSS(String itemName, FileInputStream inputStream,String dicName){
+    public FileUploadResp toOSS(String itemName, FileInputStream inputStream, String dicName){
         initClient();
         //上传的item名称
         String uploadItemName = EncryptUtils.MD5String(UUIDSequenceWorker.longUniqueSequenceId()+itemName);
@@ -117,7 +117,7 @@ public class OSSService {
         // 生成URL
         URL url = client.generatePresignedUrl(bucketName, uploadItemName, expiration);
 
-        OSSUploadResp resp = new OSSUploadResp();
+        FileUploadResp resp = new FileUploadResp();
         resp.setKey(uploadItemName);
         resp.setUrl(String.valueOf(url));
 
