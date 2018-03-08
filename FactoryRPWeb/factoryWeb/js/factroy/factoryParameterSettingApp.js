@@ -104,4 +104,15 @@ var factoryParameterSettingApp = angular.module('myApp.factoryParameterSetting',
                     }
                 }
             })
+            .state("main.deviceMaintenanceHome", {
+                showName:"设备保养",
+                tabShow:true,
+                url: "/deviceMaintenanceHome",
+                views:{
+                    'content@main':{
+                        templateUrl:FF_API.baseTpl+'factory/deviceMaintenanceHome.html',
+                        controller:'deviceMaintenanceHomeController'
+                    }
+                }
+            })
     });

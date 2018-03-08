@@ -623,6 +623,69 @@ factoryParameterSettingApp.controller('deviceManageController',function ($scope,
 
     };
     /*查询设备对应的故障列表 end*/
+    /*选择设备 start*/
+    $scope.chooseDevice=function(){
+        popupDiv('deviceLists');
+        $scope.deviceListsRecordSure=function(){
+            console.log($scope.dataAudit);
+            factoryParameterSettingService.queryOneDeviceListInfo({
+                id:$scope.dataAudit
+            }, function(response){
+                if(response.data!=''&&response.data!=null&&response.data!=undefined&&response.errorCode=='000000'){
+                    $scope.oneDeviceType=response.data;
+
+                    /*故障提出 start*/
+                    $scope.deviceNameTrouble=$scope.oneDeviceType.name;
+                    $scope.deviceCodeTrouble=$scope.oneDeviceType.code;
+                    $scope.specificationTrouble=$scope.oneDeviceType.specification;
+
+                    // 设备类型
+                    $("#deviceTypeTrouble option").each(function(){
+                        if($(this).text()==$scope.oneDeviceType.deviceType){
+                            $(this).prop("selected",true);
+//                        $scope.deviceTypeEdit=$(this).val();
+                        }
+                    });
+
+                    // 使用部门
+                    $("#useDeptTrouble option").each(function(){
+                        if($(this).text()==$scope.oneDeviceType.useDept){
+                            $(this).prop("selected",true);
+//                        $scope.useDeptEdit=$(this).val();
+                        }
+                    });
+                    /*故障提出 end*/
+                    /*保养计划新增 start*/
+                    console.log($scope.oneDeviceType);
+                    $scope.deviceNameMaintenance=$scope.oneDeviceType.name;
+                    $scope.deviceCodeMaintenance=$scope.oneDeviceType.code;
+                    $scope.deviceTypeIdMaintenance=$scope.oneDeviceType.deviceTypeId;
+                    $scope.deviceTypeMaintenance=$scope.oneDeviceType.deviceType;
+                    $scope.specificationMaintenance=$scope.oneDeviceType.specification;
+                    $scope.installationAddressMaintenance=$scope.oneDeviceType.installationAddress;
+                    // 使用部门
+                    if($scope.oneDeviceType.useDept!=null&&$scope.oneDeviceType.useDept!=''&&$scope.oneDeviceType.useDept!=undefined){
+                        $("#useDeptMaintenance option").each(function(){
+                            if($(this).text()==$scope.oneDeviceType.useDept){
+                                $(this).prop("selected",true);
+//                                $scope.useDeptMaintenance=$(this).val().split(':')[1];
+                            }
+                        });
+                    }
+                    /*保养计划新增 end*/
+                }else{
+                    console.log(response.errorMessage);
+                }
+            });
+            hideDiv('deviceLists');
+            $("#bg1").show();
+        }
+    };
+    $scope.hideDeviceLists=function(){
+        hideDiv('deviceLists');
+        $("#bg1").show();
+    };
+    /*选择设备 end*/
     /*提出设备对应的故障 start*/
     $scope.addTroubleRecord=function () {
         if($scope.dataAudit==''||$scope.dataAudit==null||$scope.dataAudit==undefined){
@@ -660,6 +723,7 @@ factoryParameterSettingApp.controller('deviceManageController',function ($scope,
                 }
             });
             popupDiv('addTroubleRecordBalance');
+
             $scope.addTroubleRecordSure=function () {
                 if($scope.happendDate==''||$scope.happendDate==null||$scope.happendDate==undefined){
                     $("#happendDate").focus()

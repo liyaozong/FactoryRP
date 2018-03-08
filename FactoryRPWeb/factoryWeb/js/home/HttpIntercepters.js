@@ -22,11 +22,11 @@ myApp.factory('HttpInterceptor', function($rootScope,$q,$window,$cookies,$inject
                     $rootScope.loading++;
                 }
 
-            	config.headers = config.headers || {};
-                if (token) {
-                  config.headers.token = token;
-//                  config.headers.token = '1';
-                }
+//            	config.headers = config.headers || {};
+//                if (token) {
+////                  config.headers.token = token;
+////                  config.headers.token = '1';
+//                }
                 return config; 
             },
             response: function (response) {
@@ -73,7 +73,12 @@ myApp.factory('HttpInterceptor', function($rootScope,$q,$window,$cookies,$inject
                             }
                         });
                         $window.localStorage['menu'] = JSON.stringify($rootScope.publicMenu);
-                        stateService.go("main."+$rootScope.publicMenu[0].twoMenu[0].url);
+                        if($rootScope.publicMenu[0].twoMenu[0]!=null&&$rootScope.publicMenu[0].twoMenu[0]!=''&&$rootScope.publicMenu[0].twoMenu[0]!=undefined){
+                            stateService.go("main."+$rootScope.publicMenu[0].twoMenu[0].url);
+                        }else{
+                            stateService.go("main.home");
+                        }
+
                     }
                     rootScope.stateBeforeLogin = null;
                 } else if(response && response.data && response.data.errorCode == '000667' && response.data.errorMessage == '请登录'){
@@ -92,7 +97,7 @@ myApp.factory('HttpInterceptor', function($rootScope,$q,$window,$cookies,$inject
                     var rootScope = $injector.get('$rootScope');
                     rootScope.alertMsg = response.data.message;
                 }else{
-                   // console.log(1)
+                   console.log(1)
                 }
 
                 if($rootScope.loading > 1) {
