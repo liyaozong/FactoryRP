@@ -1,6 +1,7 @@
 package tech.yozo.factoryrp.service;
 
 import org.springframework.web.multipart.MultipartFile;
+import tech.yozo.factoryrp.vo.req.BatchDeleteOSSItemReq;
 import tech.yozo.factoryrp.vo.resp.FileUploadResp;
 import tech.yozo.factoryrp.vo.resp.ImageUploadResp;
 
@@ -12,7 +13,7 @@ import java.util.List;
  * @time 2018/3/9
  * @description
  */
-public interface UploadOSSService {
+public interface FileService {
 
 
     /**
@@ -37,5 +38,11 @@ public interface UploadOSSService {
      * @return
      */
     FileUploadResp uploadFileToOSS(MultipartFile file, String type);
+
+    /**
+     * OSS文件批量删除
+     * @param batchDeleteOSSItemReq
+     */
+    void batchDeleteItems(BatchDeleteOSSItemReq batchDeleteOSSItemReq);
 
 }

@@ -727,7 +727,8 @@ public class SpotInspectionPlanServiceImpl implements SpotInspectionPlanService 
 
         if(!CheckParam.isNull(planList) && !planList.isEmpty()){
 
-            List<Long> idList = new ArrayList<>();
+            //去除巡检计划集合里面的ID 并且去重
+            List<Long> idList = planList.stream().map(SpotInspectionPlan::getId).distinct().collect(Collectors.toList());
 
             List<SpotInspectionPlanDevice> planDeviceList = spotInspectionPlanDeviceRepository.findByCorporateIdentifyAndSpotInspectionPlanIn(corporateIdentify, idList);
 
@@ -736,7 +737,6 @@ public class SpotInspectionPlanServiceImpl implements SpotInspectionPlanService 
             if(!CheckParam.isNull(planDeviceList) && !planDeviceList.isEmpty()) {
                 spotInspectionPlanDeviceRepository.deleteInBatch(planDeviceList);
             }
-
         }
 
     }

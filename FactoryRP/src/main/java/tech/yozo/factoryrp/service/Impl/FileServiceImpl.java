@@ -4,12 +4,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import tech.yozo.factoryrp.api.UploadController;
 import tech.yozo.factoryrp.enums.FileTypeEnum;
 import tech.yozo.factoryrp.exception.BussinessException;
-import tech.yozo.factoryrp.service.UploadOSSService;
+import tech.yozo.factoryrp.service.FileService;
 import tech.yozo.factoryrp.utils.CheckParam;
 import tech.yozo.factoryrp.utils.ErrorCode;
+import tech.yozo.factoryrp.vo.req.BatchDeleteOSSItemReq;
 import tech.yozo.factoryrp.vo.resp.FileUploadResp;
 import tech.yozo.factoryrp.vo.resp.ImageUploadResp;
 
@@ -20,6 +20,7 @@ import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 文件上传服务
@@ -28,13 +29,28 @@ import java.util.List;
  * @description
  */
 @Service
-public class UploadOSSServiceImpl implements UploadOSSService {
+public class FileServiceImpl implements FileService {
 
     @Resource
     private OSSService ossService;
 
-    private static Logger logger = LoggerFactory.getLogger(UploadOSSServiceImpl.class);
+    private static Logger logger = LoggerFactory.getLogger(FileServiceImpl.class);
 
+
+    /**
+     * OSS文件批量删除
+     * @param batchDeleteOSSItemReq
+     */
+    public void batchDeleteItems(BatchDeleteOSSItemReq batchDeleteOSSItemReq){
+
+        if(!CheckParam.isNull(batchDeleteOSSItemReq) &&
+                !CheckParam.isNull(batchDeleteOSSItemReq.getItemList()) && batchDeleteOSSItemReq.getItemList().isEmpty()){
+
+            List<String> itemList = batchDeleteOSSItemReq.getItemList();
+            itemList = itemList.stream().distinct().collect(Collectors.toList());
+            ossService.deleteBatchObect(itemList);
+        }
+    }
 
     /**
      * 解析图片的size

@@ -10,9 +10,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import tech.yozo.factoryrp.service.Impl.OSSService;
-import tech.yozo.factoryrp.service.UploadOSSService;
+import tech.yozo.factoryrp.service.FileService;
 import tech.yozo.factoryrp.vo.base.ApiResponse;
+import tech.yozo.factoryrp.vo.req.BatchDeleteOSSItemReq;
 import tech.yozo.factoryrp.vo.req.FileUrlBatchQueryReq;
 import tech.yozo.factoryrp.vo.resp.FileUploadResp;
 import tech.yozo.factoryrp.vo.resp.ImageUploadResp;
@@ -35,16 +35,16 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/api/itemUpload")
-@Api(description = "上传相关接口")
+@Api(description = "文件相关接口")
 public class UploadController extends BaseController{
 
 
     @Resource
-    private UploadOSSService uploadOSSService;
+    private FileService fileService;
 
 
     @Resource
-    private OSSService ossService;
+    private tech.yozo.factoryrp.service.Impl.OSSService ossService;
 
     @Value("${oss.endpoint}")
     private String endpoint;
@@ -86,7 +86,7 @@ public class UploadController extends BaseController{
             value = "图片批量查询接口-WEB",required = true)
     public ApiResponse<List<ImageUploadResp>> batchQueryImageInfo(@RequestBody FileUrlBatchQueryReq fileUrlBatchQueryReq){
 
-        return apiResponse(uploadOSSService.batchQueryImageInfo(fileUrlBatchQueryReq.getFileIdList()));
+        return apiResponse(fileService.batchQueryImageInfo(fileUrlBatchQueryReq.getFileIdList()));
     }
 
     /**
@@ -99,7 +99,20 @@ public class UploadController extends BaseController{
     @ApiImplicitParam(dataType = "MultipartFile" ,name = "file", paramType = "Object" ,
             value = "图片",required = true)
     public ApiResponse<ImageUploadResp> uploadImageToOSS(@RequestParam(value = "file", required = true) MultipartFile file, String type){
-        return apiResponse(uploadOSSService.imageToOSS(file,type));
+        return apiResponse(fileService.imageToOSS(file,type));
+    }
+
+    /**
+     * OSS文件批量删除
+     * @param batchDeleteOSSItemReq
+     */
+    @ApiOperation(value = "批量删除接口",notes = "批量删除接口",httpMethod = "POST")
+    @PostMapping("/batchDeleteItems")
+    @ApiImplicitParam(dataType = "BatchDeleteOSSItemReq" ,name = "batchDeleteOSSItemReq", paramType = "Object" ,
+            value = "图片ID集合",required = true)
+    public ApiResponse batchDeleteItems(@RequestBody BatchDeleteOSSItemReq batchDeleteOSSItemReq){
+        fileService.batchDeleteItems(batchDeleteOSSItemReq);
+        return apiResponse();
     }
 
     /**
@@ -112,7 +125,7 @@ public class UploadController extends BaseController{
     @ApiImplicitParam(dataType = "MultipartFile" ,name = "file", paramType = "Object" ,
             value = "文件",required = true)
     public ApiResponse<FileUploadResp> uploadToOSS(@RequestParam(value = "file", required = true) MultipartFile file, String type){
-        return apiResponse(uploadOSSService.uploadFileToOSS(file,type));
+        return apiResponse(fileService.uploadFileToOSS(file,type));
     }
 
     //单文件上传

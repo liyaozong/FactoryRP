@@ -1,6 +1,10 @@
 package tech.yozo.factoryrp.service.Impl;
 
+import com.aliyun.oss.ClientException;
 import com.aliyun.oss.OSSClient;
+import com.aliyun.oss.OSSException;
+import com.aliyun.oss.model.DeleteObjectsRequest;
+import com.aliyun.oss.model.DeleteObjectsResult;
 import com.aliyun.oss.model.ObjectMetadata;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +21,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 /**
  * OSS服务
@@ -49,6 +54,23 @@ public class OSSService {
         client = new OSSClient(endpoint, accessKeyId, accessKeySecret);
     }*/
 
+    /**
+     * 批量删除object
+     */
+    public void deleteBatchObect(List<String> keys) {
+
+        initClient();
+
+        try {
+            // 删除Objects
+            DeleteObjectsResult deleteObjectsResult = client.deleteObjects(new DeleteObjectsRequest(bucketName).withKeys(keys));
+            List<String> deletedObjects = deleteObjectsResult.getDeletedObjects();
+        } catch (Exception e) {
+            logger.error(">>>>>>>>>>>>文件批量删除出现异常<<<<<<<<<<<"+e.getMessage(),e);
+        }finally {
+            client.shutdown();// 关闭client
+        }
+    }
 
     /**
      * 初始化OSS客户端

@@ -1,6 +1,7 @@
 package tech.yozo.factoryrp.service.Impl;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -28,6 +29,8 @@ import javax.persistence.criteria.Root;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+
+import static com.alibaba.fastjson.serializer.SerializerFeature.*;
 
 /**
  * 巡检标准服务具体实现
@@ -281,10 +284,6 @@ public class SpotInspectionStandardServiceImpl implements SpotInspectionStandard
                         spotInspectionStandardQueryResp.setRelateDevices(JSON.parseArray(d1.getRelateDevices(),Long.class));
                         spotInspectionStandardQueryResp.setRemark(d1.getRemark());
                         spotInspectionStandardQueryResp.setRequirement(d1.getRequirement());
-
-
-
-
                         respList.add(spotInspectionStandardQueryResp);
                     });
 
@@ -295,6 +294,7 @@ public class SpotInspectionStandardServiceImpl implements SpotInspectionStandard
 
             return null;
         }
+
 
     /**
      * 批量删除点检标准
