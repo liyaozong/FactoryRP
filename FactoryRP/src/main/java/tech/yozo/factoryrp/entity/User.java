@@ -1,6 +1,7 @@
 package tech.yozo.factoryrp.entity;
 
 
+import tech.yozo.factoryrp.utils.SnowflakeIdWorker;
 import tech.yozo.factoryrp.utils.UUIDSequenceWorker;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -26,7 +27,7 @@ public class User extends BaseEntity implements Serializable{
      * 用户ID 工具类生成
      */
     @Column(name = "user_id")
-    private Long userId = new UUIDSequenceWorker().uniqueSequenceId();
+    private Long userId = new SnowflakeIdWorker(0,0).uniqueSequenceId();
 
     /**
      * 登陆用户名

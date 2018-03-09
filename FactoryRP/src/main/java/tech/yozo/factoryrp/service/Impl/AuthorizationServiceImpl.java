@@ -645,7 +645,6 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 
         user.setCorporateIdentify(corporateIdentify);
         user.setUserName(userAddReq.getUserName());
-        user.setUserId(UUIDSequenceWorker.uniqueSequenceId());
 
         String salt = EncryptUtils.generateSalt();
         user.setPassword(EncryptUtils.generate(userAddReq.getPassword(),salt));

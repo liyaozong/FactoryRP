@@ -646,7 +646,11 @@ public class SpotInspectionPlanServiceImpl implements SpotInspectionPlanService 
                                     Long needToExecute = itemMap.get(p1.getSpotInspectionStandard()).stream().count();
 
                                     //拿到某个点检标准已经执行了的数量
-                                    Long executeCount = itemExecuteDetailMap.get(p1.getSpotInspectionStandard()).stream().count();
+                                    Long executeCount = 0L;
+
+                                    if(!CheckParam.isNull(itemExecuteDetailMap.get(p1.getSpotInspectionStandard())) && !itemExecuteDetailMap.get(p1.getSpotInspectionStandard()).isEmpty()){
+                                        executeCount = itemExecuteDetailMap.get(p1.getSpotInspectionStandard()).stream().count();
+                                    }
 
                                     //如果需要被检查的数量大于已经检查的数量说明具备漏检项目
                                     if(needToExecute >= executeCount){

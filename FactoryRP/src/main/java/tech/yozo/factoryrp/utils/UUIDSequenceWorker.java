@@ -138,9 +138,17 @@ public class UUIDSequenceWorker {
         /*System.out.println(954589177876316160L >> 36);
         System.out.println(uniqueSequenceId());*/
 
-        User user = new User();
+        /*User user = new User();
 
-        System.out.println(user.getUserId());
+        System.out.println(user.getUserId());*/
+
+
+        //System.out.println(longUniqueSequenceId());
+
+        for(int i = 0;i<=1000;i++){
+            System.out.println(longUniqueSequenceId());
+        }
+
     }
 
 
