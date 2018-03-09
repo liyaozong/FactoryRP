@@ -307,3 +307,19 @@ textarea{
     z-index: 3;
     outline: none;
 }
+.uploadImgLi{
+    display: inline-block;vertical-align: middle;margin-right: 5px;position: relative;
+}
+.topDeleteDiv{
+    position: absolute;
+    z-index: 4;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 30px;
+    background-color: rgba(0,0,0,.2);
+    text-align: right;
+    line-height: 30px;
+    opacity: 0.5;
+    /*display: none;*/
+}

@@ -164,6 +164,14 @@ myApp.factory("inspectionPlan",["AppHttp","FF_API",function(AppHttp,FF_API){
             data:data
         });
     };
+    //批量删除图片
+    inspectionPlan.batchDeleteItems=function(data){
+        return AppHttp({
+            method: 'post',
+            url: FF_API.base + FF_API.batchDeleteItemsPath,
+            data:data
+        });
+    };
 
     return inspectionPlan;
 }]);

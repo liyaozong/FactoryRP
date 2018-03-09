@@ -664,13 +664,19 @@
                 <div style="padding: 5px;box-sizing: border-box;margin-top: 10px;border: 1px solid #e6e6e6">
                     <span ng-if="repsponseData.length<=0">暂无数据</span>
                     <ul ng-if="repsponseData.length>0">
-                        <li style="display: inline-block;vertical-align: middle;margin-right: 5px;" ng-repeat="item in repsponseData">
+                        <li class="uploadImgLi" ng-repeat="item in repsponseData"  ng-mouseenter="showDeleteDiv = true" ng-mouseleave="showDeleteDiv = false">
+                            <div class="topDeleteDiv" ng-show="showDeleteDiv">
+                                <a href="javascript:void(0)" class="resBtn deleteBtn" style="color: red" ng-click="deleteUploadImg(item,$index)">
+                                    删除
+                                </a>
+                            </div>
                             <div style="width: 120px;height: 120px;text-align: center">
                                 <img ng-if="item.width>=item.height" ng-src="{{item.url}}" alt="" style="width: 100%;">
                                 <img ng-if="item.width<item.height" ng-src="{{item.url}}" alt="" style="height: 100%;">
                             </div>
                         </li>
                     </ul>
+                    <span style="color: red" ng-show="uploadEndDelete" ng-bind="uploadDeleteText"></span>
                 </div>
             </div>
             <p style="color: red;text-align: center" ng-show="errShow2">表单有空值</p>

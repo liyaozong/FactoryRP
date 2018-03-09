@@ -543,12 +543,24 @@ myApp.controller('inspectionPlanCtrl',['$filter','$rootScope','$location','$scop
                 var strsArr=[];var infoList=[];
                 if(data.data.executors){
                     data.data.executors.forEach(function (k) {
-                        $scope.allUserLists.forEach(function (v) {
-                            // console.log(v.userId==k)
-                            if(v.userId==k){
-                                strsArr.push(v.userName);
-                            }
-                        });
+                        if($scope.allUserLists){
+                            $scope.allUserLists.forEach(function (v) {
+                                // console.log(v.userId==k)
+                                if(v.userId==k){
+                                    strsArr.push(v.userName);
+                                }
+                            });
+                        }else {
+                            queryCorporateAllUser.getData().success(function (data) {
+                                $scope.allUserLists=data.data.userRespList;
+                                $scope.allUserLists.forEach(function (v) {
+                                    // console.log(v.userId==k,'---');
+                                    if(v.userId==k){
+                                        strsArr.push(v.userName);
+                                    }
+                                });
+                            });
+                        }
                     });
                 }
                 if(data.data.infoList){
@@ -599,7 +611,7 @@ myApp.controller('inspectionPlanCtrl',['$filter','$rootScope','$location','$scop
                         $(this).attr("selected",true);
                     }
                 });
-                console.log(data.data);
+                // console.log(data.data);
             }else {
                 popupDiv('SaveSuccess');
                 $('.SaveSuccess .Message').html(data.errorMessage);
@@ -984,7 +996,8 @@ myApp.controller('inspectionPlanCtrl',['$filter','$rootScope','$location','$scop
         // alert('接口调试中');
         // console.log('第一层确定',$scope.reqLists);
         var arr1=[];
-        $scope.reqLists.list.forEach(function (m,i) {
+        var reqLists=angular.copy($scope.reqLists);
+        reqLists.list.forEach(function (m,i) {
             // console.log(m,i);
             var arr2=[];
             m.itemList.forEach(function (k,l) {
@@ -1010,10 +1023,11 @@ myApp.controller('inspectionPlanCtrl',['$filter','$rootScope','$location','$scop
                 });
             }
         });
-        $scope.reqLists.list=arr1;
-        if($scope.reqLists.list.length>0){
-            inspectionPlan.executeSpotInspectionPlan($scope.reqLists).success(function (data) {
-
+        reqLists.list=arr1;
+        reqLists.abnormalHandleDesc=$scope.SpotInspectionPlanExecuteWarpReq.abnormalHandleDesc;
+        console.log(reqLists.abnormalHandleDesc,$scope.SpotInspectionPlanExecuteWarpReq.abnormalHandleDesc,'异常处理情况');
+        if(reqLists.list.length>0){
+            inspectionPlan.executeSpotInspectionPlan(reqLists).success(function (data) {
                 hideDiv('addRecordPopup');
                 if(data.errorCode=='000000'){
                     popupDiv('SaveSuccess');
@@ -1026,7 +1040,7 @@ myApp.controller('inspectionPlanCtrl',['$filter','$rootScope','$location','$scop
         }else {
             $scope.errShow1=true;
         }
-        // console.log($scope.reqLists,'end');
+        console.log(reqLists,'end');
     };
 
     //打开巡检明细录入弹出层
@@ -1038,6 +1052,7 @@ myApp.controller('inspectionPlanCtrl',['$filter','$rootScope','$location','$scop
                 hideDiv('addRecordPopup');
                 popupDiv('addRecordPopup2');
                 $scope.errShow2=false;
+                $scope.uploadEndDelete=false;
                 $scope.repsponseData=[];
                 if($scope.recordPopType==1){
                     $scope.xjjlDetailList={
@@ -1088,7 +1103,7 @@ myApp.controller('inspectionPlanCtrl',['$filter','$rootScope','$location','$scop
                         })
                     });
                 }
-                // console.log($scope.reqLists.list[$index],'-------',$index,arr2);
+                console.log($scope.reqLists.list[$index],'-------',$index,arr2);
                 $scope.reqLists.list[$index].itemList=arr2;
                 $scope.index2=$index;
                 // console.log($scope.reqLists,'22222');
@@ -1109,6 +1124,7 @@ myApp.controller('inspectionPlanCtrl',['$filter','$rootScope','$location','$scop
         if($scope.reqLists.list[$scope.index2].itemList){
             hideDiv('addRecordPopup2');
             popupDiv('addRecordPopup');
+            $scope.errShow1=false;
             $scope.reqLists.list[$scope.index2].remake=$scope.xjjlDetailList.remake;
             $scope.reqLists.list[$scope.index2].imageIdList=$scope.xjjlDetailList.imageIdList;
             $scope.reqLists.list[$scope.index2].isFlog=true;
@@ -1121,7 +1137,7 @@ myApp.controller('inspectionPlanCtrl',['$filter','$rootScope','$location','$scop
     $scope.open_ar_lrs2=function (obj,$index) {
         hideDiv('addRecordPopup2');
         popupDiv('addRecordPopup3');
-        console.log(obj)
+        console.log(obj);
         $scope.xjmxList={
             itemId:obj.itemId,
             name:obj.name,
@@ -1191,6 +1207,7 @@ myApp.controller('inspectionPlanCtrl',['$filter','$rootScope','$location','$scop
             };
             hideDiv('addRecordPopup3');
             popupDiv('addRecordPopup2');
+            $scope.errShow2=false;
         }else {
             $scope.errShow3=true;
         }
@@ -1269,6 +1286,22 @@ myApp.controller('inspectionPlanCtrl',['$filter','$rootScope','$location','$scop
         if($scope.uploadFlog){
             uploader.uploadAll();
         }
+    };
+    //删除已上传图片
+    $scope.deleteUploadImg=function (obj,index) {
+        var req={
+            itemList:[obj.key]
+        };
+        inspectionPlan.batchDeleteItems(req).success(function (response) {
+            if(response.errorCode=='000000'){
+                $scope.repsponseData.splice(index,1);
+                $scope.xjjlDetailList.imageIdList.splice(index,1);
+                $scope.uploadEndDelete=false;
+            }else {
+                $scope.uploadEndDelete=true;
+                $scope.uploadDeleteText=response.errorMessage;
+            }
+        });
     };
 
 
