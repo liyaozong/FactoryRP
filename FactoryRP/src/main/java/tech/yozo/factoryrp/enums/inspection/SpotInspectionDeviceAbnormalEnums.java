@@ -16,7 +16,7 @@ import java.util.List;
 public enum SpotInspectionDeviceAbnormalEnums {
 
     SPOT_INSPECTION_ITEMS_NORMAL("1","无异常"),
-    SPOT_INSPECTION_ITEMS_ABNORMAL("1","有异常");
+    SPOT_INSPECTION_ITEMS_ABNORMAL("2","有异常");
 
 
     private String code;

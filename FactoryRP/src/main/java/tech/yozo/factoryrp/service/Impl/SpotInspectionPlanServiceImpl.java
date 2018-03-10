@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tech.yozo.factoryrp.config.auth.UserAuthService;
 import tech.yozo.factoryrp.entity.*;
+import tech.yozo.factoryrp.enums.inspection.SpotInspectionDeviceAbnormalEnums;
 import tech.yozo.factoryrp.enums.inspection.SpotInspectionPlanRecycleTypeEnum;
 import tech.yozo.factoryrp.exception.BussinessException;
 import tech.yozo.factoryrp.repository.*;
@@ -575,9 +576,10 @@ public class SpotInspectionPlanServiceImpl implements SpotInspectionPlanService 
 
                 //查询巡检记录，方便返回漏检数量和异常数量
                 //保证在一个巡检计划周期内，巡检记录只能有一条
+                //巡检记录创建时间 + 周期 > 当前时间  说明在周期内产生了巡检记录
                 Date date = DateTimeUtil.subtractDateByParam(currentDate, plan.getRecyclePeriod(), plan.getRecyclePeriodType());
 
-                //如果能查询出来表示执行过
+                //如果能查询出来表示在周期内执行过
                 SpotInspectionRecord record = spotInspectionRecordRepository.findByCorporateIdentifyAndPlanIdAndCreateTimeGreaterThan(corporateIdentify, plan.getId(), date);
 
 
@@ -601,6 +603,19 @@ public class SpotInspectionPlanServiceImpl implements SpotInspectionPlanService 
                 if(!CheckParam.isNull(detailList) && !detailList.isEmpty()){
                     itemExecuteDetailMap = detailList.stream().collect(groupingBy(SpotInspectionRecordDetail::getStandard));
                 }
+
+                //计算是否在执行时间之内  如果执行过，那么过了这个周期之后才能执行 所以  最后一次执行时间 小于  当前时间 - 周期
+                Date compareTime = DateTimeUtil.subtractDateByParam(currentDate, plan.getRecyclePeriod(), plan.getRecyclePeriodType());
+
+                //当前时间 - 周期 < 上次执行时间  代表在执行时间范围内 如果上次执行时间为空说明从来没有执行过
+                if(CheckParam.isNull(plan.getLastExecuteTime())){
+                    spotInspectionPlanDetailWarpResp.setInTime(1);
+                }else if(plan.getLastExecuteTime().before(compareTime)){
+                    spotInspectionPlanDetailWarpResp.setInTime(1);
+                }else{
+                    spotInspectionPlanDetailWarpResp.setInTime(2);
+                }
+
 
                 for (SpotInspectionPlanDevice p1: planDeviceList) {
                     if(!CheckParam.isNull(deviceInfoMap.get(p1.getDeviceId()))){
@@ -636,7 +651,6 @@ public class SpotInspectionPlanServiceImpl implements SpotInspectionPlanService 
                         if(CheckParam.isNull(record)){
                             info.setAbnormalDeviceCount(0);
                             info.setMissCount(0);
-                            spotInspectionPlanDetailWarpResp.setInTime(1);
                         }else{
                             if(!CheckParam.isNull(detailList) && !detailList.isEmpty()){
                                 //计算漏检数量
@@ -648,8 +662,13 @@ public class SpotInspectionPlanServiceImpl implements SpotInspectionPlanService 
                                     //拿到某个点检标准已经执行了的数量
                                     Long executeCount = 0L;
 
+                                    //巡检项异常的数量
+                                    Long abnormalCount = 0L;
+
                                     if(!CheckParam.isNull(itemExecuteDetailMap.get(p1.getSpotInspectionStandard())) && !itemExecuteDetailMap.get(p1.getSpotInspectionStandard()).isEmpty()){
                                         executeCount = itemExecuteDetailMap.get(p1.getSpotInspectionStandard()).stream().count();
+                                        //统计异常数量
+                                        abnormalCount = itemExecuteDetailMap.get(p1.getSpotInspectionStandard()).stream().filter(s1 -> s1.getAbnormalDesc().equals(SpotInspectionDeviceAbnormalEnums.SPOT_INSPECTION_ITEMS_ABNORMAL.getCode())).count();
                                     }
 
                                     //如果需要被检查的数量大于已经检查的数量说明具备漏检项目
@@ -659,14 +678,8 @@ public class SpotInspectionPlanServiceImpl implements SpotInspectionPlanService 
                                         info.setMissCount(0); //如果需要被检查的数量小于已经检查的数量说明出现数据不一致
                                     }
 
-                                    /*Date compareDate = DateTimeUtil.plusDateByParam(plan.getLastExecuteTime(), plan.getRecyclePeriod(), plan.getRecyclePeriodType());
-                                    //inTime字段控制前端逻辑是否显示可以执行 上次巡检时间 + 周期 < 当前时间 延误 上次巡检时间 + 周期 > 当前时间 执行过 如果延误说明可以执行 执行过说明不可以执行
+                                    info.setAbnormalDeviceCount(Integer.valueOf((String.valueOf(abnormalCount))));
 
-                                    if(compareDate.after(currentDate)){
-
-                                    }*/
-                                    //设置已经在周期内执行过了
-                                    spotInspectionPlanDetailWarpResp.setInTime(1);
                                 }
 
                             }

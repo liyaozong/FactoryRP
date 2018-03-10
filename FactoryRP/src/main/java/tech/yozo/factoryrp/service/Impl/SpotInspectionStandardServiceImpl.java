@@ -202,14 +202,15 @@ public class SpotInspectionStandardServiceImpl implements SpotInspectionStandard
     /**
      * 返回执行结果的内部对象
      * @param corporateIdentify
-     * @param compareTime
      * @param itemIdList
+     * @param recordId
      * @return
      */
-    public Map<Long,InspectionItemTransferVo> queryInnerInspectionExecuteResult(Long corporateIdentify, Date compareTime, List<Long> itemIdList){
+    public Map<Long,InspectionItemTransferVo> queryInnerInspectionExecuteResult(Long corporateIdentify,List<Long> itemIdList,Long recordId){
 
         //查询出规定周期内执行过的记录
-        List<SpotInspectionRecordDetail> detailList = spotInspectionRecordDetailRepository.findByCorporateIdentifyAndStandardItemIdInAndCreateTimeGreaterThan(corporateIdentify, itemIdList, compareTime);
+        //List<SpotInspectionRecordDetail> detailList = spotInspectionRecordDetailRepository.findByCorporateIdentifyAndStandardItemIdInAndCreateTimeGreaterThan(corporateIdentify, itemIdList, compareTime);
+        List<SpotInspectionRecordDetail> detailList = spotInspectionRecordDetailRepository.findByCorporateIdentifyAndStandardItemIdInAndRecordId(corporateIdentify,itemIdList,recordId);
 
         Map<Long,InspectionItemTransferVo> resultMap = new HashMap<>();
 
@@ -639,14 +640,50 @@ public class SpotInspectionStandardServiceImpl implements SpotInspectionStandard
                 itemIdList.add(s1.getId());
             });
 
+            Date currentDate = new Date();
+
+
             //计算当前时间减去周期之后的时间 注意，此处和计划的下次执行时间无关
-            //Date date = DateTimeUtil.subtractDateByParam(new Date(), plan.getRecyclePeriod(), plan.getRecyclePeriodType());
-            Date date = DateTimeUtil.subtractDateByParam(new Date(), plan.getRecyclePeriod(), plan.getRecyclePeriodType());
+            Date date = DateTimeUtil.subtractDateByParam(currentDate, plan.getRecyclePeriod(), plan.getRecyclePeriodType());
 
-            //Map<Long, Integer> executeResultMap = inspectionExecuteResult(corporateIdentify, date, itemIdList);
-            Map<Long, InspectionItemTransferVo> executeResultMap = queryInnerInspectionExecuteResult(corporateIdentify, date, itemIdList);
+            //巡检记录创建时间 + 周期 > 当前时间  说明在周期内产生了巡检记录 查找周期内执行巡检用户填写的值
+            //如果能查询出来表示在周期内执行过
+            SpotInspectionRecord record = spotInspectionRecordRepository.findByCorporateIdentifyAndPlanIdAndCreateTimeGreaterThan(corporateIdentify, plan.getId(), date);
 
-            spotInspectionItemsList.stream().forEach(s1 -> {
+            Map<Long, InspectionItemTransferVo> executeResultMap = null;
+
+            //执行过才查找巡检细节
+            if(!CheckParam.isNull(record)){
+                executeResultMap = queryInnerInspectionExecuteResult(corporateIdentify,itemIdList,record.getId());
+            }
+
+            for (SpotInspectionItems item: spotInspectionItemsList) {
+                SpotInspectionStandardItemsQueryResp spotInspectionStandardItemsQueryResp = new SpotInspectionStandardItemsQueryResp();
+
+                spotInspectionStandardItemsQueryResp.setUpperLimit(item.getUpperLimit());
+                spotInspectionStandardItemsQueryResp.setLowerLimit(item.getLowerLimit());
+                spotInspectionStandardItemsQueryResp.setInputLimitValue(JSON.parseArray(item.getVaildateRegular(), String.class));
+                spotInspectionStandardItemsQueryResp.setName(item.getName());
+                spotInspectionStandardItemsQueryResp.setRecordTypeName(item.getRecordType());
+                spotInspectionStandardItemsQueryResp.setItemId(item.getId());
+
+
+                //设置在规定巡检周期内，是否执行过，1执行2未执行
+                if (!CheckParam.isNull(executeResultMap) && !CheckParam.isNull(executeResultMap.get(item.getId()))) {
+                    //inspectionStatus值 是否执行了提交 1执行2未执行
+                    spotInspectionStandardItemsQueryResp.setInspectionStatus(executeResultMap.get(item.getId()).getExecuteStatus());
+                    spotInspectionStandardItemsQueryResp.setAbnormalDesc(executeResultMap.get(item.getId()).getAbnormalDesc());
+                    spotInspectionStandardItemsQueryResp.setRecordResult(executeResultMap.get(item.getId()).getRecordResult());
+                    spotInspectionStandardItemsQueryResp.setRemark(executeResultMap.get(item.getId()).getRemark());
+                    spotInspectionStandardItemsQueryResp.setExecuteDetailId(executeResultMap.get(item.getId()).getExecuteDetailId());
+                } else {
+                    spotInspectionStandardItemsQueryResp.setInspectionStatus(2);
+                }
+
+                itemList.add(spotInspectionStandardItemsQueryResp);
+            }
+
+            /*spotInspectionItemsList.stream().forEach(s1 -> {
                 SpotInspectionStandardItemsQueryResp spotInspectionStandardItemsQueryResp = new SpotInspectionStandardItemsQueryResp();
 
                 spotInspectionStandardItemsQueryResp.setUpperLimit(s1.getUpperLimit());
@@ -670,7 +707,7 @@ public class SpotInspectionStandardServiceImpl implements SpotInspectionStandard
 
                 itemList.add(spotInspectionStandardItemsQueryResp);
 
-            });
+            });*/
 
             return itemList;
         }
