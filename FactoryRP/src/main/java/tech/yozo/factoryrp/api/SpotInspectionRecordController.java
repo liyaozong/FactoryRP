@@ -88,12 +88,12 @@ public class SpotInspectionRecordController extends BaseController {
     }
 
     /**
-     * 根据点检记录ID查询点检详情
+     * 根据点检记录ID和点检计划ID查询点检详情-WEB
      * @param recordId
      * @param planId
      * @return
      */
-    @ApiOperation(value = "根据巡检ID查询巡检记录-WEB",notes = "根据巡检ID查询巡检记录-WEB",httpMethod = "GET")
+    @ApiOperation(value = "根据点检记录ID和点检计划ID查询点检详情-WEB",notes = "根据点检记录ID和点检计划ID查询点检详情-WEB",httpMethod = "GET")
     @GetMapping("/querySpotInspectionRecordDetailByRecordId")
     @ApiImplicitParams({
             @ApiImplicitParam(dataType = "Long" ,name = "recordId", paramType = "query" ,

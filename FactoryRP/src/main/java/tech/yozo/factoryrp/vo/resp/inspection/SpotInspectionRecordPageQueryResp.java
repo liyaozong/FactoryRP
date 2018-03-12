@@ -25,9 +25,9 @@ public class SpotInspectionRecordPageQueryResp implements Serializable{
     private Long recordId;
 
     /**
-     * 巡检项目ID
+     * 巡检计划ID
      */
-    @ApiModelProperty(value = "巡检项目ID",notes ="巡检项目ID" )
+    @ApiModelProperty(value = "巡检计划ID",notes ="巡检计划ID" )
     private Long planId;
 
     /**

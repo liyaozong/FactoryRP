@@ -439,7 +439,7 @@ public class SpotInspectionRecordServiceImpl implements SpotInspectionRecordServ
                     detail.setAbnormalDeviceCount(0);
                     detail.setMissCount(0);
                     detail.setMissCount(0);
-                    detail.setExecuteStatus(1); //执行状态 1完成2未完成
+                    detail.setExecuteStatus(2); //执行状态 1完成2未完成
                 }
 
             });
@@ -543,6 +543,8 @@ public class SpotInspectionRecordServiceImpl implements SpotInspectionRecordServ
                 resp.setRecordId(record.getId());
                 resp.setRecyclePeriod(SpotInspectionPlanRecycleTypeEnum.handlerRecycleTimer(record.getRecyclePeriod(),record.getRecyclePeriodType()));
                 resp.setExecutor(record.getExecutor());
+                resp.setPlanId(record.getPlanId());
+
 
                 resp.setAbnormalHandelDesc(""); //异常处理情况 返回空
 
