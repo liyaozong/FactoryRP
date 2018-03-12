@@ -1,9 +1,12 @@
 package tech.yozo.factoryrp.service;
 
+import tech.yozo.factoryrp.page.Pagination;
 import tech.yozo.factoryrp.vo.req.SpotInspectionRecordAddReq;
 import tech.yozo.factoryrp.vo.req.SpotInspectionRecordMobileAddReq;
+import tech.yozo.factoryrp.vo.req.SpotInspectionRecordPageQueryReq;
 import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionRecordAddResp;
 import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionRecordDetailWarpResp;
+import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionRecordPageQueryResp;
 import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionRecordResp;
 
 import java.util.List;
@@ -14,7 +17,13 @@ import java.util.List;
 public interface SpotInspectionRecordService {
 
 
-
+    /**
+     * 巡检记录分页查询
+     * @param spotInspectionRecordPageQueryReq
+     * @param corporateIdentify
+     * @return
+     */
+    Pagination<SpotInspectionRecordPageQueryResp> findByPage(SpotInspectionRecordPageQueryReq spotInspectionRecordPageQueryReq,Long corporateIdentify);
 
     /**
      * 根据点检记录ID查询点检详情

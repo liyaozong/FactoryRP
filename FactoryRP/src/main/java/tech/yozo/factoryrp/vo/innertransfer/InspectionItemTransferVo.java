@@ -1,6 +1,5 @@
 package tech.yozo.factoryrp.vo.innertransfer;
 
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;

@@ -7,13 +7,16 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 import tech.yozo.factoryrp.config.auth.UserAuthService;
+import tech.yozo.factoryrp.page.Pagination;
 import tech.yozo.factoryrp.service.SpotInspectionRecordService;
 import tech.yozo.factoryrp.utils.CheckParam;
 import tech.yozo.factoryrp.vo.base.ApiResponse;
 import tech.yozo.factoryrp.vo.req.SpotInspectionRecordAddReq;
 import tech.yozo.factoryrp.vo.req.SpotInspectionRecordMobileAddReq;
+import tech.yozo.factoryrp.vo.req.SpotInspectionRecordPageQueryReq;
 import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionRecordAddResp;
 import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionRecordDetailWarpResp;
+import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionRecordPageQueryResp;
 import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionRecordResp;
 
 import javax.annotation.Resource;
@@ -101,6 +104,20 @@ public class SpotInspectionRecordController extends BaseController {
     public ApiResponse<SpotInspectionRecordDetailWarpResp> querySpotInspectionRecordDetailByRecordId(@RequestParam("recordId")Long recordId,@RequestParam("planId") Long planId,HttpServletRequest request){
         Long corporateIdentify = userAuthService.getCurrentUserCorporateIdentify(request);
         return apiResponse(spotInspectionRecordService.querySpotInspectionRecordDetailByRecordId(recordId,planId, corporateIdentify));
+    }
+
+    /**
+     * 巡检记录分页查询
+     * @param spotInspectionRecordPageQueryReq
+     * @return
+     */
+    @ApiOperation(value = "巡检记录分页查询",notes = "巡检记录分页查询",httpMethod = "POST")
+    @PostMapping("/findByPage")
+    @ApiImplicitParam(dataType = "SpotInspectionRecordPageQueryReq" ,name = "spotInspectionRecordPageQueryReq", paramType = "VO" ,
+            value = "巡检记录分页查询",required = true)
+    public ApiResponse<Pagination<SpotInspectionRecordPageQueryResp>> findByPage(@RequestBody SpotInspectionRecordPageQueryReq spotInspectionRecordPageQueryReq,HttpServletRequest request){
+        Long corporateIdentify = userAuthService.getCurrentUserCorporateIdentify(request);
+        return apiResponse(spotInspectionRecordService.findByPage(spotInspectionRecordPageQueryReq,corporateIdentify));
     }
 
 }

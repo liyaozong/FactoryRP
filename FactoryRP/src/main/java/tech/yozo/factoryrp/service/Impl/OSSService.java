@@ -75,7 +75,7 @@ public class OSSService {
     /**
      * 初始化OSS客户端
      */
-   private void initClient(){
+   public void initClient(){
        if(CheckParam.isNull(client)){
            client = new OSSClient(endpoint, accessKeyId, accessKeySecret);
        }
@@ -175,6 +175,23 @@ public class OSSService {
         client.shutdown();
         return uploadItemName;
     }
+
+    /**
+     * 根据保存到阿里云上文件路径，获取有效的访问url地址
+     * 不会初始化阿里云OSSClient,需要调用方主动初始化Client
+     *
+     * @param ossName
+     *            保存到阿里云上文件路径名
+     * @return
+     */
+    public String getOSSUrlNotInitClient(String ossName) {
+        // 设置URL过期时间为1小时
+        Date expiration = new Date(new Date().getTime() + 3600 * 1000);
+        // 生成URL
+        URL url = client.generatePresignedUrl(bucketName, ossName, expiration);
+        return url.toString();
+    }
+
 
     /**
      * 根据保存到阿里云上文件路径，获取有效的访问url地址

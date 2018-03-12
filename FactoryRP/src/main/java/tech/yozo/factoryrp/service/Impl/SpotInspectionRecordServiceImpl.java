@@ -1,30 +1,34 @@
 package tech.yozo.factoryrp.service.Impl;
 
 
+import com.alibaba.fastjson.JSON;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tech.yozo.factoryrp.entity.*;
 import tech.yozo.factoryrp.enums.inspection.SpotInspectionDeviceAbnormalEnums;
+import tech.yozo.factoryrp.enums.inspection.SpotInspectionPlanRecycleTypeEnum;
 import tech.yozo.factoryrp.exception.BussinessException;
+import tech.yozo.factoryrp.page.Pagination;
 import tech.yozo.factoryrp.repository.*;
 import tech.yozo.factoryrp.service.SpotInspectionRecordService;
 import tech.yozo.factoryrp.utils.CheckParam;
 import tech.yozo.factoryrp.utils.DateTimeUtil;
 import tech.yozo.factoryrp.utils.ErrorCode;
+import tech.yozo.factoryrp.vo.innertransfer.InspectionRecordTimeQueryTransferVo;
 import tech.yozo.factoryrp.vo.req.SpotInspectionRecordAddReq;
 import tech.yozo.factoryrp.vo.req.SpotInspectionRecordMobileAddReq;
-import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionRecordAddResp;
-import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionRecordDetailResp;
-import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionRecordDetailWarpResp;
-import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionRecordResp;
+import tech.yozo.factoryrp.vo.req.SpotInspectionRecordPageQueryReq;
+import tech.yozo.factoryrp.vo.resp.auth.AuthUserMenu;
+import tech.yozo.factoryrp.vo.resp.inspection.*;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import javax.persistence.criteria.Predicate;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -191,6 +195,7 @@ public class SpotInspectionRecordServiceImpl implements SpotInspectionRecordServ
         record.setPlanTime(plan.getNextExecuteTime());
         record.setRecyclePeriod(plan.getRecyclePeriod());
         record.setRecyclePeriodType(plan.getRecyclePeriodType());
+        record.setDepartment(plan.getDepartment());
 
         spotInspectionRecordRepository.save(record);
 
@@ -445,30 +450,199 @@ public class SpotInspectionRecordServiceImpl implements SpotInspectionRecordServ
         return null;
     }
 
-    public static void main(String[] args) {
-        User user1 = new User();
-        User user2 = new User();
-        User user3 = new User();
-
-        user1.setId(1L);
-        user2.setId(2L);
-        user3.setId(3L);
-
-        user1.setUserName("张三");
-        user2.setUserName("张三");
-        user3.setUserName("李四");
-
-        List<User> userList = new ArrayList<>();
-        userList.add(user1);
-        userList.add(user2);
-        userList.add(user3);
+    /**
+     * 巡检记录分页查询
+     * @param spotInspectionRecordPageQueryReq
+     * @return
+     */
+    public Pagination<SpotInspectionRecordPageQueryResp> findByPage(SpotInspectionRecordPageQueryReq spotInspectionRecordPageQueryReq,Long corporateIdentify){
 
 
-        Map<String, List<User>> userMap =
-                userList.stream().collect(groupingBy(User::getUserName));
+        if (spotInspectionRecordPageQueryReq.getCurrentPage() > 0) {
+            spotInspectionRecordPageQueryReq.setCurrentPage(spotInspectionRecordPageQueryReq.getCurrentPage()-1);
+        }
 
-        System.out.println(userMap);
+        Pageable p = new PageRequest(spotInspectionRecordPageQueryReq.getCurrentPage(), spotInspectionRecordPageQueryReq.getItemsPerPage());
 
+        Page<SpotInspectionRecord> page = spotInspectionRecordRepository.findAll((root, criteriaQuery, criteriaBuilder) -> {
+
+            InspectionRecordTimeQueryTransferVo transferVo = null;
+
+            if(!CheckParam.isNull(spotInspectionRecordPageQueryReq.getExecuteTimeCondition())){
+                transferVo = tranaferRecordQueryTime(spotInspectionRecordPageQueryReq.getExecuteTimeCondition());
+            }
+
+            List<Predicate> listCon = new ArrayList<>();
+
+            if (!CheckParam.isNull(spotInspectionRecordPageQueryReq.getDepartmentId())){ //部门查询条件
+                listCon.add(criteriaBuilder.equal(root.get("department").as(Long.class),spotInspectionRecordPageQueryReq.getDepartmentId()));
+            }
+            if (!CheckParam.isNull(transferVo) && !CheckParam.isNull(transferVo.getBeginTime())){ //开始时间查询条件
+                listCon.add(criteriaBuilder.greaterThanOrEqualTo(root.get("createTime").as(Date.class),transferVo.getBeginTime()));
+            }
+            if (!CheckParam.isNull(transferVo) && !CheckParam.isNull(transferVo.getEndTime())){ //结束时间查询条件
+                listCon.add(criteriaBuilder.lessThanOrEqualTo(root.get("createTime").as(Date.class),transferVo.getEndTime()));
+            }
+            criteriaQuery.orderBy(criteriaBuilder.desc(root.get("createTime")));
+            Predicate[] predicates = new Predicate[listCon.size()];
+            predicates = listCon.toArray(predicates);
+            return criteriaBuilder.and(predicates);
+        },p);
+
+
+        if(page.hasContent()){
+
+            List<SpotInspectionRecordPageQueryResp> respList = new ArrayList<>();
+
+            List<SpotInspectionRecord> rocordContent = page.getContent();
+
+
+            List<Long> recordIds = new ArrayList<>();
+            List<Long> planIds = new ArrayList<>();
+            rocordContent.stream().forEach(c1 -> {
+                recordIds.add(c1.getId());
+                planIds.add(c1.getPlanId());
+            });
+
+            Map<Long, List<SpotInspectionRecordDetail>> recordsDetailsMap = null;
+            Map<Long, List<SpotInspectionItems>> itemMap = null;
+
+            List<SpotInspectionItems> standardItemList = null;
+
+            //巡检细节集合 根据巡检记录ID进行IN查询
+            List<SpotInspectionRecordDetail> detailList = spotInspectionRecordDetailRepository.findByCorporateIdentifyAndRecordIdIn(corporateIdentify,recordIds);
+
+            //根据巡检记录ID分组
+            if(!CheckParam.isNull(detailList) && !detailList.isEmpty()){
+
+                //用于巡检标准查询的集合，方便对比出漏检数量
+                List<Long> planStandardList = new ArrayList<>();
+                detailList.stream().forEach(d1 -> {
+                    planStandardList.add(d1.getStandard());
+                });
+                recordsDetailsMap = detailList.stream().collect(Collectors.groupingBy(SpotInspectionRecordDetail::getRecordId));
+
+                standardItemList = spotInspectionItemsRepository.findByCorporateIdentifyAndStandardIn(corporateIdentify, planStandardList.stream().distinct().collect(Collectors.toList()));
+
+                //按照巡检标准ID进行分组 形成以巡检标准为key,巡检项目为value的map
+                if(!CheckParam.isNull(standardItemList) && !standardItemList.isEmpty()){
+                    itemMap = standardItemList.stream().collect(groupingBy(SpotInspectionItems::getStandard));
+                }
+
+            }
+
+            for (SpotInspectionRecord record: rocordContent) {
+
+                SpotInspectionRecordPageQueryResp resp = new SpotInspectionRecordPageQueryResp();
+
+
+                resp.setLastExecuteTime(JSON.toJSONString(record.getExecuteTime()));
+                resp.setDepartmentId(record.getDepartment());
+                resp.setPlanTime(JSON.toJSONString(record.getPlanTime()));
+                resp.setPlanName(record.getPlanName());
+                resp.setRecordId(record.getId());
+                resp.setRecyclePeriod(SpotInspectionPlanRecycleTypeEnum.handlerRecycleTimer(record.getRecyclePeriod(),record.getRecyclePeriodType()));
+                resp.setExecutor(record.getExecutor());
+
+                resp.setAbnormalHandelDesc(""); //异常处理情况 返回空
+
+                //计算异常数量
+                if(!CheckParam.isNull(recordsDetailsMap) && !CheckParam.isNull(recordsDetailsMap.get(record.getId()))){
+                    //计算异常数
+                    Long count = recordsDetailsMap.get(record.getId()).stream().filter(d1 -> d1.getRecordId() == record.getId() && !CheckParam.isNull(d1.getAbnormalDesc()) && d1.getAbnormalDesc().equals(SpotInspectionDeviceAbnormalEnums.SPOT_INSPECTION_ITEMS_ABNORMAL)).count();
+                    resp.setAbnormalDeviceCount(Integer.parseInt(String.valueOf(count)));
+                }
+
+
+                //计算漏检数量
+                if(!CheckParam.isNull(recordsDetailsMap) && !CheckParam.isNull(recordsDetailsMap.get(record.getId()))){
+
+                    List<SpotInspectionRecordDetail> spotInspectionRecordDetails = recordsDetailsMap.get(record.getId());
+
+
+                    //统计某个巡检记录下实际执行了多少巡检项
+                    Integer executeCount = Integer.valueOf(String.valueOf(detailList.stream().filter(d1 -> d1.getRecordId() == record.getId()).count()));
+
+                    //拿到某个点检标准需要被执行的点检项数量
+                    Integer needToExecute = 0;
+
+                    //这里面的巡检记录详情全都是属于这个巡检记录的详情
+                    List<SpotInspectionRecordDetail> details = recordsDetailsMap.get(record.getId());
+
+                    //需要根据巡检标准ID去重
+                    details = details.stream().collect(Collectors.collectingAndThen(Collectors.toCollection(() -> new TreeSet<>(Comparator.comparingLong(SpotInspectionRecordDetail::getId))), ArrayList::new));
+
+                    List<Integer> countItems = new ArrayList<>();
+
+
+                    //拿到需要被执行的巡检项目集合
+                    for (SpotInspectionRecordDetail detail : details) {
+                        if(!CheckParam.isNull(itemMap) && !CheckParam.isNull(itemMap.get(detail.getStandard()))){
+                            countItems.add(itemMap.get(detail.getStandard()).size());
+                        }
+                    }
+
+                    //算出需要被执行的巡检项数量
+                    if(!countItems.isEmpty()){
+                        needToExecute = countItems.stream().reduce(0,
+                                Integer::sum);
+                    }
+
+
+                    resp.setMissCount(needToExecute - executeCount);
+                    resp.setDelayDesc(""); //延迟信息暂时不返回
+                }
+                respList.add(resp);
+            }
+            Pagination<SpotInspectionRecordPageQueryResp> res = new Pagination<>();
+            res.setList(respList);
+
+            res.setCurrentPage(spotInspectionRecordPageQueryReq.getCurrentPage());
+            res.setItemsPerPage(spotInspectionRecordPageQueryReq.getItemsPerPage());
+            res.setTotalCount(Integer.valueOf(String.valueOf(page.getTotalElements())));
+            return res;
+        }
+
+        return null;
     }
+
+
+    /**
+     * 执行时间查询条件 1 本周记录 2上周记录 3本月记录 4上月记录 5本年记录 6上年记录 7更早记录
+     * @param executeTimeCondition
+     * @return
+     */
+    private InspectionRecordTimeQueryTransferVo tranaferRecordQueryTime(Integer executeTimeCondition){
+
+        InspectionRecordTimeQueryTransferVo transferVo = new InspectionRecordTimeQueryTransferVo();
+
+
+        if(1 == executeTimeCondition){
+            transferVo.setBeginTime(DateTimeUtil.getTimesCurrentWeekBegin());
+            transferVo.setEndTime(DateTimeUtil.getTimesCurrentWeekEnd());
+        }else if(2 == executeTimeCondition){
+            transferVo.setBeginTime(DateTimeUtil.getTimePreviousWeekBegin());
+            transferVo.setEndTime(DateTimeUtil.getTimePreviousWeekEnd());
+        }else if(3 == executeTimeCondition){
+            transferVo.setBeginTime(DateTimeUtil.getTimesCurrentMonthBegin());
+            transferVo.setEndTime(DateTimeUtil.getTimesCurrentMonthEnd());
+        }else if(4 == executeTimeCondition){
+            transferVo.setBeginTime(DateTimeUtil.getTimesPreviousMonthBegin());
+            transferVo.setEndTime(DateTimeUtil.getTimesPreviousMonthEnd());
+        }else if(5 == executeTimeCondition){
+            transferVo.setBeginTime(DateTimeUtil.getTimesCurrentYearBegin());
+            transferVo.setEndTime(DateTimeUtil.getTimesCurrentYearEnd());
+        }else if(6 == executeTimeCondition){
+            transferVo.setBeginTime(DateTimeUtil.getTimesPreviousYearBegin());
+            transferVo.setEndTime(DateTimeUtil.getTimesPreviousYearEnd());
+        }else if(7 == executeTimeCondition){
+            //对于更早记录 即为大于现在时间的记录
+            transferVo.setBeginTime(new Date());
+            transferVo.setEndTime(null);
+        }
+
+        return transferVo;
+    }
+
 
 }

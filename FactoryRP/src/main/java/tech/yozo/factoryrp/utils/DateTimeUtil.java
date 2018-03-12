@@ -1,6 +1,5 @@
 package tech.yozo.factoryrp.utils;
 
-import com.alibaba.fastjson.JSON;
 import tech.yozo.factoryrp.enums.inspection.SpotInspectionPlanRecycleTypeEnum;
 
 import java.sql.Timestamp;
@@ -40,7 +39,7 @@ public class DateTimeUtil {
 	 * @param str
 	 * @return
 	 */
-	public static Date strToDate(final String str) {
+	public static Date strToDate(String str) {
 		if (str == null || str.trim().length() == 0)
 			return null;
 		try {
@@ -61,7 +60,7 @@ public class DateTimeUtil {
 	 *            日期格式. 如果为空，默认为:yyyy-MM-dd HH:mm:ss.
 	 * @return
 	 */
-	public static Date strToDate(final String str, String dateFormat) {
+	public static Date strToDate(String str, String dateFormat) {
 		if (str == null || str.trim().length() == 0)
 			return null;
 		try {
@@ -100,7 +99,7 @@ public class DateTimeUtil {
 	 *            日期
 	 * @return
 	 */
-	public static String dateTodateStr(final Date date) {
+	public static String dateTodateStr(Date date) {
 		return dateToStr(date, "yyyy-MM-dd");
 	}
 
@@ -111,7 +110,7 @@ public class DateTimeUtil {
 	 *            日期
 	 * @return
 	 */
-	public static String dateToStr(final Date date) {
+	public static String dateToStr(Date date) {
 		return dateToStr(date, "yyyy-MM-dd HH:mm:ss");
 	}
 
@@ -120,7 +119,6 @@ public class DateTimeUtil {
 	 * 
 	 * @param list
 	 */
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static void getFormatDate(List<Map<String,Object>> list) {
 		SimpleDateFormat fm = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		for (Map<String, Object> item : list) {
@@ -140,7 +138,7 @@ public class DateTimeUtil {
 	 *            日期
 	 * @return
 	 */
-	public static Date dateToDate(final Date date) {
+	public static Date dateToDate(Date date) {
 		return dateToDate(date, "yyyy-MM-dd HH:mm:ss");
 	}
 
@@ -151,7 +149,7 @@ public class DateTimeUtil {
 	 * @param dateFormat
 	 * @return
 	 */
-	public static Date dateToDate(final Date date, String dateFormat) {
+	public static Date dateToDate(Date date, String dateFormat) {
 		if (date == null || "".equals(date)) {
 			// log.debug("未知时间");
 			return null;
@@ -202,7 +200,7 @@ public class DateTimeUtil {
 	 * @param day
 	 *            减去的天数. return
 	 */
-	public static String subtractDateToString(final Date date, final int day) {
+	public static String subtractDateToString(Date date, int day) {
 		try {
 			Date tempDate = subtractDate(date, day);
 			String dateStr = dateToStr(tempDate, null);
@@ -220,7 +218,7 @@ public class DateTimeUtil {
 	 * @param day
 	 *            减去的天数. return
 	 */
-	public static Date subtractDate(final Date date, final int day) {
+	public static Date subtractDate(Date date, int day) {
 		try {
 			Calendar calendar = Calendar.getInstance();
 			calendar.setTime(date);
@@ -242,7 +240,7 @@ public class DateTimeUtil {
 	 * @param hour
 	 *            减去的小时. return
 	 */
-	public static Date subtractTime(final Date date, final int hour) {
+	public static Date subtractTime(Date date, int hour) {
 		try {
 			Calendar calendar = Calendar.getInstance();
 			calendar.setTime(date);
@@ -329,17 +327,6 @@ public class DateTimeUtil {
         }
     }
 
-    public static void main(String[] args) {
-        Date date = new Date();
-        Date parsedDate = plusDateByParam(date, 10, SpotInspectionPlanRecycleTypeEnum.SPOT_INSPECTION_PLAN_RECYCLE_TYPE_HOUR.getCode());
-        Date parsedDateYear = plusDateByParam(date, 1, SpotInspectionPlanRecycleTypeEnum.SPOT_INSPECTION_PLAN_RECYCLE_TYPE_YEAR.getCode());
-        Date parsedDateYear2 = subtractDateByParam(date, 1, SpotInspectionPlanRecycleTypeEnum.SPOT_INSPECTION_PLAN_RECYCLE_TYPE_YEAR.getCode());
-
-
-        System.out.println(parsedDate);
-        System.out.println(parsedDateYear);
-        System.out.println(parsedDateYear2);
-    }
 
 	/**
 	 * 返回加上指定天数的日期.
@@ -371,7 +358,7 @@ public class DateTimeUtil {
 	 * @param day
 	 *            加上的天数. return
 	 */
-	public static String plusDateToString(final Date date, final int day) {
+	public static String plusDateToString(Date date, int day) {
 		try {
 			Date tempDate = subtractDate(date, day);
 			String dateStr = dateToStr(tempDate, null);
@@ -437,7 +424,6 @@ public class DateTimeUtil {
 	 * @param endDate
 	 * @return
 	 */
-	@SuppressWarnings("static-access")
 	public static int[] getDateArray(Date startDate, Date endDate) {
 		int resultArray[] = new int[3]; // 存放结果，格式为resultArray[]={年,月,日}
 		int day = 0;
@@ -573,7 +559,6 @@ public class DateTimeUtil {
 	 * @param sign
 	 * @return
 	 */
-	@SuppressWarnings("static-access")
 	public static Calendar getCalendarForOverplus(Date baseDate,String overplus,String sign){
 		// 解析传入X年X个月X天字符
 		Calendar c1 = Calendar.getInstance();
@@ -658,7 +643,7 @@ public class DateTimeUtil {
 	 * @param format
 	 * @return
 	 */
-	public static long strToLongDate(final String dateStr, String format) {
+	public static long strToLongDate(String dateStr, String format) {
 		long result = 0l;
 		Date date = strToDate(dateStr, format);
 		if (date != null) {
@@ -677,8 +662,214 @@ public class DateTimeUtil {
         SimpleDateFormat sdf=new SimpleDateFormat(format);
         String sd = sdf.format(new Date(time*1000));   // 时间戳转换成时间
         return sd;
-		
 	}
 	
-	
+	//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+
+    public static void main(String[] args) {
+        // TODO Auto-generated method stub
+        System.out.println("当前时间："+ new Date().toLocaleString());
+        System.out.println("当天0点时间："+ getTimesMorning().toLocaleString());
+        System.out.println("当天24点时间："+ getTimesWeeHours().toLocaleString());
+
+        System.out.println("本周周一0点时间："+ getTimesCurrentWeekBegin().toLocaleString());
+        System.out.println("本周周日24点时间："+ getTimesCurrentWeekEnd().toLocaleString());
+
+        System.out.println("上周周一0点时间："+ getTimePreviousWeekBegin().toLocaleString());
+        System.out.println("上周周日24点时间："+ getTimePreviousWeekEnd().toLocaleString());
+
+
+
+        System.out.println("本月初0点时间："+ getTimesCurrentMonthBegin().toLocaleString());
+        System.out.println("本月末24点时间："+ getTimesCurrentMonthEnd().toLocaleString());
+
+        System.out.println("上月初0点时间："+ getTimesPreviousMonthBegin().toLocaleString());
+        System.out.println("上月末24点时间："+ getTimesPreviousMonthEnd().toLocaleString());
+
+
+        System.out.println("本年初0点时间："+ getTimesCurrentYearBegin().toLocaleString());
+        System.out.println("本年末24点时间："+ getTimesCurrentYearEnd().toLocaleString());
+
+        System.out.println("上年初0点时间："+ getTimesPreviousYearBegin().toLocaleString());
+        System.out.println("上年末24点时间："+ getTimesPreviousYearEnd().toLocaleString());
+    }
+
+
+    /**
+     * 当天0点时间
+     * @return
+     */
+    public static Date getTimesMorning() {
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        return cal.getTime();
+    }
+
+    /**
+     * 当天24点时间
+     * @return
+     */
+    public static Date getTimesWeeHours() {
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.HOUR_OF_DAY, 24);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        return  cal.getTime();
+    }
+
+    /**
+     * 上周开始时间
+     * @return
+     */
+    public static Date getTimePreviousWeekBegin(){
+        Calendar cal = Calendar.getInstance();
+        cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONDAY), cal.get(Calendar.DAY_OF_MONTH), 0, 0, 0);
+        cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY); //设置时间为周一
+        cal.add(Calendar.DATE, -7);
+        return  cal.getTime();
+    }
+
+    /**
+     * 上周结束时间
+     * @return
+     */
+    public static Date getTimePreviousWeekEnd(){
+        Calendar cal = Calendar.getInstance();
+        cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONDAY), cal.get(Calendar.DAY_OF_MONTH), 0, 0, 0);
+        cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY); //设置时间为周一
+        cal.add(Calendar.DATE, -1);
+        return  cal.getTime();
+    }
+
+    /**
+     * 本周一0点时间
+     * @return
+     */
+    public static Date getTimesCurrentWeekBegin() {
+        Calendar cal = Calendar.getInstance();
+        cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONDAY), cal.get(Calendar.DAY_OF_MONTH), 0, 0, 0);
+        cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+        return  cal.getTime();
+    }
+
+    /**
+     * 本周日24点时间
+     * @return
+     */
+    public  static Date getTimesCurrentWeekEnd() {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(getTimesCurrentWeekBegin());
+        cal.add(Calendar.DAY_OF_WEEK, 7);
+        return cal.getTime();
+    }
+
+    /**
+     * 本月第一天0点时间
+     * @return
+     */
+    public static Date getTimesCurrentMonthBegin() {
+        Calendar cal = Calendar.getInstance();
+        cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONDAY), cal.get(Calendar.DAY_OF_MONTH), 0, 0, 0);
+        cal.set(Calendar.DAY_OF_MONTH, cal.getActualMinimum(Calendar.DAY_OF_MONTH));
+        return  cal.getTime();
+    }
+
+
+    /**
+     * 上个月开始时间
+     * @return
+     */
+    public static Date getTimesPreviousMonthBegin() {
+        Calendar calendar=Calendar.getInstance();
+        int month=calendar.get(Calendar.MONTH);
+        calendar.set(Calendar.MONTH, month-1);
+        calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH)); //getActualMaximum代表拿到一个月内最大的天数
+
+        return calendar.getTime();
+    }
+
+    /**
+     * 上月最后一天24点时间
+     * @return
+     */
+    public static Date getTimesPreviousMonthEnd() {
+        Calendar calendar=Calendar.getInstance();
+        int month=calendar.get(Calendar.MONTH);
+        calendar.set(Calendar.MONTH, month-1);
+        calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMinimum(Calendar.DAY_OF_MONTH)); //getActualMaximum代表拿到一个月内最小的天数
+
+        return calendar.getTime();
+    }
+
+    /**
+     * 本月最后一天24点时间
+     * @return
+     */
+    public static Date getTimesCurrentMonthEnd() {
+        Calendar cal = Calendar.getInstance();
+        cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONDAY), cal.get(Calendar.DAY_OF_MONTH), 0, 0, 0);
+        cal.set(Calendar.DAY_OF_MONTH, cal.getActualMaximum(Calendar.DAY_OF_MONTH));
+        return cal.getTime();
+    }
+
+
+    /**
+     * 本年开始时间
+     * @return
+     */
+    public static Date getTimesCurrentYearBegin() {
+        Calendar cal = Calendar.getInstance();
+        cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONDAY), cal.get(Calendar.DAY_OF_MONTH), 0, 0, 0);
+        cal.set(Calendar.DAY_OF_YEAR, cal.getActualMinimum(Calendar.DAY_OF_YEAR));
+        return cal.getTime();
+    }
+
+
+    /**
+     * 本年结束时间
+     * @return
+     */
+    public static Date getTimesCurrentYearEnd() {
+        Calendar cal = Calendar.getInstance();
+        cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONDAY), cal.get(Calendar.DAY_OF_MONTH), 0, 0, 0);
+        cal.set(Calendar.DAY_OF_YEAR, cal.getActualMaximum(Calendar.DAY_OF_YEAR));
+        return cal.getTime();
+    }
+
+    /**
+     * 上一年结束时间
+     * @return
+     */
+    public static Date getTimesPreviousYearEnd() {
+        Calendar cal = Calendar.getInstance();
+        cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONDAY), cal.get(Calendar.DAY_OF_MONTH), 0, 0, 0);
+        int year = cal.get(Calendar.YEAR); //当年
+        cal.set(Calendar.YEAR,year - 1); //设置年数目为现在年份减1
+        cal.set(Calendar.DAY_OF_YEAR, cal.getActualMaximum(Calendar.DAY_OF_YEAR));
+        return cal.getTime();
+    }
+
+    /**
+     * 上一年开始时间
+     * @return
+     */
+    public static Date getTimesPreviousYearBegin() {
+        Calendar cal = Calendar.getInstance();
+        cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONDAY), cal.get(Calendar.DAY_OF_MONTH), 0, 0, 0);
+        int year = cal.get(Calendar.YEAR); //当年
+        cal.set(Calendar.YEAR,year - 1); //设置年数目为现在年份减1
+        cal.set(Calendar.DAY_OF_YEAR, cal.getActualMinimum(Calendar.DAY_OF_YEAR));
+        return cal.getTime();
+    }
+
+   /* public static Date subtractYearBeginByParam(int param){
+        return null;
+    }*/
+
+
 }

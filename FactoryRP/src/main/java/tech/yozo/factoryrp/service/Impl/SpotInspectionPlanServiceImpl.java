@@ -870,7 +870,7 @@ public class SpotInspectionPlanServiceImpl implements SpotInspectionPlanService 
         if(CheckParam.isNull(record)){
             record = new SpotInspectionRecord();
         }
-        record.setPlanTime(plan.getNextExecuteTime());
+        record.setPlanTime(plan.getNextExecuteTime()); //设置巡检记录的执行时间为巡检计划的下次执行时间
         try {
             plan.setNextExecuteTime(DateTimeUtil.plusDateByParam(currentTime, plan.getRecyclePeriod(), plan.getRecyclePeriodType()));
             plan.setLastExecuteTime(currentTime);
@@ -893,6 +893,7 @@ public class SpotInspectionPlanServiceImpl implements SpotInspectionPlanService 
         record.setPlanTime(plan.getNextExecuteTime());
         record.setRecyclePeriod(plan.getRecyclePeriod());
         record.setRecyclePeriodType(plan.getRecyclePeriodType());
+        record.setDepartment(plan.getDepartment());
 
         spotInspectionRecordRepository.save(record);
 

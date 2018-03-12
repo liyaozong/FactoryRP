@@ -85,12 +85,11 @@ public class FileServiceImpl implements FileService {
      * @return
      */
     public List<ImageUploadResp> batchQueryImageInfo(List<String> imageIdList){
-
+        ossService.initClient();
         if(!CheckParam.isNull(imageIdList) && !imageIdList.isEmpty()){
-
             List<ImageUploadResp> queryRespList = new ArrayList<>();
             imageIdList.stream().forEach(m1 -> {
-                String ossUrl = ossService.getOSSUrl(m1);
+                String ossUrl = ossService.getOSSUrlNotInitClient(m1);
                 FileUploadResp uploadResp = new FileUploadResp();
                 uploadResp.setKey(m1);
                 uploadResp.setUrl(ossUrl);

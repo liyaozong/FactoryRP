@@ -83,4 +83,10 @@ public class SpotInspectionRecord extends BaseEntity implements Serializable {
     @Column(name = "recycle_period",length = 20)
     private Integer recyclePeriod;
 
+    /**
+     * 部门ID
+     */
+    @ApiModelProperty(value = "部门ID",notes ="部门ID" )
+    @Column(name = "department",length = 20)
+    private Long  department;
 }
