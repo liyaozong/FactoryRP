@@ -289,7 +289,7 @@ public class SpotInspectionRecordServiceImpl implements SpotInspectionRecordServ
 
                 spotInspectionRecordResp.setRecordId(r1.getId());
                 spotInspectionRecordResp.setPlanName(plan.getName());
-                spotInspectionRecordResp.setPlanTime(plan.getNextExecuteTime()); //计划时间设置为下次执行时间
+                spotInspectionRecordResp.setPlanTime(DateTimeUtil.dateToStr(plan.getNextExecuteTime())); //计划时间设置为下次执行时间
                 spotInspectionRecordResp.setRecyclePeriod(plan.getRecyclePeriod());
                 spotInspectionRecordResp.setRecyclePeriodType(plan.getRecyclePeriodType());
 
@@ -494,12 +494,12 @@ public class SpotInspectionRecordServiceImpl implements SpotInspectionRecordServ
 
             List<SpotInspectionRecordPageQueryResp> respList = new ArrayList<>();
 
-            List<SpotInspectionRecord> rocordContent = page.getContent();
+            List<SpotInspectionRecord> recordContent = page.getContent();
 
 
             List<Long> recordIds = new ArrayList<>();
             List<Long> planIds = new ArrayList<>();
-            rocordContent.stream().forEach(c1 -> {
+            recordContent.stream().forEach(c1 -> {
                 recordIds.add(c1.getId());
                 planIds.add(c1.getPlanId());
             });
@@ -531,14 +531,14 @@ public class SpotInspectionRecordServiceImpl implements SpotInspectionRecordServ
 
             }
 
-            for (SpotInspectionRecord record: rocordContent) {
+            for (SpotInspectionRecord record: recordContent) {
 
                 SpotInspectionRecordPageQueryResp resp = new SpotInspectionRecordPageQueryResp();
 
 
-                resp.setLastExecuteTime(JSON.toJSONString(record.getExecuteTime()));
+                resp.setLastExecuteTime(DateTimeUtil.dateToStr(record.getExecuteTime()));
                 resp.setDepartmentId(record.getDepartment());
-                resp.setPlanTime(JSON.toJSONString(record.getPlanTime()));
+                resp.setPlanTime(DateTimeUtil.dateToStr(record.getPlanTime()));
                 resp.setPlanName(record.getPlanName());
                 resp.setRecordId(record.getId());
                 resp.setRecyclePeriod(SpotInspectionPlanRecycleTypeEnum.handlerRecycleTimer(record.getRecyclePeriod(),record.getRecyclePeriodType()));
@@ -561,7 +561,7 @@ public class SpotInspectionRecordServiceImpl implements SpotInspectionRecordServ
 
 
                     //统计某个巡检记录下实际执行了多少巡检项
-                    Integer executeCount = Integer.valueOf(String.valueOf(detailList.stream().filter(d1 -> d1.getRecordId() == record.getId()).count()));
+                    Integer executeCount = Integer.valueOf(String.valueOf(spotInspectionRecordDetails.stream().filter(d1 -> d1.getRecordId() == record.getId()).count()));
 
                     //拿到某个点检标准需要被执行的点检项数量
                     Integer needToExecute = 0;
@@ -591,6 +591,10 @@ public class SpotInspectionRecordServiceImpl implements SpotInspectionRecordServ
 
                     resp.setMissCount(needToExecute - executeCount);
                     resp.setDelayDesc(""); //延迟信息暂时不返回
+                }else {
+                    resp.setMissCount(0);
+                    resp.setDelayDesc(""); //延迟信息暂时不返回
+                    resp.setAbnormalDeviceCount(0);
                 }
                 respList.add(resp);
             }

@@ -55,7 +55,7 @@ public class SpotInspectionRecordResp implements Serializable {
      * 计划时间
      */
     @ApiModelProperty(value = "计划时间",notes ="计划时间",example = "1")
-    private Date planTime;
+    private String planTime;
 
 
     /**

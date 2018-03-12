@@ -683,32 +683,6 @@ public class SpotInspectionStandardServiceImpl implements SpotInspectionStandard
                 itemList.add(spotInspectionStandardItemsQueryResp);
             }
 
-            /*spotInspectionItemsList.stream().forEach(s1 -> {
-                SpotInspectionStandardItemsQueryResp spotInspectionStandardItemsQueryResp = new SpotInspectionStandardItemsQueryResp();
-
-                spotInspectionStandardItemsQueryResp.setUpperLimit(s1.getUpperLimit());
-                spotInspectionStandardItemsQueryResp.setLowerLimit(s1.getLowerLimit());
-                spotInspectionStandardItemsQueryResp.setInputLimitValue(JSON.parseArray(s1.getVaildateRegular(), String.class));
-                spotInspectionStandardItemsQueryResp.setName(s1.getName());
-                spotInspectionStandardItemsQueryResp.setRecordTypeName(s1.getRecordType());
-                spotInspectionStandardItemsQueryResp.setItemId(s1.getId());
-
-
-                //设置在规定巡检周期内，是否执行过，1执行2未执行
-                if (!CheckParam.isNull(executeResultMap.get(s1.getId()))) {
-                    spotInspectionStandardItemsQueryResp.setInspectionStatus(executeResultMap.get(s1.getId()).getExecuteStatus());
-                    spotInspectionStandardItemsQueryResp.setAbnormalDesc(executeResultMap.get(s1.getId()).getAbnormalDesc());
-                    spotInspectionStandardItemsQueryResp.setRecordResult(executeResultMap.get(s1.getId()).getRecordResult());
-                    spotInspectionStandardItemsQueryResp.setRemark(executeResultMap.get(s1.getId()).getRemark());
-                    spotInspectionStandardItemsQueryResp.setExecuteDetailId(executeResultMap.get(s1.getId()).getExecuteDetailId());
-                } else {
-                    spotInspectionStandardItemsQueryResp.setInspectionStatus(2);
-                }
-
-                itemList.add(spotInspectionStandardItemsQueryResp);
-
-            });*/
-
             return itemList;
         }
             return null;
