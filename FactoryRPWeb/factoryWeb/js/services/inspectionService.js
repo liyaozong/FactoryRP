@@ -173,5 +173,16 @@ myApp.factory("inspectionPlan",["AppHttp","FF_API",function(AppHttp,FF_API){
         });
     };
 
+
+    //巡检记录部分
+    //分页查询巡检记录
+    inspectionPlan.findByPageRecord=function(data){
+        return AppHttp({
+            method: 'post',
+            url: FF_API.base + FF_API.findByPageRecordPath,
+            data:data
+        });
+    };
+
     return inspectionPlan;
 }]);

@@ -1347,10 +1347,6 @@ myApp.controller('inspectionPlanCtrl',['$filter','$rootScope','$location','$scop
         }
     };
 
-    //打开历史巡检表格详细
-    $scope.openDetailRecordPopup=function (obj,$event) {
-
-    };
 
 
     $scope.$watch('paginationConf.currentPage + paginationConf.itemsPerPage', $scope.onQuery);

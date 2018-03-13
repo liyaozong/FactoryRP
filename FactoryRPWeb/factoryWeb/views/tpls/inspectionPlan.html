@@ -493,7 +493,7 @@
 <!-- 执行巡检计划（新增巡检记录1）弹出层 -->
 <div class="ImportantNote addRecordPopup">
     <div class="headline">
-        <span>执行巡检计划</span>
+        <span ng-bind="recordPopType==1?'执行巡检计划':'历史巡检详情'"></span>
         <img ng-click="closeAR1()" class="companyCloseImg" src="image/comm/diffClosed.png" width="22" height="22">
     </div>
     <div style="padding: 30px 0 20px 0;width: 840px;height: auto;" class="businessAuth">
