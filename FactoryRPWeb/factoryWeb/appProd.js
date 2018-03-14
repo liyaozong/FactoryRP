@@ -80,6 +80,7 @@ var myApp = angular.module('myApp', [
         viewItemPath:'/api/itemUpload/batchQueryImageInfo',   //查询图片访问地址
         batchDeleteItemsPath:'/api/itemUpload/batchDeleteItems',   //批量删除图片
         findByPageRecordPath:'/api/spotInspectionRecord/findByPage',   //分页查询巡检记录
+        batchDeleteSpotInspectionRecordPath:'/api/spotInspectionRecord/batchDeleteSpotInspectionRecord',   //巡检记录删除
         getxjsjPath:'service/getxjsj',   //巡检计划状态
         getxjlxPath:'service/getxjlx'   //巡检计划名称
 

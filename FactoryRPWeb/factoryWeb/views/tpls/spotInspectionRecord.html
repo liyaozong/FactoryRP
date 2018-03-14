@@ -65,7 +65,7 @@
             </thead>
             <tbody id="apply_infos_table">
             <tr ng-repeat="orderDetail in spotInspectionRecordLists" ng-if="spotInspectionRecordLists.length>0" class="prossTr" ng-click="changeDetail(orderDetail,$event)">
-                <td class="firstTd">{{$index+1}}<input style="margin-left: 5px;vertical-align: middle;" class="SIPListsInput" type="checkbox" name="che"  value="{{orderDetail.id}}" ng-click="stopUp($event)"/></td>
+                <td class="firstTd">{{$index+1}}<input style="margin-left: 5px;vertical-align: middle;" class="SIPListsInput" type="checkbox" name="che"  value="{{orderDetail.recordId}}" ng-click="stopUp($event)"/></td>
                 <td>{{$index+1}}</td>
                 <td>{{orderDetail.planName||'--'}}</td>
                 <td>{{orderDetail.planTime||'--'}}</td>
@@ -96,7 +96,7 @@
             <tfoot ng-if="spotInspectionRecordLists.length>0">
             <tr>
                 <td>
-                    <a href="javascript:void(0)" class="resBtn deleteBtn" ng-click="deleteSISBalance()">
+                    <a href="javascript:void(0)" class="resBtn deleteBtn" ng-click="deleteSIPBalance()">
                         <img src="image/comm/resBtnDelete.png" alt="删除"/>
                         <b class="title">删除</b>
                     </a>
@@ -172,7 +172,7 @@
     <div class="businessAuth">
         <p><img src="image/comm/attentionPlease.png" alt="注意："/>确认删除选中的巡检记录？</p>
         <div class="submitBtn1" style="text-align: center;">
-            <input type="button" value="删除"  class="btn" ng-click="deleteSISPopSure()"/>
+            <input type="button" value="删除"  class="btn" ng-click="deleteSIPPopSure()"/>
             <input type="button" value="取消" class="btn" onClick="hideDiv('deleteSISPop')">
         </div>
     </div>
