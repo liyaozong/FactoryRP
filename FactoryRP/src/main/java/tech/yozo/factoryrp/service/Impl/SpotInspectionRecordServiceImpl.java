@@ -21,6 +21,7 @@ import tech.yozo.factoryrp.utils.DateTimeUtil;
 import tech.yozo.factoryrp.utils.ErrorCode;
 import tech.yozo.factoryrp.vo.innertransfer.InspectionRecordTimeQueryTransferVo;
 import tech.yozo.factoryrp.vo.req.SpotInspectionRecordAddReq;
+import tech.yozo.factoryrp.vo.req.SpotInspectionRecordBatchDeleteReq;
 import tech.yozo.factoryrp.vo.req.SpotInspectionRecordMobileAddReq;
 import tech.yozo.factoryrp.vo.req.SpotInspectionRecordPageQueryReq;
 import tech.yozo.factoryrp.vo.resp.auth.AuthUserMenu;
@@ -650,5 +651,36 @@ public class SpotInspectionRecordServiceImpl implements SpotInspectionRecordServ
         return transferVo;
     }
 
+
+    /**
+     * 巡检记录批量删除
+     * 需要删除巡检记录和巡检记录的明细
+     * @param spotInspectionRecordBatchDeleteReq
+     * @param corporateIdentify
+     */
+    public void batchDeleteSpotInspectionRecord(SpotInspectionRecordBatchDeleteReq spotInspectionRecordBatchDeleteReq, Long corporateIdentify){
+
+
+        if(!CheckParam.isNull(spotInspectionRecordBatchDeleteReq)){
+
+
+        if(!CheckParam.isNull(spotInspectionRecordBatchDeleteReq.getRecordIdList()) && !spotInspectionRecordBatchDeleteReq.getRecordIdList().isEmpty()) {
+
+
+            List<Long> recordIdList = spotInspectionRecordBatchDeleteReq.getRecordIdList().stream().distinct().collect(Collectors.toList());
+
+            List<SpotInspectionRecord> recordList = spotInspectionRecordRepository.findAll(recordIdList);
+
+
+            List<SpotInspectionRecordDetail> detailList = spotInspectionRecordDetailRepository.findByCorporateIdentifyAndRecordIdIn(corporateIdentify, recordIdList);
+
+            spotInspectionRecordRepository.delete(recordList);
+            spotInspectionRecordDetailRepository.delete(detailList);
+
+        }
+
+        }
+
+    }
 
 }

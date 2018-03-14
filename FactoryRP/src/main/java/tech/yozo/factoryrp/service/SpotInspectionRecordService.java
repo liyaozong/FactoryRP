@@ -2,6 +2,7 @@ package tech.yozo.factoryrp.service;
 
 import tech.yozo.factoryrp.page.Pagination;
 import tech.yozo.factoryrp.vo.req.SpotInspectionRecordAddReq;
+import tech.yozo.factoryrp.vo.req.SpotInspectionRecordBatchDeleteReq;
 import tech.yozo.factoryrp.vo.req.SpotInspectionRecordMobileAddReq;
 import tech.yozo.factoryrp.vo.req.SpotInspectionRecordPageQueryReq;
 import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionRecordAddResp;
@@ -60,4 +61,11 @@ public interface SpotInspectionRecordService {
      */
     SpotInspectionRecordAddResp spotInspectionItemsRecordMobileAdd(SpotInspectionRecordMobileAddReq spotInspectionRecordMobileAddReq,Long corporateIdentify,Long userId);
 
+
+    /**
+     * 巡检记录批量删除
+     * @param spotInspectionRecordBatchDeleteReq
+     * @param corporateIdentify
+     */
+    void batchDeleteSpotInspectionRecord(SpotInspectionRecordBatchDeleteReq spotInspectionRecordBatchDeleteReq,Long corporateIdentify);
 }

@@ -12,6 +12,7 @@ import tech.yozo.factoryrp.service.SpotInspectionRecordService;
 import tech.yozo.factoryrp.utils.CheckParam;
 import tech.yozo.factoryrp.vo.base.ApiResponse;
 import tech.yozo.factoryrp.vo.req.SpotInspectionRecordAddReq;
+import tech.yozo.factoryrp.vo.req.SpotInspectionRecordBatchDeleteReq;
 import tech.yozo.factoryrp.vo.req.SpotInspectionRecordMobileAddReq;
 import tech.yozo.factoryrp.vo.req.SpotInspectionRecordPageQueryReq;
 import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionRecordAddResp;
@@ -70,6 +71,22 @@ public class SpotInspectionRecordController extends BaseController {
         return apiResponse(spotInspectionRecordService.spotInspectionItemsRecordMobileAdd(spotInspectionRecordMobileAddReq, corporateIdentify,userId));
     }
 
+    /**
+     * 巡检记录批量删除
+     * 需要删除巡检记录和巡检记录的明细
+     * @param spotInspectionRecordBatchDeleteReq
+     * @param request
+     */
+    @ApiOperation(value = "巡检记录批量删除",notes = "巡检记录批量删除",httpMethod = "POST")
+    @PostMapping("/batchDeleteSpotInspectionRecord")
+    @ApiImplicitParam(dataType = "SpotInspectionRecordBatchDeleteReq" ,name = "spotInspectionRecordBatchDeleteReq", paramType = "VO" ,
+            value = "新增巡检记录",required = true)
+    public ApiResponse batchDeleteSpotInspectionRecord(@RequestBody SpotInspectionRecordBatchDeleteReq spotInspectionRecordBatchDeleteReq, HttpServletRequest request){
+        Long corporateIdentify = userAuthService.getCurrentUserCorporateIdentify(request);
+        spotInspectionRecordService.batchDeleteSpotInspectionRecord(spotInspectionRecordBatchDeleteReq, corporateIdentify);
+        return apiResponse();
+
+    }
 
     /**
      * 根据巡检ID查询巡检记录
