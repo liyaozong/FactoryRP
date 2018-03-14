@@ -902,6 +902,10 @@ public class SpotInspectionPlanServiceImpl implements SpotInspectionPlanService 
             Long recordId = record.getId();
             List<SpotInspectionRecordDetail> detailList = new ArrayList<>();
 
+            //此处需要区分executeDetailId是否存在 如果存在就需要修改 不存在就需要新增
+
+            List<Long> executedItemIds = new ArrayList<>();
+
             spotInspectionPlanExecuteWarpReq.getList().stream().forEach(s1 ->{
                 if((!CheckParam.isNull(s1.getItemList()) && !spotInspectionPlanExecuteWarpReq.getList().isEmpty())){
                     s1.getItemList().stream().forEach(s2 ->{
@@ -915,6 +919,12 @@ public class SpotInspectionPlanServiceImpl implements SpotInspectionPlanService 
                         spotInspectionRecordDetail.setCorporateIdentify(corporateIdentify);
                         spotInspectionRecordDetail.setStandard(s1.getStandardId()); //设置巡检标准ID
                         spotInspectionRecordDetail.setDeviceId(s1.getDeviceId());
+
+
+                        //如果executeDetailId存在的话就需要新增
+                        if(CheckParam.isNull(s2.getExecuteDetailId())){
+                            spotInspectionRecordDetail.setId(s2.getExecuteDetailId());
+                        }
 
                         detailList.add(spotInspectionRecordDetail);
                     });
