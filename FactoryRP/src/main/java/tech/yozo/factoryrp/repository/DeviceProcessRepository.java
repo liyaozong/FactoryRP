@@ -37,6 +37,18 @@ public interface DeviceProcessRepository extends BaseRepository<DeviceProcess,Lo
 
 
     /**
+     * 根据条件查询流程
+     * @param processType
+     * @param processStage
+     * @param triggerConditionType
+     * @param triggerCondition
+     * @param corporateIdentify
+     * @return
+     */
+    DeviceProcess findByProcessTypeAndProcessStageAndTriggerConditionTypeAndTriggerConditionAndCorporateIdentify(String processType,String processStage,Long triggerConditionType,Long triggerCondition,Long corporateIdentify);
+
+
+    /**
      * 根据流程类型，对应阶段,企业唯一标识,流程名称以及进行查询
      * @param processType
      * @param processStage

@@ -348,8 +348,8 @@ public class ProcessServiceImpl implements ProcessService {
      */
     public List<DeviceProcessDetailWarpResp> queryProcessAduitInfo(String processType, String processStage,Long triggerConditionType,Long triggerCondition, Long corporateIdentify){
 
-        DeviceProcess deviceProcess = deviceProcessRepository.findByProcessTypeAndProcessStageAndCorporateIdentify(processType,
-                processStage, corporateIdentify);
+        DeviceProcess deviceProcess = deviceProcessRepository.findByProcessTypeAndProcessStageAndTriggerConditionTypeAndTriggerConditionAndCorporateIdentify(processType,
+                processStage,triggerConditionType,triggerCondition,corporateIdentify);
 
         if(!CheckParam.isNull(deviceProcess)){
 
