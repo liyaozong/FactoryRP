@@ -69,6 +69,8 @@ public class TroubleRecordServiceImpl implements TroubleRecordService {
     private DeviceTroubleTypeRepository deviceTroubleTypeRepository;
     @Resource
     private DeviceTypeRepository deviceTypeRepository;
+    @Autowired
+    private DeviceInfoRepository deviceInfoRepository;
 
     private static Logger logger = LoggerFactory.getLogger(TroubleRecordServiceImpl.class);
 
@@ -86,10 +88,15 @@ public class TroubleRecordServiceImpl implements TroubleRecordService {
         troubleRecord.setStatus(TroubleStatusEnum.WAIT_AUDIT.getCode());
         troubleRecord.setOrderNo("WX"+new Date().getTime());
 
+        DeviceInfo deviceInfo = deviceInfoRepository.getOne(param.getDeviceId());
+        if (null == deviceInfo){
+            BussinessException biz = new BussinessException("10001","设备信息不存在");
+        }
+        //查询设备对应的使用部门所设置的审核流程
         List<DeviceProcessDetailWarpResp> listPd = processService.queryProcessAduitInfo(DeviceProcessTypeEnum.DEVICE_PROCESS_MALFUNCTION_REPAIR.getCode(),
-                DeviceProcessPhaseEnum.DEVICE_PROCESS_PHASE_APPLICATION_APPROVAL.getCode(),corporateIdentify);
+                DeviceProcessPhaseEnum.DEVICE_PROCESS_PHASE_APPLICATION_APPROVAL.getCode(),3l,deviceInfo.getUseDept(),corporateIdentify);
         if (null==listPd || listPd.size()<=0){
-            BussinessException biz = new BussinessException("10001","请先设置故障报修审核流程");
+            BussinessException biz = new BussinessException("10001","请先设置设备对应部门的故障报修审核流程");
             throw biz;
         }
 
@@ -123,7 +130,7 @@ public class TroubleRecordServiceImpl implements TroubleRecordService {
             }
         });
         if (null==troubleRecordUserRels || troubleRecordUserRels.size()<=0){
-            BussinessException biz = new BussinessException("10001","请先设置故障报修审核流程对应的审核人员");
+            BussinessException biz = new BussinessException("10001","请先设置设备对应部门的故障报修审核流程对应的审核人员");
             throw biz;
         }
         troubleRecordUserRelRepository.save(troubleRecordUserRels);
