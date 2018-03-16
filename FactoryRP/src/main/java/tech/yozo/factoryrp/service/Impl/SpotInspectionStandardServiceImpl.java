@@ -66,6 +66,8 @@ public class SpotInspectionStandardServiceImpl implements SpotInspectionStandard
     @Resource
     private SpotInspectionPlanRepository spotInspectionPlanRepository;
 
+    @Resource
+    private SpotInspectionImageInfoRepository spotInspectionImageInfoRepository;
 
     /**
      * 手机端根据巡检计划ID和设备code查询巡检项目

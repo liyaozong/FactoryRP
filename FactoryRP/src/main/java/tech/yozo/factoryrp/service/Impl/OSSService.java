@@ -130,17 +130,17 @@ public class OSSService {
         objectMetadata.setContentType(getcontentType(itemName.substring(itemName.lastIndexOf("."))));
         objectMetadata.setContentDisposition("inline;filename=" + itemName);
 
-        String filePathAndName= "/"+getCurrentDateFilePath()+"/"+uploadItemName;
+        String filePathAndName= dicName+"/"+getCurrentDateFilePath()+uploadItemName;
 
         //client.putObject(bucketName, uploadItemName, inputStream,objectMetadata);
-        client.putObject(bucketName, uploadItemName, inputStream,objectMetadata);
+        client.putObject(bucketName, filePathAndName, inputStream,objectMetadata);
 
         Date expiration = new Date(new Date().getTime() + 3600 * 1000);
         // 生成URL
-        URL url = client.generatePresignedUrl(bucketName, uploadItemName, expiration);
+        URL url = client.generatePresignedUrl(bucketName, filePathAndName, expiration);
 
         FileUploadResp resp = new FileUploadResp();
-        resp.setKey(uploadItemName);
+        resp.setKey(filePathAndName);
         resp.setUrl(String.valueOf(url));
 
         // 关闭client

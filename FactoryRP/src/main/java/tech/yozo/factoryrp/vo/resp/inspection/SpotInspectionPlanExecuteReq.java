@@ -42,4 +42,10 @@ public class SpotInspectionPlanExecuteReq implements Serializable {
     private List<SpotInspectionPlanExecuteItemReq> itemList;
 
 
+    /**
+     * 图片KEY集合
+     */
+    @ApiModelProperty(value = "图片KEY集合",notes ="图片KEY集合" )
+    private List<String> imageIdList;
+
 }

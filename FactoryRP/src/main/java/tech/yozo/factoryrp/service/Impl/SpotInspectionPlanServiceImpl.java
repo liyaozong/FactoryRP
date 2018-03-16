@@ -79,6 +79,9 @@ public class SpotInspectionPlanServiceImpl implements SpotInspectionPlanService 
     @Resource
     private SpotInspectionRecordDetailRepository spotInspectionRecordDetailRepository;
 
+    @Resource
+    private SpotInspectionImageInfoRepository spotInspectionImageInfoRepository;
+
     private static Logger logger = LoggerFactory.getLogger(SpotInspectionPlanServiceImpl.class);
 
 
@@ -906,6 +909,9 @@ public class SpotInspectionPlanServiceImpl implements SpotInspectionPlanService 
 
             List<Long> executedItemIds = new ArrayList<>();
 
+
+            List<SpotInspectionImageInfo> imageInfoList = new ArrayList<>();
+
             spotInspectionPlanExecuteWarpReq.getList().stream().forEach(s1 ->{
                 if((!CheckParam.isNull(s1.getItemList()) && !spotInspectionPlanExecuteWarpReq.getList().isEmpty())){
                     s1.getItemList().stream().forEach(s2 ->{
@@ -925,18 +931,27 @@ public class SpotInspectionPlanServiceImpl implements SpotInspectionPlanService 
                         if(CheckParam.isNull(s2.getExecuteDetailId())){
                             spotInspectionRecordDetail.setId(s2.getExecuteDetailId());
                         }
-
                         detailList.add(spotInspectionRecordDetail);
                     });
                 }
+
+
+                s1.getImageIdList().stream().forEach(m1 -> {
+                    SpotInspectionImageInfo imageInfo = new SpotInspectionImageInfo();
+
+                    imageInfo.setImageKey(m1);
+                    imageInfo.setRecordId(recordId);
+                    imageInfo.setSpotInspectionPlan(plan.getId());
+                    imageInfo.setCorporateIdentify(corporateIdentify);
+                    imageInfo.setSpotInspectionStandard(s1.getStandardId());
+
+                    imageInfoList.add(imageInfo);
+                });
             });
 
             spotInspectionRecordDetailRepository.save(detailList);
-
+            spotInspectionImageInfoRepository.save(imageInfoList);
         }
-
-
     }
-
 
 }

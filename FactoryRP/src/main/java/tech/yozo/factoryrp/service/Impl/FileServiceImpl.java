@@ -44,7 +44,7 @@ public class FileServiceImpl implements FileService {
     public void batchDeleteItems(BatchDeleteOSSItemReq batchDeleteOSSItemReq){
 
         if(!CheckParam.isNull(batchDeleteOSSItemReq) &&
-                !CheckParam.isNull(batchDeleteOSSItemReq.getItemList()) && batchDeleteOSSItemReq.getItemList().isEmpty()){
+                !CheckParam.isNull(batchDeleteOSSItemReq.getItemList()) && !batchDeleteOSSItemReq.getItemList().isEmpty()){
 
             List<String> itemList = batchDeleteOSSItemReq.getItemList();
             itemList = itemList.stream().distinct().collect(Collectors.toList());
