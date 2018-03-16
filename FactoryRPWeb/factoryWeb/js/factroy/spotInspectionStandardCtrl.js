@@ -1048,7 +1048,7 @@ myApp.controller('inspectionPlanCtrl',['$filter','$rootScope','$location','$scop
         inspectionPlan.findSpotInspectionStandardItemByStandardIdAndPlanId(obj.standardId,planId).success(function (data) {
             if(data.errorCode=='000000'){
                 console.log(data,'第二层');
-                $scope.uploadEnd=false;
+                $scope.uploadEnd=false;$scope.fileItem='';
                 hideDiv('addRecordPopup');
                 popupDiv('addRecordPopup2');
                 $scope.errShow2=false;
