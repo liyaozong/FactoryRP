@@ -419,6 +419,20 @@ public class TroubleRecordServiceImpl implements TroubleRecordService {
     }
 
     @Override
+    public void allocateWorker(AllocateWorkerReq param) {
+        TroubleRecord old = troubleRecordRepository.findOne(param.getTroubleRecordId());
+        if (null!=old && old.getStatus() == TroubleStatusEnum.NEED_REPAIR.getCode()){
+            old.setRepairUserId(param.getRepairUserId());
+            old.setRepairUserName(param.getRepairUserName());
+            old.setUpdateTime(new Date());
+            troubleRecordRepository.save(old);
+        }else{
+            BussinessException biz = new BussinessException("10000","工单不存在或状态不正确");
+            throw biz;
+        }
+    }
+
+    @Override
     public void cancelOrder(Long id, AuthUser user) {
         TroubleRecord old = troubleRecordRepository.findOne(id);
         if (null!=old && old.getStatus() == TroubleStatusEnum.NEED_REPAIR.getCode()){

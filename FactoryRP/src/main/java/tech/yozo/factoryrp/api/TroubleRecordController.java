@@ -147,6 +147,13 @@ public class TroubleRecordController extends BaseController{
         return apiResponse();
     }
 
+    @PostMapping("allocateWorker")
+    @ApiOperation(value = "维修派工--Mobile",notes = "维修派工--Mobile",httpMethod = "POST")
+    public ApiResponse obtainOrder(@RequestBody AllocateWorkerReq param){
+        troubleRecordService.allocateWorker(param);
+        return apiResponse();
+    }
+
     @GetMapping("cancelOrder")
     @ApiOperation(value = "撤单--Mobile",notes = "撤单--Mobile",httpMethod = "GET")
     @ApiImplicitParams(@ApiImplicitParam(paramType = "query",dataType = "String",name = "id",
