@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Sort;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 import tech.yozo.factoryrp.entity.*;
 import tech.yozo.factoryrp.enums.RepairStatusEnum;
 import tech.yozo.factoryrp.enums.TroubleDealPhaseEnum;
@@ -91,6 +92,7 @@ public class TroubleRecordServiceImpl implements TroubleRecordService {
         DeviceInfo deviceInfo = deviceInfoRepository.getOne(param.getDeviceId());
         if (null == deviceInfo){
             BussinessException biz = new BussinessException("10001","设备信息不存在");
+            throw biz;
         }
         //查询设备对应的使用部门所设置的审核流程
         List<DeviceProcessDetailWarpResp> listPd = processService.queryProcessAduitInfo(DeviceProcessTypeEnum.DEVICE_PROCESS_MALFUNCTION_REPAIR.getCode(),
@@ -767,15 +769,123 @@ public class TroubleRecordServiceImpl implements TroubleRecordService {
     public void audit(AuditWorkNumReq param, AuthUser user) {
         TroubleRecord old = troubleRecordRepository.findOne(param.getTroubleRecordId());
         if (null!=old && old.getStatus() == TroubleStatusEnum.WAIT_AUDIT.getCode()){
-            if (param.getDealStatus()==1){
-                //审核通过
-                old.setStatus(TroubleStatusEnum.NEED_REPAIR.getCode());
-            }else if (param.getDealStatus() == 2){
-                old.setStatus(TroubleStatusEnum.REFUSED.getCode());
-            }
-            old.setSuggest(param.getDealSuggest());
-            old.setUpdateTime(new Date());
-            troubleRecordRepository.save(old);
+            //推动流程进入下一步
+            TroubleRecordUserRel nowStep =troubleRecordUserRelRepository.findByTroubleRecordIdAndCorporateIdentifyAndDealStepStatusAndDealUserIdAndDealPhase(old.getId(),user.getCorporateIdentify(),
+                    0,user.getUserId(),1);
+           if (null==nowStep){
+               BussinessException biz = new BussinessException("10001","没有找到当前操作员审核流程数据，不允许审核");
+               throw biz;
+           }
+           Integer nowStepNum = nowStep.getDealStep();
+           Integer executeType = nowStep.getExecuteType();//执行类型，1:一人处理;2:全部处理
+
+           List<TroubleRecordUserRel> nowStepRels = troubleRecordUserRelRepository.findByTroubleRecordIdAndCorporateIdentifyAndDealStep(old.getId(),user.getCorporateIdentify(),nowStepNum);
+           List<TroubleRecordUserRel> nextStepRels = troubleRecordUserRelRepository.findByTroubleRecordIdAndCorporateIdentifyAndDealStep(old.getId(),user.getCorporateIdentify(),nowStepNum+1);
+           if (CollectionUtils.isEmpty(nowStepRels)){
+               BussinessException biz = new BussinessException("10001","无有效审核流程数据，不允许审核");
+               throw biz;
+           }
+           if (1==executeType){
+               //一个人执行
+               if (param.getDealStatus()==1){
+                   //审核通过
+                   nowStepRels.stream().forEach(troubleRecordUserRel -> {
+                       //结束当前步骤所有流程
+                       troubleRecordUserRel.setDealStepStatus(2);
+                       troubleRecordUserRel.setDealStatus(TroubleStatusEnum.NEED_REPAIR.getCode());
+                       troubleRecordUserRel.setUpdateTime(new Date());
+                   });
+                   troubleRecordUserRelRepository.save(nowStepRels);
+                   //启动下一步
+                   if (CollectionUtils.isEmpty(nextStepRels)){
+                       //没有下一步，直接结束流程，订单变成等待维修
+                       old.setStatus(TroubleStatusEnum.NEED_REPAIR.getCode());
+                       old.setSuggest(param.getDealSuggest());
+                       old.setUpdateTime(new Date());
+                       troubleRecordRepository.save(old);
+                   }else {
+                       //将下一步流程设置为处理中
+                       nextStepRels.stream().forEach(troubleRecordUserRel -> {
+                           troubleRecordUserRel.setDealStepStatus(0);
+                           troubleRecordUserRel.setUpdateTime(new Date());
+                       });
+                       troubleRecordUserRelRepository.save(nextStepRels);
+                   }
+               }else if (param.getDealStatus() == 2){
+                   //审核拒绝
+                   List<TroubleRecordUserRel> all = troubleRecordUserRelRepository.findByTroubleRecordIdAndCorporateIdentify(old.getId(),user.getCorporateIdentify());
+                   all.stream().forEach(troubleRecordUserRel -> {
+                       //结束所有流程
+                       troubleRecordUserRel.setDealStepStatus(2);
+                       troubleRecordUserRel.setDealStatus(TroubleStatusEnum.REFUSED.getCode());
+                       troubleRecordUserRel.setUpdateTime(new Date());
+                   });
+                   troubleRecordUserRelRepository.save(all);
+                       //直接结束流程，订单变成拒绝
+                       old.setStatus(TroubleStatusEnum.REFUSED.getCode());
+                       old.setSuggest(param.getDealSuggest());
+                       old.setUpdateTime(new Date());
+                       troubleRecordRepository.save(old);
+               }
+           }else {
+               //多人审核,当前步骤必须全部处理结束
+               nowStep.setUpdateTime(new Date());
+               nowStep.setDealStepStatus(2);
+               if (param.getDealStatus() == 2){
+                   nowStep.setDealStatus(TroubleStatusEnum.REFUSED.getCode());
+               }else {
+                   nowStep.setDealStatus(TroubleStatusEnum.NEED_REPAIR.getCode());
+               }
+               troubleRecordUserRelRepository.save(nowStep);
+
+               nowStepRels = troubleRecordUserRelRepository.findByTroubleRecordIdAndCorporateIdentifyAndDealStep(old.getId(),user.getCorporateIdentify(),nowStepNum);
+               Integer allDealEnd = 0;
+               Integer allPass = 0;
+               for (TroubleRecordUserRel t : nowStepRels){
+                   if (t.getDealStepStatus()==2){
+                       allDealEnd +=1;
+                       if (t.getDealStatus()==TroubleStatusEnum.NEED_REPAIR.getCode()){
+                           allPass +=1;
+                   }
+                   }
+               }
+               if (allDealEnd == nowStepRels.size()){
+                   //当前步骤已经全部处理完成，判断处理结果
+                   if (allPass == nextStepRels.size()){
+                       //全部通过，开启下一步
+                       //启动下一步
+                       if (CollectionUtils.isEmpty(nextStepRels)){
+                           //没有下一步，直接结束流程，订单变成等待维修
+                           old.setStatus(TroubleStatusEnum.NEED_REPAIR.getCode());
+                           old.setSuggest(param.getDealSuggest());
+                           old.setUpdateTime(new Date());
+                           troubleRecordRepository.save(old);
+                       }else {
+                           //将下一步流程设置为处理中
+                           nextStepRels.stream().forEach(troubleRecordUserRel -> {
+                               troubleRecordUserRel.setDealStepStatus(0);
+                               troubleRecordUserRel.setUpdateTime(new Date());
+                           });
+                           troubleRecordUserRelRepository.save(nextStepRels);
+                       }
+                   }else {
+                       //有人拒绝，直接结束流程
+                       List<TroubleRecordUserRel> all = troubleRecordUserRelRepository.findByTroubleRecordIdAndCorporateIdentify(old.getId(),user.getCorporateIdentify());
+                       all.stream().forEach(troubleRecordUserRel -> {
+                           //结束所有流程
+                           troubleRecordUserRel.setDealStepStatus(2);
+                           troubleRecordUserRel.setDealStatus(TroubleStatusEnum.REFUSED.getCode());
+                           troubleRecordUserRel.setUpdateTime(new Date());
+                       });
+                       troubleRecordUserRelRepository.save(all);
+                       //直接结束流程，订单变成拒绝
+                       old.setStatus(TroubleStatusEnum.REFUSED.getCode());
+                       old.setSuggest(param.getDealSuggest());
+                       old.setUpdateTime(new Date());
+                       troubleRecordRepository.save(old);
+                   }
+               }
+           }
         }else{
             BussinessException biz = new BussinessException("10000","工单不存在或状态不正确");
             throw biz;
