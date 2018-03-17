@@ -149,7 +149,7 @@ public class TroubleRecordController extends BaseController{
 
     @PostMapping("allocateWorker")
     @ApiOperation(value = "维修派工--Mobile",notes = "维修派工--Mobile",httpMethod = "POST")
-    public ApiResponse obtainOrder(@RequestBody AllocateWorkerReq param){
+    public ApiResponse allocateWorker(@RequestBody AllocateWorkerReq param){
         troubleRecordService.allocateWorker(param);
         return apiResponse();
     }
