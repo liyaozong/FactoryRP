@@ -13,7 +13,8 @@ public enum TroubleStatusEnum {
     REPAIRING(2,"维修中"),
     REPAIRED(3,"结束待验证"),
     VALIDATED(4,"验证完成"),
-    REFUSED(5,"审核拒绝");
+    REFUSED(5,"审核拒绝"),
+    VALIDATE_FAIL(6,"验证未通过");
 
     private Integer code;
     private String name;

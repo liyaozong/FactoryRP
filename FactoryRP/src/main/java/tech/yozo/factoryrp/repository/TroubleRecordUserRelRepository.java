@@ -14,12 +14,12 @@ import java.util.List;
 @Repository
 public interface TroubleRecordUserRelRepository extends BaseRepository<TroubleRecordUserRel,Long>{
 
-    public Page<TroubleRecordUserRel> findByDealUserIdAndDealStepStatusAndCorporateIdentifyAndDealStatus(Long dealUserId, Integer dealSetpStatus, Long corporateIdentify,Integer dealStatus, Pageable pageable);
+    public Page<TroubleRecordUserRel> findByDealUserIdAndDealStepStatusAndCorporateIdentifyAndDealStatusAndDealPhase(Long dealUserId, Integer dealSetpStatus, Long corporateIdentify,Integer dealStatus,Integer dealPhase, Pageable pageable);
 
-    public List<TroubleRecordUserRel> findByTroubleRecordIdAndCorporateIdentify(Long troubleRecordId,Long corporateIdentify);
+    public List<TroubleRecordUserRel> findByTroubleRecordIdAndCorporateIdentifyAndDealPhase(Long troubleRecordId,Long corporateIdentify,Integer dealPhase);
 
     public TroubleRecordUserRel findByTroubleRecordIdAndCorporateIdentifyAndDealStepStatusAndDealUserIdAndDealPhase(Long troubleRecordId,Long corporateIdentify, Integer dealSetpStatus,Long dealUserId,Integer dealPhase);
 
-    public List<TroubleRecordUserRel> findByTroubleRecordIdAndCorporateIdentifyAndDealStep(Long troubleRecordId,Long corporateIdentify,Integer dealStep);
+    public List<TroubleRecordUserRel> findByTroubleRecordIdAndCorporateIdentifyAndDealStepAndDealPhase(Long troubleRecordId,Long corporateIdentify,Integer dealStep,Integer dealPhase);
 
 }
