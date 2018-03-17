@@ -2,9 +2,11 @@ package tech.yozo.factoryrp.api;
 
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 import tech.yozo.factoryrp.config.auth.UserAuthService;
 import tech.yozo.factoryrp.enums.TroubleStatusEnum;
+import tech.yozo.factoryrp.exception.BussinessException;
 import tech.yozo.factoryrp.page.Pagination;
 import tech.yozo.factoryrp.service.TroubleRecordService;
 import tech.yozo.factoryrp.utils.CheckParam;
@@ -18,6 +20,7 @@ import tech.yozo.factoryrp.vo.resp.device.trouble.SimpleTroubleRecordVo;
 import tech.yozo.factoryrp.vo.resp.device.trouble.SingleTroubleDetail;
 import tech.yozo.factoryrp.vo.resp.device.trouble.WorkOrderDetailVo;
 import tech.yozo.factoryrp.vo.resp.device.trouble.WorkOrderWebListVo;
+import tech.yozo.factoryrp.vo.resp.role.RoleResp;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -100,6 +103,35 @@ public class TroubleRecordController extends BaseController{
     @ApiOperation(value = "查询待维修的故障列表--Mobile",notes = "查询待维修的故障列表--Mobile",httpMethod = "POST")
     public ApiResponse waitRepairList(HttpServletRequest request,@RequestBody WorkOrderListReq req){
         Long corporateIdentify =userAuthService.getCurrentUserCorporateIdentify(request);
+        return apiResponse(troubleRecordService.findWorkOrderByPage(req,corporateIdentify, TroubleStatusEnum.NEED_REPAIR.getCode(),null));
+    }
+
+    /**
+     * 查询当前企业所有的等待维修的工单，只有具有派工权限的人才能查询
+     * @param request
+     * @return
+     */
+    @RequestMapping("waitAllocateRepairList")
+    @ApiOperation(value = "查询待派工的故障列表--Mobile",notes = "查询待派工的故障列表--Mobile",httpMethod = "POST")
+    public ApiResponse waitAllocateRepairList(HttpServletRequest request,@RequestBody WorkOrderListReq req){
+        Long corporateIdentify =userAuthService.getCurrentUserCorporateIdentify(request);
+        AuthUser user = userAuthService.getCurrentUser(request);
+        List<RoleResp> roleResps = user.getRoleList();
+        if (CollectionUtils.isEmpty(roleResps)){
+            BussinessException biz = new BussinessException("10001","权限不足");
+            throw biz;
+        }
+        boolean canLook = false;
+        for (RoleResp r : roleResps){
+            if (r.getRoleCode().equals("ALLOCATE_WORKER")){
+                canLook = true;
+                break;
+            }
+        }
+        if (!canLook){
+            BussinessException biz = new BussinessException("10001","权限不足");
+            throw biz;
+        }
         return apiResponse(troubleRecordService.findWorkOrderByPage(req,corporateIdentify, TroubleStatusEnum.NEED_REPAIR.getCode(),null));
     }
 
