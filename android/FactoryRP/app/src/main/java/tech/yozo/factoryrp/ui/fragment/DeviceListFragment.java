@@ -9,10 +9,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import tech.yozo.factoryrp.R;
+import tech.yozo.factoryrp.ui.DeviceAddActivity;
 import tech.yozo.factoryrp.ui.DeviceDetailActivity;
 import tech.yozo.factoryrp.ui.dialog.LoadingDialog;
 import tech.yozo.factoryrp.utils.Constant;
 import tech.yozo.factoryrp.utils.HttpClient;
+import tech.yozo.factoryrp.vo.req.DeviceInfoReq;
 import tech.yozo.factoryrp.vo.resp.device.info.SimpleDeviceInfoResp;
 
 import java.util.List;
@@ -27,10 +29,11 @@ import java.util.List;
  * Use the {@link DeviceListFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class DeviceListFragment extends BaseFragment implements HttpClient.OnHttpListener {
+public class DeviceListFragment extends BaseFragment implements HttpClient.OnHttpListener, AbsListView.OnScrollListener {
 
     private Context mContext;
     private ListView mListView;
+    private Button mAddDeviceButton;
     private DeviceListAdapter mListAdapter;
     private List<SimpleDeviceInfoResp> devices;
 
@@ -43,6 +46,10 @@ public class DeviceListFragment extends BaseFragment implements HttpClient.OnHtt
 
     private LoadingDialog dialog;
     private OnFragmentInteractionListener mListener;
+    private int visibleItem;
+    private boolean isUpdateData;
+    private View footer;
+    private int currentPage = 1;
 
     public DeviceListFragment() {
         // Required empty public constructor
@@ -86,8 +93,22 @@ public class DeviceListFragment extends BaseFragment implements HttpClient.OnHtt
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        footer = inflater.inflate(R.layout.footer_load_layout, null);
+
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_device_list, container, false);
+        mAddDeviceButton = (Button) view.findViewById(R.id.button_add_device);
+        mAddDeviceButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), DeviceAddActivity.class);
+                startActivity(intent);
+            }
+        });
+        if(mParam_mode == Constant.FOR_CHOICE_MODE) {
+            mAddDeviceButton.setVisibility(View.GONE);
+        }
+
         mListView = (ListView) view.findViewById(R.id.lv);
         mListView.setEmptyView(view.findViewById(R.id.textView22));
         mListAdapter = new DeviceListAdapter(getActivity());
@@ -111,6 +132,7 @@ public class DeviceListFragment extends BaseFragment implements HttpClient.OnHtt
                 }
             }
         });
+        mListView.setOnScrollListener(this);
 
         return view;
     }
@@ -129,39 +151,85 @@ public class DeviceListFragment extends BaseFragment implements HttpClient.OnHtt
 
     @Override
     protected void loadData() {
-        HttpClient client = HttpClient.getInstance();
-        devices = client.getSimpleDeviceInfoList();
+        devices = HttpClient.getInstance().getSimpleDeviceInfoList();
         if(devices == null) {
             LoadingDialog.Builder builder = new LoadingDialog.Builder(getContext())
                     .setMessage(R.string.loading_loading);
             dialog = builder.create();
             dialog.show();
-            client.requestDeviceList(getContext(), this);
+            requestDeviceList(currentPage++);
         }
+    }
+
+    private void requestDeviceList(int page) {
+        DeviceInfoReq req = new DeviceInfoReq();
+        req.setCurrentPage(page);
+        req.setItemsPerPage(20);
+        HttpClient.getInstance().requestDeviceList(getContext(), this, req);
     }
 
     @Override
     protected void buildUI() {
-        HttpClient client = HttpClient.getInstance();
-        devices = client.getSimpleDeviceInfoList();
+        devices = HttpClient.getInstance().getSimpleDeviceInfoList();
         mListAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void onHttpSuccess(int requestType, Object obj, List<?> list) {
         if(requestType == HttpClient.REQUEST_DEVICE_LIST) {
-            HttpClient client = HttpClient.getInstance();
-            devices = client.getSimpleDeviceInfoList();
+            devices = HttpClient.getInstance().getSimpleDeviceInfoList();
             mListAdapter.notifyDataSetChanged();
-            dialog.dismiss();
+            if(dialog !=null) {
+                dialog.dismiss();
+            }
+            if(isUpdateData) {
+                mListView.removeFooterView(footer);
+                isUpdateData = false;
+            }
         }
     }
 
     @Override
     public void onFailure(int requestType) {
         if(requestType == HttpClient.REQUEST_DEVICE_LIST) {
-            dialog.dismiss();
+            if(dialog !=null) {
+                dialog.dismiss();
+            }
+            if(isUpdateData) {
+                currentPage--;
+                mListView.removeFooterView(footer);
+                isUpdateData = false;
+            }
         }
+    }
+
+    @Override
+    public void onScrollStateChanged(AbsListView absListView, int scrollState) {
+        if (mListAdapter.getCount() == visibleItem && scrollState == SCROLL_STATE_IDLE) {
+            /**
+             *scrollState有三种状态，分别是SCROLL_STATE_IDLE、SCROLL_STATE_TOUCH_SCROLL、SCROLL_STATE_FLING
+             *SCROLL_STATE_IDLE是当屏幕停止滚动时
+             *SCROLL_STATE_TOUCH_SCROLL是当用户在以触屏方式滚动屏幕并且手指仍然还在屏幕上时（The user is scrolling using touch, and their finger is still on the screen）
+             *SCROLL_STATE_FLING是当用户由于之前划动屏幕并抬起手指，屏幕产生惯性滑动时（The user had previously been scrolling using touch and had performed a fling）
+             */
+            if (!isUpdateData) {
+                isUpdateData = true;
+                mListView.addFooterView(footer);
+                requestDeviceList(currentPage++);
+            }
+        }
+    }
+
+    @Override
+    public void onScroll(AbsListView absListView, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+        /**
+         * firstVisibleItem 表示在当前屏幕显示的第一个listItem在整个listView里面的位置（下标从0开始）
+         * visibleItemCount表示在现时屏幕可以见到的ListItem(部分显示的ListItem也算)总数
+         * totalItemCount表示ListView的ListItem总数
+         * listView.getLastVisiblePosition()表示在现时屏幕最后一个ListItem
+         * (最后ListItem要完全显示出来才算)在整个ListView的位置（下标从0开始）
+         */
+        visibleItem = firstVisibleItem + visibleItemCount;
     }
 
     /**

@@ -48,4 +48,10 @@ public class InspectRecordSubmitReq {
      */
 //    @ApiModelProperty(value = "巡检项目详情集合",notes ="巡检项目详情集合" )
     private List<InspectionItemAddReq> detailList;
+
+    /**
+     * 图片KEY集合
+     */
+//    @ApiModelProperty(value = "图片KEY集合",notes ="图片KEY集合",example = "[1,2,3]")
+    private List<String> imageIdList;
 }

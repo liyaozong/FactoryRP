@@ -1,6 +1,8 @@
 package tech.yozo.factoryrp.ui.fragment;
 
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -120,6 +122,7 @@ public class RepairAdviceFragment extends BaseFragment implements HttpClient.OnH
             case HttpClient.REQUEST_TROUBLE_WAIT_AUDIT:
             case HttpClient.REQUEST_TROUBLE_WAIT_VALIDATE:
             case Constant.FOR_REPAIR_ADD:
+            case Constant.FOR_DEVICE_ID:
                 bStartRepair.setVisibility(View.GONE);
                 bFinishRepair.setVisibility(View.GONE);
                 break;
@@ -389,6 +392,9 @@ public class RepairAdviceFragment extends BaseFragment implements HttpClient.OnH
                 break;
             case HttpClient.REQUEST_START_REPAIR_ACTION:
                 bStartRepair.setEnabled(false);
+                Intent intent = new Intent();
+                intent.putExtra("id", mParam_obj.getTroubleRecordId());
+                getActivity().setResult(Activity.RESULT_OK, intent);
                 getActivity().finish();
                 break;
             case HttpClient.REQUEST_END_REPAIR_ACTION:

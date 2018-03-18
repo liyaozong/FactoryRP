@@ -16,7 +16,8 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 import com.loopj.android.http.RequestParams;
 import tech.yozo.factoryrp.R;
-import tech.yozo.factoryrp.ui.ValidateRepairActivity;
+import tech.yozo.factoryrp.ui.RepairValidateActivity;
+import tech.yozo.factoryrp.utils.Constant;
 import tech.yozo.factoryrp.utils.HttpClient;
 import tech.yozo.factoryrp.vo.resp.device.trouble.WorkOrderDetailVo;
 
@@ -124,6 +125,9 @@ public class RepairInfoFragment extends BaseFragment implements HttpClient.OnHtt
         tvTroubleSubmitter.setText(mParam_obj.getCreateUser());
         tvMaintainer.setText(mParam_obj.getRepairUserName());
         tvTroubleDesc.setText(mParam_obj.getRemark());
+        if(HttpClient.getInstance().getAuthUser().getUserName().equals(mParam_obj.getRepairUserName())) {
+            bIRepair.setVisibility(View.GONE);
+        }
 
 //        if(HttpClient.getInstance().getAuthUser().getUserName().contentEquals(mParam_obj.getRepairUserName())) {
 //            bIRepair.setVisibility(View.GONE);
@@ -135,6 +139,7 @@ public class RepairInfoFragment extends BaseFragment implements HttpClient.OnHtt
                 break;
             case HttpClient.REQUEST_TROUBLE_REPAIRING:
             case HttpClient.REQUEST_TROUBLE_WAIT_AUDIT:
+            case Constant.FOR_DEVICE_ID:
                 bValidateRepair.setVisibility(View.GONE);
             case HttpClient.REQUEST_TROUBLE_WAIT_VALIDATE:
                 bINotRepair.setVisibility(View.GONE);
@@ -181,7 +186,7 @@ public class RepairInfoFragment extends BaseFragment implements HttpClient.OnHtt
                 break;
             }
             case R.id.b_validate_repair: {
-                Intent intent = new Intent(getActivity(), ValidateRepairActivity.class);
+                Intent intent = new Intent(getActivity(), RepairValidateActivity.class);
                 intent.putExtra("id", mParam_obj.getTroubleRecordId());
                 startActivityForResult(intent, VALIDATE_REPAIR);
                 break;
@@ -195,6 +200,10 @@ public class RepairInfoFragment extends BaseFragment implements HttpClient.OnHtt
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode == VALIDATE_REPAIR && resultCode == Activity.RESULT_OK) {
             bValidateRepair.setEnabled(false);
+            Intent intent = new Intent();
+            intent.putExtra("id", mParam_obj.getTroubleRecordId());
+            getActivity().setResult(Activity.RESULT_OK, intent);
+            getActivity().finish();
         }
     }
 

@@ -15,6 +15,7 @@ import tech.yozo.factoryrp.ui.dialog.LoadingDialog;
 import tech.yozo.factoryrp.utils.Constant;
 import tech.yozo.factoryrp.utils.HttpClient;
 import tech.yozo.factoryrp.vo.req.QueryDeviceSpareRelReq;
+import tech.yozo.factoryrp.vo.req.SparePartsQueryReq;
 import tech.yozo.factoryrp.vo.resp.sparepars.SparePartsResp;
 
 import java.util.List;
@@ -26,7 +27,7 @@ import java.util.List;
  * Use the {@link PartsListFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class PartsListFragment extends BaseFragment implements HttpClient.OnHttpListener {
+public class PartsListFragment extends BaseFragment implements HttpClient.OnHttpListener, AbsListView.OnScrollListener {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "mode";
     private static final String ARG_PARAM2 = "id";
@@ -42,6 +43,10 @@ public class PartsListFragment extends BaseFragment implements HttpClient.OnHttp
     private LoadingDialog dialog;
 
     private OnFragmentInteractionListener mListener;
+    private int visibleItem;
+    private boolean isUpdateData;
+    private View footer;
+    private int currentPage = 1;
 
     public PartsListFragment() {
         // Required empty public constructor
@@ -85,6 +90,8 @@ public class PartsListFragment extends BaseFragment implements HttpClient.OnHttp
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        footer = inflater.inflate(R.layout.footer_load_layout, null);
+
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_parts_list, container, false);
         mPartsListView = (ListView) view.findViewById(R.id.lv_parts_list);
@@ -108,6 +115,7 @@ public class PartsListFragment extends BaseFragment implements HttpClient.OnHttp
                 }
             }
         });
+        mPartsListView.setOnScrollListener(this);
         return view;
     }
 
@@ -134,7 +142,7 @@ public class PartsListFragment extends BaseFragment implements HttpClient.OnHttp
                             .setMessage(R.string.loading_loading);
                     dialog = builder.create();
                     dialog.show();
-                    client.requestPartsList(getContext(), this);
+                    requestPartsList(currentPage++);
                 }
                 break;
             case Constant.FOR_DEVICE_ID:
@@ -152,6 +160,13 @@ public class PartsListFragment extends BaseFragment implements HttpClient.OnHttp
             default:
                 break;
         }
+    }
+
+    private void requestPartsList(int page) {
+        SparePartsQueryReq req = new SparePartsQueryReq();
+        req.setCurrentPage(page);
+        req.setItemsPerPage(20);
+        HttpClient.getInstance().requestPartsList(getContext(), this, req);
     }
 
     @Override
@@ -174,22 +189,67 @@ public class PartsListFragment extends BaseFragment implements HttpClient.OnHttp
 
     @Override
     public void onHttpSuccess(int requestType, Object obj, List<?> list) {
-        if(requestType == HttpClient.REQUEST_PARTS_LIST) {
-            parts = HttpClient.getInstance().getSparePartsList();
-            mListAdapter.notifyDataSetChanged();
-            dialog.dismiss();
-        } else if(requestType == HttpClient.REQUEST_FIND_PARTS_FOR_DEVICE) {
+        if(requestType == HttpClient.REQUEST_PARTS_LIST || requestType == HttpClient.REQUEST_FIND_PARTS_FOR_DEVICE) {
             parts = (List<SparePartsResp>) list;
             mListAdapter.notifyDataSetChanged();
-            dialog.dismiss();
+            if(dialog !=null) {
+                dialog.dismiss();
+            }
+            if(isUpdateData) {
+                mPartsListView.removeFooterView(footer);
+                isUpdateData = false;
+            }
         }
     }
 
     @Override
     public void onFailure(int requestType) {
-        if(requestType == HttpClient.REQUEST_PARTS_LIST) {
-            dialog.dismiss();
+        if(requestType == HttpClient.REQUEST_PARTS_LIST || requestType == HttpClient.REQUEST_FIND_PARTS_FOR_DEVICE) {
+            if(dialog !=null) {
+                dialog.dismiss();
+            }
+            if(isUpdateData) {
+                currentPage--;
+                mPartsListView.removeFooterView(footer);
+                isUpdateData = false;
+            }
         }
+    }
+
+    @Override
+    public void onScrollStateChanged(AbsListView absListView, int scrollState) {
+        if (mListAdapter.getCount() == visibleItem && scrollState == SCROLL_STATE_IDLE) {
+            /**
+             *scrollState有三种状态，分别是SCROLL_STATE_IDLE、SCROLL_STATE_TOUCH_SCROLL、SCROLL_STATE_FLING
+             *SCROLL_STATE_IDLE是当屏幕停止滚动时
+             *SCROLL_STATE_TOUCH_SCROLL是当用户在以触屏方式滚动屏幕并且手指仍然还在屏幕上时（The user is scrolling using touch, and their finger is still on the screen）
+             *SCROLL_STATE_FLING是当用户由于之前划动屏幕并抬起手指，屏幕产生惯性滑动时（The user had previously been scrolling using touch and had performed a fling）
+             */
+            switch (mParam_mode) {
+                case Constant.FOR_BROWE_MODE:
+                case Constant.FOR_CHOICE_MODE:
+                    if (!isUpdateData) {
+                        isUpdateData = true;
+                        mPartsListView.addFooterView(footer);
+                        requestPartsList(currentPage++);
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    @Override
+    public void onScroll(AbsListView absListView, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+        /**
+         * firstVisibleItem 表示在当前屏幕显示的第一个listItem在整个listView里面的位置（下标从0开始）
+         * visibleItemCount表示在现时屏幕可以见到的ListItem(部分显示的ListItem也算)总数
+         * totalItemCount表示ListView的ListItem总数
+         * listView.getLastVisiblePosition()表示在现时屏幕最后一个ListItem
+         * (最后ListItem要完全显示出来才算)在整个ListView的位置（下标从0开始）
+         */
+        visibleItem = firstVisibleItem + visibleItemCount;
     }
 
     public interface OnFragmentInteractionListener {

@@ -1,5 +1,6 @@
 package tech.yozo.factoryrp.ui;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -231,6 +232,9 @@ public class RepairDetailActivity extends AppCompatActivity implements HttpClien
                 mViewPageContianer.setCurrentItem(mCurrentFragment);
                 break;
             case HttpClient.REQUEST_SUBMIT_REPAIR_ACTION:
+                Intent intent = new Intent();
+                intent.putExtra("id", id);
+                setResult(Activity.RESULT_OK, intent);
                 finish();
                 break;
         }

@@ -10,28 +10,35 @@
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@android:color/background_light" android:paddingTop="6dp" android:paddingBottom="6dp">
+            android:background="@android:color/background_light" android:paddingTop="10dp">
         <Button
                 android:text="@string/action_ask_repair"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:id="@+id/button_ask_repair" android:layout_weight="1"
+                android:layout_height="70dp" android:id="@+id/button_report_repair" android:layout_weight="1"
                 android:drawableTop="@drawable/selector_ask_repair"
                 android:background="@android:color/background_light"/>
 
         <Button
-                android:text="@string/action_add_repair"
+                android:text="@string/action_wait_audit"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:id="@+id/button_add_repair" android:layout_weight="1"
-                android:drawableTop="@drawable/selector_repair_order"
-                android:background="@android:color/background_light"
-                android:enabled="false"/>
+                android:layout_height="70dp" android:id="@+id/button_exec_audit" android:layout_weight="1"
+                android:drawableTop="@drawable/ic_audit"
+                android:background="@android:color/background_light"/>
 
         <Button
-                android:text="@string/action_add_device"
+                android:text="@string/action_wait_assign"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:id="@+id/button_add_device" android:layout_weight="1"
-                android:drawableTop="@drawable/selector_add_device"
+                android:layout_height="70dp" android:id="@+id/button_exec_assign" android:layout_weight="1"
+                android:drawableTop="@drawable/ic_assignment"
                 android:background="@android:color/background_light"/>
+
+        <Button
+                android:text="@string/action_wait_validate"
+                android:layout_width="match_parent"
+                android:layout_height="70dp" android:id="@+id/button_exec_validate" android:layout_weight="1"
+                android:drawableTop="@drawable/selector_repair_order"
+                android:background="@android:color/background_light"
+        />
 
     </LinearLayout>
 
@@ -173,9 +180,14 @@
                 android:layout_height="1dp" app:srcCompat="@color/colorBackground"
                 android:id="@+id/imageView7" android:layout_marginLeft="6dp" android:layout_marginRight="6dp"/>
         <FrameLayout android:layout_width="match_parent" android:layout_height="match_parent">
-            <ListView
+            <android.support.v4.widget.SwipeRefreshLayout
+                    android:id="@+id/refresh_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" android:id="@+id/listview_check_task"/>
+                    android:layout_height="match_parent">
+                <ListView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" android:id="@+id/listview_check_task"/>
+            </android.support.v4.widget.SwipeRefreshLayout>
             <TextView
                     android:id="@+id/noNewCheckTask"
                     android:layout_width="match_parent"

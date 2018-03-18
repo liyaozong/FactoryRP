@@ -23,7 +23,7 @@
                 android:text="@string/action_logout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/button_logout"/>
+                android:id="@+id/button_logout" android:background="@color/colorHighlight"/>
     </LinearLayout>
     <LinearLayout
             android:orientation="horizontal"
@@ -66,7 +66,7 @@
             android:layout_height="wrap_content" android:layout_gravity="center_vertical"
             android:gravity="center_vertical" android:background="@android:color/background_light"
             android:layout_marginTop="6dp" android:id="@+id/ll_change_password" android:paddingBottom="12dp"
-            android:paddingStart="8dp" android:paddingTop="12dp" android:visibility="visible">
+            android:paddingStart="8dp" android:paddingTop="12dp" android:visibility="gone">
         <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" app:srcCompat="@drawable/ic_ask_repair"

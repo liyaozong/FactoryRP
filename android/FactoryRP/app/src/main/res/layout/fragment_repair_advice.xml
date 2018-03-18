@@ -210,10 +210,10 @@
         <Button
                 android:text="@string/action_start_repair"
                 android:layout_height="wrap_content" android:id="@+id/b_start_repair" android:layout_weight="1"
-                android:layout_width="0dp"/>
+                android:layout_width="0dp" android:background="@color/colorHighlight"/>
         <Button
                 android:text="@string/action_finish_repair"
                 android:layout_height="wrap_content" android:id="@+id/b_finish_repair" android:layout_weight="1"
-                android:layout_width="0dp"/>
+                android:layout_width="0dp" android:background="@color/colorStatus"/>
     </LinearLayout>
 </RelativeLayout>

@@ -33,6 +33,9 @@ public class RepairRecordListActivity extends AppCompatActivity {
             case HttpClient.REQUEST_TROUBLE_WAIT_VALIDATE:
                 setTitle(R.string.text_repair_wait_verify);
                 break;
+            case HttpClient.REQUEST_TROUBLE_WAIT_ASSIGN:
+                setTitle(R.string.text_repair_wait_assign);
+                break;
             default:
                 break;
         }

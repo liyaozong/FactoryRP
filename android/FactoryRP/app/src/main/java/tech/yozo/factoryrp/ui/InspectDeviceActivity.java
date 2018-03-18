@@ -15,7 +15,6 @@ import com.loopj.android.http.RequestParams;
 import tech.yozo.factoryrp.R;
 import tech.yozo.factoryrp.scan.Intents;
 import tech.yozo.factoryrp.scan.ScanActivity;
-import tech.yozo.factoryrp.ui.fragment.WorkBenchFragment;
 import tech.yozo.factoryrp.utils.HttpClient;
 import tech.yozo.factoryrp.vo.resp.inspect.InspectDevicesResp;
 

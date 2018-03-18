@@ -75,7 +75,6 @@ public class MaintainAdviceFragment extends Fragment {
      * @param param2 Parameter 2.
      * @return A new instance of fragment MaintainAdviceFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static MaintainAdviceFragment newInstance(String param1, String param2) {
         MaintainAdviceFragment fragment = new MaintainAdviceFragment();
         Bundle args = new Bundle();

@@ -13,5 +13,6 @@
     <Button
             android:text="@string/title_scan_device"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:id="@+id/button_scan"/>
+            android:layout_height="wrap_content" android:id="@+id/button_scan"
+            android:background="@color/colorHighlight"/>
 </LinearLayout>
