@@ -906,10 +906,6 @@ public class SpotInspectionPlanServiceImpl implements SpotInspectionPlanService 
             List<SpotInspectionRecordDetail> detailList = new ArrayList<>();
 
             //此处需要区分executeDetailId是否存在 如果存在就需要修改 不存在就需要新增
-
-            List<Long> executedItemIds = new ArrayList<>();
-
-
             List<SpotInspectionImageInfo> imageInfoList = new ArrayList<>();
 
             spotInspectionPlanExecuteWarpReq.getList().stream().forEach(s1 ->{

@@ -69,6 +69,8 @@ public class SpotInspectionRecordServiceImpl implements SpotInspectionRecordServ
     @Resource
     private SpotInspectionStandardRepository spotInspectionStandardRepository;
 
+    @Resource
+    private SpotInspectionImageInfoRepository spotInspectionImageInfoRepository;
 
     private static Logger logger = LoggerFactory.getLogger(SpotInspectionRecordServiceImpl.class);
 
@@ -200,12 +202,14 @@ public class SpotInspectionRecordServiceImpl implements SpotInspectionRecordServ
 
         spotInspectionRecordRepository.save(record);
 
-            if (!CheckParam.isNull(spotInspectionRecordMobileAddReq.getDetailList()) && !spotInspectionRecordMobileAddReq.getDetailList().isEmpty()) {
+        //巡检记录ID
+        Long recordId = record.getId();
+
+
+        if (!CheckParam.isNull(spotInspectionRecordMobileAddReq.getDetailList()) && !spotInspectionRecordMobileAddReq.getDetailList().isEmpty()) {
 
                 List<SpotInspectionRecordDetail> detailList = new ArrayList<>();
 
-                //巡检记录ID
-                Long recordId = record.getId();
 
                 spotInspectionRecordMobileAddReq.getDetailList().stream().forEach(s1 -> {
                     SpotInspectionRecordDetail spotInspectionRecordDetail = new SpotInspectionRecordDetail();
@@ -224,14 +228,34 @@ public class SpotInspectionRecordServiceImpl implements SpotInspectionRecordServ
 
                 spotInspectionRecordDetailRepository.save(detailList);
 
-                SpotInspectionRecordAddResp spotInspectionRecordAddResp = new SpotInspectionRecordAddResp();
 
-                spotInspectionRecordAddResp.setId(record.getId());
+            }
+        if (!CheckParam.isNull(spotInspectionRecordMobileAddReq.getImageIdList()) && !spotInspectionRecordMobileAddReq.getImageIdList().isEmpty()) {
 
-                return spotInspectionRecordAddResp;
+            List<SpotInspectionImageInfo> imageInfoList = new ArrayList<>();
+
+            spotInspectionRecordMobileAddReq.getImageIdList().stream().forEach(m1 -> {
+                SpotInspectionImageInfo imageInfo = new SpotInspectionImageInfo();
+
+                imageInfo.setImageKey(m1);
+                imageInfo.setRecordId(recordId);
+                imageInfo.setSpotInspectionPlan(plan.getId());
+                imageInfo.setCorporateIdentify(corporateIdentify);
+                imageInfo.setSpotInspectionStandard(spotInspectionRecordMobileAddReq.getSpotInspectionStandard());
+
+                imageInfoList.add(imageInfo);
+            });
+
+            spotInspectionImageInfoRepository.save(imageInfoList);
             }
 
-        return null;
+            SpotInspectionRecordAddResp spotInspectionRecordAddResp = new SpotInspectionRecordAddResp();
+
+            spotInspectionRecordAddResp.setId(record.getId());
+
+            return spotInspectionRecordAddResp;
+
+
     }
 
     /**

@@ -4,7 +4,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.*;
 import tech.yozo.factoryrp.config.auth.UserAuthService;
 import tech.yozo.factoryrp.entity.DeviceProcess;
@@ -12,7 +11,6 @@ import tech.yozo.factoryrp.entity.DeviceProcessType;
 import tech.yozo.factoryrp.page.Pagination;
 import tech.yozo.factoryrp.service.ProcessService;
 import tech.yozo.factoryrp.vo.base.ApiResponse;
-import tech.yozo.factoryrp.vo.req.DeviceParameterDicBatchAddReq;
 import tech.yozo.factoryrp.vo.req.DeviceProcessAddReq;
 import tech.yozo.factoryrp.vo.req.DeviceProcessQueryReq;
 import tech.yozo.factoryrp.vo.resp.process.DeviceProcessAddResp;
@@ -128,7 +126,7 @@ public class DeviceProcessController extends BaseController  {
     @GetMapping("/queryAllDecviceProcessType")
     public ApiResponse<List<DeviceProcessType>> queryAllDecviceProcessType(HttpServletRequest request){
         Long corporateIdentify = userAuthService.getCurrentUserCorporateIdentify(request);
-        return apiResponse(processService.queryAllDecviceProcessType(corporateIdentify));
+        return apiResponse(processService.queryAllDeviceProcessType(corporateIdentify));
     }
 
     /**

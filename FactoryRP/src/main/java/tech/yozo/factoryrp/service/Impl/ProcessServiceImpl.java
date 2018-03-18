@@ -26,6 +26,7 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -199,12 +200,12 @@ public class ProcessServiceImpl implements ProcessService {
      * @param corporateIdentify
      * @return
      */
-    public List<DeviceProcessType> queryAllDecviceProcessType(Long corporateIdentify){
+    public List<DeviceProcessType> queryAllDeviceProcessType(Long corporateIdentify){
 
         List<DeviceProcessType> deviceProcessTypeList = deviceProcessTypeRepository.findByCorporateIdentify(corporateIdentify);
 
         if(!CheckParam.isNull(deviceProcessTypeList) && !deviceProcessTypeList.isEmpty()){
-            deviceProcessTypeList.stream().sorted((d1,d2) -> d1.getOrderNumber().compareTo(d2.getOrderNumber()));
+            deviceProcessTypeList.stream().sorted(Comparator.comparing(DeviceProcessType::getOrderNumber));
         }
 
         return deviceProcessTypeRepository.findByCorporateIdentify(corporateIdentify);

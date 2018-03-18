@@ -70,7 +70,7 @@ public interface ProcessService {
      * @param corporateIdentify
      * @return
      */
-    List<DeviceProcessType> queryAllDecviceProcessType(Long corporateIdentify);
+    List<DeviceProcessType> queryAllDeviceProcessType(Long corporateIdentify);
 
     /**
      * 查询流程状态 查询当前流程实例的状态以及流程详细步骤的状态

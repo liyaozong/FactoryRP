@@ -95,4 +95,5 @@ public class SpotInspectionRecordAddReq extends ApiRequest implements Serializab
     @ApiModelProperty(value = "巡检记录详情集合",notes ="巡检记录详情集合",example = "[1,2,3]")
     private List<SpotInspectionRecordDetail> detailList;
 
+
 }
