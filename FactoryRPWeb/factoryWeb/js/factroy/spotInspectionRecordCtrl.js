@@ -135,31 +135,13 @@ myApp.controller('spotInspectionRecordCtrl',['$filter','$rootScope','$location',
             arr.push($(n).attr('value'));
         });
         // console.log(arr);
-        if(arr.length>1){
-            // inspectionPlan.deleteSpotInspectionStandardByIdsIP(arr.join(',')).success(function (data) {
-            //     if(data.errorCode=='000000'){
-            //         hideDiv('deleteSISPop');
-            //         popupDiv('SaveSuccess');
-            //         $('.SaveSuccess .Message').html(data.errorMessage);
-            //     }else{
-            //         hideDiv('deleteSISPop');
-            //         popupDiv('SaveSuccess');
-            //         $('.SaveSuccess .Message').html(data.errorMessage);
-            //     }
-            // });
-        }else if(arr.length==1){
-            // inspectionPlan.deleteSpotInspectionPlanDetailByPlanId(arr[0]).success(function (data) {
-            //     if(data.errorCode=='000000'){
-            //         hideDiv('deleteSISPop');
-            //         popupDiv('SaveSuccess');
-            //         $('.SaveSuccess .Message').html(data.errorMessage);
-            //     }else{
-            //         hideDiv('deleteSISPop');
-            //         popupDiv('SaveSuccess');
-            //         $('.SaveSuccess .Message').html(data.errorMessage);
-            //     }
-            // });
-        }
+        inspectionPlan.batchDeleteSpotInspectionRecord({
+            recordIdList:arr
+        }).success(function (data) {
+            hideDiv('deleteSISPop');
+            popupDiv('SaveSuccess');
+            $('.SaveSuccess .Message').html(data.errorMessage);
+        });
     };
 
 

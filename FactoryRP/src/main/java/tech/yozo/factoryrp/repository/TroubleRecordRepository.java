@@ -24,5 +24,7 @@ public interface TroubleRecordRepository extends BaseRepository<TroubleRecord,Lo
 
     public Page<TroubleRecord> findByStatusAndRepairUserId(Integer status,Long repairUserId, Pageable pageable);
 
-    public Page<TroubleRecord> findByStatusAndValidateUserId(Integer status,Long validateUserId, Pageable pageable);
+    public Page<TroubleRecord> findByIdIn(List<Long> ids, Pageable pageable);
+
+
 }

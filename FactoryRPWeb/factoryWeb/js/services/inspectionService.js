@@ -183,6 +183,14 @@ myApp.factory("inspectionPlan",["AppHttp","FF_API",function(AppHttp,FF_API){
             data:data
         });
     };
+    //巡检记录删除
+    inspectionPlan.batchDeleteSpotInspectionRecord=function(data){
+        return AppHttp({
+            method: 'post',
+            url: FF_API.base + FF_API.batchDeleteSpotInspectionRecordPath,
+            data:data
+        });
+    };
 
     return inspectionPlan;
 }]);

@@ -151,8 +151,16 @@
         <div style="padding: 20px 40px 20px 0;" class="businessAuth">
             <ul class="checkBoxUl checkBoxUlRole">
                 <li ng-repeat="menuRoleList in menuRoleLists" class="userRoleLi" ng-if="menuRoleList.parentId==''||menuRoleList.parentId==null||menuRoleList.parentId==undefined||menuRoleList.parentId=='-1'||menuRoleList.parentId==0">
-                    <input type="checkbox" roleId="{{menuRoleList.id}}" ng-model="menuRoleList.modelN" ng-change="chengedRole(menuRoleList.id)" class="menuRoleCheckBox" id="{{menuRoleList.id}}">
+                    <input type="checkbox" roleId="{{menuRoleList.id}}" ng-model="menuRoleList.modelN" class="menuRoleCheckBox menuRoleCheckBoxP" id="{{menuRoleList.id}}" ng-checked="menuRoleList.alreadyHaveStatus==1" ng-disabled="menuRoleList.alreadyHaveStatus==1">
                     <label for="{{menuRoleList.id}}" ng-bind="menuRoleList.name"></label>
+                    <div class="subRoleDiv">
+                        <ul>
+                            <li class="userRoleLi" ng-repeat="item in menuRoleLists" ng-if="item.parentId==menuRoleList.id">
+                                <input ng-model="item.modelN"  type="checkbox" roleId="{{item.id}}" id="{{item.id}}" class="menuRoleCheckBox" ng-checked="item.alreadyHaveStatus==1" ng-disabled="item.alreadyHaveStatus==1">
+                                <label for="{{item.id}}">{{item.name}}</label>
+                            </li>
+                        </ul>
+                    </div>
                 </li>
                 <p style="margin-bottom: 20px;">
                     <label for="remark" style="width:auto;">
@@ -181,8 +189,16 @@
                     <!--<label for="{{menuRoleList.id}}" ng-bind="menuRoleList.name"></label>-->
                 <!--</li>-->
                 <li ng-repeat="menuRoleList in delmenuRoleLists" class="userRoleLi" ng-if="menuRoleList.parentId==''||menuRoleList.parentId==null||menuRoleList.parentId==undefined||menuRoleList.parentId=='-1'||menuRoleList.parentId==0">
-                    <input type="checkbox" roleId="{{menuRoleList.id}}" ng-model="menuRoleList.modelN" ng-change="chengedRoleDel(menuRoleList.id)" class="delmenuRoleCheckBox" id="{{menuRoleList.id}}">
+                    <input type="checkbox" roleId="{{menuRoleList.id}}" ng-model="menuRoleList.modelN" class="delmenuRoleCheckBox" id="{{menuRoleList.id}}">
                     <label for="{{menuRoleList.id}}" ng-bind="menuRoleList.name"></label>
+                    <div class="subRoleDiv">
+                        <ul>
+                            <li class="userRoleLi" ng-repeat="item in delmenuRoleLists" ng-if="item.parentId==menuRoleList.id">
+                                <input ng-model="item.modelN"  type="checkbox" roleId="{{item.id}}" id="{{item.id}}" class="delmenuRoleCheckBox">
+                                <label for="{{item.id}}">{{item.name}}</label>
+                            </li>
+                        </ul>
+                    </div>
                 </li>
             </ul>
             <div class="submitBtn1" style="text-align: center;padding-left: 40px;">

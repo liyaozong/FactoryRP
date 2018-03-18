@@ -63,7 +63,7 @@ public interface ProcessService {
      * @param corporateIdentify
      * @return
      */
-    List<DeviceProcessDetailWarpResp> queryProcessAduitInfo(String processType, String processStage, Long corporateIdentify);
+    List<DeviceProcessDetailWarpResp> queryProcessAduitInfo(String processType, String processStage,Long triggerConditionType,Long triggerCondition,Long corporateIdentify);
 
     /**
      * 查询所有流程类型集合

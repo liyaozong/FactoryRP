@@ -1,6 +1,6 @@
 //用户管理
 // 用户/用户组控制器
-myApp.controller('userManagementCtrl',['$filter','$rootScope','$location','$scope','$cookies','queryCorporateAllUser','userManageMent',function($filter,$rootScope,$location,$scope,$cookies,queryCorporateAllUser,userManageMent){
+myApp.controller('userManagementCtrl',['$filter','$rootScope','$location','$scope','$cookies','queryCorporateAllUser','userManageMent','$timeout',function($filter,$rootScope,$location,$scope,$cookies,queryCorporateAllUser,userManageMent,$timeout){
     // console.log('用户管理控制器');
     //查询与企业用户列表
     queryCorporateAllUser.getData().success(function(data){
@@ -66,8 +66,9 @@ myApp.controller('userManagementCtrl',['$filter','$rootScope','$location','$scop
         var requestSeqNo=$cookies.get('corporateIdentify');
         userManageMent.queryRoles(requestSeqNo).success((function (data) {
             $scope.userRoleLists=data.data;
+            $timeout(function () {
+                popupDiv('addUserRolePop'); },200)
         }));
-        popupDiv('addUserRolePop');
         var arr=[];
         $scope.addUserRoleSure=function () {
             $('.userRoleCheckBox:checked').each(function (i,n) {
@@ -101,8 +102,10 @@ myApp.controller('userManagementCtrl',['$filter','$rootScope','$location','$scop
         //每次进入获取角色列表
         userManageMent.queryRoleByUserId(id).success((function (data) {
             $scope.delUserRoleLists=data.data;
+            $timeout(function () {
+                popupDiv('delUserRolePop');
+            },200)
         }));
-        popupDiv('delUserRolePop');
         var arr=[];
         $scope.delUserRoleSure=function () {
             $('.userRoleCheckBoxDel:checked').each(function (i,n) {

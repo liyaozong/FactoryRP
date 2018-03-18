@@ -2,80 +2,6 @@
 // 审核流程设置
 myApp.controller('deviceProcessCtrl',['$timeout','$filter','$rootScope','$location','$scope','deviceProcess','deviceType','departmentManageService','validate','queryCorporateAllUser',function($timeout,$filter,$rootScope,$location,$scope,deviceProcess,deviceType,departmentManageService,validate,queryCorporateAllUser){
 
-    //分页查询审核流程
-    $scope.paginationConf = {
-        currentPage: 1,
-        itemsPerPage: 5
-    };
-    $scope.onQuery=function () {
-        var req={
-            "currentPage": $scope.paginationConf.currentPage, //当前页码
-            "itemsPerPage": $scope.paginationConf.itemsPerPage//每页显示记录数
-        };
-        deviceProcess.list(req).then(function (data) {
-            // console.log(data,'data');
-            if(data.data.totalCount>=1){
-                $scope.paginationConf.totalItems = data.data.totalCount;
-                $scope.deviceProcessLists=data.data.list;
-
-                $timeout(function () {
-                    $scope.deviceProcessLists.forEach(function (n,i) {
-                        var item=n;
-                        if(item.triggerConditionType==1){
-                            item.triggerConditionTypeName='设备类型';
-                            $scope.deviceTypeList.forEach(function (k,j) {
-                                // console.log(item.triggerCondition,k);
-                                if(item.triggerCondition==k.id){
-                                    // console.log(k,'----');
-                                    item.triggerConditionName=k.name;
-                                }else if(item.triggerCondition==''||item.triggerCondition==null||item.triggerCondition==undefined){
-                                    item.triggerConditionName='所有设备';
-                                }
-                            })
-                        }else if(item.triggerConditionType==2){
-                            item.triggerConditionTypeName='金额上限';
-                            item.triggerConditionName=item.triggerCondition;
-                        }else if(item.triggerConditionType==3){
-                            item.triggerConditionTypeName='部门';
-                            $scope.departmentList.forEach(function (k,j) {
-                                // console.log(item.triggerCondition,k);
-                                if(item.triggerCondition==k.id){
-                                    // console.log(k,'----');
-                                    item.triggerConditionName=k.name;
-                                }else if(item.triggerCondition==''||item.triggerCondition==null||item.triggerCondition==undefined){
-                                    item.triggerConditionName='所有部门';
-                                }
-                            })
-                        }
-                        if($scope.deviceProcessTypeLists&&$scope.deviceProcessTypeLists.length>0){
-                            $scope.deviceProcessTypeLists.forEach(function (m,n) {
-                                // console.log(item.processType,m.id,'--');
-                                if(item.processType==m.code){
-                                    item.deviceProcessTypeName=m.deviceProcessType;
-                                    m.deviceProcessPhaseList.forEach(function (k,j) {
-                                        // console.log(k.id,item.processStage,'====')
-                                        if(item.processStage==k.code){
-                                            // console.log(k);
-                                            item.processStageName=k.deviceProcessPhase;
-                                        }
-                                    });
-                                }
-                            });
-                        }
-                    });
-
-                    if($scope.deviceProcessLists.length>0){
-                        getQueryProcessDetail($scope.deviceProcessLists[0].id);
-                        $($('.prossTr')[0]).addClass('ccTr');
-                    }
-                },500);
-            }else{
-                $scope.paginationConf.totalItems = 0;
-                $scope.deviceProcessLists.length = 0;
-            }
-        });
-    };
-
     //查询详细审核流程数据画图
     var getQueryProcessDetail=function (id) {
         deviceProcess.queryProcessDetail(id).success(function (data) {
@@ -102,7 +28,7 @@ myApp.controller('deviceProcessCtrl',['$timeout','$filter','$rootScope','$locati
 
     //查询所有流程类型集合
     deviceProcess.queryAllDecviceProcessType().success(function (data) {
-       // console.log(data);
+       console.log(data,'流程类型集合');
        $scope.deviceProcessTypeLists=data.data;
     });
 
@@ -346,6 +272,82 @@ myApp.controller('deviceProcessCtrl',['$timeout','$filter','$rootScope','$locati
         }else {
             $scope.errFlog=true;
         }
+    };
+
+
+    //分页查询审核流程
+    $scope.paginationConf = {
+        currentPage: 1,
+        itemsPerPage: 5
+    };
+    $scope.onQuery=function () {
+        var req={
+            "currentPage": $scope.paginationConf.currentPage, //当前页码
+            "itemsPerPage": $scope.paginationConf.itemsPerPage//每页显示记录数
+        };
+        deviceProcess.list(req).then(function (data) {
+            // console.log(data,'data');
+            if(data.data.totalCount>=1){
+                $scope.paginationConf.totalItems = data.data.totalCount;
+                $scope.deviceProcessLists=data.data.list;
+
+                $timeout(function () {
+                    $scope.deviceProcessLists.forEach(function (n,i) {
+                        var item=n;
+                        if(item.triggerConditionType==1){
+                            item.triggerConditionTypeName='设备类型';
+                            $scope.deviceTypeList.forEach(function (k,j) {
+                                // console.log(item.triggerCondition,k);
+                                if(item.triggerCondition==k.id){
+                                    // console.log(k,'----');
+                                    item.triggerConditionName=k.name;
+                                }else if(item.triggerCondition==''||item.triggerCondition==null||item.triggerCondition==undefined){
+                                    item.triggerConditionName='所有设备';
+                                }
+                            })
+                        }else if(item.triggerConditionType==2){
+                            item.triggerConditionTypeName='金额上限';
+                            item.triggerConditionName=item.triggerCondition;
+                        }else if(item.triggerConditionType==3){
+                            item.triggerConditionTypeName='部门';
+                            $scope.departmentList.forEach(function (k,j) {
+                                // console.log(item.triggerCondition,k);
+                                if(item.triggerCondition==k.id){
+                                    // console.log(k,'----');
+                                    item.triggerConditionName=k.name;
+                                }else if(item.triggerCondition==''||item.triggerCondition==null||item.triggerCondition==undefined){
+                                    item.triggerConditionName='所有部门';
+                                }
+                            })
+                        }
+                        if($scope.deviceProcessTypeLists&&$scope.deviceProcessTypeLists.length>0){
+                            $scope.deviceProcessTypeLists.forEach(function (m,n) {
+                                // console.log(item.processType,m.id,'--');
+                                if(item.processType==m.code){
+                                    item.deviceProcessTypeName=m.deviceProcessType;
+                                    m.deviceProcessPhaseList.forEach(function (k,j) {
+                                        // console.log(k.id,item.processStage,'====')
+                                        if(item.processStage==k.code){
+                                            // console.log(k,'流程类型');
+                                            item.processStageName=k.deviceProcessPhase;
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    });
+
+                    console.log($scope.deviceProcessLists,'----');
+                    if($scope.deviceProcessLists.length>0){
+                        getQueryProcessDetail($scope.deviceProcessLists[0].id);
+                        $($('.prossTr')[0]).addClass('ccTr');
+                    }
+                },500);
+            }else{
+                $scope.paginationConf.totalItems = 0;
+                $scope.deviceProcessLists.length = 0;
+            }
+        });
     };
 
 

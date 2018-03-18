@@ -150,7 +150,7 @@
         <div style="padding: 20px 40px 20px 0;" class="businessAuth">
             <ul class="checkBoxUl">
                 <li ng-repeat="userRoleList in userRoleLists" class="userRoleLi">
-                    <input type="checkbox" roleId="{{userRoleList.roleId}}" id="{{userRoleList.roleId}}" class="userRoleCheckBox">
+                    <input type="checkbox" roleId="{{userRoleList.roleId}}" id="{{userRoleList.roleId}}" class="userRoleCheckBox" ng-checked="userRoleList.alreadyHaveStatus==1" ng-disabled="userRoleList.alreadyHaveStatus==1">
                     <label for="{{userRoleList.roleId}}" ng-bind="userRoleList.roleName"></label>
                 </li>
 

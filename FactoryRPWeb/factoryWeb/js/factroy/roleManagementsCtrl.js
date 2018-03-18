@@ -1,5 +1,5 @@
 //角色管理
-myApp.controller('roleManagementsCtrl',['$filter','$rootScope','$location','$scope','$cookies','userManageMent',function($filter,$rootScope,$location,$scope,$cookies,userManageMent){
+myApp.controller('roleManagementsCtrl',['$filter','$rootScope','$location','$scope','$cookies','userManageMent','$timeout',function($filter,$rootScope,$location,$scope,$cookies,userManageMent,$timeout){
 
 
     var requestSeqNo=$cookies.get('corporateIdentify');
@@ -36,56 +36,50 @@ myApp.controller('roleManagementsCtrl',['$filter','$rootScope','$location','$sco
     };
 
     //添加菜单选择事件
-    $scope.chengedRole=function (id) {
-        var str='';
-        console.log('changeRole',id);
-        var flog=$('#'+id).is(':checked');
-        var thisId=$('#'+id).attr('id');
-        // console.log(thisId);
-        if(flog){
-            str+='<div class="subRoleDiv">';
-            $scope.menuRoleLists.forEach(function (n) {
-                // console.log(n.parentId==thisId);
-                if(n.parentId==thisId){
-                    console.log(n);
-                    str+='<li class="userRoleLi">';
-                    str+='<input ng-change="chengedRole('+n.id+')"  ng-model="'+n.modelN+'"  type="checkbox" roleId="'+n.id+'" id="'+n.id+'" class="menuRoleCheckBox">';
-                    str+='<label for="'+n.id+'">'+n.name+'</label>';
-                    str+='</li>';
-                }
-            });
-            str+='</div>';
-            $('#'+id).parent().append(str);
-        }else {
-            $('#'+id).parent().find('div').remove();
-        }
-    };
+    // $scope.chengedRole=function (id) {
+    //     var str='';
+    //     console.log('changeRole',id);
+    //     // var flog=$('#'+id).is(':checked');
+    //     // var thisId=$('#'+id).attr('id');
+    //     var arr=$('#'+id).parent().parent().find('.menuRoleCheckBox:checked') ;
+    //     console.log(arr.length);
+    //     if(arr.length>0){
+    //         $('#'+id).parent().parent().parent().parent().find('.menuRoleCheckBoxP').attr('ng-model',true);
+    //         // var id1=$('#'+id).parent().parent().parent().parent().find('.menuRoleCheckBoxP').attr('id');
+    //         // console.log(id1,$scope['model'+id1])
+    //         // $scope['model'+id1]=true;
+    //     }else {
+    //         // $('#'+id).parent().parent().parent().parent().find('.menuRoleCheckBoxP').attr('checked',false);
+    //         var id2=$('#'+id).parent().parent().parent().parent().find('.menuRoleCheckBoxP').attr('id');
+    //         $scope['model'+id2]=false;
+    //     }
+    // };
 
     //角色删除菜单选择事件
-    $scope.chengedRoleDel=function (id) {
-        var str='';
-        // console.log('changeRole',id);
-        var flog=$('#'+id).is(':checked');
-        var thisId=$('#'+id).attr('id');
-        // console.log(thisId);
-        if(flog){
-            str+='<div class="subRoleDiv">';
-            $scope.delmenuRoleLists.forEach(function (n) {
-                // console.log(n.parentId==thisId);
-                if(n.parentId==thisId){
-                    // console.log(n);
-                    str+='<li class="userRoleLi">';
-                    str+='<input ng-change="chengedRoleDel('+n.id+')"  ng-model="'+n.modelN+'"  type="checkbox" roleId="'+n.id+'" id="'+n.id+'" class="delmenuRoleCheckBox">';
-                    str+='<label for="'+n.id+'">'+n.name+'</label>';
-                    str+='</li>';
-                }
-            });
-            str+='</div>';
-            $('#'+id).parent().append(str);
-        }else {
-            $('#'+id).parent().find('div').remove();
-        }
-    };
+    // $scope.chengedRoleDel=function (id) {
+    //     var str='';
+    //     // console.log('changeRole',id);
+    //     var flog=$('#'+id).is(':checked');
+    //     var thisId=$('#'+id).attr('id');
+    //     // console.log(thisId);
+    //     if(flog){
+    //         str+='<div class="subRoleDiv">';
+    //         $scope.delmenuRoleLists.forEach(function (n) {
+    //             // console.log(n.parentId==thisId);
+    //             if(n.parentId==thisId){
+    //                 // console.log(n);
+    //                 str+='<li class="userRoleLi">';
+    //                 str+='<input ng-change="chengedRoleDel('+n.id+')"  ng-model="'+n.modelN+'"  type="checkbox" roleId="'+n.id+'" id="'+n.id+'" class="delmenuRoleCheckBox">';
+    //                 str+='<label for="'+n.id+'">'+n.name+'</label>';
+    //                 str+='</li>';
+    //             }
+    //         });
+    //         str+='</div>';
+    //         $('#'+id).parent().append(str);
+    //     }else {
+    //         $('#'+id).parent().find('div').remove();
+    //     }
+    // };
 
     //为角色添加菜单
     $scope.addMenuRole=function (id,name) {
@@ -96,9 +90,9 @@ myApp.controller('roleManagementsCtrl',['$filter','$rootScope','$location','$sco
             $scope.menuRoleLists=data.data;
             // console.log($scope.menuRoleLists);
             $scope.menuRoleLists.forEach(function (n) {
-                $scope.menuRoleLists.modelN='model'+n.id;
+                n.modelN='model'+n.id;
             });
-            popupDiv('addMenuRolePop');
+            $timeout(function () { popupDiv('addMenuRolePop'); },200)
         }));
         var arr=[];
         $scope.addMenuRoleSure=function () {
@@ -134,9 +128,11 @@ myApp.controller('roleManagementsCtrl',['$filter','$rootScope','$location','$sco
         userManageMent.queryByRoleId(id).success((function (data) {
             $scope.delmenuRoleLists=data.data.menuList;
             $scope.delmenuRoleLists.forEach(function (n) {
-                $scope.delmenuRoleLists.modelN='model'+n.id;
+                n.modelN='model'+n.id;
             });
-            popupDiv('delMenuRolePop');
+            $timeout(function () {
+                popupDiv('delMenuRolePop');
+            },200)
         }));
         var arr=[];
         $scope.delMenuRoleSure=function () {

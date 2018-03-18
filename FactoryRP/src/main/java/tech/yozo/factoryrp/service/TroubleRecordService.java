@@ -63,6 +63,12 @@ public interface TroubleRecordService {
     public void obtainOrder(Long id,AuthUser user);
 
     /**
+     * 维修派工
+     * @param param
+     */
+    public void allocateWorker(AllocateWorkerReq param);
+
+    /**
      * 撤销工单
      * @param id
      * @param user
