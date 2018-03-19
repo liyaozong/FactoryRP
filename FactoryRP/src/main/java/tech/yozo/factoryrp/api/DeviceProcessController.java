@@ -12,6 +12,7 @@ import tech.yozo.factoryrp.page.Pagination;
 import tech.yozo.factoryrp.service.ProcessService;
 import tech.yozo.factoryrp.vo.base.ApiResponse;
 import tech.yozo.factoryrp.vo.req.DeviceProcessAddReq;
+import tech.yozo.factoryrp.vo.req.DeviceProcessEditReq;
 import tech.yozo.factoryrp.vo.req.DeviceProcessQueryReq;
 import tech.yozo.factoryrp.vo.resp.process.DeviceProcessAddResp;
 import tech.yozo.factoryrp.vo.resp.process.DeviceProcessDetailQueryWarpResp;
@@ -119,6 +120,21 @@ public class DeviceProcessController extends BaseController  {
     }
 
     /**
+     * 删除设备流程
+     * @param processId
+     * @param request
+     */
+    @ApiOperation(value = "删除设备流程",notes = "删除设备流程",httpMethod = "GET")
+    @GetMapping("/deleteDeviceProcess")
+    @ApiImplicitParam(dataType = "processId" ,name = "processId", paramType = "VO" ,
+            value = "流程ID",required = true)
+    public ApiResponse deleteDeviceProcess(Long processId,HttpServletRequest request){
+        Long corporateIdentify = userAuthService.getCurrentUserCorporateIdentify(request);
+        processService.deleteDeviceProcess(processId,corporateIdentify);
+        return apiResponse();
+    }
+
+    /**
      * 查询所有流程类型集合
      * @return
      */
@@ -159,4 +175,21 @@ public class DeviceProcessController extends BaseController  {
         Long corporateIdentify = userAuthService.getCurrentUserCorporateIdentify(request);
         return apiResponse(processService.findByPage(deviceProcessQueryReq,corporateIdentify));
     }
+
+
+    /**
+     * 编辑设备流程详情
+     * @param deviceProcessEditReq
+     * @param request
+     */
+    @PostMapping("/editDeviceProcess")
+    @ApiOperation(value = "编辑设备流程详情",notes = "编辑设备流程详情",httpMethod = "POST")
+    @ApiImplicitParam(dataType = "DeviceProcessEditReq" ,name = "deviceProcessEditReq", paramType = "VO" ,
+            value = "编辑设备流程详情",required = true)
+    public ApiResponse editDeviceProcess(@RequestBody @Valid DeviceProcessEditReq deviceProcessEditReq, HttpServletRequest request){
+        Long corporateIdentify = userAuthService.getCurrentUserCorporateIdentify(request);
+        processService.editDeviceProcess(deviceProcessEditReq,corporateIdentify);
+        return apiResponse();
+    }
+
 }

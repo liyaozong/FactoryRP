@@ -9,21 +9,14 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * 流程新增请求Vo
+ * 流程编辑请求对象
  * @author created by Singer email:313402703@qq.com
- * @time 2017/12/27
+ * @time 2018/3/19
  * @description
  */
 @ApiModel
 @Data
-public class DeviceProcessAddReq extends BaseRequest implements Serializable {
-
-
-    /**
-     * 流程ID
-     */
-    @ApiModelProperty(value = "流程ID",notes = "流程ID",example = "流程ID")
-    private String processId;
+public class DeviceProcessEditReq extends BaseRequest implements Serializable {
 
     /**
      * 流程名称
@@ -69,6 +62,6 @@ public class DeviceProcessAddReq extends BaseRequest implements Serializable {
      * 流程细节集合
      */
     @ApiModelProperty(value = "流程细节集合",notes = "流程细节集合",example = "List")
-    private List<DeviceProcessDetailAddReq> list;
+    private List<DeviceProcessDetailEditReq> list;
 
 }

@@ -11,7 +11,7 @@ import tech.yozo.factoryrp.utils.CheckParam;
 public enum DeviceProcessTypeEnum {
 
     DEVICE_PROCESS_RECEIVE("device_process_type_receive","设备领用"),
-    DEVICE_PROCESS_MALFUNCTION_REPAIR("device_process_type_receive","故障报修"),
+    DEVICE_PROCESS_MALFUNCTION_REPAIR("device_process_type_malfunction_repair","故障报修"),
     DEVICE_PROCESS_ENTRUST_REPAIR("device_process_entrust_repair","外委维修"),
     DEVICE_PROCESS_PURCHASE("device_process_purchase","设备购置"),
     DEVICE_PROCESS_ALLOT("device_process_allot","设备调拨"),

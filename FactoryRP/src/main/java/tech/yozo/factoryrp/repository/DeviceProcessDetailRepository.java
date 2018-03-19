@@ -33,8 +33,17 @@ public interface DeviceProcessDetailRepository extends BaseRepository<DeviceProc
      * @param corporateIdentify
      * @return
      */
-    List<DeviceProcessDetail> findByProcessIdAndAndCorporateIdentify(Long processId, Long corporateIdentify);
+    List<DeviceProcessDetail> findByProcessIdAndCorporateIdentify(Long processId, Long corporateIdentify);
 
+
+    /**
+     * 根据流程ID和企业唯一标识进行查询
+     * @param processIdList
+     * @param corporateIdentify
+     * @return
+     */
+    @Query(value = "select d from DeviceProcessDetail d where d.processId in :processIdList and d.corporateIdentify = :corporateIdentify")
+    List<DeviceProcessDetail> findByProcessIdInAndCorporateIdentify(@Param("processIdList") List<Long> processIdList,@Param("corporateIdentify") Long corporateIdentify);
 
     /**
      * 根据流程id和企业唯一标识进行查找最小的详细流程步骤

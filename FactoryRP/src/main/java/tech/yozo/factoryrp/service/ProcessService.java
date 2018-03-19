@@ -6,6 +6,7 @@ import tech.yozo.factoryrp.entity.DeviceProcessType;
 import tech.yozo.factoryrp.exception.BussinessException;
 import tech.yozo.factoryrp.page.Pagination;
 import tech.yozo.factoryrp.vo.req.DeviceProcessAddReq;
+import tech.yozo.factoryrp.vo.req.DeviceProcessEditReq;
 import tech.yozo.factoryrp.vo.req.DeviceProcessQueryReq;
 import tech.yozo.factoryrp.vo.resp.process.*;
 
@@ -107,4 +108,18 @@ public interface ProcessService {
      */
     Pagination<DeviceProcess> findByPage(DeviceProcessQueryReq deviceProcessQueryReq, Long corporateIdentify);
 
+
+    /**
+     * 删除设备流程
+     * @param processId
+     * @param corporateIdentify
+     */
+    void deleteDeviceProcess(Long processId,Long corporateIdentify);
+
+    /**
+     * 编辑设备流程详情
+     * @param deviceProcessEditReq
+     * @param corporateIdentify
+     */
+    void editDeviceProcess(DeviceProcessEditReq deviceProcessEditReq, Long corporateIdentify);
 }

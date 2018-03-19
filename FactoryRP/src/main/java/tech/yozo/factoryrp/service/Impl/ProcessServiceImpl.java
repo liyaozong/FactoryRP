@@ -16,6 +16,7 @@ import tech.yozo.factoryrp.service.ProcessService;
 import tech.yozo.factoryrp.utils.CheckParam;
 import tech.yozo.factoryrp.utils.ErrorCode;
 import tech.yozo.factoryrp.vo.req.DeviceProcessAddReq;
+import tech.yozo.factoryrp.vo.req.DeviceProcessEditReq;
 import tech.yozo.factoryrp.vo.req.DeviceProcessQueryReq;
 import tech.yozo.factoryrp.vo.resp.process.*;
 
@@ -81,7 +82,7 @@ public class ProcessServiceImpl implements ProcessService {
             //不给步数就返回第一步和返回下一步的ID
             if(CheckParam.isNull(processStep)){
 
-                List<DeviceProcessDetail> deviceProcessDetailList = deviceProcessDetailRepository.findByProcessIdAndAndCorporateIdentify(deviceProcess.getId(), corporateIdentify);
+                List<DeviceProcessDetail> deviceProcessDetailList = deviceProcessDetailRepository.findByProcessIdAndCorporateIdentify(deviceProcess.getId(), corporateIdentify);
 
 
                 //算出流程最小值,业务上来说不可能为空
@@ -142,7 +143,7 @@ public class ProcessServiceImpl implements ProcessService {
 
             DeviceProcessDetailQueryWarpResp deviceProcessDetailQueryWarpResp = new DeviceProcessDetailQueryWarpResp();
 
-            List<DeviceProcessDetail> deviceProcessDetailList = deviceProcessDetailRepository.findByProcessIdAndAndCorporateIdentify(processId, corporateIdentify);
+            List<DeviceProcessDetail> deviceProcessDetailList = deviceProcessDetailRepository.findByProcessIdAndCorporateIdentify(processId, corporateIdentify);
 
             List<DeviceProcessDetailQueryResp> processDetailList = new ArrayList<>();
 
@@ -356,7 +357,7 @@ public class ProcessServiceImpl implements ProcessService {
 
             List<DeviceProcessDetailWarpResp> warpRespList =  new ArrayList<>();
 
-            List<DeviceProcessDetail> processDetailList = deviceProcessDetailRepository.findByProcessIdAndAndCorporateIdentify(deviceProcess.getId(), corporateIdentify);
+            List<DeviceProcessDetail> processDetailList = deviceProcessDetailRepository.findByProcessIdAndCorporateIdentify(deviceProcess.getId(), corporateIdentify);
 
             List<Long> userIdList =  new ArrayList<>();
 
@@ -409,13 +410,90 @@ public class ProcessServiceImpl implements ProcessService {
         return null;
     }
 
+
+    /**
+     * 编辑设备流程详情
+     * @param deviceProcessEditReq
+     * @param corporateIdentify
+     */
+    public void editDeviceProcess(DeviceProcessEditReq deviceProcessEditReq, Long corporateIdentify){
+
+
+        DeviceProcessType deviceProcessType = deviceProcessTypeRepository.findOne(deviceProcessEditReq.getProcessType());
+        DeviceProcessPhase deviceProcessPhase = deviceProcessPhaseRepository.findOne(deviceProcessEditReq.getProcessStage());
+
+        if(CheckParam.isNull(deviceProcessType) || CheckParam.isNull(deviceProcessPhase)){
+            throw new BussinessException(ErrorCode.PROCESS_DIC_NOTEXIST_ERROR.getCode(),ErrorCode.PROCESS_DIC_NOTEXIST_ERROR.getMessage());
+
+        }
+
+        DeviceProcess deviceProcess = deviceProcessRepository.findByProcessTypeAndProcessStageAndCorporateIdentifyAndProcessName(deviceProcessType.getCode(),
+                deviceProcessType.getCode(),corporateIdentify,deviceProcessEditReq.getProcessName());
+
+        if(CheckParam.isNull(deviceProcess)){
+            throw new BussinessException(ErrorCode.PROCESS_NOT_EXIST_ERROR.getCode(),ErrorCode.PROCESS_NOT_EXIST_ERROR.getMessage());
+        }
+
+        if(!CheckParam.isNull(deviceProcessEditReq.getProcessName())){
+            deviceProcess.setProcessName(deviceProcessEditReq.getProcessName());
+        }
+        if(!CheckParam.isNull(deviceProcessEditReq.getProcessRemark())){
+            deviceProcess.setProcessRemark(deviceProcessEditReq.getProcessRemark());
+        }
+        if(!CheckParam.isNull(deviceProcessEditReq.getTriggerCondition())){
+            deviceProcess.setTriggerCondition(deviceProcessEditReq.getTriggerCondition());
+        }
+        if(!CheckParam.isNull(deviceProcessEditReq.getTriggerConditionType())){
+            deviceProcess.setTriggerConditionType(deviceProcessEditReq.getTriggerConditionType());
+        }
+
+        deviceProcess.setCorporateIdentify(corporateIdentify);
+        deviceProcess.setProcessType(CheckParam.isNull(deviceProcessType) ? null : deviceProcessType.getCode());
+        deviceProcess.setProcessStage(CheckParam.isNull(deviceProcessPhase) ? null : deviceProcessPhase.getCode());
+
+        deviceProcessRepository.save(deviceProcess);
+
+        if(!CheckParam.isNull(deviceProcessEditReq.getList()) && !deviceProcessEditReq.getList().isEmpty()){
+            List<Long> detailId = new ArrayList<>();
+
+            deviceProcessEditReq.getList().stream().forEach(d1 -> {
+                detailId.add(d1.getDetailId());
+            });
+
+            List<DeviceProcessDetail> editDetailList = deviceProcessDetailRepository.findByProcessIdInAndCorporateIdentify(detailId, corporateIdentify);
+
+            editDetailList.stream().forEach(d1 -> {
+
+                if(!CheckParam.isNull(d1.getAuditType())){
+                    d1.setAuditType(d1.getAuditType());
+                }
+
+                if(!CheckParam.isNull(d1.getProcessAuditor())){
+                    d1.setProcessAuditor(JSON.toJSONString(d1.getProcessAuditor()));
+                }
+                if(!CheckParam.isNull(d1.getHandleDemandType())){
+                    d1.setHandleDemandType(d1.getHandleDemandType());
+                }
+                if(!CheckParam.isNull(d1.getProcessStep())){
+                    d1.setProcessStep(d1.getProcessStep());
+                }
+                if(!CheckParam.isNull(d1.getAuditType())){
+                    d1.setAuditType(d1.getAuditType());
+                }
+
+                d1.setCorporateIdentify(corporateIdentify);
+            });
+            deviceProcessDetailRepository.save(editDetailList);
+        }
+
+    }
     /**
      * 新增流程
      * @param deviceProcessAddReq
      * @param corporateIdentify
      * @return
      */
-    public DeviceProcessAddResp addDeviceProcess(DeviceProcessAddReq deviceProcessAddReq,Long corporateIdentify){
+    public DeviceProcessAddResp     addDeviceProcess(DeviceProcessAddReq deviceProcessAddReq,Long corporateIdentify){
 
         DeviceProcessType deviceProcessType = deviceProcessTypeRepository.findOne(deviceProcessAddReq.getProcessType());
         DeviceProcessPhase deviceProcessPhase = deviceProcessPhaseRepository.findOne(deviceProcessAddReq.getProcessStage());
@@ -537,5 +615,26 @@ public class ProcessServiceImpl implements ProcessService {
 
         return res;
     }
+
+    /**
+     * 删除设备流程
+     * @param processId
+     * @param corporateIdentify
+     */
+    public void deleteDeviceProcess(Long processId,Long corporateIdentify){
+
+        DeviceProcess process = deviceProcessRepository.findOne(processId);
+
+        if(CheckParam.isNull(process)){
+            throw new BussinessException(ErrorCode.PROCESS_NOT_EXIST_ERROR.getCode(),ErrorCode.PROCESS_NOT_EXIST_ERROR.getMessage());
+        }
+
+        List<DeviceProcessDetail> detailList = deviceProcessDetailRepository.findByProcessIdAndCorporateIdentify(processId, corporateIdentify);
+
+        deviceProcessDetailRepository.deleteInBatch(detailList);
+        deviceProcessRepository.delete(process);
+
+    }
+
 
 }
