@@ -2,9 +2,8 @@ package tech.yozo.factoryrp.ui;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -24,6 +23,7 @@ import tech.yozo.factoryrp.scan.Intents;
 import tech.yozo.factoryrp.scan.ScanActivity;
 import tech.yozo.factoryrp.ui.dialog.LoadingDialog;
 import tech.yozo.factoryrp.ui.dialog.TimePickerDialog;
+import tech.yozo.factoryrp.ui.fragment.UploadImageFragment;
 import tech.yozo.factoryrp.utils.*;
 import tech.yozo.factoryrp.vo.req.AddTroubleRecordReq;
 import tech.yozo.factoryrp.vo.resp.DeviceParamDicEnumResp;
@@ -35,10 +35,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-public class ReportFaultActivity extends AppCompatActivity implements HttpClient.OnHttpListener {
+public class TroubleReportActivity extends AppCompatActivity implements HttpClient.OnHttpListener, UploadImageFragment.OnFragmentInteractionListener {
     private static final int REQUEST_CODE_SCAN = 0x900;
     private static final int REQUEST_CODE_DEVICE = 0x901;
-    private static final int REQUEST_CODE_CAMERA = 0x902;
 
     @BindView(R.id.b_select_device)
     TextView bSelectDevice;
@@ -72,22 +71,18 @@ public class ReportFaultActivity extends AppCompatActivity implements HttpClient
     EditText etDevicePlace;
     @BindView(R.id.et_fault_desc)
     EditText etFaultDesc;
-    @BindView(R.id.ib_capture)
-    ImageButton ibCapture;
-    @BindView(R.id.ll_images)
-    LinearLayout llImages;
 
     private long selectedDeviceId = -1;
 
+    private List<String> imageKey = new ArrayList<>();
     private LoadingDialog dialog;
-    private int mImageCount;
     private TimePickerDialog dateDialog;
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日 HH:mm");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_report_fault);
+        setContentView(R.layout.activity_report_trouble);
         ButterKnife.bind(this);
 
         Date now = new Date();
@@ -178,6 +173,10 @@ public class ReportFaultActivity extends AppCompatActivity implements HttpClient
             reportReq.setPhone(etPhoneNumber.getText().toString());
             reportReq.setDeviceAddress(etDevicePlace.getText().toString());
             reportReq.setRemark(etFaultDesc.getText().toString());
+            //TODO
+            if(imageKey.size() > 0) {
+                //reportReq.setImageKey(imageKey);
+            }
 
             LoadingDialog.Builder builder = new LoadingDialog.Builder(this)
                     .setMessage(R.string.loading_report);
@@ -189,22 +188,9 @@ public class ReportFaultActivity extends AppCompatActivity implements HttpClient
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
-                case REQUEST_CODE_CAMERA:
-                    if (mImageCount < 4) {
-                        if (data != null && data.hasExtra("data")) {
-                            mImageCount++;
-                            Bitmap thumbnail = data.getParcelableExtra("data");
-                            ImageView view = new ImageView(this);
-                            view.setImageBitmap(thumbnail);
-                            view.setPadding(6, 2, 6, 2);
-                            llImages.addView(view);
-                        }
-                    } else {
-                        Toast.makeText(this, R.string.hint_image_count, Toast.LENGTH_SHORT).show();
-                    }
-                    break;
                 case REQUEST_CODE_SCAN:
                     if (data != null) {
                         RequestParams params = new RequestParams();
@@ -224,7 +210,7 @@ public class ReportFaultActivity extends AppCompatActivity implements HttpClient
         }
     }
 
-    @OnClick({R.id.b_select_device, R.id.iv_select_device, R.id.ib_capture, R.id.et_fault_time})
+    @OnClick({R.id.b_select_device, R.id.iv_select_device, R.id.et_fault_time})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.b_select_device: {
@@ -237,15 +223,6 @@ public class ReportFaultActivity extends AppCompatActivity implements HttpClient
                     ActivityCompat.requestPermissions(this,new String[]{android.Manifest.permission.CAMERA}, Constant.REQUEST_SCAN_PERMISSION);
                 }else {
                     startActivityForResult(new Intent(this, ScanActivity.class), REQUEST_CODE_SCAN);
-                }
-                break;
-            }
-            case R.id.ib_capture: {
-                if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA)!= PackageManager.PERMISSION_GRANTED){
-                    ActivityCompat.requestPermissions(this,new String[]{android.Manifest.permission.CAMERA}, Constant.REQUEST_CAMERA_PERMISSION);
-                }else {
-                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    startActivityForResult(intent, REQUEST_CODE_CAMERA);
                 }
                 break;
             }
@@ -297,30 +274,29 @@ public class ReportFaultActivity extends AppCompatActivity implements HttpClient
             } else {
                 Toast.makeText(this, R.string.failure_camera_permission, Toast.LENGTH_SHORT).show();
             }
-        } else if (requestCode == Constant.REQUEST_CAMERA_PERMISSION) {
-            if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(intent, REQUEST_CODE_CAMERA);
-            } else {
-                Toast.makeText(this, R.string.failure_camera_permission, Toast.LENGTH_SHORT).show();
-            }
         }
     }
 
     @Override
     public void onHttpSuccess(int requestType, Object obj, List<?> list) {
-        if(requestType == HttpClient.REQUEST_TROUBLE_ADD) {
-            dialog.dismiss();
-        } else if (requestType == HttpClient.REQUEST_DEVICE_GET_BY_CODE) {
-            FullDeviceInfoResp device = (FullDeviceInfoResp) obj;
-            showSelectedDevice(device);
+        switch (requestType) {
+            case HttpClient.REQUEST_TROUBLE_ADD:
+                dialog.dismiss();
+                updateUI(requestType);
+                break;
+            case HttpClient.REQUEST_DEVICE_GET_BY_CODE:
+                FullDeviceInfoResp device = (FullDeviceInfoResp) obj;
+                showSelectedDevice(device);
+                updateUI(requestType);
+                break;
+            default:
+                break;
         }
-        updateUI(requestType);
     }
 
     @Override
     public void onFailure(int requestType) {
-        if(requestType == HttpClient.REQUEST_TROUBLE_ADD) {
+        if(dialog != null) {
             dialog.dismiss();
         }
     }
@@ -358,5 +334,10 @@ public class ReportFaultActivity extends AppCompatActivity implements HttpClient
             default:
                 break;
         }
+    }
+
+    @Override
+    public void onImageUploadSuccess(String uri) {
+        imageKey.add(uri);
     }
 }

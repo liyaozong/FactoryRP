@@ -122,6 +122,10 @@ public class RepairPartsFragment extends BaseFragment {
         mRepairPartsView = (ListView) view.findViewById(R.id.lv_repair_parts);
         mListAdapter = new RepairPartsFragment.PartsListAdapter(getContext());
         mRepairPartsView.setAdapter(mListAdapter);
+
+        if(mParam_mode == Constant.FOR_DEVICE_ID) {
+            mAddParts.setVisibility(View.GONE);
+        }
         return view;
     }
 
@@ -136,7 +140,7 @@ public class RepairPartsFragment extends BaseFragment {
             SparePartsResp param = (SparePartsResp) data.getSerializableExtra(PartsSelectActivity.PARTS_OBJECT);
             boolean exist = false;
             for(UsedSparePartsVo p : parts) {
-                //TODO Id is better
+                //Using Id is better
                 if(p.getCode().equals(param.getCode())) {
                     if(p.getAmount() >= 10) {
                         Toast.makeText(getContext(), R.string.hint_parts_count, Toast.LENGTH_SHORT).show();

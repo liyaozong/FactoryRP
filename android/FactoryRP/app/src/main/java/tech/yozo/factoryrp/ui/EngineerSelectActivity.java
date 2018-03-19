@@ -22,11 +22,14 @@ import java.util.List;
 
 public class EngineerSelectActivity extends AppCompatActivity implements HttpClient.OnHttpListener {
     public static final String ENGINEER = "engineer";
+    public static final String SELECT_MODE = "select_mode";  // 0 多选； 1 单选
 
     @BindView(R.id.lv_maintainer)
     ListView lvMaintainer;
     @BindView(R.id.button_selected)
     Button buttonSelected;
+
+    private int selectMode;
 
     private List<MaintenanceEngineer> engineerList;
     private List<MaintenanceEngineer> checkBoxSelected = new ArrayList<>();
@@ -36,6 +39,8 @@ public class EngineerSelectActivity extends AppCompatActivity implements HttpCli
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maintainer_select);
         ButterKnife.bind(this);
+
+        selectMode = getIntent().getIntExtra(SELECT_MODE, 0);
 
         HttpClient client = HttpClient.getInstance();
         RequestParams params = new RequestParams();
@@ -124,7 +129,12 @@ public class EngineerSelectActivity extends AppCompatActivity implements HttpCli
                 @Override
                 public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                     if (b) {
-                        checkBoxSelected.add(engineerList.get(i));
+                        if(selectMode == 1 && checkBoxSelected.size() >= 1) {
+                            compoundButton.setChecked(false);
+                            Toast.makeText(EngineerSelectActivity.this, R.string.failure_assign, Toast.LENGTH_SHORT).show();
+                        } else {
+                            checkBoxSelected.add(engineerList.get(i));
+                        }
                     } else {
                         checkBoxSelected.remove(engineerList.get(i));
                     }

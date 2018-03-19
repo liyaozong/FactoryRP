@@ -20,22 +20,13 @@
             android:layout_width="match_parent"
             android:layout_height="0dp" android:layout_weight="1">
         <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent"
-                      android:orientation="vertical" android:id="@+id/ll_inspect_device_item"/>
+                      android:orientation="vertical" android:id="@+id/ll_inspect_device_item"
+        />
     </ScrollView>
-    <HorizontalScrollView
+    <fragment
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            android:visibility="visible" android:background="@android:color/background_light"
-            android:padding="8dp">
-        <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
-                      android:orientation="horizontal" android:id="@+id/ll_images">
-            <ImageButton
-                    android:layout_width="60dp"
-                    android:layout_height="60dp" app:srcCompat="@android:drawable/ic_menu_camera"
-                    android:id="@+id/ib_capture" android:background="@color/colorBackground"/>
-        </LinearLayout>
-    </HorizontalScrollView>
+            android:layout_height="wrap_content" android:name="tech.yozo.factoryrp.ui.fragment.UploadImageFragment"
+            android:id="@+id/fragment" tools:layout="@layout/fragment_upload_image"/>
     <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
@@ -43,7 +34,7 @@
         <Button
                 android:text="@string/action_save_device"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:id="@+id/button_inspect_detail_save"
-                android:layout_weight="1"/>
+                android:layout_height="50dp" android:id="@+id/button_inspect_detail_save"
+                android:layout_weight="1" android:background="@color/colorHighlight"/>
     </LinearLayout>
 </LinearLayout>

@@ -5,7 +5,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="tech.yozo.factoryrp.ui.ReportFaultActivity" tools:layout_editor_absoluteY="81dp"
+        tools:context="tech.yozo.factoryrp.ui.TroubleReportActivity" tools:layout_editor_absoluteY="81dp"
         tools:layout_editor_absoluteX="0dp">
 
 
@@ -70,8 +70,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:id="@+id/spinner_device_running_status"
-                        android:layout_weight="1"
-                        android:theme="@android:style/Widget.DeviceDefault.DropDownItem.Spinner"/>
+                        android:layout_weight="1"/>
             </LinearLayout>
             <LinearLayout
                     android:orientation="horizontal"
@@ -179,20 +178,12 @@
                         android:id="@+id/et_fault_desc" android:minLines="3"
                         android:layout_weight="1" android:layout_width="0dp"/>
             </LinearLayout>
-            <HorizontalScrollView
+            <fragment
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:visibility="visible" android:background="@android:color/background_light"
-                    android:padding="8dp">
-                <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
-                              android:orientation="horizontal" android:id="@+id/ll_images">
-                    <ImageButton
-                            android:layout_width="60dp"
-                            android:layout_height="60dp" app:srcCompat="@android:drawable/ic_menu_camera"
-                            android:id="@+id/ib_capture" android:background="@color/colorBackground"/>
-                </LinearLayout>
-            </HorizontalScrollView>
+                    android:name="tech.yozo.factoryrp.ui.fragment.UploadImageFragment" android:id="@+id/upload_fragment"
+                    tools:layout="@layout/fragment_upload_image"/>
+
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

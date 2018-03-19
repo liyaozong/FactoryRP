@@ -7,7 +7,8 @@
     <Button
             android:text="@string/action_repair_add_parts"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:id="@+id/b_add_part" android:textSize="16sp"/>
+            android:layout_height="wrap_content" android:id="@+id/b_add_part" android:textSize="16sp"
+            android:background="@color/colorHighlight"/>
     <ListView
             android:layout_width="match_parent"
             android:layout_height="wrap_content" android:id="@+id/lv_repair_parts"/>

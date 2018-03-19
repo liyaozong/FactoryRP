@@ -15,5 +15,6 @@
     <Button
             android:text="确定"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:id="@+id/button_selected"/>
+            android:layout_height="wrap_content" android:id="@+id/button_selected"
+            android:background="@color/colorHighlight"/>
 </LinearLayout>

@@ -13,7 +13,7 @@ import tech.yozo.factoryrp.vo.req.ValidateRepairReq;
 
 import java.util.List;
 
-public class ValidateRepairActivity extends AppCompatActivity implements HttpClient.OnHttpListener {
+public class RepairValidateActivity extends AppCompatActivity implements HttpClient.OnHttpListener {
 
     @BindView(R.id.rg_repair_suecss)
     RadioGroup rgRepairSuecss;

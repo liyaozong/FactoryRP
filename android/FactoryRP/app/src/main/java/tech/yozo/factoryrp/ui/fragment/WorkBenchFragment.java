@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,14 +15,17 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import tech.yozo.factoryrp.R;
-import tech.yozo.factoryrp.ui.*;
+import tech.yozo.factoryrp.ui.InspectDeviceActivity;
+import tech.yozo.factoryrp.ui.MaintainListActivity;
+import tech.yozo.factoryrp.ui.RepairRecordListActivity;
+import tech.yozo.factoryrp.ui.TroubleReportActivity;
 import tech.yozo.factoryrp.utils.HttpClient;
 import tech.yozo.factoryrp.vo.resp.MaintainTaskCount;
 import tech.yozo.factoryrp.vo.resp.device.trouble.WorkOrderCountVo;
 import tech.yozo.factoryrp.vo.resp.inspect.InspectTaskResp;
 
-import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -40,12 +44,14 @@ public class WorkBenchFragment extends BaseFragment implements HttpClient.OnHttp
     private static final int UPDATE_MAINTAIN_TASK = 112;
 
     Unbinder unbinder;
-    @BindView(R.id.button_ask_repair)
-    Button buttonAskRepair;
-    @BindView(R.id.button_add_repair)
-    Button buttonAddRepair;
-    @BindView(R.id.button_add_device)
-    Button buttonAddDevice;
+    @BindView(R.id.button_report_repair)
+    Button buttonReportRepair;
+    @BindView(R.id.button_exec_audit)
+    Button buttonExecAudit;
+    @BindView(R.id.button_exec_assign)
+    Button buttonExecAssign;
+    @BindView(R.id.button_exec_validate)
+    Button buttonExecValidate;
     @BindView(R.id.textView_waitto_audit)
     TextView textViewWaittoAudit;
     @BindView(R.id.textView_waitto_exec)
@@ -64,6 +70,8 @@ public class WorkBenchFragment extends BaseFragment implements HttpClient.OnHttp
     TextView tvMtaskTomorrow;
     @BindView(R.id.tv_mtask_overdue)
     TextView tvMtaskOverdue;
+    @BindView(R.id.refresh_layout)
+    SwipeRefreshLayout refreshLayout;
 
     private int mParam_mode;
     private String mParam_id;
@@ -109,9 +117,13 @@ public class WorkBenchFragment extends BaseFragment implements HttpClient.OnHttp
         View view = inflater.inflate(R.layout.fragment_workbench, container, false);
         unbinder = ButterKnife.bind(this, view);
 
-
-        //TODO
-        tvMtaskToday.setText("3");
+        refreshLayout.setColorSchemeResources(new int[]{R.color.colorHighlight, R.color.colorPrimary});
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                requestInspectTask();
+            }
+        });
 
         listviewCheckTask.setEmptyView(noNewCheckTask);
         mInspectTaskListAdapter = new InspectTaskListAdapter(getContext());
@@ -143,29 +155,24 @@ public class WorkBenchFragment extends BaseFragment implements HttpClient.OnHttp
     protected void buildUI() {
         HttpClient.getInstance().requestTroubleCount(getContext(), this);
         HttpClient.getInstance().requestMaintainTaskCount(getContext(), this);
+        requestInspectTask();
+    }
+
+    private void requestInspectTask() {
         HttpClient.getInstance().requestInspectTask(getContext(), this);
     }
 
-    @OnClick({R.id.button_ask_repair, R.id.button_add_repair, R.id.button_add_device, R.id.textView_waitto_audit,
+    @OnClick({R.id.button_report_repair, R.id.button_exec_audit, R.id.button_exec_assign, R.id.button_exec_validate, R.id.textView_waitto_audit,
             R.id.textView_waitto_exec, R.id.textView_executing, R.id.textView_waitto_verify,
             R.id.tv_mtask_today, R.id.tv_mtask_tomorrow, R.id.tv_mtask_overdue})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.button_ask_repair: {
-                Intent intent = new Intent(getContext(), ReportFaultActivity.class);
+            case R.id.button_report_repair: {
+                Intent intent = new Intent(getContext(), TroubleReportActivity.class);
                 startActivityForResult(intent, UPDATE_COUNT);
                 break;
             }
-            case R.id.button_add_repair: {
-                Intent intent = new Intent(getContext(), RepairAddActivity.class);
-                startActivity(intent);
-                break;
-            }
-            case R.id.button_add_device: {
-                Intent intent = new Intent(getContext(), DeviceAddActivity.class);
-                startActivity(intent);
-                break;
-            }
+            case R.id.button_exec_audit:
             case R.id.textView_waitto_audit: {
                 Intent intent = new Intent(getContext(), RepairRecordListActivity.class);
                 intent.putExtra(RepairRecordListActivity.RECORD_CATEGORY, HttpClient.REQUEST_TROUBLE_WAIT_AUDIT);
@@ -184,6 +191,13 @@ public class WorkBenchFragment extends BaseFragment implements HttpClient.OnHttp
                 startActivityForResult(intent, UPDATE_COUNT);
                 break;
             }
+            case R.id.button_exec_assign: {
+                Intent intent = new Intent(getContext(), RepairRecordListActivity.class);
+                intent.putExtra(RepairRecordListActivity.RECORD_CATEGORY, HttpClient.REQUEST_TROUBLE_WAIT_ASSIGN);
+                startActivity(intent);
+                break;
+            }
+            case R.id.button_exec_validate:
             case R.id.textView_waitto_verify: {
                 Intent intent = new Intent(getContext(), RepairRecordListActivity.class);
                 intent.putExtra(RepairRecordListActivity.RECORD_CATEGORY, HttpClient.REQUEST_TROUBLE_WAIT_VALIDATE);
@@ -213,7 +227,7 @@ public class WorkBenchFragment extends BaseFragment implements HttpClient.OnHttp
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(resultCode == Activity.RESULT_OK) {
+        if (resultCode == Activity.RESULT_OK) {
             if (requestCode == UPDATE_COUNT) {
                 HttpClient.getInstance().requestTroubleCount(getContext(), this);
             } else if (requestCode == UPDATE_MAINTAIN_TASK) {
@@ -256,21 +270,21 @@ public class WorkBenchFragment extends BaseFragment implements HttpClient.OnHttp
             }
             case HttpClient.REQUEST_MAINTAIN_TASK_COUNT: {
                 MaintainTaskCount count = (MaintainTaskCount) obj;
-                if(count != null) {
+                if (count != null) {
                     tvMtaskToday.setText(String.valueOf(count.getTodayPlanNum()));
-                    if(count.getTodayPlanNum() <= 0) {
+                    if (count.getTodayPlanNum() <= 0) {
                         tvMtaskToday.setEnabled(false);
                     } else {
                         tvMtaskToday.setEnabled(true);
                     }
                     tvMtaskTomorrow.setText(String.valueOf(count.getTomorrowPlanNum()));
-                    if(count.getTomorrowPlanNum() <= 0) {
+                    if (count.getTomorrowPlanNum() <= 0) {
                         tvMtaskTomorrow.setEnabled(false);
                     } else {
                         tvMtaskTomorrow.setEnabled(true);
                     }
                     tvMtaskOverdue.setText(String.valueOf(count.getExpiredNum()));
-                    if(count.getExpiredNum() <= 0) {
+                    if (count.getExpiredNum() <= 0) {
                         tvMtaskOverdue.setEnabled(false);
                     } else {
                         tvMtaskOverdue.setEnabled(true);
@@ -281,17 +295,17 @@ public class WorkBenchFragment extends BaseFragment implements HttpClient.OnHttp
 
             case HttpClient.REQUEST_INSPECT_TASK: {
                 inspectTaskRespList = (List<InspectTaskResp>) list;
-                if(inspectTaskRespList != null) {
+                if (inspectTaskRespList != null) {
                     mInspectTaskListAdapter.notifyDataSetChanged();
                 }
+                refreshLayout.setRefreshing(false);
             }
             default:
                 break;
         }
     }
 
-    private static class ViewHolder
-    {
+    private static class ViewHolder {
         TextView name;
         TextView time;
     }
@@ -299,14 +313,13 @@ public class WorkBenchFragment extends BaseFragment implements HttpClient.OnHttp
     private class InspectTaskListAdapter extends BaseAdapter {
         private LayoutInflater mInflater;
 
-        private InspectTaskListAdapter(Context context)
-        {
+        private InspectTaskListAdapter(Context context) {
             this.mInflater = LayoutInflater.from(context);
         }
 
         @Override
         public int getCount() {
-            if(inspectTaskRespList != null) {
+            if (inspectTaskRespList != null) {
                 return inspectTaskRespList.size();
             }
             return 0;
@@ -325,14 +338,13 @@ public class WorkBenchFragment extends BaseFragment implements HttpClient.OnHttp
         @Override
         public View getView(int i, View view, ViewGroup viewGroup) {
             ViewHolder holder;
-            if(view == null) {
+            if (view == null) {
                 holder = new ViewHolder();
                 view = mInflater.inflate(R.layout.item_inspect_list, null);
                 holder.name = (TextView) view.findViewById(R.id.et_mtask_name);
                 holder.time = (TextView) view.findViewById(R.id.et_mtask_start_time);
                 view.setTag(holder);
-            }
-            else {
+            } else {
                 holder = (ViewHolder) view.getTag();
             }
 
@@ -349,6 +361,8 @@ public class WorkBenchFragment extends BaseFragment implements HttpClient.OnHttp
 
     @Override
     public void onFailure(int requestType) {
-
+        if(requestType == HttpClient.REQUEST_INSPECT_TASK) {
+            refreshLayout.setRefreshing(false);
+        }
     }
 }

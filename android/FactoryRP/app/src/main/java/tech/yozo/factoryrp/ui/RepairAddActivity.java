@@ -125,7 +125,7 @@ public class RepairAddActivity extends AppCompatActivity implements HttpClient.O
     }
 
     private void attemptSaveRepair() {
-        //TODO
+
     }
 
     @Override

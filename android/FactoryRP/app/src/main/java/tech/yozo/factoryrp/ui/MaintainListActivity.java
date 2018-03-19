@@ -3,6 +3,7 @@ package tech.yozo.factoryrp.ui;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +25,8 @@ public class MaintainListActivity extends AppCompatActivity implements HttpClien
 
     @BindView(R.id.lv_maintain_record)
     ListView lvMaintainRecord;
+    @BindView(R.id.refresh_layout)
+    SwipeRefreshLayout refreshLayout;
 
     private List<MaintainTaskResp> maintainTaskRespList;
     private MaintainListAdapter maintainListAdapter;
@@ -34,10 +37,13 @@ public class MaintainListActivity extends AppCompatActivity implements HttpClien
         setContentView(R.layout.activity_maintain_list);
         ButterKnife.bind(this);
 
-        int type = getIntent().getIntExtra("type", 1);
-        MaintainTaskReq req = new MaintainTaskReq();
-        req.setPlanType(type);
-        HttpClient.getInstance().requestMaintainTask(this, this, req);
+        refreshLayout.setColorSchemeResources(new int[]{R.color.colorHighlight, R.color.colorPrimary});
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                requestMaintainTask();
+            }
+        });
 
         maintainListAdapter = new MaintainListAdapter(this);
         lvMaintainRecord.setEmptyView(findViewById(R.id.tv19));
@@ -50,23 +56,34 @@ public class MaintainListActivity extends AppCompatActivity implements HttpClien
                 startActivity(intent);
             }
         });
+
+        requestMaintainTask();
+    }
+
+    private void requestMaintainTask() {
+        int type = getIntent().getIntExtra("type", 1);
+        MaintainTaskReq req = new MaintainTaskReq();
+        req.setPlanType(type);
+        HttpClient.getInstance().requestMaintainTask(this, this, req);
     }
 
     @Override
     public void onHttpSuccess(int requestType, Object obj, List<?> list) {
-        if(requestType == HttpClient.REQUEST_MAINTAIN_TASK) {
+        if (requestType == HttpClient.REQUEST_MAINTAIN_TASK) {
             maintainTaskRespList = (List<MaintainTaskResp>) list;
             maintainListAdapter.notifyDataSetChanged();
+            refreshLayout.setRefreshing(false);
         }
     }
 
     @Override
     public void onFailure(int requestType) {
-
+        if (requestType == HttpClient.REQUEST_MAINTAIN_TASK) {
+            refreshLayout.setRefreshing(false);
+        }
     }
 
-    private static class ViewHolder
-    {
+    private static class ViewHolder {
         TextView name;
         TextView code;
         TextView type;
@@ -78,14 +95,13 @@ public class MaintainListActivity extends AppCompatActivity implements HttpClien
     private class MaintainListAdapter extends BaseAdapter {
         private LayoutInflater mInflater;
 
-        private MaintainListAdapter(Context context)
-        {
+        private MaintainListAdapter(Context context) {
             this.mInflater = LayoutInflater.from(context);
         }
 
         @Override
         public int getCount() {
-            if(maintainTaskRespList != null) {
+            if (maintainTaskRespList != null) {
                 return maintainTaskRespList.size();
             }
             return 0;
@@ -104,19 +120,18 @@ public class MaintainListActivity extends AppCompatActivity implements HttpClien
         @Override
         public View getView(int i, View convertView, ViewGroup viewGroup) {
             ViewHolder holder;
-            if(convertView == null) {
+            if (convertView == null) {
                 holder = new ViewHolder();
                 convertView = mInflater.inflate(R.layout.item_maintain_list, null);
-                holder.name = (TextView)convertView.findViewById(R.id.tv_maintain_device_name);
-                holder.code = (TextView)convertView.findViewById(R.id.tv_maintain_device_code);
+                holder.name = (TextView) convertView.findViewById(R.id.tv_maintain_device_name);
+                holder.code = (TextView) convertView.findViewById(R.id.tv_maintain_device_code);
                 holder.type = (TextView) convertView.findViewById(R.id.tv_maintain_device_type);
                 holder.level = (TextView) convertView.findViewById(R.id.tv_maintain_level);
                 holder.maintainer = (TextView) convertView.findViewById(R.id.tv_maintainer);
                 holder.next_time = (TextView) convertView.findViewById(R.id.tv_next_time);
                 convertView.setTag(holder);
-            }
-            else {
-                holder = (ViewHolder)convertView.getTag();
+            } else {
+                holder = (ViewHolder) convertView.getTag();
             }
             holder.name.setText(maintainTaskRespList.get(i).getDeviceName());
             holder.code.setText(maintainTaskRespList.get(i).getDeviceCode());

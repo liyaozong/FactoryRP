@@ -26,9 +26,10 @@
     <string name="failure_camera_permission">没有授权，无法使用照相机</string>
     <string name="failure_click">请扫描对应设备条码进行点检</string>
     <string name="failure_save_inspect">该设备已经完成了点检，请勿重复提交</string>
+    <string name="failure_assign">只能派工给一个维修工程师</string>
 
     <string name="hint_parts_count">最多只能添加10个。</string>
-    <string name="hint_image_count">只能添加4张照片。</string>
+    <string name="hint_image_count">只能添加6张照片。</string>
     <string name="hint_is_exist">已经添加过了。</string>
     <string name="hint_device_save_success">设备保存成功。</string>
     <string name="hint_report_fault_success">故障上报成功。</string>
@@ -41,6 +42,9 @@
     <string name="title_person">我的</string>
     <string name="action_scan">扫描</string>
     <string name="action_ask_repair">故障报修</string>
+    <string name="action_wait_audit">故障审核</string>
+    <string name="action_wait_assign">维修派工</string>
+    <string name="action_wait_validate">维修验证</string>
     <string name="action_add_device">添加设备</string>
     <string name="action_add_repair">填写工单</string>
     <string name="action_ask_parts">申请备件</string>
@@ -51,6 +55,8 @@
     <string name="action_i_repair_it">抢单，我来维修</string>
     <string name="action_i_not_repair">撤单，我不修了</string>
     <string name="action_validate_repair">验收</string>
+    <string name="action_audit_repair">审核</string>
+    <string name="action_assign_repair">派工</string>
     <string name="action_start_repair">开始维修</string>
     <string name="action_finish_repair">完成维修</string>
     <string name="action_repair_add_workload">添加人员工时</string>
@@ -60,7 +66,10 @@
     <string name="hint_catch_repair_success">抢单成功</string>
     <string name="hint_give_up_repair_success">你放弃了该工单</string>
     <string name="hint_finish_repair_success">提交成功</string>
+    <string name="hint_upload_success">上传成功</string>
     <string name="hint_finish_validate_success">验收完成</string>
+    <string name="hint_finish_assign_success">派工成功</string>
+    <string name="hint_finish_audit_success">审批完成</string>
 
     <string name="title_scan_device">扫描设备条码</string>
     <string name="title_device_info">设备信息</string>
@@ -85,11 +94,14 @@
     <string name="title_repair_parts">更换配件</string>
     <string name="title_repair_validate">验收工单</string>
     <string name="title_parts_info">备件信息</string>
+    <string name="title_audit_advice">审核结果</string>
+    <string name="title_audit_desc">审核意见</string>
 
     <string name="text_repair_wait_audit">待审核工单</string>
-    <string name="text_repair_wait_exec">待执行工单</string>
-    <string name="text_repair_executing">执行中工单</string>
+    <string name="text_repair_wait_exec">待维修工单</string>
+    <string name="text_repair_executing">维修中工单</string>
     <string name="text_repair_wait_verify">待验收工单</string>
+    <string name="text_repair_wait_assign">待派工工单</string>
 
     <string name="code_rule_hint">不填写则自动编号</string>
     <string name="text_device_name">设备名称：</string>
@@ -137,8 +149,5 @@
     <string name="submit_hint_2">未填写工作量，工时统计将会少于实际工作时间</string>
     <string name="submit_positive_2">继续提交</string>
     <string name="submit_negative">返回填写</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

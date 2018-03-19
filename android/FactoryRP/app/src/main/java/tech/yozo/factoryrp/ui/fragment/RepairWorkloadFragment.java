@@ -139,6 +139,10 @@ public class RepairWorkloadFragment extends BaseFragment {
 //                dialog.show();
 //            }
 //        });
+        if(mParam_mode == Constant.FOR_DEVICE_ID) {
+            bAddWorkload.setVisibility(View.GONE);
+        }
+
         return view;
     }
 
