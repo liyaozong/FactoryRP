@@ -51,6 +51,18 @@ h2{font-weight:normal;}
 /*top.html*/
 .header{height:88px;}
 .topleft{height:88px;background:url(../images/topleft.jpg) no-repeat;float:left; width:300px;}
+.topleft p{
+    font-size: 26px;
+    color: rgba(255,255,255,.8);
+    margin: 16px 0 0 0;
+    text-align: center;
+}
+.topleft span{
+    font-size: 12px;
+    color: rgba(255,255,255,.6);
+    text-align: right;
+    margin-right: 20px;
+}
 .topleft img{margin-top:12px;margin-left:10px;}
 .topright{height:88px;background:url(../images/topright.jpg) no-repeat right;float:right;}
 .nav{float:left;}
@@ -94,7 +106,7 @@ h2{font-weight:normal;}
 
 
 /*right.html*/
-.place{height:40px; background:url(../images/righttop.gif) repeat-x;}
+.place{height:35px; background:url(../images/righttop.gif) repeat-x;}
 .place span{line-height:40px; font-weight:bold;float:left; margin-left:12px;}
 .placeul li{float:left; line-height:40px; padding-left:7px; padding-right:12px; background:url(../images/rlist.gif) no-repeat right;}
 .placeul li:last-child{background:none;}

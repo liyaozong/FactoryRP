@@ -372,6 +372,66 @@ factoryParameterSettingApp.factory('factoryParameterSettingService', function($r
         });
     };
     /*审核提交 end*/
+    /*根据设备查询关联的备件信息--WEB/MOBILE start*/
+    var _findRealSparts = function(Param,successFunc){
+        var findRealSparts = $resource(UrlService.getUrl('troubleRecordServe') + 'deviceSpareRel/findRelSparts');
+        findRealSparts.save(Param,function (data) {
+            if (successFunc) {
+                successFunc(data);
+            }
+        }, function (err) {
+
+        });
+    };
+    /*根据设备查询关联的备件信息--WEB/MOBILE end*/
+    /*保存设备关联的备件信息--WEB start*/
+    var _saveSpareRel = function(Param,successFunc){
+        var saveSpareRel = $resource(UrlService.getUrl('troubleRecordServe') + 'deviceSpareRel/saveSpareRel');
+        saveSpareRel.save(Param,function (data) {
+            if (successFunc) {
+                successFunc(data);
+            }
+        }, function (err) {
+
+        });
+    };
+    /*保存设备关联的备件信息--WEB end*/
+    /*保存备件关联的设备信息--WEB start*/
+    var _saveDeviceRel = function(Param,successFunc){
+        var saveDeviceRel = $resource(UrlService.getUrl('troubleRecordServe') + 'deviceSpareRel/saveDeviceRel');
+        saveDeviceRel.save(Param,function (data) {
+            if (successFunc) {
+                successFunc(data);
+            }
+        }, function (err) {
+
+        });
+    };
+    /*保存备件关联的设备信息--WEB end*/
+    /*批量删除关联信息--WEB start*/
+    var _batchDeleteDeviceSpareRel = function(Param,successFunc){
+        var batchDeleteDeviceSpareRel = $resource(UrlService.getUrl('troubleRecordServe') + 'deviceSpareRel/batchDelete');
+        batchDeleteDeviceSpareRel.get(Param,function (data) {
+            if (successFunc) {
+                successFunc(data);
+            }
+        }, function (err) {
+
+        });
+    };
+    /*批量删除关联信息--WEB end*/
+    /*查询备件类型  start*/
+    var _queryAllDeviceSparesType= function(Param,successFunc){
+        var queryAllDeviceSparesType = $resource(UrlService.getUrl('troubleRecordServe') + 'api/deviceSparesType/queryAllDeviceSparesType');
+        queryAllDeviceSparesType.get(Param,function (data) {
+            if (successFunc) {
+                successFunc(data);
+            }
+        }, function (err) {
+
+        });
+    };
+    /*查询备件类型 end*/
     return {
         saveContactCompany:_saveContactCompany,
         deleteContactCompany:_deleteContactCompany,
@@ -402,6 +462,11 @@ factoryParameterSettingApp.factory('factoryParameterSettingService', function($r
         maintainPlanSubmit:_maintainPlanSubmit,
         getTroubleRecordDetail:_getTroubleRecordDetail,
         auditTroubleRecord:_auditTroubleRecord,
+        findRealSparts:_findRealSparts,
+        saveSpareRel:_saveSpareRel,
+        saveDeviceRel:_saveDeviceRel,
+        queryAllDeviceSparesType:_queryAllDeviceSparesType,
+        batchDeleteDeviceSpareRel:_batchDeleteDeviceSpareRel,
         queryOrder: function(queryParam, successFunc) {
             queryOrder(queryParam, successFunc);
 
