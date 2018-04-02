@@ -848,7 +848,7 @@ factoryParameterSettingApp.controller('deviceManageController',function ($scope,
             popupDiv('SaveSuccessNoReload');
             $('.SaveSuccessNoReload .Message').html('请至少选中一个需要删除的备件');
         }else{
-            popupDiv('deleteMaintenanceRecords');
+            popupDiv('deletePartCRecords');
             $scope.ids='';
             $(".tableListDiv tr td input[name='RealSparts']:checked").each(function(){
                 var sfruit=$(this).val();
@@ -856,16 +856,16 @@ factoryParameterSettingApp.controller('deviceManageController',function ($scope,
             });
             $scope.ids=$scope.ids.substr(1,$scope.ids.length);
             console.log($scope.ids);
-            $scope.deleteMaintenanceRecordSure=function(){
-                $scope.deleteMaintenanceRecords = factoryParameterSettingService.batchDeleteMaintenanceRecord({
+            $scope.deletePartCRecordSure=function(){
+                $scope.batchDeleteDeviceSpareReals = factoryParameterSettingService.batchDeleteDeviceSpareRel({
                     ids:$scope.ids
                 }, function (res) {
-                    if (res.errorCode == '000000' && res.data!=''&& res.data!=null&& res.data!=undefined) {
-                        hideDiv('deleteMaintenanceRecords');
+                    if (res.errorCode == '000000') {
+                        hideDiv('deletePartCRecords');
                         popupDiv('SaveSuccess');
                         $('.SaveSuccess .Message').html(res.errorMessage);
                     } else {
-                        hideDiv('deleteMaintenanceRecords');
+                        hideDiv('deletePartCRecords');
                         popupDiv('SaveSuccess');
                         $('.SaveSuccess .Message').html(res.errorMessage);
                         console.log(res.errorMessage);
