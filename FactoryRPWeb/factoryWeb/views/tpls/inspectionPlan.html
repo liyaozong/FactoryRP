@@ -215,6 +215,12 @@
                     <input id="endTime" ng-model="iPlanReq.endTime" ng-disabled="iPlanType==2" type="date" placeholder="请输入截止时间(为设置表示长期有效)"/>
                 </label>
             </p>
+            <p>
+                <label for="nextExecuteTime" >
+                    <span style="width: 100px;text-align: right">巡检计划等级:</span>
+                    <input id="spotInspectionPlanLevel" ng-model="iPlanReq.spotInspectionPlanLevel" ng-disabled="iPlanType==2" type="number" placeholder="请输入计划等级"/>
+                </label>
+            </p>
         </div>
         <!-- 包含设备 -->
         <div class="titleDiv" id="addP1">

@@ -24,17 +24,13 @@
                         <option value="">请选择部门</option>
                     </select>
                 </label>
-                <label for="xjsj" >
-                    <!--<span style="width: 100px;text-align: right">状态:</span>-->
-                    <select id="xjsj" ng-model="abnormalOrMissCondition" ng-options="deviceTypeListDetail.id as deviceTypeListDetail.name for deviceTypeListDetail in xjsjLists">
-                        <option value="">全部</option>
-                    </select>
+                <label for="beginTime" >
+                    <span style="width: 100px;text-align: right">开始时间:</span>
+                    <input type="date" id="beginTime" ng-model="beginTime">
                 </label>
-                <label for="xjlx" >
-                    <!--<span style="width: 100px;text-align: right">名称:</span>-->
-                    <select id="xjlx" ng-model="executeTimeCondition" ng-options="deviceTypeListDetail.id as deviceTypeListDetail.name for deviceTypeListDetail in xjlxLists">
-                        <option value="">全部</option>
-                    </select>
+                <label for="endTime" >
+                    <span style="width: 100px;text-align: right">结束时间:</span>
+                    <input type="date" id="endTime" ng-model="endTime">
                 </label>
                 <label>
                     <button style="margin-left: 10px;" class="btn" ng-click="onQuery()">查询</button>

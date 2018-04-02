@@ -134,6 +134,14 @@ myApp.factory("deviceProcess",['$q',"AppHttp","FF_API",function($q,AppHttp,FF_AP
         });
     };
 
+    //删除当前审核流程详情
+    deviceProcess.deleteDeviceProcess=function(id){
+        return AppHttp({
+            method: 'get',
+            url: FF_API.base + FF_API.deleteDeviceProcessPath+'?processId='+id
+        });
+    };
+
     return deviceProcess;
 }]);
 

@@ -171,7 +171,7 @@ function popupDiv(div_class) {
     var windowWidth = document.body.clientWidth;
     var windowHeight = document.body.clientHeight;
 
-    div_obj.css("maxWidth",windowWidth*0.7);
+    div_obj.css("maxWidth",windowWidth*0.9);
     div_obj.css("maxHeight",windowHeight*0.6);
     var popupHeight = div_obj.height();
     var popupWidth = div_obj.width();

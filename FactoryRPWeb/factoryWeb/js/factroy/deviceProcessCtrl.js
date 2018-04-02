@@ -41,17 +41,19 @@ myApp.controller('deviceProcessCtrl',['$timeout','$filter','$rootScope','$locati
     // $scope.onQuery();
 
     //流程类型选择事件
-    $scope.processTypeChange=function () {
+    $scope.processTypeChange=function (t) {
         // console.log($scope.formDeviceProcess.processType);
         var id=$scope.formDeviceProcess.processType;
         $scope.deviceProcessTypeLists.forEach(function (n,i) {
             // console.log(i,n);
-            if(id==n.id){
+            if(id==n.code){
                 $scope.deviceProcessPhaseLists=n.deviceProcessPhaseList;
+                // console.log($scope.deviceProcessPhaseLists,'==')
             }
         });
-        $scope.formDeviceProcess.processStage='';
-        // console.log($scope.formDeviceProcess.processStage)
+        if(t!=3){
+            $scope.formDeviceProcess.processStage='';
+        }
     };
 
     //触发条件改变事件
@@ -205,13 +207,89 @@ myApp.controller('deviceProcessCtrl',['$timeout','$filter','$rootScope','$locati
     };
     //编辑审核流程
     $scope.editSparePartsFuc=function (obj,$event) {
-        alert('接口调试中');
+        // alert('接口调试中');
+        console.log(obj,'obj');
+        var listArr;
+        deviceProcess.queryProcessDetail(obj.id).success(function (data) {
+            listArr=data.data.processDetailList;
+            console.log('data.data.processDetailList',data.data.processDetailList);
+            if(data.data.processDetailList&&data.data.processDetailList.length>0){
+                data.data.processDetailList.forEach(function (v) {
+                    var req={
+                        auditType:v.auditType,
+                        handleDemandType:v.handleDemandType,
+                        processAuditor:v.processAuditor,
+                        processStep:v.processStep,
+                        nameStrs:v.processAuditorList.join(',')
+                    }
+                    $scope.reqList.push(req);
+                    $scope.processStep++;
+                });
+            }
+        });
+        popupDiv('addDeviceProcessPop');
+        $scope.formDeviceProcess={
+            processName:obj.processName,
+            processType:obj.processType,
+            processStage:obj.processStage,
+            triggerConditionType:obj.triggerConditionType,
+            triggerCondition:obj.triggerCondition,
+            processRemark:obj.processRemark,
+            id:obj.id
+        };
+        $scope.reqList=[];
+
+        $scope.processStep=1;
+        $scope.sureFlog=2;
+        $scope.errFlog=false;
+        $scope.nextFlog=false;
+        $scope.nextPop=false;
+
+
+        $scope.processTypeChange(3);
+        $timeout(function () {
+            $("#processType option").each(function(){
+                if($(this).val()==obj.processType){
+                    $(this).attr("selected",true);
+                }
+            });
+            $("#processStage option").each(function(){
+                // console.log($(this).val(),obj.processStage);
+                if($(this).val()==obj.processStage){
+                    $(this).attr("selected",true);
+                }
+            });
+            $("#triggerCondition option").each(function(){
+                if($(this).val()==obj.triggerCondition){
+                    $(this).attr("selected",true);
+                }
+            });
+        },400);
+
         $event.stopPropagation();
     };
     //删除审核流程
     $scope.deleteContactCompanyBalance=function (obj,$event) {
-        alert('接口调试中');
+        // alert('接口调试中');
+        popupDiv('deleteSparePartsPop');
+        $scope.deleteId=obj.id;
         $event.stopPropagation();
+    };
+    $scope.deleteSparePartsSure=function () {
+        // alert('接口调试中');
+        deviceProcess.deleteDeviceProcess($scope.deleteId).success(function (data) {
+            if(data.errorCode=='000000'){
+                hideDiv('deleteSparePartsPop');
+                popupDiv('SaveSuccess');
+                $('.SaveSuccess .Message').html(data.errorMessage);
+            }else{
+                hideDiv('deleteSparePartsPop');
+                popupDiv('SaveSuccess');
+                $('.SaveSuccess .Message').html(data.errorMessage);
+            }
+        });
+
+        // $event.stopPropagation();
     };
     //新增审核流程确定
     $scope.addDeviceProcessSure=function () {
@@ -254,7 +332,7 @@ myApp.controller('deviceProcessCtrl',['$timeout','$filter','$rootScope','$locati
                     }
                 })
             }else if($scope.sureFlog==2){
-                addReq.id=$scope.editSpareParts.id;
+                addReq.id=$scope.formDeviceProcess.id;
                 console.log('编辑',addReq);
                 // spareParts.editSpareParts(addReq).success(function (data) {
                 //     if(data.errorCode=='000000'){
@@ -322,7 +400,7 @@ myApp.controller('deviceProcessCtrl',['$timeout','$filter','$rootScope','$locati
                         }
                         if($scope.deviceProcessTypeLists&&$scope.deviceProcessTypeLists.length>0){
                             $scope.deviceProcessTypeLists.forEach(function (m,n) {
-                                // console.log(item.processType,m.id,'--');
+                                console.log(item.processType,m.code,'--');
                                 if(item.processType==m.code){
                                     item.deviceProcessTypeName=m.deviceProcessType;
                                     m.deviceProcessPhaseList.forEach(function (k,j) {
@@ -337,7 +415,7 @@ myApp.controller('deviceProcessCtrl',['$timeout','$filter','$rootScope','$locati
                         }
                     });
 
-                    console.log($scope.deviceProcessLists,'----');
+                    // console.log($scope.deviceProcessLists,'----');
                     if($scope.deviceProcessLists.length>0){
                         getQueryProcessDetail($scope.deviceProcessLists[0].id);
                         $($('.prossTr')[0]).addClass('ccTr');

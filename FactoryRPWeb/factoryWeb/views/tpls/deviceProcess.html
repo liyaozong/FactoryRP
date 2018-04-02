@@ -111,13 +111,13 @@
                 </label>
                 <label for="processType" >
                     <span style="width: 100px;text-align: right">流程类型:</span>
-                    <select id="processType" ng-model="formDeviceProcess.processType" ng-options="AllCompanyDetail.id as AllCompanyDetail.deviceProcessType for AllCompanyDetail in deviceProcessTypeLists" ng-change="processTypeChange()">
+                    <select id="processType" ng-model="formDeviceProcess.processType" ng-options="AllCompanyDetail.code as AllCompanyDetail.deviceProcessType for AllCompanyDetail in deviceProcessTypeLists" ng-change="processTypeChange()">
                         <option value="">请选择流程类型</option>
                     </select>
                 </label>
                 <label for="processStage" >
                     <span style="width: 100px;text-align: right">对应阶段:</span>
-                    <select id="processStage" ng-model="formDeviceProcess.processStage" ng-options="deviceTypeListDetail.id as deviceTypeListDetail.deviceProcessPhase for deviceTypeListDetail in deviceProcessPhaseLists">
+                    <select id="processStage" ng-model="formDeviceProcess.processStage" ng-options="deviceTypeListDetail.code as deviceTypeListDetail.deviceProcessPhase for deviceTypeListDetail in deviceProcessPhaseLists">
                         <option value="">请选择对应阶段</option>
                     </select>
                 </label>
@@ -368,11 +368,11 @@
 <!--单个删除弹出框start-->
 <div class="ImportantNote deleteSparePartsPop">
     <div class="headline">
-        <span>删除设备信息</span>
+        <span>删除审核流程设置信息</span>
         <img onClick="hideDiv('deleteSparePartsPop')" class="companyCloseImg" src="image/comm/diffClosed.png" width="22" height="22">
     </div>
     <div class="businessAuth">
-        <p><img src="image/comm/attentionPlease.png" alt="注意："/>确认删除选中的设备信息？</p>
+        <p><img src="image/comm/attentionPlease.png" alt="注意："/>确认删除选中的审核流程设置？</p>
         <div class="submitBtn1" style="text-align: center;">
             <input type="button" value="删除"  class="btn" ng-click="deleteSparePartsSure()"/>
             <input type="button" value="取消" class="btn" onClick="hideDiv('deleteSparePartsPop')">

@@ -191,7 +191,9 @@ myApp.controller('spotInspectionStandardCtrl',['$filter','$rootScope','$timeout'
                     recordType:$(this).find('.projectRecordType').val().split(':')[1],
                     inputLimitValue:$(this).find('.inputLimitValue').val().split('/'),
                     lowerLimit:$(this).find('.lowerLimit').val(),
-                    upperLimit:$(this).find('.upperLimit').val()
+                    upperLimit:$(this).find('.upperLimit').val(),
+                    spotInspectionWay:$(this).find('.spotInspectionWay').val(),
+                    devicePlace:$(this).find('.devicePlace').val()
                 };
                 arr1.push(obj);
                 // console.log($(this).find('.projectRecordType').val())
@@ -307,6 +309,8 @@ myApp.controller('spotInspectionStandardCtrl',['$filter','$rootScope','$timeout'
                             $(this).find('.inputLimitValue').val(datas.spotInspectionItems[i].inputLimitValue.join('/'));
                             $(this).find('.lowerLimit').val(datas.spotInspectionItems[i].lowerLimit);
                             $(this).find('.upperLimit').val(datas.spotInspectionItems[i].upperLimit);
+                            $(this).find('.spotInspectionWay').val(datas.spotInspectionItems[i].spotInspectionWay);
+                            $(this).find('.devicePlace').val(datas.spotInspectionItems[i].devicePlace);
                         }else {
                             $(this).find('.recordType_td_input').val('').addClass('displayNone');
                         }
@@ -522,6 +526,7 @@ myApp.controller('inspectionPlanCtrl',['$filter','$rootScope','$location','$scop
             endTime:'',//截止时间
             executors:[] ,//执行人集合
             nameStrs:'', //执行人姓名字符串
+            spotInspectionPlanLevel:'',//巡检计划等级
             list:[]
         };
         $('#nextExecuteTime').val('');
@@ -590,6 +595,7 @@ myApp.controller('inspectionPlanCtrl',['$filter','$rootScope','$location','$scop
                     recyclePeriodType: data.data.recyclePeriodType,//循环周期类型
                     // endTime: data.data.endTime,//截止时间
                     executors: data.data.executors,//执行人集合
+                    spotInspectionPlanLevel: data.data.spotInspectionPlanLevel,//巡检计划等级
                     nameStrs: strsArr.join(','), //执行人姓名字符串
                     list: infoList
                 };
@@ -652,6 +658,7 @@ myApp.controller('inspectionPlanCtrl',['$filter','$rootScope','$location','$scop
                 "range": $scope.iPlanReq.range,
                 "recyclePeriod": $scope.iPlanReq.recyclePeriod,
                 "recyclePeriodType": $scope.iPlanReq.recyclePeriodType,
+                "spotInspectionPlanLevel": $scope.iPlanReq.spotInspectionPlanLevel,
                 "requestTime": $filter('date')(new Date(),'yyyy-MM-dd HH:mm:ss')
             };
         }else if($scope.iPlanType==1){
@@ -668,6 +675,7 @@ myApp.controller('inspectionPlanCtrl',['$filter','$rootScope','$location','$scop
                 "range": $scope.iPlanReq.range,
                 "recyclePeriod": $scope.iPlanReq.recyclePeriod,
                 "recyclePeriodType": $scope.iPlanReq.recyclePeriodType,
+                "spotInspectionPlanLevel": $scope.iPlanReq.spotInspectionPlanLevel,
                 "requestTime": $filter('date')(new Date(),'yyyy-MM-dd HH:mm:ss')
             };
         }

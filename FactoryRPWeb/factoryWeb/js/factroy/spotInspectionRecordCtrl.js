@@ -65,48 +65,53 @@ myApp.controller('spotInspectionRecordCtrl',['$filter','$rootScope','$location',
             "currentPage": $scope.paginationConf.currentPage, //当前页码
             "itemsPerPage": $scope.paginationConf.itemsPerPage,//每页显示记录数
             departmentId:$scope.departmentManage,
-            abnormalOrMissCondition:$scope.abnormalOrMissCondition,
-            executeTimeCondition:$scope.executeTimeCondition
+            beginTime:$scope.beginTime,
+            endTime:$scope.endTime
 
         };
-        inspectionPlan.findByPageRecord(req).success(function (data) {
-            // console.log(data,'巡检记录');
-            if(data.data&&data.data.totalCount>=1){
-                // if(true){
-                $scope.paginationConf.totalItems = data.data.totalCount;
-                $scope.spotInspectionRecordLists=data.data.list;
-                //查询执行人
-                queryCorporateAllUser.getData().success(function (data) {
-                    $scope.allUserLists=data.data.userRespList;
-                    // console.log($scope.allUserLists)
-                    if($scope.spotInspectionRecordLists){
-                        $scope.spotInspectionRecordLists.forEach(function (k) {
-                            // var strsArr=[];
-                            // console.log(k,'k')
-                            $scope.allUserLists.forEach(function (v) {
-                                // console.log(v.userId,k.executor);
-                                if(v.userId==k.executor){
-                                    k.executorsName=v.userName;
-                                }
+        if($scope.endTime&&$scope.beginTime>$scope.endTime){
+            alert('开始时间必须小于结束时间')
+        }else {
+            inspectionPlan.findByPageRecord(req).success(function (data) {
+                // console.log(data,'巡检记录');
+                if(data.data&&data.data.totalCount>=1){
+                    // if(true){
+                    $scope.paginationConf.totalItems = data.data.totalCount;
+                    $scope.spotInspectionRecordLists=data.data.list;
+                    //查询执行人
+                    queryCorporateAllUser.getData().success(function (data) {
+                        $scope.allUserLists=data.data.userRespList;
+                        // console.log($scope.allUserLists)
+                        if($scope.spotInspectionRecordLists){
+                            $scope.spotInspectionRecordLists.forEach(function (k) {
+                                // var strsArr=[];
+                                // console.log(k,'k')
+                                $scope.allUserLists.forEach(function (v) {
+                                    // console.log(v.userId,k.executor);
+                                    if(v.userId==k.executor){
+                                        k.executorsName=v.userName;
+                                    }
+                                });
                             });
-                        });
-                    }
-                });
-                // console.log($scope.spotInspectionRecordLists)
-                $timeout(function () {
-                    if($scope.spotInspectionRecordLists.length>0){
-                        inspectionPlan.querySpotInspectionRecordDetailByRecordId($scope.spotInspectionRecordLists[0].recordId,$scope.spotInspectionRecordLists[0].planId).success(function (data) {
-                            $scope.changeDetailLists=data.data.detailList;
-                        });
-                        $($('.prossTr')[0]).addClass('ccTr');
-                    }
-                },400);
-            }else{
-                // $scope.changeDetailLists=[];
-                $scope.paginationConf.totalItems = 0;
-                $scope.spotInspectionRecordLists.length = 0;
-            }
-        });
+                        }
+                    });
+                    // console.log($scope.spotInspectionRecordLists)
+                    $timeout(function () {
+                        if($scope.spotInspectionRecordLists&&$scope.spotInspectionRecordLists.length>0){
+                            inspectionPlan.querySpotInspectionRecordDetailByRecordId($scope.spotInspectionRecordLists[0].recordId,$scope.spotInspectionRecordLists[0].planId).success(function (data) {
+                                $scope.changeDetailLists=data.data.detailList;
+                            });
+                            $($('.prossTr')[0]).addClass('ccTr');
+                        }
+                    },400);
+                }else{
+                    $scope.changeDetailLists=[];
+                    $scope.paginationConf.totalItems = 0;
+                    $scope.spotInspectionRecordLists.length = 0;
+                }
+            });
+        }
+
     };
 
     //切换巡检明细表格事件
