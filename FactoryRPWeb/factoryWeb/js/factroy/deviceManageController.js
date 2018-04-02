@@ -1652,6 +1652,13 @@ factoryParameterSettingApp.controller('deviceManageController',function ($scope,
         };
     };
     /*执行保养计划 end*/
+    $scope.reload=function () {
+        $scope.onQuery();
+        $scope.queryTroubleRecordList($scope.dataAudit);
+        $scope.queryMaintenanceRecordList($scope.dataAudit);
+        $scope.queryRealSparts($scope.dataAudit);
+        $scope.queryAllSpareParts();
+    };
     $scope.$watch('paginationConf.currentPage + paginationConf.itemsPerPage', $scope.onQuery);
     $scope.$watch('paginationConf1.currentPage + paginationConf1.itemsPerPage', $scope.queryTroubleRecordList);
     $scope.$watch('paginationConf2.currentPage + paginationConf2.itemsPerPage', $scope.queryMaintenanceRecordList);
