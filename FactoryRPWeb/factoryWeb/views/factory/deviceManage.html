@@ -359,7 +359,7 @@
                     </thead>
                     <tbody>
                     <tr data-appid = "{{RealSpartsDetail.id}}" ng-click="chooseRealSpartsRecord($event,RealSpartsDetail)" ng-class="{'':dataRealSparts=='','bg-gray':RealSpartsDetail.id == dataRealSparts}" ng-repeat="RealSpartsDetail in RealSpartsList">
-                        <td class="firstTd">{{$index+1}}<input style="margin-left: 5px;vertical-align: middle;" type="checkbox" name="RealSparts"  value="{{RealSpartsDetail.id}}"/></td>
+                        <td class="firstTd">{{$index+1}}<input style="margin-left: 5px;vertical-align: middle;" type="checkbox" name="RealSparts"  value="{{RealSpartsDetail.relId}}"/></td>
                         <td>{{RealSpartsDetail.code||'--'}}</td>
                         <td>{{RealSpartsDetail.name}}</td>
                         <td>{{RealSpartsDetail.specificationsAndodels}}</td>
