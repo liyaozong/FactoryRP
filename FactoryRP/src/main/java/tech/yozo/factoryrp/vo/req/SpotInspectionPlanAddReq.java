@@ -7,6 +7,7 @@ import tech.yozo.factoryrp.vo.base.ApiRequest;
 import tech.yozo.factoryrp.vo.validation.IsDateStr;
 import tech.yozo.factoryrp.vo.validation.NotEmpty;
 
+import javax.persistence.Column;
 import java.io.Serializable;
 import java.util.List;
 
@@ -83,6 +84,12 @@ public class SpotInspectionPlanAddReq extends ApiRequest implements Serializable
     @ApiModelProperty(value = "下次执行时间",notes ="下次执行时间" ,example = "2018-01-23 18:42:30")
     @IsDateStr(message = "必须为日期格式(yyyy-MM-dd HH:mm:ss)的字符串")
     private String nextExecuteTime;
+
+    /**
+     * 巡检计划等级
+     */
+    @ApiModelProperty(value = "巡检计划等级,1,2,3等",notes ="巡检计划等级,1,2,3等" )
+    private Integer spotInspectionPlanLevel;
 
     @ApiModelProperty(value = "点检计划-设备集合",notes ="点检计划-设备集合", example = "list")
     List<SpotInspectionPlanDeviceReq> list;
