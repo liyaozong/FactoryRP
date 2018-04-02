@@ -10,7 +10,6 @@ import tech.yozo.factoryrp.service.AuthorizationService;
 import tech.yozo.factoryrp.utils.CheckParam;
 import tech.yozo.factoryrp.utils.EncryptUtils;
 import tech.yozo.factoryrp.utils.ErrorCode;
-import tech.yozo.factoryrp.utils.UUIDSequenceWorker;
 import tech.yozo.factoryrp.vo.req.*;
 import tech.yozo.factoryrp.vo.resp.auth.AuthUser;
 import tech.yozo.factoryrp.vo.resp.menu.MenuQueryResp;
@@ -594,6 +593,44 @@ public class AuthorizationServiceImpl implements AuthorizationService {
             return roleResps;
         }
             return null;
+    }
+
+    /**
+     * 修改当前用户密码
+     * @param newPassword
+     * @param oldPassword
+     * @param userId
+     * @param corporateIdentify
+     */
+    public void updateCurrentUserPassword(String newPassword,String oldPassword,Long userId, Long corporateIdentify) {
+
+        User user = userRepository.findByUserIdAndCorporateIdentify(userId, corporateIdentify);
+
+        if(CheckParam.isNull(user)){
+            throw new BussinessException(ErrorCode.USER_NOTEXIST_ERROR.getCode(),ErrorCode.USER_NOTEXIST_ERROR.getMessage());
+        }
+
+        /**
+         * 用户原来的密码和盐
+         */
+        String sysPassword = user.getPassword();
+        String sault = user.getSault();
+
+        /**
+         * 用前端的密码生成加密后的密码
+         */
+        String encryptedOldPassword = EncryptUtils.generate(oldPassword, sault);
+
+        boolean verify = EncryptUtils.verifyPassword(sysPassword, encryptedOldPassword);
+
+        if(!verify){
+            throw new BussinessException(ErrorCode.OLD_PASSWORD_INCORRECT.getCode(),ErrorCode.OLD_PASSWORD_INCORRECT.getMessage());
+        }
+
+        user.setPassword(EncryptUtils.generate(newPassword, sault));
+
+        userRepository.save(user);
+
     }
 
     /**

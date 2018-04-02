@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import tech.yozo.factoryrp.config.auth.UserAuthService;
+import tech.yozo.factoryrp.entity.User;
 import tech.yozo.factoryrp.service.AuthorizationService;
 import tech.yozo.factoryrp.utils.AuthWebUtil;
 import tech.yozo.factoryrp.vo.base.ApiResponse;
@@ -65,12 +66,31 @@ public class AuthorizationController extends BaseController{
      */
     @ApiOperation(value = "根据企业标识查询所有角色",notes = "根据企业标识查询所有角色",httpMethod = "GET")
     @GetMapping("/queryRoles")
-    public ApiResponse<List<RoleResp>> queryRolesByorporateIdentify(HttpServletRequest request){
+    public ApiResponse<List<RoleResp>> queryRolesByCorporateIdentify(HttpServletRequest request){
         Long corporateIdentify = userAuthService.getCurrentUserCorporateIdentify(request);
         List<RoleResp> roleResps = authorizationService.queryRolesByCorporateIdentify(corporateIdentify);
         return apiResponse(roleResps);
     }
 
+
+    /**
+     * 修改当前用户密码
+     * @param newPassword
+     * @param oldPassword
+     */
+    @ApiOperation(value = "修改当前用户密码",notes = "修改当前用户密码",httpMethod = "GET")
+    @GetMapping("/updateCurrentUserPassword")
+    @ApiImplicitParams({
+            @ApiImplicitParam(dataType = "String" ,name = "newPassword", paramType = "query" ,
+                    value = "新密码",required = true,defaultValue = "123"),
+            @ApiImplicitParam(dataType = "String" ,name = "oldPassword", paramType = "query" ,
+            value = "旧密码",required = true,defaultValue = "456")
+    })
+    public ApiResponse updateCurrentUserPassword(@RequestParam(required = true) String newPassword,@RequestParam(required = true)String oldPassword,HttpServletRequest request){
+        AuthUser currentUser = userAuthService.getCurrentUser(request);
+        authorizationService.updateCurrentUserPassword(newPassword,oldPassword,currentUser.getUserId(),currentUser.getCorporateIdentify());
+        return apiResponse();
+    }
 
     /**
      * 新增角色

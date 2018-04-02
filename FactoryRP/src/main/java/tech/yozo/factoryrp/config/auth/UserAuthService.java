@@ -55,6 +55,7 @@ public class UserAuthService {
     }
 
 
+
     /**
      * 根据token拿到当前登陆人的企业合作号码
      * @param token

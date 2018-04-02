@@ -491,22 +491,22 @@ public class SpotInspectionRecordServiceImpl implements SpotInspectionRecordServ
 
         Page<SpotInspectionRecord> page = spotInspectionRecordRepository.findAll((root, criteriaQuery, criteriaBuilder) -> {
 
-            InspectionRecordTimeQueryTransferVo transferVo = null;
+            /*InspectionRecordTimeQueryTransferVo transferVo = null;
 
             if(!CheckParam.isNull(spotInspectionRecordPageQueryReq.getExecuteTimeCondition())){
                 transferVo = tranaferRecordQueryTime(spotInspectionRecordPageQueryReq.getExecuteTimeCondition());
-            }
+            }*/
 
             List<Predicate> listCon = new ArrayList<>();
 
             if (!CheckParam.isNull(spotInspectionRecordPageQueryReq.getDepartmentId())){ //部门查询条件
                 listCon.add(criteriaBuilder.equal(root.get("department").as(Long.class),spotInspectionRecordPageQueryReq.getDepartmentId()));
             }
-            if (!CheckParam.isNull(transferVo) && !CheckParam.isNull(transferVo.getBeginTime())){ //开始时间查询条件
-                listCon.add(criteriaBuilder.greaterThanOrEqualTo(root.get("createTime").as(Date.class),transferVo.getBeginTime()));
+            if (!CheckParam.isNull(spotInspectionRecordPageQueryReq) && !CheckParam.isNull(spotInspectionRecordPageQueryReq.getBeginTime())){ //开始时间查询条件
+                listCon.add(criteriaBuilder.greaterThanOrEqualTo(root.get("createTime").as(Date.class),DateTimeUtil.strToDate(spotInspectionRecordPageQueryReq.getBeginTime(),null)));
             }
-            if (!CheckParam.isNull(transferVo) && !CheckParam.isNull(transferVo.getEndTime())){ //结束时间查询条件
-                listCon.add(criteriaBuilder.lessThanOrEqualTo(root.get("createTime").as(Date.class),transferVo.getEndTime()));
+            if (!CheckParam.isNull(spotInspectionRecordPageQueryReq) && !CheckParam.isNull(spotInspectionRecordPageQueryReq.getEndTime())){ //结束时间查询条件
+                listCon.add(criteriaBuilder.lessThanOrEqualTo(root.get("createTime").as(Date.class),DateTimeUtil.strToDate(spotInspectionRecordPageQueryReq.getEndTime(),null)));
             }
             criteriaQuery.orderBy(criteriaBuilder.desc(root.get("createTime")));
             Predicate[] predicates = new Predicate[listCon.size()];

@@ -3,8 +3,10 @@ package tech.yozo.factoryrp.vo.req;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import tech.yozo.factoryrp.vo.validation.IsDateStr;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 巡检记录分页查询请求对象
@@ -25,8 +27,22 @@ public class SpotInspectionRecordPageQueryReq implements Serializable {
     /**
      * 执行时间查询条件 1 本周记录 2上周记录 3本月记录 4上月记录 5本年记录 6上年记录 7更早记录
      */
-    @ApiModelProperty(value = "执行时间查询条件 1 本周记录 2上周记录 3本月记录 4上月记录 5本年记录 6上年记录 7更早记录",notes ="执行时间查询条件 1 本周记录 2上周记录 3本月记录 4上月记录 5本年记录 6上年记录 7更早记录" )
-    private Integer executeTimeCondition;
+    /*@ApiModelProperty(value = "执行时间查询条件 1 本周记录 2上周记录 3本月记录 4上月记录 5本年记录 6上年记录 7更早记录",notes ="执行时间查询条件 1 本周记录 2上周记录 3本月记录 4上月记录 5本年记录 6上年记录 7更早记录" )
+    private Integer executeTimeCondition;*/
+
+    /**
+     * 开始时间
+     */
+    @ApiModelProperty(value = "开始时间",notes ="开始时间" ,example = "2018-01-23 18:42:30")
+    @IsDateStr(message = "必须为日期格式(yyyy-MM-dd HH:mm:ss)的字符串")
+    private String beginTime;
+
+    /**
+     * 结束时间
+     */
+    @ApiModelProperty(value = "结束时间",notes ="结束时间" ,example = "2018-01-23 18:42:30")
+    @IsDateStr(message = "必须为日期格式(yyyy-MM-dd HH:mm:ss)的字符串")
+    private String endTime;
 
     /**
      * 部门ID
