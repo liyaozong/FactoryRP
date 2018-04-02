@@ -12,6 +12,24 @@
     .mainContain .tableListDiv tr th{
         font-size: 12px;
     }
+    .ImportantNote .businessAuth p{
+        font-size: 12px;
+        color: #4d4d4d;
+        text-align: left;
+        padding-left: 10px;
+    }
+    .ImportantNote{
+        max-height: 500px !important;
+    }
+    .ImportantNote input[type='text']{
+        width: 133px;
+    }
+    .ImportantNote input[type='date']{
+        width: 133px;
+    }
+    .ImportantNote .titleDiv p textarea{
+        width: 611px;
+    }
 </style>
 <div class="rightinfo mainContain" id="mainContain1">
     <div style="padding: 0;width: 100%" class="queryDiv" >
@@ -62,11 +80,7 @@
                 <th>维修班组</th>
                 <th>故障等级</th>
                 <th>故障类别</th>
-                <th>确认时间</th>
-                <th>确认人</th>
                 <th>故障描述</th>
-                <th>处理意见</th>
-                <th>差评理由</th>
                 <th>操作</th>
             </tr>
             </thead>
@@ -74,34 +88,24 @@
             <tr ng-repeat="myWaitAuditDetail in myWaitAuditList" ng-if="myWaitAuditList.length>0">
                 <td class="firstTd">{{$index+1}}<input style="margin-left: 5px;vertical-align: middle;" type="checkbox" name="che"  value="{{orderDetail.id}}"/></td>
                 <td>{{$index+1}}</td>
-                <td>{{myWaitAuditDetail.code||'--'}}</td>
+                <td>{{myWaitAuditDetail.orderNo||'--'}}</td>
                 <td>{{myWaitAuditDetail.status||'--'}}</td>
-                <td>{{myWaitAuditDetail.name||'--'}}</td>
-                <td>{{myWaitAuditDetail.name||'--'}}</td>
+                <td>{{myWaitAuditDetail.deviceCode||'--'}}</td>
+                <td>{{myWaitAuditDetail.deviceName||'--'}}</td>
                 <td>{{myWaitAuditDetail.specification||'--'}}</td>
-                <td>{{myWaitAuditDetail.specification||'--'}}</td>
+                <td>{{myWaitAuditDetail.useDept||'--'}}</td>
                 <td>{{myWaitAuditDetail.happenTime||'--'|date:'yyyy-MM-dd'}}</td>
-                <td>{{myWaitAuditDetail.happenTime||'--'|date:'yyyy-MM-dd'}}</td>
+                <td>{{myWaitAuditDetail.createTime||'--'|date:'yyyy-MM-dd'}}</td>
+                <td>{{myWaitAuditDetail.repairGroup||'--'}}</td>
                 <td>{{myWaitAuditDetail.troubleLevel||'--'}}</td>
-                <td>{{myWaitAuditDetail.troubleLevel||'--'}}</td>
-                <td>{{myWaitAuditDetail.troubleLevel||'--'}}</td>
-                <td>{{myWaitAuditDetail.happenTime||'--'|date:'yyyy-MM-dd'}}</td>
-                <td>{{myWaitAuditDetail.troubleLevel||'--'}}</td>
-                <td>{{myWaitAuditDetail.troubleLevel||'--'}}</td>
-                <td>{{myWaitAuditDetail.troubleLevel||'--'}}</td>
-                <td>{{myWaitAuditDetail.troubleLevel||'--'}}</td>
+                <td>{{myWaitAuditDetail.troubleType||'--'}}</td>
+                <td>{{myWaitAuditDetail.remark||'--'}}</td>
                 <td>
-                    <a href="javascript:void(0)" class="resBtn editBtn" ng-click="editSparePartsFuc(myWaitAuditDetail)">
+                    <a href="javascript:void(0)" class="resBtn editBtn" ng-click="getDeviceDetail(myWaitAuditDetail)">
                         详细
                     </a>
-                    <a href="javascript:void(0)" class="resBtn deleteBtn" ng-click="deleteContactCompanyBalance(myWaitAuditDetail)">
+                    <a href="javascript:void(0)" class="resBtn deleteBtn" ng-click="auditDevice(myWaitAuditDetail)">
                         审核
-                    </a>
-                    <a href="javascript:void(0)" class="resBtn deleteBtn" ng-click="deleteContactCompanyBalance(myWaitAuditDetail)">
-                        维修单
-                    </a>
-                    <a href="javascript:void(0)" class="resBtn deleteBtn" ng-click="deleteContactCompanyBalance(myWaitAuditDetail)">
-                        验证
                     </a>
                 </td>
             </tr>
@@ -371,6 +375,218 @@
     </div>
 </div>
 <!--单个删除弹出框end-->
+<!--审核弹出框 start-->
+<div class="ImportantNote auditDeviceRecordBalance">
+    <div class="headline">
+        <span>外委维修审核</span>
+        <img onClick="hideDiv('auditDeviceRecordBalance')" class="companyCloseImg" src="image/comm/diffClosed.png" width="22" height="22">
+    </div>
+    <div style="padding: 30px 0 20px 0;width: 840px;max-height: 380px;height: auto;overflow-y: hidden; overflow: auto;" class="businessAuth">
+        <div class="titleDiv">
+            <span class="tips">设备信息</span>
+            <p>
+                <label for="deviceCodeAudit">
+                    <span style="width: 100px;text-align: right">设备编号:</span>
+                    <input readonly id="deviceCodeAudit" ng-model="deviceCodeAudit" type="text" placeholder="请输入设备编号"/>
+                </label>
+                <label for="deviceNameAudit">
+                    <span style="width: 100px;text-align: right">设备名称:</span>
+                    <input readonly id="deviceNameAudit" ng-model="deviceNameAudit" type="text" placeholder="请输入设备名称"/>
+                </label>
+                <label for="specificationAudit">
+                    <span style="width: 100px;text-align: right">规格型号:</span>
+                    <input readonly id="specificationAudit" ng-model="specificationAudit" type="text" placeholder="请输入规格型号"/>
+                </label>
+            </p>
+            <p>
+                <label for="deviceTypeAudit" >
+                    <span style="width: 100px;text-align: right">设备分类:</span>
+                    <input readonly id="deviceTypeAudit" ng-model="deviceTypeAudit" type="text" placeholder="请输入设备分类"/>
+                </label>
+                <label for="useDeptAudit">
+                    <span style="width: 100px;text-align: right">使用部门:</span>
+                    <input readonly id="useDeptAudit" ng-model="useDeptAudit" type="text" placeholder="请输入使用部门"/>
+                </label>
+                <label for="addressAudit">
+                    <span style="width: 100px;text-align: right">所在位置:</span>
+                    <input readonly id="addressAudit" ng-model="addressAudit" type="text" placeholder="请输入所在位置"/>
+                </label>
+            </p>
+        </div>
+        <div class="titleDiv">
+            <span class="tips">报修信息</span>
+            <p>
+                <label for="happenDateAudit" >
+                    <span style="width: 100px;text-align: right">发生时间:</span>
+                    <input readonly type="date" id="happenDateAudit" placeholder="yyyy-MM-dd" min="20160601 | date:'yyyyMMdd" max="20201231 | date:'yyyyMMdd" required="" ng-model="happenDateAudit">
+                </label>
+                <label for="deviceUserAudit">
+                    <span style="width: 100px;text-align: right">操作者:</span>
+                    <input readonly id="deviceUserAudit" ng-model="deviceUserAudit" type="text" placeholder="请输入操作者"/>
+                </label>
+                <label for="deviceUserPhoneAudit">
+                    <span style="width: 100px;text-align: right">操作者电话:</span>
+                    <input readonly id="deviceUserPhoneAudit" ng-model="deviceUserPhoneAudit" type="text" placeholder="请输入操作者电话"/>
+                </label>
+            </p>
+            <p>
+                <label for="troubleLevelAudit">
+                    <span style="width: 100px;text-align: right">故障等级:</span>
+                    <input readonly id="troubleLevelAudit" ng-model="troubleLevelAudit" type="text" placeholder="请输入故障等级"/>
+                </label>
+                <label for="troubleTypeAudit">
+                    <span style="width: 100px;text-align: right">故障类别:</span>
+                    <input readonly id="troubleTypeAudit" ng-model="troubleTypeAudit" type="text" placeholder="请输入故障类别"/>
+                </label>
+                <label for="deviceStatusAudit">
+                    <span style="width: 100px;text-align: right">设备状态:</span>
+                    <input readonly id="deviceStatusAudit" ng-model="deviceStatusAudit" type="text" placeholder="请输入设备状态"/>
+                </label>
+            </p>
+            <p>
+                <label for="orderNoAudit">
+                    <span style="width: 100px;text-align: right">维修单号:</span>
+                    <input readonly id="orderNoAudit" ng-model="orderNoAudit" type="text" placeholder="请输入维修单号"/>
+                </label>
+                <label for="troubleRepairDateAudit">
+                    <span style="width: 100px;text-align: right">报修时间:</span>
+                    <input readonly type="date" id="troubleRepairDateAudit" placeholder="yyyy-MM-dd" min="20160601 | date:'yyyyMMdd" max="20201231 | date:'yyyyMMdd" required="" ng-model="troubleRepairDateAudit">
+                </label>
+                <label for="createUserAudit">
+                    <span style="width: 100px;text-align: right">维修申请人:</span>
+                    <input readonly id="createUserAudit" ng-model="createUserAudit" type="text" placeholder="请输入维修申请人"/>
+                </label>
+            </p>
+            <p>
+                <label for="troubleRemarkAudit">
+                    <span style="width: 100px;text-align: right">故障描述:</span>
+                    <textarea readonly placeholder="请输入故障描述" name="troubleRemarkAudit" id="troubleRemarkAudit" ng-model="troubleRemarkAudit"></textarea>
+                </label>
+            </p>
+        </div>
+        <div class="titleDiv">
+            <span class="tips">内修审核</span>
+            <p>
+                <label>
+                    <span style="width: 100px;text-align: right">审核意见:</span>
+                    <b style="width: 135px;display: inline-block;text-align: left;font-weight: 100">
+                        <input type="radio" style="display: none"/>
+                        <input style="vertical-align: middle;margin-top: 2px;" ng-model="dealStatusAudit" value="1" type="radio" name="dealStatusAudit"/>
+                        <span>通过</span>
+                        <input style="vertical-align: middle;margin-top: 2px;margin-left: 50px !important;" ng-model="dealStatusAudit" value="2" type="radio" name="dealStatusAudit"/>
+                        <span>拒绝</span>
+                    </b>
+                </label>
+            </p>
+            <p>
+                <label for="dealSuggestAudit">
+                    <span style="width: 100px;text-align: right">处理意见:</span>
+                    <textarea placeholder="请输入处理意见" name="dealSuggestAudit" id="dealSuggestAudit" ng-model="dealSuggestAudit"></textarea>
+                </label>
+            </p>
+        </div>
+        <div class="submitBtn1" style="text-align: center;padding-left: 40px;">
+            <button type="button" ng-click="auditDeviceRecordSure()" value="" class="btn">审核</button>
+            <button type="button" value="" class="btn" onClick="hideDiv('auditDeviceRecordBalance')">取消</button>
+        </div>
+    </div>
+</div>
+<!--审核弹出框 end-->
+<!--查看详情 start-->
+<div class="ImportantNote deviceRecordBalanceDetail">
+    <div class="headline">
+        <span>详情信息</span>
+        <img onClick="hideDiv('deviceRecordBalanceDetail')" class="companyCloseImg" src="image/comm/diffClosed.png" width="22" height="22">
+    </div>
+    <div style="padding: 30px 0 20px 0;width: 840px;max-height: 380px;height: auto;overflow-y: hidden; overflow: auto;" class="businessAuth">
+        <div class="titleDiv">
+            <span class="tips">设备信息</span>
+            <p>
+                <label for="deviceCodeAuditEdit">
+                    <span style="width: 100px;text-align: right">设备编号:</span>
+                    <input readonly id="deviceCodeAuditEdit" ng-model="deviceCodeAuditEdit" type="text" placeholder="请输入设备编号"/>
+                </label>
+                <label for="deviceNameAuditEdit">
+                    <span style="width: 100px;text-align: right">设备名称:</span>
+                    <input readonly id="deviceNameAuditEdit" ng-model="deviceNameAuditEdit" type="text" placeholder="请输入设备名称"/>
+                </label>
+                <label for="specificationAuditEdit">
+                    <span style="width: 100px;text-align: right">规格型号:</span>
+                    <input readonly id="specificationAuditEdit" ng-model="specificationAuditEdit" type="text" placeholder="请输入规格型号"/>
+                </label>
+            </p>
+            <p>
+                <label for="deviceTypeAuditEdit" >
+                    <span style="width: 100px;text-align: right">设备分类:</span>
+                    <input readonly id="deviceTypeAuditEdit" ng-model="deviceTypeAuditEdit" type="text" placeholder="请输入设备分类"/>
+                </label>
+                <label for="useDeptAuditEdit">
+                    <span style="width: 100px;text-align: right">使用部门:</span>
+                    <input readonly id="useDeptAuditEdit" ng-model="useDeptAuditEdit" type="text" placeholder="请输入使用部门"/>
+                </label>
+                <label for="addressAuditEdit">
+                    <span style="width: 100px;text-align: right">所在位置:</span>
+                    <input readonly id="addressAuditEdit" ng-model="addressAuditEdit" type="text" placeholder="请输入所在位置"/>
+                </label>
+            </p>
+        </div>
+        <div class="titleDiv">
+            <span class="tips">报修信息</span>
+            <p>
+                <label for="happenDateAuditEdit" >
+                    <span style="width: 100px;text-align: right">发生时间:</span>
+                    <input readonly type="date" id="happenDateAuditEdit" placeholder="yyyy-MM-dd" min="20160601 | date:'yyyyMMdd" max="20201231 | date:'yyyyMMdd" required="" ng-model="happenDateAuditEdit">
+                </label>
+                <label for="deviceUserAuditEdit">
+                    <span style="width: 100px;text-align: right">操作者:</span>
+                    <input readonly id="deviceUserAuditEdit" ng-model="deviceUserAuditEdit" type="text" placeholder="请输入操作者"/>
+                </label>
+                <label for="deviceUserPhoneAuditEdit">
+                    <span style="width: 100px;text-align: right">操作者电话:</span>
+                    <input readonly id="deviceUserPhoneAuditEdit" ng-model="deviceUserPhoneAuditEdit" type="text" placeholder="请输入操作者电话"/>
+                </label>
+            </p>
+            <p>
+                <label for="troubleLevelAuditEdit">
+                    <span style="width: 100px;text-align: right">故障等级:</span>
+                    <input readonly id="troubleLevelAuditEdit" ng-model="troubleLevelAuditEdit" type="text" placeholder="请输入故障等级"/>
+                </label>
+                <label for="troubleTypeAuditEdit">
+                    <span style="width: 100px;text-align: right">故障类别:</span>
+                    <input readonly id="troubleTypeAuditEdit" ng-model="troubleTypeAuditEdit" type="text" placeholder="请输入故障类别"/>
+                </label>
+                <label for="deviceStatusAuditEdit">
+                    <span style="width: 100px;text-align: right">设备状态:</span>
+                    <input readonly id="deviceStatusAuditEdit" ng-model="deviceStatusAuditEdit" type="text" placeholder="请输入设备状态"/>
+                </label>
+            </p>
+            <p>
+                <label for="orderNoAuditEdit">
+                    <span style="width: 100px;text-align: right">维修单号:</span>
+                    <input readonly id="orderNoAuditEdit" ng-model="orderNoAuditEdit" type="text" placeholder="请输入维修单号"/>
+                </label>
+                <label for="troubleRepairDateAuditEdit">
+                    <span style="width: 100px;text-align: right">报修时间:</span>
+                    <input readonly type="date" id="troubleRepairDateAuditEdit" placeholder="yyyy-MM-dd" min="20160601 | date:'yyyyMMdd" max="20201231 | date:'yyyyMMdd" required="" ng-model="troubleRepairDateAuditEdit">
+                </label>
+                <label for="createUserAuditEdit">
+                    <span style="width: 100px;text-align: right">维修申请人:</span>
+                    <input readonly id="createUserAuditEdit" ng-model="createUserAuditEdit" type="text" placeholder="请输入维修申请人"/>
+                </label>
+            </p>
+            <p>
+                <label for="troubleRemarkAuditEdit">
+                    <span style="width: 100px;text-align: right">故障描述:</span>
+                    <textarea readonly placeholder="请输入故障描述" name="troubleRemarkAuditEdit" id="troubleRemarkAuditEdit" ng-model="troubleRemarkAuditEdit"></textarea>
+                </label>
+            </p>
+        </div>
+        <div class="submitBtn1" style="text-align: center;padding-left: 40px;">
+            <button type="button" value="" class="btn" onClick="hideDiv('deviceRecordBalanceDetail')">关闭</button>
+        </div>
+    </div>
+</div>
+<!--查看详情 end-->
 <script type="text/javascript">
     $(document).ready(function(){
         $(".click").click(function(){

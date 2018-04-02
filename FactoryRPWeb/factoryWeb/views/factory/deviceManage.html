@@ -359,7 +359,7 @@
                     </thead>
                     <tbody>
                     <tr data-appid = "{{RealSpartsDetail.id}}" ng-click="chooseRealSpartsRecord($event,RealSpartsDetail)" ng-class="{'':dataRealSparts=='','bg-gray':RealSpartsDetail.id == dataRealSparts}" ng-repeat="RealSpartsDetail in RealSpartsList">
-                        <td class="firstTd">{{$index+1}}<input style="margin-left: 5px;vertical-align: middle;" type="checkbox" name="RealSparts"  value="{{maintenanceRecordDetail.id}}"/></td>
+                        <td class="firstTd">{{$index+1}}<input style="margin-left: 5px;vertical-align: middle;" type="checkbox" name="RealSparts"  value="{{RealSpartsDetail.id}}"/></td>
                         <td>{{RealSpartsDetail.code||'--'}}</td>
                         <td>{{RealSpartsDetail.name}}</td>
                         <td>{{RealSpartsDetail.specificationsAndodels}}</td>
@@ -1169,16 +1169,16 @@
 <!--单个删除弹出框end-->
 
 <!--单个删除备件弹出框 start-->
-<div class="ImportantNote deleteMaintenanceRecords">
+<div class="ImportantNote deletePartCRecords">
     <div class="headline">
         <span>删除关联备件信息</span>
-        <img onClick="hideDiv('deleteMaintenanceRecords')" class="companyCloseImg" src="image/comm/diffClosed.png" width="22" height="22">
+        <img onClick="hideDiv('deletePartCRecords')" class="companyCloseImg" src="image/comm/diffClosed.png" width="22" height="22">
     </div>
     <div class="businessAuth">
-        <p><img src="image/comm/attentionPlease.png" alt="注意："/>确认删除选中的备件信息？</p>
+        <p><img src="image/comm/attentionPlease.png" alt="注意："/>确认删除选中的关联备件信息？</p>
         <div class="submitBtn1" style="text-align: center;">
-            <input type="button" value="删除"  class="btn" ng-click="deleteMaintenanceRecordSure()"/>
-            <input type="button" value="取消" class="btn" onClick="hideDiv('deleteMaintenanceRecords')">
+            <input type="button" value="删除"  class="btn" ng-click="deletePartCRecordSure()"/>
+            <input type="button" value="取消" class="btn" onClick="hideDiv('deletePartCRecords')">
         </div>
     </div>
 </div>

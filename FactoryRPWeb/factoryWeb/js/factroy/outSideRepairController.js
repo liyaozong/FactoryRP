@@ -1098,6 +1098,105 @@ factoryParameterSettingApp.controller('outSideRepairController',function ($scope
         };
     };
     /*执行保养计划 end*/
+
+    /*审核 start*/
+    $scope.getTroubleRecordDetails=function(_id){
+        factoryParameterSettingService.getTroubleRecordDetail({
+            id:_id
+        }, function(response){
+            if(response.data!=''&&response.data!=null&&response.data!=undefined&&response.errorCode=='000000'){
+                $scope.troubleRecordDetail=response.data;
+                console.log($scope.troubleRecordDetail);
+                //审核详情 start
+                $scope.deviceCodeAudit=$scope.troubleRecordDetail.deviceCode;//设备编号
+                $scope.deviceNameAudit=$scope.troubleRecordDetail.deviceName;//设备名称
+                $scope.specificationAudit=$scope.troubleRecordDetail.specification;//规格型号
+                $scope.deviceTypeAudit=$scope.troubleRecordDetail.deviceType;//设备分类
+                $scope.useDeptAudit=$scope.troubleRecordDetail.useDept;//使用部门
+                $scope.addressAudit=$scope.troubleRecordDetail.installationAddress;//所在位置
+                //发生时间
+                if($scope.troubleRecordDetail.happenTime!=null&&$scope.troubleRecordDetail.happenTime!=""&&$scope.troubleRecordDetail.happenTime!=undefined){
+                    $("#happenDateAudit").val($scope.troubleRecordDetail.happenTime.split(' ')[0]);
+                }
+                $scope.deviceUserAudit=$scope.troubleRecordDetail.deviceUser;//操作者
+                $scope.deviceUserPhoneAudit=$scope.troubleRecordDetail.phone;//操作者电话
+                $scope.troubleLevelAudit=$scope.troubleRecordDetail.troubleLevel;//故障等级
+                $scope.troubleTypeAudit=$scope.troubleRecordDetail.troubleType;//故障类别
+                $scope.deviceStatusAudit=$scope.troubleRecordDetail.deveiceStatus;//设备状态
+                $scope.orderNoAudit=$scope.troubleRecordDetail.orderNo;//维修单号
+                //报修时间
+                if($scope.troubleRecordDetail.createTime!=null&&$scope.troubleRecordDetail.createTime!=""&&$scope.troubleRecordDetail.createTime!=undefined){
+                    $("#troubleRepairDateAudit").val($scope.troubleRecordDetail.createTime.split(' ')[0]);
+                }
+                $scope.createUserAudit=$scope.troubleRecordDetail.createUser;//维修申请人
+                $scope.troubleRemarkAudit=$scope.troubleRecordDetail.remark;//故障描述
+                //审核详情 end
+                //查看详情 start
+                $scope.deviceCodeAuditEdit=$scope.troubleRecordDetail.deviceCode;//设备编号
+                $scope.deviceNameAuditEdit=$scope.troubleRecordDetail.deviceName;//设备名称
+                $scope.specificationAuditEdit=$scope.troubleRecordDetail.specification;//规格型号
+                $scope.deviceTypeAuditEdit=$scope.troubleRecordDetail.deviceType;//设备分类
+                $scope.useDeptAuditEdit=$scope.troubleRecordDetail.useDept;//使用部门
+                $scope.addressAuditEdit=$scope.troubleRecordDetail.installationAddress;//所在位置
+                //发生时间
+                if($scope.troubleRecordDetail.happenTime!=null&&$scope.troubleRecordDetail.happenTime!=""&&$scope.troubleRecordDetail.happenTime!=undefined){
+                    $("#happenDateAuditEdit").val($scope.troubleRecordDetail.happenTime.split(' ')[0]);
+                }
+                $scope.deviceUserAuditEdit=$scope.troubleRecordDetail.deviceUser;//操作者
+                $scope.deviceUserPhoneAuditEdit=$scope.troubleRecordDetail.phone;//操作者电话
+                $scope.troubleLevelAuditEdit=$scope.troubleRecordDetail.troubleLevel;//故障等级
+                $scope.troubleTypeAuditEdit=$scope.troubleRecordDetail.troubleType;//故障类别
+                $scope.deviceStatusAuditEdit=$scope.troubleRecordDetail.deveiceStatus;//设备状态
+                $scope.orderNoAuditEdit=$scope.troubleRecordDetail.orderNo;//维修单号
+                //报修时间
+                if($scope.troubleRecordDetail.createTime!=null&&$scope.troubleRecordDetail.createTime!=""&&$scope.troubleRecordDetail.createTime!=undefined){
+                    $("#troubleRepairDateAuditEdit").val($scope.troubleRecordDetail.createTime.split(' ')[0]);
+                }
+                $scope.createUserAuditEdit=$scope.troubleRecordDetail.createUser;//维修申请人
+                $scope.troubleRemarkAuditEdit=$scope.troubleRecordDetail.remark;//故障描述
+                //查看详情 end
+            }else{
+                console.log(response.errorMessage);
+            }
+        });
+    };
+    $scope.auditDevice=function(res){
+        $scope.getTroubleRecordDetails(res.id);
+
+        popupDiv('auditDeviceRecordBalance');
+        //默认通过
+        $scope.dealStatusAudit=1;
+        $scope.auditDeviceRecordSure=function(){
+            if($scope.dealSuggestAudit==''||$scope.dealSuggestAudit==null||$scope.dealSuggestAudit==undefined){
+                $("#dealSuggestAudit").focus()
+            }else{
+                var pa = {
+                    troubleRecordId:res.id,
+                    dealStatus:$scope.dealStatusAudit,
+                    dealSuggest:$scope.dealSuggestAudit
+                };
+                factoryParameterSettingService.auditTroubleRecord(pa, function(response){
+                    if(response.data!=''&&response.data!=null&&response.data!=undefined&&response.errorCode=='000000'){
+                        hideDiv('auditDeviceRecordBalance');
+                        popupDiv('SaveSuccess');
+                        $('.SaveSuccess .Message').html(response.errorMessage);
+                    }else{
+                        hideDiv('auditDeviceRecordBalance');
+                        popupDiv('SaveSuccess');
+                        $('.SaveSuccess .Message').html(response.errorMessage);
+                    }
+                });
+            }
+        }
+    };
+    /*审核 end*/
+    /*查看详情 start*/
+    $scope.getDeviceDetail=function(res){
+        $scope.getTroubleRecordDetails(res.id);
+
+        popupDiv('deviceRecordBalanceDetail');
+    };
+    /*查看详情 end*/
     $scope.$watch('paginationConf.currentPage + paginationConf.itemsPerPage', $scope.onQuery);
     $scope.$watch('paginationConf1.currentPage + paginationConf1.itemsPerPage', $scope.queryTroubleRecordList);
     $scope.$watch('paginationConf2.currentPage + paginationConf2.itemsPerPage', $scope.queryMaintenanceRecordList);
