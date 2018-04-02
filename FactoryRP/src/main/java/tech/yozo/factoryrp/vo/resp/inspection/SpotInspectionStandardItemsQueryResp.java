@@ -87,4 +87,16 @@ public class SpotInspectionStandardItemsQueryResp implements Serializable {
     @ApiModelProperty(value = "备注",notes ="备注",example = "1")
     private String remark;
 
+    /**
+     * 设备部位
+     */
+    @ApiModelProperty(value = "设备部位",notes ="设备部位" )
+    private String devicePlace;
+
+    /**
+     * 点检方法
+     */
+    @ApiModelProperty(value = "点检方法",notes ="设备部位" )
+    private String spotInspectionWay;
+
 }

@@ -463,6 +463,8 @@ public class SpotInspectionStandardServiceImpl implements SpotInspectionStandard
 
                     spotInspectionStandardItemsQueryResp.setLowerLimit(s1.getLowerLimit());
                     spotInspectionStandardItemsQueryResp.setUpperLimit(s1.getUpperLimit());
+                    spotInspectionStandardItemsQueryResp.setSpotInspectionWay(s1.getSpotInspectionWay());
+                    spotInspectionStandardItemsQueryResp.setDevicePlace(s1.getDevicePlace());
                     spotInspectionItems.add(spotInspectionStandardItemsQueryResp);
                 });
 
