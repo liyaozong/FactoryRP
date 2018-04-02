@@ -40,6 +40,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -1069,5 +1070,44 @@ public class TroubleRecordServiceImpl implements TroubleRecordService {
             BussinessException biz = new BussinessException("10000","工单不存在或状态不正确");
             throw biz;
         }
+    }
+
+    @Override
+    public Pagination<SimpleRepairRecordVo> findRepairRecordByPage(TroubleListReq param) {
+        Integer currentPage = param.getCurrentPage();
+        Integer itemsPerPage = param.getItemsPerPage();
+        if(null==currentPage){
+            currentPage=0;
+        }
+        if (null==itemsPerPage){
+            itemsPerPage=10;
+        }
+        if (currentPage > 0) {
+            currentPage-=1;
+        }
+
+        Pageable p = new PageRequest(currentPage, itemsPerPage);
+        Page<Object[]> page = troubleRecordRepository.getByPage(param.getDeviceId(),p);
+        Pagination<SimpleRepairRecordVo> res = new Pagination(currentPage+1,itemsPerPage,page.getTotalElements());
+        List<SimpleRepairRecordVo> list = new ArrayList<>();
+        res.setList(list);
+        if (page.hasContent()){
+            page.getContent().stream().forEach(m -> {
+                SimpleRepairRecordVo v = new SimpleRepairRecordVo();
+                v.setId(((BigInteger)m[0]).longValue());
+                v.setOrderNo(String.valueOf(m[1]));
+                v.setCreateUser(String.valueOf(m[2]));
+                v.setCreateTime(String.valueOf(m[3]));
+                v.setEndTime(String.valueOf(m[4]));
+                v.setRepairLevel(String.valueOf(m[5]));
+                v.setRepairGroupName(String.valueOf(m[6]));
+                v.setRepairUserName(String.valueOf(m[7]));
+                v.setRemark(String.valueOf(m[8]));
+                v.setWorkRemark(String.valueOf(m[9]));
+                v.setAmount(String.valueOf(m[10]));
+                list.add(v);
+            });
+        }
+        return res;
     }
 }

@@ -15,7 +15,7 @@ import java.io.Serializable;
 @ApiModel(value = "故障列表请求参数")
 public class TroubleListReq extends BaseRequest implements Serializable{
 
-    @ApiModelProperty(value = "设备ID",example = "6")
+    @ApiModelProperty(value = "设备ID",example = "47")
     private Long deviceId;
 
     @ApiModelProperty(value = "当前页码",example = "1")

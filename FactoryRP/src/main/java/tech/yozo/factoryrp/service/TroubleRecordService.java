@@ -118,4 +118,11 @@ public interface TroubleRecordService {
      * @param user
      */
     public void audit(AuditWorkNumReq param,AuthUser user);
+
+    /**
+     * 分页查询维修记录列表
+     * @param param
+     * @return
+     */
+    public Pagination<SimpleRepairRecordVo> findRepairRecordByPage(TroubleListReq param);
 }
