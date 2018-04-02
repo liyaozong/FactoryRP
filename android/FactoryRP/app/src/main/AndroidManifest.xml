@@ -109,6 +109,8 @@
         </activity>
         <activity android:name=".ui.TroubleAuditActivity">
         </activity>
+        <activity android:name=".ui.DeviceQRCodeActivity">
+        </activity>
     </application>
 
 </manifest>

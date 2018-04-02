@@ -60,8 +60,8 @@ import java.util.List;
 
 public class HttpClient {
 //    private static final String BASE_URL = "http://192.168.6.100:9550/";
-    private static final String BASE_URL = "http://factoryrp.yozo.tech:9550/";  //研发环境
-//    private static final String BASE_URL = "http://39.104.71.127:9550/";  //银河灵动测试环境
+//    private static final String BASE_URL = "http://factoryrp.yozo.tech:9550/";  //研发环境
+    private static final String BASE_URL = "http://39.104.71.127:9550/";  //银河灵动测试环境
 
     private static final String CONTENT_TYPE = "application/json";
     private static final int COMMON_TIMEOUT = 8000;

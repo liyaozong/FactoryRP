@@ -77,7 +77,7 @@
     <string name="title_device_parts">关联备件</string>
     <string name="title_device_repair_record">维修记录</string>
     <string name="title_device_add_record">添加维修记录</string>
-    <string name="title_device_maintain_record">保养记录</string>
+    <string name="title_device_maintain_record">润滑记录</string>
     <string name="title_device_check_record">点检记录</string>
     <string name="title_repair_order">维修工单</string>
     <string name="title_select_device">选择设备</string>
@@ -85,8 +85,8 @@
     <string name="title_select_maintainer">选择维修人员</string>
     <string name="title_inspect_devices">点检设备列表</string>
     <string name="title_inspect_detail">设备点检项</string>
-    <string name="title_maintain_task">保养任务列表</string>
-    <string name="title_maintain_detail">保养任务</string>
+    <string name="title_maintain_task">润滑任务列表</string>
+    <string name="title_maintain_detail">润滑任务</string>
 
     <string name="title_repair_info">故障信息</string>
     <string name="title_repair_advice">处理意见</string>
@@ -116,7 +116,7 @@
     <string name="text_device_fault_time">填单时间：</string>
     <string name="text_device_fault_level">故障紧急程度：</string>
     <string name="text_device_fault_reason">故障原因：</string>
-    <string name="text_device_fault_type">故障现象：</string>
+    <string name="text_device_fault_type">故障描述：</string>
     <string name="text_device_repair_group">维修班组：</string>
     <string name="text_device_status">设备状态：</string>
     <string name="text_device_running_status">设备运行状态：</string>
@@ -124,8 +124,8 @@
     <string name="text_device_operator_phone">操作人电话：</string>
     <string name="text_device_using_place">设备位置：</string>
     <string name="text_device_repair_submitter">报修人：</string>
-    <string name="text_device_fault_desc">故障文字描述：</string>
-    <string name="text_device_desc">备注：</string>
+    <string name="text_device_fault_desc">故障备注：</string>
+    <string name="text_device_desc">设备备注：</string>
     <string name="text_repair_no">维修工单号：</string>
     <string name="text_maintainer">接单侠：</string>
     <string name="text_repair_status">维修状态：</string>

@@ -30,6 +30,14 @@ factoryParameterSettingApp.controller('deviceManageController',function ($scope,
         currentPage: 1,
         itemsPerPage: 5
     };
+    $scope.paginationConf3 = {
+        currentPage: 1,
+        itemsPerPage: 5
+    };
+    $scope.paginationConf4 = {
+        currentPage: 1,
+        itemsPerPage: 5
+    };
     /*查询所有备件信息 queryAllSpareParts start*/
     $scope.queryAllSparePart=function(){
         $scope.queryAllSparePartsss = factoryParameterSettingService.queryAllSpareParts({
@@ -46,6 +54,25 @@ factoryParameterSettingApp.controller('deviceManageController',function ($scope,
         });
     };
     $scope.queryAllSparePart();
+
+    $scope.queryAllSpareParts=function(){
+        $scope.queryAllSparePartss = factoryParameterSettingService.queryAllSpareParts({
+            name:$scope.partsName,
+            currentPage: $scope.paginationConf4.currentPage,
+            itemsPerPage: $scope.paginationConf4.itemsPerPage
+        }, function (response) {
+            if(response.errorCode=='000000'&&response.data.totalCount>=1){
+                $scope.allSparePartList=response.data.list;
+                $scope.paginationConf4.totalItems = response.data.totalCount;
+            }else{
+                $scope.allSparePartList=[];
+                $scope.paginationConf4.totalItems = 0;
+            }
+        }, function (err) {
+            console.log(err);
+        });
+    };
+    $scope.queryAllSpareParts();
     /*查询所有备件信息 end*/
     /*查询设备故障信息列表 公用方法 start*/
     $scope.queryTroubleRecordList=function(){
@@ -89,6 +116,68 @@ factoryParameterSettingApp.controller('deviceManageController',function ($scope,
     };
     $scope.queryMaintenanceRecordList($scope.dataAudit);
     /*查询保养计划列表 公用方法 end*/
+    /*查询设备关联备件列表 公用方法 start*/
+    $scope.queryRealSparts=function(){
+        $scope.findRealSparts = factoryParameterSettingService.findRealSparts({
+            currentPage: $scope.paginationConf3.currentPage,
+            itemsPerPage: $scope.paginationConf3.itemsPerPage
+        }, function (response) {
+            if(response.errorCode=='000000'&&response.data.totalCount>=1){
+                $scope.paginationConf3.totalItems = response.data.totalCount;
+                $scope.RealSpartsList=response.data.list;
+                if($scope.RealSpartsList!=null&&$scope.RealSpartsList!=''&&$scope.RealSpartsList!=undefined){
+
+                    $scope.RealSpartsList.forEach(function (item) {
+                        //备件类型
+                        $scope.allDeviceSparesTypes.forEach(function (item1) {
+                            if(item.sparePartType==item1.id){
+                                item.sparePartTypeName=item1.name
+                            }
+                        });
+                        //计量单位
+                        $scope.measuringUnitList.forEach(function (item2) {
+                            if(item.measuringUnit==item2.id){
+                                item.measuringUnitName=item2.name
+                            }
+                        });
+                        //生产厂商
+                        $scope.AllCompany.forEach(function (item3) {
+                            if(item.manufacturer==item3.id){
+                                item.manufacturerName=item3.name;
+                            }
+                            if(item.suppliers==item3.id){
+                                item.suppliersName=item3.name;
+                            }
+
+                        });
+                    });
+                }
+                console.log($scope.RealSpartsList);
+            }else{
+                $scope.paginationConf3.totalItems = 0;
+                $scope.RealSpartsList=[];
+            }
+        }, function (err) {
+            console.log(err);
+        });
+    };
+    $scope.queryRealSparts($scope.dataAudit);
+    /*查询设备关联备件列表 公用方法 end*/
+    /*查询备件类型  start*/
+    $scope.AllDeviceSparesTypes=function(){
+        $scope.AllDeviceSparesType = factoryParameterSettingService.queryAllDeviceSparesType({}, function (response) {
+            if(response.errorCode=='000000'&&response.data!=null){
+                $scope.allDeviceSparesTypes=response.data;
+                console.log($scope.allDeviceSparesTypes)
+            }else{
+                $scope.allDeviceSparesTypes=[];
+            }
+        }, function (err) {
+            console.log(err);
+        });
+    };
+    $scope.AllDeviceSparesTypes();
+    /*查询备件类型 end*/
     /*查询设备信息 start*/
     $scope.onQuery=function () {
         factoryParameterSettingService.deviceListInfo({
@@ -153,6 +242,21 @@ factoryParameterSettingApp.controller('deviceManageController',function ($scope,
     $scope.queryCorporateAllUsers();
 
     /*查询所有用户 end*/
+    /*查询计量单位 start*/
+    $scope.queryMeasuringUnit=function () {
+        factoryParameterSettingService.queryDeviceDictionary({
+            code:'device_measuring_unit'
+        }, function(response){
+            if(response.data!=''&&response.data!=null&&response.data!=undefined&&response.errorCode=='000000'){
+                $scope.measuringUnitList=response.data;
+                console.log($scope.measuringUnitList);
+            }else{
+                console.log(response.measuringUnitList);
+            }
+        });
+    };
+    $scope.queryMeasuringUnit();
+    /*查询计量单位 end*/
     /*查询使用状态，设备标志，设备状态 start*/
     $scope.queryUseStatus=function () {
         factoryParameterSettingService.queryDeviceDictionary({
@@ -620,6 +724,7 @@ factoryParameterSettingApp.controller('deviceManageController',function ($scope,
         $scope.dataAudit = localStorage.getItem('dataAudit');
         $scope.queryTroubleRecordList($scope.dataAudit);
         $scope.queryMaintenanceRecordList($scope.dataAudit);
+        $scope.queryRealSparts($scope.dataAudit);
 
     };
     /*查询设备对应的故障列表 end*/
@@ -686,6 +791,92 @@ factoryParameterSettingApp.controller('deviceManageController',function ($scope,
         $("#bg1").show();
     };
     /*选择设备 end*/
+    /*关联备件新增 start*/
+    $scope.choosePartsLists=function(){
+        popupDiv('partsLists');
+        $scope.partsLists=function ($event,deviceInfo) {
+            // $($event.target).parent().css('background','#FBF5E1');
+            // $($event.target).parent().siblings().css('background','#fff');
+            var dataId = $($event.target).parents('tr').attr("data-appid");
+            console.log(dataId);
+            localStorage.setItem('SparePartData',dataId);
+            $scope.SparePartData = localStorage.getItem('SparePartData');
+        };
+        $scope.partsListsRecordSure=function(){
+            $scope.ids=[];
+            if($(".partsLists tr td input[name='che']:checked").length<2){
+                $scope.ids.push($scope.SparePartData);
+            }else{
+                $(".partsLists tr td input[name='che']:checked").each(function(){
+                    $scope.ids.push($(this).val())
+                });
+            }
+            console.log($scope.ids);
+            console.log($scope.dataAudit);
+            factoryParameterSettingService.saveSpareRel({
+                deviceId:$scope.dataAudit,
+                sparePartIds:$scope.ids
+            }, function(response){
+                if(response.errorCode=='000000'){
+                    hideDiv('partsLists');
+                    popupDiv('SaveSuccess');
+                    $('.SaveSuccess .Message').html(response.errorMessage);
+                }else{
+                    hideDiv('partsLists');
+                    popupDiv('SaveSuccess');
+                    $('.SaveSuccess .Message').html(response.errorMessage);
+                }
+            });
+            hideDiv('deviceLists');
+            $("#bg1").show();
+        }
+    };
+    $scope.hidePartsLists=function(){
+        hideDiv('partsLists');
+        // $("#bg1").show();
+    };
+    /*关联备件新增 end*/
+    /*删除关联备件 start*/
+    $scope.chooseRealSpartsRecord=function ($event,res) {
+        var dataId = $($event.target).parents('tr').attr("data-appid");
+        localStorage.setItem('dataRealSparts',dataId);
+        $scope.dataRealSparts=localStorage.getItem('dataRealSparts');
+    };
+    $scope.dataRealSparts=localStorage.getItem('dataRealSparts');
+    $scope.deletePartsListsRecord=function(){
+        if($(".tableListDiv tr td input[name='RealSparts']:checked").length<1){
+            popupDiv('SaveSuccessNoReload');
+            $('.SaveSuccessNoReload .Message').html('请至少选中一个需要删除的备件');
+        }else{
+            popupDiv('deleteMaintenanceRecords');
+            $scope.ids='';
+            $(".tableListDiv tr td input[name='RealSparts']:checked").each(function(){
+                var sfruit=$(this).val();
+                $scope.ids +=','+sfruit;
+            });
+            $scope.ids=$scope.ids.substr(1,$scope.ids.length);
+            console.log($scope.ids);
+            $scope.deleteMaintenanceRecordSure=function(){
+                $scope.deleteMaintenanceRecords = factoryParameterSettingService.batchDeleteMaintenanceRecord({
+                    ids:$scope.ids
+                }, function (res) {
+                    if (res.errorCode == '000000' && res.data!=''&& res.data!=null&& res.data!=undefined) {
+                        hideDiv('deleteMaintenanceRecords');
+                        popupDiv('SaveSuccess');
+                        $('.SaveSuccess .Message').html(res.errorMessage);
+                    } else {
+                        hideDiv('deleteMaintenanceRecords');
+                        popupDiv('SaveSuccess');
+                        $('.SaveSuccess .Message').html(res.errorMessage);
+                        console.log(res.errorMessage);
+                    }
+                }, function (err) {
+                    console.log(err);
+                });
+            }
+        }
+    };
+    /*删除关联备件 end*/
     /*提出设备对应的故障 start*/
     $scope.addTroubleRecord=function () {
         if($scope.dataAudit==''||$scope.dataAudit==null||$scope.dataAudit==undefined){
@@ -1464,4 +1655,6 @@ factoryParameterSettingApp.controller('deviceManageController',function ($scope,
     $scope.$watch('paginationConf.currentPage + paginationConf.itemsPerPage', $scope.onQuery);
     $scope.$watch('paginationConf1.currentPage + paginationConf1.itemsPerPage', $scope.queryTroubleRecordList);
     $scope.$watch('paginationConf2.currentPage + paginationConf2.itemsPerPage', $scope.queryMaintenanceRecordList);
+    $scope.$watch('paginationConf3.currentPage + paginationConf3.itemsPerPage', $scope.queryRealSparts);
+    $scope.$watch('paginationConf4.currentPage + paginationConf4.itemsPerPage', $scope.queryAllSpareParts);
 });

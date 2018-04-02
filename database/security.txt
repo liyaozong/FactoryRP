@@ -26,7 +26,7 @@ git push origin HEAD:master
 
 
 MySQL:
-
+IP: 47.96.28.88
 user: developer
 password: hIRxhU2Qm5j1XlpFXGz8aiS6dKFGFiYFMQJMh2x8d1w
 

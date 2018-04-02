@@ -180,7 +180,7 @@
                 <ul>
                  <li class="curent">故障报修</li>
                  <li>维修计划</li>
-                 <li>保养计划</li>
+                 <li>润滑计划</li>
                  <li>维修记录</li>
                  <li>保养记录</li>
                  <li>配件更换记录</li>
@@ -330,9 +330,63 @@
             <div class="tableListDiv hide">
                         <p>配件更换记录</p>
                     </div>
-            <div class="tableListDiv hide">
-                        <p>关联备件</p>
-                    </div>
+            <div style="max-height: 400px;overflow: auto;" class="tableListDiv hide"><table>
+                    <thead>
+                    <tr>
+                        <th style="text-align: left" colspan="17">
+                            <a ng-click="choosePartsLists()" href="javascript:void(0)" class="smallButton">选择备件</a>
+                            <a ng-click="deletePartsListsRecord()" href="javascript:void(0)" class="smallButton">删除备件</a>
+                            <a ng-click="importTroubleRecord()" href="javascript:void(0)" class="smallButton">导出EXCEL</a>
+                        </th>
+                    </tr>
+                    <tr>
+                        <th style="min-width:50px;">全选<input style="vertical-align: middle;margin-left: 5px" type="checkbox" value="1" onclick="selAll3(this)" id="allSelected"/></th>
+                        <!--<th>设备编号</th>-->
+                        <th>备件编号</th>
+                        <th>备件名称</th>
+                        <th>规格型号</th>
+                        <th>备件类型</th>
+                        <th>更换周期</th>
+                        <th>计量单位</th>
+                        <th>最小库存</th>
+                        <th>最大库存</th>
+                        <th>当前库存</th>
+                        <th>生产厂商</th>
+                        <th>供应商</th>
+                        <th>备注</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr data-appid = "{{RealSpartsDetail.id}}" ng-click="chooseRealSpartsRecord($event,RealSpartsDetail)" ng-class="{'':dataRealSparts=='','bg-gray':RealSpartsDetail.id == dataRealSparts}" ng-repeat="RealSpartsDetail in RealSpartsList">
+                        <td class="firstTd">{{$index+1}}<input style="margin-left: 5px;vertical-align: middle;" type="checkbox" name="RealSparts"  value="{{maintenanceRecordDetail.id}}"/></td>
+                        <td>{{RealSpartsDetail.code||'--'}}</td>
+                        <td>{{RealSpartsDetail.name}}</td>
+                        <td>{{RealSpartsDetail.specificationsAndodels}}</td>
+                        <td>{{RealSpartsDetail.sparePartTypeName||'--'}}</td>
+                        <td>{{RealSpartsDetail.replacementCycle||'--'}}</td>
+                        <td>{{RealSpartsDetail.measuringUnitName||'--'}}</td>
+                        <td>{{RealSpartsDetail.inventoryFloor||'--'}}</td>
+                        <td>{{RealSpartsDetail.inventoryUpperLimit||'--'}}</td>
+                        <td>{{RealSpartsDetail.inventoryUpperLimit||'--'}}</td>
+                        <td>{{RealSpartsDetail.manufacturerName||'--'}}</td>
+                        <td>{{RealSpartsDetail.suppliersName||'--'}}</td>
+                        <td>{{RealSpartsDetail.remark||'--'}}</td>
+                        <td>
+                            <a href="javascript:void(0)" class="resBtn editBtn" ng-click="editMaintenanceRecord(RealSpartsDetail)">
+                                <img src="image/comm/resBtnEdit.png" alt="编辑"/>
+                                <b class="title">详细</b>
+                            </a>
+                        </td>
+                    </tr>
+                    </tbody>
+                    <tfoot>
+                    <tr>
+                        <td style="text-align: center" colspan="17"><tm-pagination conf="paginationConf3"></tm-pagination></td>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
             <div class="tableListDiv hide">
                         <p>关联文档</p>
                     </div>
@@ -1113,10 +1167,26 @@
     </div>
 </div>
 <!--单个删除弹出框end-->
-<!--添加保养计划 start-->
+
+<!--单个删除备件弹出框 start-->
+<div class="ImportantNote deleteMaintenanceRecords">
+    <div class="headline">
+        <span>删除关联备件信息</span>
+        <img onClick="hideDiv('deleteMaintenanceRecords')" class="companyCloseImg" src="image/comm/diffClosed.png" width="22" height="22">
+    </div>
+    <div class="businessAuth">
+        <p><img src="image/comm/attentionPlease.png" alt="注意："/>确认删除选中的备件信息？</p>
+        <div class="submitBtn1" style="text-align: center;">
+            <input type="button" value="删除"  class="btn" ng-click="deleteMaintenanceRecordSure()"/>
+            <input type="button" value="取消" class="btn" onClick="hideDiv('deleteMaintenanceRecords')">
+        </div>
+    </div>
+</div>
+<!--单个删除备件弹出框 end-->
+<!--添加润滑计划 start-->
 <div class="ImportantNote addMaintenanceRecordBalance">
     <div class="headline">
-        <span>添加保养计划</span>
+        <span>添加润滑计划</span>
         <img onClick="hideDiv('addMaintenanceRecordBalance')" class="companyCloseImg" src="image/comm/diffClosed.png" width="22" height="22">
     </div>
     <div style="padding: 30px 0 20px 0;width: 840px;max-height: 380px;height: auto;overflow-y: hidden; overflow: auto;" class="businessAuth">
@@ -1249,11 +1319,11 @@
         </div>
     </div>
 </div>
-<!--添加保养计划 end-->
-<!--修改保养计划 start-->
+<!--添加润滑计划 end-->
+<!--修改润滑计划 start-->
 <div class="ImportantNote editMaintenanceRecordBalance">
     <div class="headline">
-        <span>修改保养计划</span>
+        <span>修改润滑计划</span>
         <img onClick="hideDiv('editMaintenanceRecordBalance')" class="companyCloseImg" src="image/comm/diffClosed.png" width="22" height="22">
     </div>
     <div style="padding: 30px 0 20px 0;width: 840px;max-height: 380px;height: auto;overflow-y: hidden; overflow: auto;" class="businessAuth">
@@ -1386,11 +1456,11 @@
         </div>
     </div>
 </div>
-<!--修改保养计划 end-->
-<!--执行保养计划 start-->
+<!--修改润滑计划 end-->
+<!--执行润滑计划 start-->
 <div class="ImportantNote dealMaintenanceRecordBalance">
     <div class="headline">
-        <span>执行保养计划</span>
+        <span>执行润滑计划</span>
         <img onClick="hideDiv('dealMaintenanceRecordBalance')" class="companyCloseImg" src="image/comm/diffClosed.png" width="22" height="22">
     </div>
     <div style="padding: 30px 0 20px 0;width: 840px;max-height: 380px;height: auto;overflow-y: hidden; overflow: auto;" class="businessAuth">
@@ -1643,7 +1713,7 @@
         </div>
     </div>
 </div>
-<!--执行保养计划 end-->
+<!--执行润滑计划 end-->
 <!--设备列表 start-->
 <div class="ImportantNote deviceLists">
     <div class="headline">
@@ -1737,6 +1807,67 @@
     </div>
 </div>
 <!--设备列表 end-->
+
+<!--备件列表 start-->
+<div class="ImportantNote partsLists">
+    <div class="headline">
+        <span>备件列表</span>
+        <img ng-click="hidePartsLists()" class="companyCloseImg" src="image/comm/diffClosed.png" width="22" height="22">
+    </div>
+    <div style="padding: 7px 0 20px 0;width: 840px;max-height: 380px;height: auto;overflow-y: hidden; overflow: auto;" class="businessAuth mainContain">
+        <div style="padding: 0;width: 100%" class="queryDiv" >
+            <ul>
+                <li>
+                    <label style="margin-left: 10px" for="partsName">
+                        <span style="width: auto">备件名称：</span>
+                        <input type="text" placeholder="请输入备件名称" ng-model="partsName" id="partsName">
+                    </label>
+                    <label>
+                        <button style="margin:10px 0 0 10px;" class="btn" ng-click="queryAllSpareParts()">查询</button>
+                    </label>
+                </li>
+            </ul>
+        </div>
+        <div style="max-height: 400px;overflow: auto;min-width: 0;" class="tableListDiv data-container jurisdiction">
+            <table>
+                <thead>
+                <tr>
+                    <th style="min-width:50px;">全选<input style="vertical-align: middle;margin-left: 5px" type="checkbox" value="1" onclick="selAll(this)" id="allSelected"/></th>
+                    <!--<th>设备编号</th>-->
+                    <th>备件编号</th>
+                    <th>备件名称</th>
+                    <th>规格型号</th>
+                    <th>计量单位</th>
+                    <th>物料属性</th>
+                    <th>库存数</th>
+                </tr>
+                </thead>
+                <tbody id="apply_infos_table">
+                <tr ng-click="partsLists($event,orderDetail)" data-appid = "{{orderDetail.id}}" ng-class="{'':SparePartData=='','bg-gray':orderDetail.id == SparePartData}"  ng-repeat="orderDetail in allSparePartList">
+                    <td class="firstTd">{{$index+1}}<input style="margin-left: 5px;vertical-align: middle;" type="checkbox" name="che"  value="{{orderDetail.id}}"/></td>
+                    <!--<td>{{orderDetail.code||'--'}}</td>-->
+                    <td>{{orderDetail.code||'--'}}</td>
+                    <td>{{orderDetail.name||'--'}}</td>
+                    <td>{{orderDetail.specificationsAndodels||'--'}}</td>
+                    <td>{{orderDetail.measuringUnit||'--'}}</td>
+                    <td>{{orderDetail.materialProperties||'--'}}</td>
+                    <td>{{orderDetail.inventoryUpperLimit||'--'}}</td>
+                </tr>
+                </tbody>
+                <tfoot>
+                <tr>
+                    <td style="text-align: center" colspan="7"><tm-pagination conf="paginationConf4"></tm-pagination></td>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+        <div class="submitBtn1" style="text-align: center;padding-left: 40px;">
+            <button type="button" ng-click="partsListsRecordSure()" value="" class="btn">确定</button>
+            <button type="button" value="" class="btn" ng-click="hidePartsLists()">取消</button>
+        </div>
+    </div>
+</div>
+<!--备件列表 end-->
 <script type="text/javascript">
     $(document).ready(function(){
         $(".click").click(function(){

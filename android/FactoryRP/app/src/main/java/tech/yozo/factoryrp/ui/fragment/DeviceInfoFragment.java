@@ -1,15 +1,18 @@
 package tech.yozo.factoryrp.ui.fragment;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import com.loopj.android.http.RequestParams;
 import tech.yozo.factoryrp.R;
+import tech.yozo.factoryrp.ui.DeviceQRCodeActivity;
 import tech.yozo.factoryrp.utils.HttpClient;
 import tech.yozo.factoryrp.vo.resp.device.info.FullDeviceInfoResp;
 
@@ -34,6 +37,8 @@ public class DeviceInfoFragment extends BaseFragment implements HttpClient.OnHtt
     private int mParam_mode;
     private Long mParam_id;
 
+    private Button qrcodeButton;
+    private FullDeviceInfoResp fullDeviceInfo;
     private List<Map<String, Object>> data = new ArrayList<>();
     private SimpleAdapter adapter;
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日");
@@ -73,6 +78,18 @@ public class DeviceInfoFragment extends BaseFragment implements HttpClient.OnHtt
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_device_info, container, false);
+        qrcodeButton = (Button) view.findViewById(R.id.button_qrcode);
+        qrcodeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), DeviceQRCodeActivity.class);
+                if(fullDeviceInfo != null) {
+                    intent.putExtra("name", fullDeviceInfo.getName());
+                    intent.putExtra("code", fullDeviceInfo.getCode());
+                }
+                startActivity(intent);
+            }
+        });
         ListView mDeviceInfoView = (ListView) view.findViewById(R.id.lv_device_info);
         adapter = new SimpleAdapter(getContext(), data, R.layout.item_info_list,
                 new String[]{"name","value"},
@@ -106,6 +123,7 @@ public class DeviceInfoFragment extends BaseFragment implements HttpClient.OnHtt
     }
 
     private void getData(FullDeviceInfoResp device) {
+        fullDeviceInfo = device;
         Map<String, Object> map = new HashMap<>();
         map.put("name", "设备名称");
         map.put("value", device.getName());

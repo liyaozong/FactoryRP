@@ -2,9 +2,21 @@
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              tools:context="tech.yozo.factoryrp.ui.fragment.DeviceInfoFragment">
+              tools:context="tech.yozo.factoryrp.ui.fragment.DeviceInfoFragment"
+              android:orientation="vertical">
+
     <ListView
             android:layout_width="match_parent"
-            android:layout_height="match_parent" android:id="@+id/lv_device_info"
-            android:divider="@color/colorBackground" android:dividerHeight="1dp"/>
+            android:id="@+id/lv_device_info"
+            android:divider="@color/colorBackground"
+            android:dividerHeight="1dp"
+            android:layout_weight="1"
+            android:layout_height="0dp"/>
+
+    <Button
+            android:text="生成二维码"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/button_qrcode"
+            android:background="@color/colorHighlight"/>
 </LinearLayout>
