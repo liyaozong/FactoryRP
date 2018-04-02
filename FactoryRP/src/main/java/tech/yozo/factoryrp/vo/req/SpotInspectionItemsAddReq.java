@@ -6,6 +6,7 @@ import lombok.Data;
 import tech.yozo.factoryrp.vo.base.ApiRequest;
 import tech.yozo.factoryrp.vo.validation.NotEmpty;
 
+import javax.persistence.Column;
 import java.io.Serializable;
 import java.util.List;
 
@@ -51,4 +52,16 @@ public class SpotInspectionItemsAddReq extends ApiRequest implements Serializabl
      */
     @ApiModelProperty(value = "下限值",notes ="下限值" )
     private Integer lowerLimit;
+
+    /**
+     * 设备部位
+     */
+    @ApiModelProperty(value = "设备部位",notes ="设备部位" )
+    private String devicePlace;
+
+    /**
+     * 点检方法
+     */
+    @ApiModelProperty(value = "点检方法",notes ="设备部位" )
+    private String spotInspectionWay;
 }

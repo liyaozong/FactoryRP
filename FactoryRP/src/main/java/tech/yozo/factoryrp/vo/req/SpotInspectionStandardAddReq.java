@@ -51,6 +51,18 @@ public class SpotInspectionStandardAddReq extends ApiRequest implements Serializ
     private Long deviceType;
 
     /**
+     * 设备部位
+     */
+    @ApiModelProperty(value = "设备部位",notes ="设备部位" )
+    private String devicePlace;
+
+    /**
+     * 点检方法
+     */
+    @ApiModelProperty(value = "点检方法",notes ="设备部位" )
+    private String spotInspectionWay;
+
+    /**
      * 适用设备列表ID，数组形式
      */
     @ApiModelProperty(value = "适用设备列表ID，数组形式",notes ="适用设备列表ID，数组形式" )
