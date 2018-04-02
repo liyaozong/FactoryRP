@@ -174,7 +174,7 @@ public class SpotInspectionPlanServiceImpl implements SpotInspectionPlanService 
         spotInspectionPlan.setSpotInspectionRange(spotInspectionPlanAddReq.getRange());
         spotInspectionPlan.setRecyclePeriodType(spotInspectionPlanAddReq.getRecyclePeriodType());
         spotInspectionPlan.setCorporateIdentify(corporateIdentify);
-
+        spotInspectionPlan.setSpotInspectionPlanLevel(spotInspectionPlanAddReq.getSpotInspectionPlanLevel());
 
         spotInspectionPlanRepository.save(spotInspectionPlan);
 
@@ -543,6 +543,7 @@ public class SpotInspectionPlanServiceImpl implements SpotInspectionPlanService 
             spotInspectionPlanDetailWarpResp.setRecyclePeriodType(plan.getRecyclePeriodType());
             spotInspectionPlanDetailWarpResp.setSpotInspectionRange(plan.getSpotInspectionRange());
             spotInspectionPlanDetailWarpResp.setName(plan.getName());
+            spotInspectionPlanDetailWarpResp.setSpotInspectionPlanLevel(plan.getSpotInspectionPlanLevel()+"级巡检");
 
             List<User> userList = userRepository.findByCorporateIdentifyAndUserIdIn(corporateIdentify, JSON.parseArray(plan.getExecutors(), Long.class));
 

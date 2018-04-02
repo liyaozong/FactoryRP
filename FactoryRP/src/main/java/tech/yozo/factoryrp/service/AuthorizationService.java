@@ -140,6 +140,15 @@ public interface AuthorizationService {
 
 
     /**
+     * 修改当前用户密码
+     * @param newPassword
+     * @param oldPassword
+     * @param userId
+     * @param corporateIdentify
+     */
+    void updateCurrentUserPassword(String newPassword,String oldPassword,Long userId, Long corporateIdentify);
+
+    /**
      * 根据用户id查询用户角色
      * @param userId
      * @param corporateIdentify

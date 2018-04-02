@@ -4,7 +4,8 @@
     <dl class="leftmenu">
         <dd>
             <div class="title">
-                <span><img src="images/leftico01.png" /></span>{{liMenu}}</div>
+                <span><img src="images/leftico01.png" /></span>{{liMenu}}
+            </div>
             <ul class="menuson">
                 <li ng-class="{active:  twoItem.url== stateUrlLi}" ng-repeat="twoItem in publicTwoMenu"><cite></cite><a ng-href="{{'#/main/'+twoItem.url}}" ui-sref="{{'main.'+twoItem.url}}">{{twoItem.name}}</a><i></i></li>
                 <!--<li><cite></cite><a href="#/main/parameterSetting" ui-sref="main.parameterSetting" ui-sref-active="active">在线用户管理</a><i></i></li>-->

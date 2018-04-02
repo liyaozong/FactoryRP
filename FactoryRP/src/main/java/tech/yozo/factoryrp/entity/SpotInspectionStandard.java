@@ -58,5 +58,4 @@ public class SpotInspectionStandard extends BaseEntity implements Serializable{
     @Column(name = "device_type",length = 20)
     private Long deviceType;
 
-
 }

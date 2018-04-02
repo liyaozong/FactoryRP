@@ -96,4 +96,11 @@ public class SpotInspectionPlan extends BaseEntity implements Serializable {
     @Column(name = "executors",length = 50)
     private String executors;
 
+    /**
+     * 巡检计划等级
+     */
+    @ApiModelProperty(value = "巡检计划等级,1,2,3等",notes ="巡检计划等级,1,2,3等" )
+    @Column(name = "spot_inspection_plan_level",length = 10)
+    private Integer spotInspectionPlanLevel;
+
 }

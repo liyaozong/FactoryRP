@@ -48,7 +48,8 @@ public enum ErrorCode {
     SPOTINSPECTION_RECORD_NOTEXIST_ERROR("0000030","巡检记录不存在"),
     REQUEST_FILE_NOT_EXIST("0000031","上传文件请求错误"),
     UNKONW_IMAGE_TYPE_REEOR("0000032","错误的文件类型"),
-    FILE_PARSE_EXCEPTION("0000033","文件解析异常");
+    FILE_PARSE_EXCEPTION("0000033","文件解析异常"),
+    OLD_PASSWORD_INCORRECT("0000034","旧密码输入错误");
 
 
     private String code;

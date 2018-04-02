@@ -4,6 +4,7 @@ import com.alibaba.fastjson.annotation.JSONField;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import tech.yozo.factoryrp.vo.validation.IsDateStr;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -85,4 +86,5 @@ public class SpotInspectionPlanQueryResp implements Serializable {
      */
     @ApiModelProperty(value = "周期",notes ="周期" )
     private String recyclePeriod;
+
 }

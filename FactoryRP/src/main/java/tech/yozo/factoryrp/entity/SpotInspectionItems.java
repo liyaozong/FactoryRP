@@ -69,4 +69,18 @@ public class SpotInspectionItems extends BaseEntity implements Serializable {
     @Column(name = "lower_limit",length = 20)
     private Integer lowerLimit;
 
+    /**
+     * 设备部位
+     */
+    @ApiModelProperty(value = "设备部位",notes ="设备部位" )
+    @Column(name = "device_place")
+    private String devicePlace;
+
+    /**
+     * 点检方法
+     */
+    @ApiModelProperty(value = "点检方法",notes ="设备部位" )
+    @Column(name = "spot_inspection_way")
+    private String spotInspectionWay;
+
 }

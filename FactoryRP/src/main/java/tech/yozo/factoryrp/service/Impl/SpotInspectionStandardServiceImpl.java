@@ -384,6 +384,8 @@ public class SpotInspectionStandardServiceImpl implements SpotInspectionStandard
                 spotInspectionItems.setCorporateIdentify(corporateIdentify);
                 spotInspectionItems.setLowerLimit(s1.getLowerLimit());
                 spotInspectionItems.setUpperLimit(s1.getUpperLimit());
+                spotInspectionItems.setSpotInspectionWay(s1.getSpotInspectionWay());
+                spotInspectionItems.setDevicePlace(s1.getDevicePlace());
 
                 //文字的处理逻辑 没有规定填写哪些文字，所以允许空
                 if(!SpotInspectionItemsRecordTypeEnum.SPOT_INSPECTION_ITEMS_RECORD_TYPE_ENUM_VERBAL_DESCRIPTION.getCode().equals(s1.getRecordType())){
@@ -461,6 +463,8 @@ public class SpotInspectionStandardServiceImpl implements SpotInspectionStandard
 
                     spotInspectionStandardItemsQueryResp.setLowerLimit(s1.getLowerLimit());
                     spotInspectionStandardItemsQueryResp.setUpperLimit(s1.getUpperLimit());
+                    spotInspectionStandardItemsQueryResp.setSpotInspectionWay(s1.getSpotInspectionWay());
+                    spotInspectionStandardItemsQueryResp.setDevicePlace(s1.getDevicePlace());
                     spotInspectionItems.add(spotInspectionStandardItemsQueryResp);
                 });
 

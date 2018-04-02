@@ -98,6 +98,12 @@ public class SpotInspectionPlanDetailWarpResp implements Serializable {
     private Integer inTime;
 
     /**
+     * 巡检计划等级
+     */
+    @ApiModelProperty(value = "巡检计划等级,直接取值",notes ="巡检计划等级,直接取值" )
+    private String spotInspectionPlanLevel;
+
+    /**
      * 巡检计划设备关联集合
      */
     @ApiModelProperty(value = "巡检计划设备关联集合",notes ="巡检计划设备关联集合" )
