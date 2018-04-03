@@ -116,4 +116,10 @@ public class MaintainPlanController extends BaseController{
         maintainPlanService.batchDelete(idsList);
         return apiResponse();
     }
+
+    @RequestMapping("maintainRecordlist")
+    @ApiOperation(value = "设备对应的保养记录--WEB",notes = "设备对应的保养记录--WEB",httpMethod = "POST")
+    public ApiResponse<Pagination<SimpleMaintainRecordVo>> repairRecoreList(@RequestBody TroubleListReq param){
+        return apiResponse(maintainPlanService.findSimpleRecordListByPage(param));
+    }
 }

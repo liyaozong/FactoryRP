@@ -29,6 +29,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -450,6 +451,44 @@ public class MaintainPlanServiceImpl implements MaintainPlanService{
         if (!CheckParam.isNull(oldList)){
             maintainPlanRepository.deleteInBatch(oldList);
         }
+    }
+
+    @Override
+    public Pagination<SimpleMaintainRecordVo> findSimpleRecordListByPage(TroubleListReq param) {
+
+        Integer currentPage = param.getCurrentPage();
+        Integer itemsPerPage = param.getItemsPerPage();
+        if(null==currentPage){
+            currentPage=0;
+        }
+        if (null==itemsPerPage){
+            itemsPerPage=10;
+        }
+        if (currentPage > 0) {
+            currentPage-=1;
+        }
+
+        Pageable p = new PageRequest(currentPage, itemsPerPage);
+        Page<Object[]> page = maintainRecordRepository.getByPage(param.getDeviceId(),p);
+        Pagination<SimpleMaintainRecordVo> res = new Pagination(currentPage+1,itemsPerPage,page.getTotalElements());
+        List<SimpleMaintainRecordVo> list = new ArrayList<>();
+        res.setList(list);
+        if (page.hasContent()){
+            page.getContent().stream().forEach(m -> {
+                SimpleMaintainRecordVo v = new SimpleMaintainRecordVo();
+                v.setId(((BigInteger)m[0]).longValue());
+                v.setMaintainNo(String.valueOf(m[1]));
+                v.setEndTime(String.valueOf(m[2]));
+                v.setMaintainLevel(String.valueOf(m[3]));
+                v.setRepairGroupName(String.valueOf(m[4]));
+                v.setPlanManagerName(String.valueOf(m[5]));
+                v.setPlanRemark(String.valueOf(m[6]));
+                v.setMaintainContent(String.valueOf(m[7]));
+                v.setMaintainAmount(String.valueOf(m[8]));
+                list.add(v);
+            });
+        }
+        return res;
     }
 
     public static void main(String args[]){

@@ -75,4 +75,11 @@ public interface MaintainPlanService {
      * @param ids
      */
     public void batchDelete(List<Long> ids);
+
+    /**
+     * 查询保养记录
+     * @param param
+     * @return
+     */
+    public Pagination<SimpleMaintainRecordVo> findSimpleRecordListByPage(TroubleListReq param);
 }
