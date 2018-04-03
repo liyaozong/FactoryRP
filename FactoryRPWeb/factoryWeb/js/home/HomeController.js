@@ -1,81 +1,8 @@
 /**
  * Created by SHYL on 2016/6/13.
  */
-myApp.controller("HomeController", function($rootScope,UrlService,$cookies,$state, $scope, $resource, $timeout, $http,$location,$log,AuthorizationService,functionManageService,userManagementService,$window) {
-    $("body").removeAttr('id');
-    $("body").css('background','#fff');
-    // if($location.path()=='/main/deviceManage'){
-    //     console.log($("#menuLeft .leftmenu .deviceManage"));
-    //     $("#menuLeft .leftmenu .deviceManage").removeClass('hide');
-    //     $("#menuLeft .leftmenu .deviceManage").siblings().addClass('hide');
-    // }else{
-    //     $('.leftmenu dd').eq(0).find('.menuson').css('display','block');
-    //     $('.leftmenu dd').eq(0).siblings().find('.menuson').css('display','none');
-    //     $('.leftmenu dd').eq(0).find('.menuson').children().eq(0).addClass('active');
-    //     $("#menuLeft .leftmenu .deviceManage").addClass('hide');
-    //     $("#menuLeft .leftmenu .deviceManage").siblings().removeClass('hide');
-    //     $("#menuLeft .leftmenu .sparePartsManage").addClass('hide');
-    //     $("#menuLeft .leftmenu .sparePartsManage").siblings().removeClass('hide');
-    //     $("#menuLeft .leftmenu .modelToolsManage").addClass('hide');
-    //     $("#menuLeft .leftmenu .modelToolsManage").siblings().removeClass('hide');
-    // }
-    $scope.username=$cookies.get('username');
-    /*登出 start*/
-    $scope.onLogout = function(){
-        $cookies.remove('token');
-        $cookies.remove('username');
-        $cookies.remove('corporateIdentify');
-        $cookies.remove('requestSeqNo');
-        $window.localStorage['menu'] = '';
-        delete $window.localStorage['menu'];
-        $state.go("login");
-//        AuthorizationService.doLogout(function(data){
-//            console.log(data)
-//            if(data != null && data.status == '0' && (data.code == 'LOGIN_SUCESS' || data.code=="LOGOUT_SUCESS")){
-//                $rootScope.allStates = [];
-//
-//            }else{
-//                alert(data.message);
-//            }
-//        }, function(err){
-//            // $rootScope.isLogin = false;
-//        });
-    };
-    /*登出 end*/
-    $rootScope.isLogin = AuthorizationService.isLogined();
-    $scope.onCloseState = function(state){
-        if(!$rootScope.allStates){
-            $rootScope.allStates = [];
-        }
+myApp.controller("HomeController", function($rootScope,UrlService,$cookies,$state, $scope, $resource, $timeout, $http,$location,$log,AuthorizationService,departmentManageService,userManagementService,$window,$timeout) {
 
-        for(var i = 0; i < $rootScope.allStates.length; i++) {
-            if ($rootScope.allStates[i].state.name == state.name) {
-                $rootScope.allStates.splice(i,1);
-                if(state.name == $state.current.name){
-                    if($rootScope.allStates.length > 0){
-                        $state.go($rootScope.allStates[$rootScope.allStates.length - 1].state, $rootScope.allStates[$rootScope.allStates.length - 1].params);
-                    } else {
-                        $state.go("main.home");
-                    }
-
-                }
-                break;
-            }
-        }
-        if( $rootScope.allStates.length == 0){
-            $state.go("main.home");
-        }
-    };
-    if($location.path()=='/login'){
-        $rootScope.allStates = [];
-    };
-    $scope.onChangeState = function(stateItem){
-        $state.go(stateItem.state, stateItem.params);
-    };
-
-    $scope.reload = function(){
-        $state.reload($state.current);
-    };
 
     $scope.$on('home_change', function(event,data) {
         $scope.curFooter = data;
@@ -89,9 +16,83 @@ myApp.controller("HomeController", function($rootScope,UrlService,$cookies,$stat
         }, 1000);
     });
 
+    $scope.list1=[];
+    $scope.list2=[];
+    $scope.list3=[];
+    for(var i=1;i<100;i++){
+        $scope.list1.push({
+            name:'故障名称'+i,
+            type:'故障状态'+i
+        });
+        $scope.list2.push({
+            name:'点巡检名称'+i,
+            type:'巡检状态'+i
+        });
+        $scope.list3.push({
+            name:'润滑计划名称'+i,
+            type:'润滑计划状态'+i
+        });
+    }
+
+    // $('.table-animation').animate({marginTop:"-34px"})
+    function test1() {
+        var timer1=$timeout(function () {
+            // console.log(k);
+            // k++;
+            $('.table-animation').animate({marginTop:"-34px"},function () {
+                var arr1=$scope.list1.shift();
+                // console.log(arr);
+                $scope.list1.push(arr1);
+                // console.log($scope.list1)
+                $timeout(function () {
+                    test1();
+
+                },1000)
+            });
+        },1000)
+    }
+    test1();
+    function test2() {
+        var timer2=$timeout(function () {
+            $('.table-animation2').animate({marginTop:"-34px"},function () {
+                var arr2=$scope.list2.shift();
+                // console.log(arr);
+                $scope.list2.push(arr2);
+                $timeout(function () {
+                    test2();
+
+                },1000)
+            });
+        },1000)
+    }
+    test2();
+    function test3() {
+        var timer3=$timeout(function () {
+            $('.table-animation3').animate({marginTop:"-34px"},function () {
+                var arr2=$scope.list3.shift();
+                // console.log(arr);
+                $scope.list3.push(arr2);
+                $timeout(function () {
+                    test3();
+
+                },1000)
+            });
+        },1000)
+    }
+    test3();
 
 
 
-
+    //查询部门
+    departmentManageService.queryOrder({
+        name:$scope.depName,
+        corporateIdentify:$scope.corporateIdentify
+    }, function(response){
+        if(response.data!=''&&response.data!=null&&response.data!=undefined&&response.errorCode=='000000'){
+            $scope.departmentManageLists=response.data;
+        }else{
+            console.log(response.errorMessage);
+        }
+    });
 
 });

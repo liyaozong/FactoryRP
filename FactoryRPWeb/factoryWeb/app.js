@@ -239,8 +239,7 @@ var myApp = angular.module('myApp', [
                 url: "/main",
                 views: {
                     '': {
-                        templateUrl: FF_API.baseTpl+"tpls/main.html",
-                        controller: 'HomeController'
+                        templateUrl: FF_API.baseTpl+"tpls/main.html"
                     },
                     'topMenu@main':{
                         templateUrl:FF_API.baseTpl+'tpls/topMenu.html'

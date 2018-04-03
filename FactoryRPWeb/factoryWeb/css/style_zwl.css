@@ -326,3 +326,69 @@ textarea{
 .padding-left-187{
     padding-left: 187px;
 }
+
+
+.home-left{
+    max-width: 360px;
+
+}
+.home-title{
+    background-color: #7a7a7a;
+    position: relative;
+    max-width: 360px;
+}
+.home-title-name{
+    max-width: 360px;
+    height: 50px;
+    line-height: 50px;
+    font-size: 20px;
+    font-weight: bold;
+    /*color: white;*/
+    padding-left: 10px;
+    box-sizing: border-box;
+    text-align: left;
+}
+.home-title-total{
+    position: absolute;
+    right: 10px;
+    top: 5px;
+}
+.home-title-num{
+    position: absolute;
+    right: 10px;
+    top: 25px;
+}
+.home-table{
+    height: 200px;
+    width: 360px;
+    border: 1px solid #7a7a7a;
+    border-top: none;
+    overflow: hidden;
+    box-sizing: border-box;
+    text-align: center;
+}
+.home-table span{
+    border: 1px solid #7a7a7a;
+    height: 34px;
+    border-left: none;
+    border-right: none;
+}
+.home-table span:first-child{
+    border-right: 1px solid #7a7a7a;
+}
+.home-table span{
+    display: inline-block;
+    vertical-align: middle;
+    height: 34px;
+    line-height: 34px;
+    width: 50%;
+    border-bottom: none;
+    box-sizing: border-box;
+}
+.table-animation,.table-animation2,.table-animation3{
+    /*margin-top: -34px;*/
+    transition: margin-top 1s;
+}
+.maintj{
+    vertical-align: middle;
+}
