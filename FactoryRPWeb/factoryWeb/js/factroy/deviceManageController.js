@@ -119,6 +119,7 @@ factoryParameterSettingApp.controller('deviceManageController',function ($scope,
     /*查询设备关联备件列表 公用方法 start*/
     $scope.queryRealSparts=function(){
         $scope.findRealSparts = factoryParameterSettingService.findRealSparts({
+            deviceId:$scope.dataAudit,//设备ID
             currentPage: $scope.paginationConf3.currentPage,
             itemsPerPage: $scope.paginationConf3.itemsPerPage
         }, function (response) {
