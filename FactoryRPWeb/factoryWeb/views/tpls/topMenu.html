@@ -36,7 +36,7 @@
     <div class="topright">
         <ul>
             <li><span><img src="images/help.png" title="帮助"  class="helpimg"/></span><a href="#">帮助</a></li>
-            <li><a href="#">关于</a></li>
+            <li><a ng-click="updatePasswordClick()" href="javascript:void(0)">修改密码</a></li>
             <li><a ng-click="onLogoutNew()" href="javascript:void(0)">退出</a></li>
         </ul>
 
@@ -49,3 +49,65 @@
     </div>
 </div>
 <!--top 导航 end-->
+<style>
+    .updatePassword input{
+        width: 150px;
+        font-size: 12px !important;
+        border: 1px solid #e6e6e6;
+    }
+    .updatePassword .businessAuth p{
+        margin-bottom: 20px;
+    }
+    .updatePassword .businessAuth p span{
+        width: 60px;
+        text-align: right;
+        display: inline-block;
+        font-size: 12px;
+    }
+</style>
+<!--修改密码弹出框 start-->
+<div style="width: 500px;max-height: 300px !important;overflow: inherit" class="ImportantNote updatePassword">
+    <div class="headline">
+        <span>修改密码</span>
+        <img onclick="hideDiv('updatePassword')" class="companyCloseImg" src="image/comm/diffClosed.png" width="22" height="22">
+    </div>
+    <div class="businessAuth">
+        <p>
+            <label for="oldPassword">
+                <span>原密码</span>
+                <input id="oldPassword" ng-model="oldPassword" type="password" placeholder="请输入原密码">
+            </label>
+        </p>
+        <p>
+            <label for="newPassword">
+                <span>新密码</span>
+                <input id="newPassword" ng-model="newPassword" type="password" placeholder="请输入新密码">
+            </label>
+        </p>
+        <p>
+            <label for="newPasswordSure">
+                <span>重复密码</span>
+                <input id="newPasswordSure" ng-model="newPasswordSure" type="password" placeholder="请再次输入新密码">
+            </label>
+        </p>
+        <div class="submitBtn1" style="text-align: center;padding-left: 40px;">
+            <button type="button" ng-click="updatePasswordSure()" value="" class="btn">确定</button>
+            <button type="button" value="" class="btn" onclick="hideDiv('updatePassword')">取消</button>
+        </div>
+    </div>
+</div>
+<!--修改密码弹出框 end-->
+<!--保存成功start-->
+<div class="ImportantNote SaveSuccess">
+    <div class="headline">
+        <span>重要提示</span>
+        <img onClick="hideDiv('SaveSuccess')" class="companyCloseImg" src="image/comm/diffClosed.png" width="22" height="22">
+    </div>
+    <div class="businessAuth">
+        <p><img src="image/comm/attentionPlease.png" alt="注意："/><span class="Message"></span></p>
+        <div class="submitBtn1" style="text-align: right;">
+            <input ng-click="reload()" onClick="hideDiv('SaveSuccess')" type="button" value="确定" class="btn">
+        </div>
+    </div>
+</div>
+<!--保存成功end-->

@@ -24,6 +24,42 @@ myApp.controller("HomeController", function($rootScope,UrlService,$cookies,$stat
 
         });
     };
+    //修改密码 updateUserPassword
+    $rootScope.updatePasswordClick=function () {
+        popupDiv('updatePassword');
+        $rootScope.updatePasswordSure=function () {
+            if($("#oldPassword").val()==''||$("#oldPassword").val()==null||$("#oldPassword").val()==undefined){
+                $("#oldPassword").focus();
+            }else if($("#newPassword").val()==''||$("#newPassword").val()==null||$("#newPassword").val()==undefined){
+                $("#newPassword").focus();
+            }else if($("#newPasswordSure").val()==''||$("#newPasswordSure").val()==null||$("#newPasswordSure").val()==undefined){
+                $("#newPasswordSure").focus();
+            }else if($("#newPassword").val()!=$("#newPasswordSure").val()){
+                $("#newPasswordSure").focus();
+                alert('两次输入的密码不一致，请确认！')
+            }else {
+                var pa={
+                    newPassword:$("#newPasswordSure").val(),
+                    oldPassword:$("#oldPassword").val()
+                };
+                var par={params:pa};
+                AuthorizationService.updateUserPassword(pa,function(data){
+                    if(data != null && (data.errorCode == '000000' && data.errorMessage=="成功")){
+                        hideDiv('updatePassword');
+                        popupDiv('SaveSuccess');
+                        $('.SaveSuccess .Message').html(data.errorMessage);
+                    }else{
+                        hideDiv('updatePassword');
+                        popupDiv('SaveSuccess');
+                        $('.SaveSuccess .Message').html(data.errorMessage);
+                    }
+                }, function(err){
+
+                });
+            }
+        }
+    };
+
     $scope.$on('home_change', function(event,data) {
         $scope.curFooter = data;
     });

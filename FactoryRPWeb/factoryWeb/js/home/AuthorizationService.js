@@ -87,35 +87,22 @@ myApp.factory('AuthorizationService', function($resource,$state, $log, $cookies,
                 failFunc(err);
             }
         });
-    }
+    };
     /*新菜单权限 end*/
-    /*新菜单权限 start*/
-//    var _getMenuNewsPerssions = function(id,successFunc, failFunc){
-//        var Query = $resource(UrlService.getUrl('authorizationNew') + 'employee/15982498650');
-//
-//        return Query.get({}, function(data){
-//            if(data.obj.permissions != null && data.status == '0'){
-////                console.log(data);
-//                menuPerssionss.length = 0;
-//                data.obj.permissions.forEach(function(item){
-//                    menuPerssionss.push(item);
-//                });
-//            }else{
-////                    alert(data.message);
-////                popupDiv('SaveSuccess');
-////                $(".Message").html(data.message);
-//                $state.go("login");
-//            }
-//            if(successFunc){
-//                successFunc(data);
-//            }
-//        }, function(err){
-//            if(failFunc){
-//                failFunc(err);
-//            }
-//        });
-//    }
-    /*新菜单权限 end*/
+    /*修改密码 start*/
+    var _updateUserPassword = function(params,successFunc, failFunc){
+        var updateUserPassword = $resource(UrlService.getUrl('authorizationNew') + 'updateCurrentUserPassword');
+        updateUserPassword.get(params,  function (data) {
+            if (successFunc) {
+                successFunc(data);
+            }
+        }, function (err) {
+            if (failFunc) {
+                failFunc(err);
+            }
+        });
+    };
+    /*修改密码 end*/
     /*新分组权限 start*/
     var _getGroupNewPerssions = function(successFunc, failFunc){
         var Query = $resource(UrlService.getUrl('authorizationNew') + 'permission');
@@ -276,6 +263,7 @@ myApp.factory('AuthorizationService', function($resource,$state, $log, $cookies,
         doLoginNew:_doLoginNew,
         isLogined:_isLogined,
         doLogout:_doLogout,
+        updateUserPassword:_updateUserPassword,
         getButtonPerssions:_getButtonPerssions,
         getMenuPerssions:_getMenuPerssions,
         getGroupPerssions:_getGroupPerssions,
