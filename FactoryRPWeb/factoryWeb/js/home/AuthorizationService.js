@@ -48,25 +48,18 @@ myApp.factory('AuthorizationService', function($resource,$state, $log, $cookies,
     };
     /*登录 新 end*/
     /*登出 start*/
-    var _doLogout = function(successFunc, failFunc){
-        var Query = $resource(UrlService.getUrl('authorizationNew') + 'logout');
-
-        return Query.get({}, function(data){
-            if(data != null && data.status == '0' && data.code == 'LOGOUT_SUCESS'){
-                userNick = null;
-                $cookies.remove('JSESSIONID');
-            }else{
-//                console.log(data);
-            }
-            if(successFunc){
+    var _doLogout = function(params,successFunc, failFunc){
+        var doLogout = $resource(UrlService.getUrl('authorizationNew') + 'loginOut');
+        doLogout.get(params,  function (data) {
+            if (successFunc) {
                 successFunc(data);
             }
-        }, function(err){
-            if(failFunc){
+        }, function (err) {
+            if (failFunc) {
                 failFunc(err);
             }
         });
-    }
+    };
     /*登出 end*/
 
     /*新菜单权限 start*/

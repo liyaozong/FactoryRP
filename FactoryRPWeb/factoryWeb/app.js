@@ -87,7 +87,7 @@ var myApp = angular.module('myApp', [
 
 
     })
-.run(['$rootScope', '$window', '$location', '$log','$injector','locals','$cookies','$state', function ($rootScope, $window, $location, $log, $injector,locals,$cookies,$state) {
+.run(['$rootScope', '$window', '$location', '$log','$injector','locals','$cookies','$state', function ($rootScope, $window, $location, $log, $injector,locals,$cookies,$state,AuthorizationService) {
 
         $rootScope.$on('$stateNotFound',
             function(event, unfoundState, fromState, fromParams){
@@ -213,6 +213,25 @@ var myApp = angular.module('myApp', [
                 // a 'transition prevented' error
 
             });
+
+    //登出
+    $rootScope.onLogoutNew=function () {
+        AuthorizationService.doLogout({},function(data){
+            if(data != null && (data.errorCode == '000000' && data.errorMessage=="成功")){
+                $cookies.remove('username');
+                $cookies.remove('token');
+                $cookies.remove('corporateIdentify');
+                $state.go('login');
+            }else{
+                $cookies.remove('username');
+                $cookies.remove('token');
+                $cookies.remove('corporateIdentify');
+                $state.go('login');
+            }
+        }, function(err){
+
+        });
+    };
 
 }])
 .config(function ($stateProvider, $urlRouterProvider) {

@@ -2,8 +2,28 @@
  * Created by SHYL on 2016/6/13.
  */
 myApp.controller("HomeController", function($rootScope,UrlService,$cookies,$state, $scope, $resource, $timeout, $http,$location,$log,AuthorizationService,departmentManageService,userManagementService,$window,$timeout) {
+    //首页显示用户名
+    $rootScope.username=$cookies.get('username');
+    $("body").removeAttr('id');
+    $("body").css('background','#fff');
+    //登出
+    $rootScope.onLogoutNew=function () {
+        AuthorizationService.doLogout({},function(data){
+            if(data != null && (data.errorCode == '000000' && data.errorMessage=="成功")){
+                $cookies.remove('username');
+                $cookies.remove('token');
+                $cookies.remove('corporateIdentify');
+                $state.go('login');
+            }else{
+                $cookies.remove('username');
+                $cookies.remove('token');
+                $cookies.remove('corporateIdentify');
+                $state.go('login');
+            }
+        }, function(err){
 
-
+        });
+    };
     $scope.$on('home_change', function(event,data) {
         $scope.curFooter = data;
     });

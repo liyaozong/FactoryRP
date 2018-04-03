@@ -3,6 +3,8 @@
  */
 factoryParameterSettingApp.controller('InternalRepairController',function ($scope,UrlService,$http,$filter,$cookies,$resource, $location, $state, factoryParameterSettingService,departmentManageService) {
     $scope.WebURL=UrlService.getUrl('factoryServe');
+    $("body").removeAttr('id');
+    $("body").css('background','#fff');
     if($location.path()=='/main/deviceManage'){
         $("#menuLeft .leftmenu .deviceManage .menuson").css('display','block');
         $("#menuLeft .leftmenu .deviceManage").removeClass('hide');
