@@ -166,7 +166,7 @@ public class MaintainPlanServiceImpl implements MaintainPlanService{
     }
 
     @Override
-    public Pagination<SimpleMaintainPlanVo> findSimpleListByPage(MaintainPlanListForAppReq param, Long corporateIdentify) {
+    public Pagination<SimpleMaintainPlanVo> findSimpleListByPage(MaintainPlanListForAppReq param, Long corporateIdentify,AuthUser user) {
         Integer currentPage = param.getCurrentPage();
         Integer itemsPerPage = param.getItemsPerPage();
         if(null==currentPage){
@@ -200,6 +200,7 @@ public class MaintainPlanServiceImpl implements MaintainPlanService{
                     cons.add(criteriaBuilder.equal(root.get("repairGroupId").as(Long.class),param.getRepairGroupId()));
                 }
                 cons.add(criteriaBuilder.equal(root.get("corporateIdentify").as(Long.class),corporateIdentify));
+                cons.add(criteriaBuilder.equal(root.get("planManagerId").as(Long.class),user.getUserId()));
                 criteriaQuery.orderBy(criteriaBuilder.desc(root.get("createTime")));
                 Predicate[] ps = new Predicate[cons.size()];
                 ps = cons.toArray(ps);

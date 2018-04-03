@@ -65,7 +65,8 @@ public class MaintainPlanController extends BaseController{
     @ApiOperation(value = "app端保养计划分页查询列表--MOBILE",notes = "app端保养计划分页查询列表--MOBILE",httpMethod = "POST")
     public ApiResponse<Pagination<SimpleMaintainPlanVo>> ListForApp(@RequestBody MaintainPlanListForAppReq param, HttpServletRequest request){
         Long corporateIdentify =userAuthService.getCurrentUserCorporateIdentify(request);
-        return apiResponse(maintainPlanService.findSimpleListByPage(param,corporateIdentify));
+        AuthUser user = userAuthService.getCurrentUser(request);
+        return apiResponse(maintainPlanService.findSimpleListByPage(param,corporateIdentify,user));
     }
 
     @RequestMapping("getCount")

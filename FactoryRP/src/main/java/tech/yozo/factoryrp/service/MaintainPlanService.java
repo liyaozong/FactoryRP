@@ -40,7 +40,7 @@ public interface MaintainPlanService {
      * @param corporateIdentify
      * @return
      */
-    public Pagination<SimpleMaintainPlanVo> findSimpleListByPage(MaintainPlanListForAppReq param,Long corporateIdentify);
+    public Pagination<SimpleMaintainPlanVo> findSimpleListByPage(MaintainPlanListForAppReq param,Long corporateIdentify,AuthUser user);
 
     /**
      * 根据主键查询
