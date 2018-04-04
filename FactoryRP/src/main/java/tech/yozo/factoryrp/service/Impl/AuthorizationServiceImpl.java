@@ -25,6 +25,7 @@ import tech.yozo.factoryrp.vo.resp.user.UserRoleResp;
 import javax.annotation.Resource;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -468,7 +469,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 
                 //过滤掉在以角色ID为键的Map种存在的角色id
                 //menuIdList = menuIdList.stream().filter(r1 -> CheckParam.isNull(menuRoleMap.get(r1))).collect(Collectors.toList());
-                menuIdList = menuIdList.stream().filter(r1 -> existedMenuIdList.contains(r1)).collect(Collectors.toList());
+                menuIdList = menuIdList.stream().filter(r1 -> !existedMenuIdList.contains(r1)).collect(Collectors.toList());
 
             }
         }
@@ -502,6 +503,8 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 
         return menuRoleResp;
     }
+
+
 
     /**
      * 新增菜单
