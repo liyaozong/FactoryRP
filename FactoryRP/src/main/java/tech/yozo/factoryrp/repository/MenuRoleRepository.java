@@ -54,7 +54,7 @@ public interface MenuRoleRepository extends BaseRepository<MenuRole,Long>{
      * @return
      */
     @Query("select m from MenuRole m where m.roleId = :roleId and m.corporateIdentify = :corporateIdentify and m.menuId in :menuIdList")
-    List<MenuRole> findByRoleIdAndCorporateIdentifyAndRoleIdIn(@Param("roleId") Long roleId, @Param("corporateIdentify")Long corporateIdentify, @Param("menuIdList")List<Long> menuIdList);
+    List<MenuRole> findByRoleIdAndCorporateIdentifyAndMenuIdIn(@Param("roleId") Long roleId, @Param("corporateIdentify")Long corporateIdentify, @Param("menuIdList")List<Long> menuIdList);
 
 
 

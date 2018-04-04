@@ -132,7 +132,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
      */
     public void deleteMenuRoleByRoleId(MenuRoleDeleteReq menuRoleDeleteReq,Long corporateIdentify){
 
-        List<MenuRole> menuRoleList = menuRoleRepository.findByRoleIdAndCorporateIdentifyAndRoleIdIn(menuRoleDeleteReq.getRoleId(),
+        List<MenuRole> menuRoleList = menuRoleRepository.findByRoleIdAndCorporateIdentifyAndMenuIdIn(menuRoleDeleteReq.getRoleId(),
                 corporateIdentify, menuRoleDeleteReq.getMenuList());
 
         if(!CheckParam.isNull(menuRoleList) && !menuRoleList.isEmpty()){
@@ -452,19 +452,23 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 
 
         if(!CheckParam.isNull(menuIdList) && !menuIdList.isEmpty()){
+
+
             /**
-             * 此处查询出来的roleId必定全部都是相同的 排除重复的关系
+             * 查询出具备这种角色ID的菜单，此处查询出来的roleId必定全部都是相同的 排除重复的关系
              */
-            List<MenuRole> menuRoleList = menuRoleRepository.findByRoleIdAndCorporateIdentifyAndRoleIdIn(menuRoleReq.getRoleId(),
+            List<MenuRole> menuRoleList = menuRoleRepository.findByRoleIdAndCorporateIdentifyAndMenuIdIn(menuRoleReq.getRoleId(),
                     corporateIdentify, menuIdList);
 
             if(null != menuRoleList && !menuRoleList.isEmpty()){
 
+                List<Long> existedMenuIdList = menuRoleList.stream().map(MenuRole::getMenuId).collect(Collectors.toList());
                 //形成以菜单id为键的Map
-                Map<Long, MenuRole> menuRoleMap = menuRoleList.stream().collect(Collectors.toMap(MenuRole::getRoleId, Function.identity()));
+                //Map<Long, MenuRole> menuRoleMap = menuRoleList.stream().collect(Collectors.toMap(MenuRole::getRoleId, Function.identity()));
 
                 //过滤掉在以角色ID为键的Map种存在的角色id
-                menuIdList = menuIdList.stream().filter(r1 -> CheckParam.isNull(menuRoleMap.get(r1))).collect(Collectors.toList());
+                //menuIdList = menuIdList.stream().filter(r1 -> CheckParam.isNull(menuRoleMap.get(r1))).collect(Collectors.toList());
+                menuIdList = menuIdList.stream().filter(r1 -> existedMenuIdList.contains(r1)).collect(Collectors.toList());
 
             }
         }
