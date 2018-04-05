@@ -38,4 +38,10 @@ public interface TroubleRecordRepository extends BaseRepository<TroubleRecord,Lo
                     "left join device_parameter_dictionary dp on r.repair_level = dp.type and dp.code = 'device_repair_level' " +
                     "where t.device_id = ?1")
     public Page<Object[]> getByPage(Long deveiceId, Pageable pageable);
+
+    @Query(value = "select (select count(1) from device_info) as countDevice,(select count(1) from (select id from trouble_record group by device_id) a) as troubleCount,(select count(1) from (select id,status from trouble_record group by device_id having status=2) b) as repairCount",nativeQuery = true)
+    public Object[] getTroubleCount();
+
+    @Query(value = "select distinct di.name,tr.status from trouble_record tr left join device_info di on di.id = tr.device_id where tr.status <> 4 and tr.status <> 5 limit 20;", nativeQuery = true)
+    public List<Object[]> getCountList();
 }

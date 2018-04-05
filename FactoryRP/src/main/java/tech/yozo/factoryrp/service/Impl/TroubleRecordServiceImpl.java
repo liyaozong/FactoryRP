@@ -30,6 +30,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import tech.yozo.factoryrp.vo.resp.IndexSimpleTroubleRecord;
+import tech.yozo.factoryrp.vo.resp.IndexTroubleRecordCountVo;
 import tech.yozo.factoryrp.vo.resp.auth.AuthUser;
 import tech.yozo.factoryrp.vo.resp.device.trouble.*;
 import tech.yozo.factoryrp.vo.resp.process.DeviceProcessDetailWarpResp;
@@ -1109,5 +1111,29 @@ public class TroubleRecordServiceImpl implements TroubleRecordService {
             });
         }
         return res;
+    }
+
+    @Override
+    public IndexTroubleRecordCountVo getIndexTroubleCount() {
+        Object[] rs = troubleRecordRepository.getTroubleCount();
+        IndexTroubleRecordCountVo vo = new IndexTroubleRecordCountVo();
+        if (null !=rs && rs.length>0){
+            Object[] r1 = (Object[]) rs[0];
+            vo.setCountDevice(Integer.parseInt(String.valueOf(r1[0])));
+            vo.setCountTrouble(Integer.parseInt(String.valueOf(r1[1])));
+            vo.setCountRepairing(Integer.parseInt(String.valueOf(r1[2])));
+        }
+        List<Object[]> list = troubleRecordRepository.getCountList();
+        List<IndexSimpleTroubleRecord> li = new ArrayList<>();
+        vo.setTroubleRecords(li);
+        if (null != list && list.size()>0){
+            list.stream().forEach(objects -> {
+                IndexSimpleTroubleRecord v = new IndexSimpleTroubleRecord();
+                v.setDeviceName(String.valueOf(objects[0]));
+                v.setStatus(TroubleStatusEnum.getByCode(Integer.parseInt(String.valueOf(objects[1]))).getName());
+                li.add(v);
+            });
+        }
+        return vo;
     }
 }

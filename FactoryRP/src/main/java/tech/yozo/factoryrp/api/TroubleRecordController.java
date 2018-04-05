@@ -15,6 +15,7 @@ import tech.yozo.factoryrp.vo.req.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import tech.yozo.factoryrp.vo.resp.IndexTroubleRecordCountVo;
 import tech.yozo.factoryrp.vo.resp.auth.AuthUser;
 import tech.yozo.factoryrp.vo.resp.device.trouble.*;
 import tech.yozo.factoryrp.vo.resp.role.RoleResp;
@@ -271,5 +272,11 @@ public class TroubleRecordController extends BaseController{
     @ApiOperation(value = "设备对应的维修记录--WEB",notes = "设备对应的维修记录--WEB",httpMethod = "POST")
     public ApiResponse<Pagination<SimpleRepairRecordVo>> repairRecoreList(@RequestBody TroubleListReq param){
         return apiResponse(troubleRecordService.findRepairRecordByPage(param));
+    }
+
+    @RequestMapping("IndexTroubleCount")
+    @ApiOperation(value = "首页故障设备统计--WEB",notes = "首页故障设备统计--WEB",httpMethod = "POST")
+    public ApiResponse<IndexTroubleRecordCountVo> indexTroubleCount(){
+        return apiResponse(troubleRecordService.getIndexTroubleCount());
     }
 }

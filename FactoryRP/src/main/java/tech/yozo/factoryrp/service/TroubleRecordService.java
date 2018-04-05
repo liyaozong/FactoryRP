@@ -2,6 +2,7 @@ package tech.yozo.factoryrp.service;
 
 import tech.yozo.factoryrp.page.Pagination;
 import tech.yozo.factoryrp.vo.req.*;
+import tech.yozo.factoryrp.vo.resp.IndexTroubleRecordCountVo;
 import tech.yozo.factoryrp.vo.resp.auth.AuthUser;
 import tech.yozo.factoryrp.vo.resp.device.trouble.*;
 
@@ -125,4 +126,10 @@ public interface TroubleRecordService {
      * @return
      */
     public Pagination<SimpleRepairRecordVo> findRepairRecordByPage(TroubleListReq param);
+
+    /**
+     * 首页故障统计
+     * @return
+     */
+    public IndexTroubleRecordCountVo getIndexTroubleCount();
 }
