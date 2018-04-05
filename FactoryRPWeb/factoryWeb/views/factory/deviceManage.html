@@ -179,11 +179,11 @@
         <div id="tabMenu">
                 <ul>
                  <li class="curent">故障报修</li>
-                 <li>维修计划</li>
+            <!--     <li>维修计划</li>-->
                  <li>润滑计划</li>
                  <li>维修记录</li>
                  <li>保养记录</li>
-                 <li>配件更换记录</li>
+            <!--     <li>配件更换记录</li>-->
                  <li>关联备件</li>
                  <li>关联文档</li>
                  <li>设备图片</li>
@@ -252,9 +252,9 @@
                     </tfoot>
                 </table>
             </div>
-            <div class="tableListDiv hide">
-                        <p>维修计划</p>
-                    </div>
+            <!--<div class="tableListDiv hide">-->
+                <!--        <p>维修计划</p>-->
+        <!--    </div>-->
             <div style="max-height: 400px;overflow: auto;" class="tableListDiv hide">
                 <table>
                     <thead>
@@ -321,15 +321,113 @@
                     </tfoot>
                 </table>
             </div>
-            <div class="tableListDiv hide">
-                        <p>维修记录</p>
-                    </div>
-            <div class="tableListDiv hide">
-                        <p>保养记录</p>
-                    </div>
-            <div class="tableListDiv hide">
-                        <p>配件更换记录</p>
-                    </div>
+            <div style="max-height: 400px;overflow: auto;" class="tableListDiv hide">
+                <table>
+                    <thead>
+                    <tr>
+                        <th style="text-align: left" colspan="17">
+                            <a ng-click="addRepairRecordList()" href="javascript:void(0)" class="smallButton">添加记录</a>
+                            <a ng-click="deleteRepairRecordList()" href="javascript:void(0)" class="smallButton">删除记录</a>
+                            <a ng-click="importTroubleRecord()" href="javascript:void(0)" class="smallButton">导出EXCEL</a>
+                        </th>
+                    </tr>
+                    <tr>
+                        <th style="min-width:50px;">全选<input style="vertical-align: middle;margin-left: 5px" type="checkbox" value="1" onclick="selAll2(this)" id="allSelected"/></th>
+                        <!--<th>设备编号</th>-->
+                        <th>维修单号</th>
+                        <th>申请人</th>
+                        <th>送修时间</th>
+                        <th>维修完成时间</th>
+                        <th>维修级别</th>
+                        <th>维修班组</th>
+                        <th>维修人员</th>
+                        <th>故障描述</th>
+                        <th>工作描述</th>
+                        <th>维修费用</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr data-appid = "{{repairRecordDetail.id}}" ng-click="chooseMaintenanceRecord($event,repairRecordDetail)" ng-class="{'':dataChooseMaintenance=='','bg-gray':repairRecordDetail.id == dataChooseMaintenance}" ng-repeat="repairRecordDetail in repairRecordListsAll">
+                        <td class="firstTd">{{$index+1}}<input style="margin-left: 5px;vertical-align: middle;" type="checkbox" name="maintenanceRecord"  value="{{repairRecordDetail.id}}"/></td>
+                        <td>{{repairRecordDetail.orderNo||'--'}}</td>
+                        <td>{{repairRecordDetail.createUser||'--'}}</td>
+                        <td>{{repairRecordDetail.createTime||'--'|date:'yyyy-MM-dd'}}</td>
+                        <td>{{repairRecordDetail.endTime||'--'|date:'yyyy-MM-dd'}}</td>
+                        <td>{{repairRecordDetail.repairLevel||'--'}}</td>
+                        <td>{{repairRecordDetail.repairGroupName||'--'}}</td>
+                        <td>{{repairRecordDetail.repairUserName||'--'}}</td>
+                        <td>{{repairRecordDetail.remark||'--'}}</td>
+                        <td>{{repairRecordDetail.workRemark||'--'}}</td>
+                        <td>{{repairRecordDetail.amount||'--'}}</td>
+                        <td>
+                            <a href="javascript:void(0)" class="resBtn editBtn" ng-click="editMaintenanceRecord(repairRecordDetail)">
+                                <img src="image/comm/resBtnEdit.png" alt="编辑"/>
+                                <b class="title">详细</b>
+                            </a>
+                        </td>
+                    </tr>
+                    </tbody>
+                    <tfoot>
+                    <tr>
+                        <td style="text-align: center" colspan="12"><tm-pagination conf="paginationConf5"></tm-pagination></td>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+            <div style="max-height: 400px;overflow: auto;" class="tableListDiv hide">
+                <table>
+                    <thead>
+                    <tr>
+                        <th style="text-align: left" colspan="17">
+                            <a ng-click="addRepairRecordList()" href="javascript:void(0)" class="smallButton">添加记录</a>
+                            <a ng-click="deleteRepairRecordList()" href="javascript:void(0)" class="smallButton">删除记录</a>
+                            <a ng-click="importTroubleRecord()" href="javascript:void(0)" class="smallButton">导出EXCEL</a>
+                        </th>
+                    </tr>
+                    <tr>
+                        <th style="min-width:50px;">全选<input style="vertical-align: middle;margin-left: 5px" type="checkbox" value="1" onclick="selAll2(this)" id="allSelected"/></th>
+                        <!--<th>设备编号</th>-->
+                        <th>保养单号</th>
+                        <th>保养完成时间</th>
+                        <th>保养级别</th>
+                        <th>保养班组</th>
+                        <th>保养负责人</th>
+                        <th>保养要求</th>
+                        <th>工作描述</th>
+                        <th>保养费用</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr data-appid = "{{maintainRecordDetail.id}}" ng-click="chooseMaintenanceRecord($event,maintainRecordDetail)" ng-class="{'':dataChooseMaintenance=='','bg-gray':maintainRecordDetail.id == dataChooseMaintenance}" ng-repeat="maintainRecordDetail in maintainRecordListsAll">
+                        <td class="firstTd">{{$index+1}}<input style="margin-left: 5px;vertical-align: middle;" type="checkbox" name="maintenanceRecord"  value="{{repairRecordDetail.id}}"/></td>
+                        <td>{{maintainRecordDetail.maintainNo||'--'}}</td>
+                        <td>{{maintainRecordDetail.endTime||'--'|date:'yyyy-MM-dd'}}</td>
+                        <td>{{maintainRecordDetail.maintainLevel||'--'}}</td>
+                        <td>{{maintainRecordDetail.repairGroupName||'--'}}</td>
+                        <td>{{maintainRecordDetail.planManagerName||'--'}}</td>
+                        <td>{{maintainRecordDetail.planRemark||'--'}}</td>
+                        <td>{{maintainRecordDetail.maintainContent||'--'}}</td>
+                        <td>{{maintainRecordDetail.maintainAmount||'--'}}</td>
+                        <td>
+                            <a href="javascript:void(0)" class="resBtn editBtn" ng-click="editMaintenanceRecord(maintainRecordDetail)">
+                                <img src="image/comm/resBtnEdit.png" alt="编辑"/>
+                                <b class="title">详细</b>
+                            </a>
+                        </td>
+                    </tr>
+                    </tbody>
+                    <tfoot>
+                    <tr>
+                        <td style="text-align: center" colspan="10"><tm-pagination conf="paginationConf6"></tm-pagination></td>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+            <!--<div class="tableListDiv hide">-->
+                <!--        <p>配件更换记录</p>-->
+                <!--    </div>-->
             <div style="max-height: 400px;overflow: auto;" class="tableListDiv hide"><table>
                     <thead>
                     <tr>

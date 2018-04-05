@@ -203,6 +203,18 @@ factoryParameterSettingApp.factory('factoryParameterSettingService', function($r
         });
     };
     /*批量删除故障信息 end*/
+    /*首页展示各类工单数量 start*/
+    var _queryCountWorkOrderList = function(Param,successFunc){
+        var queryCountWorkOrderList = $resource(UrlService.getUrl('troubleRecordServe') + 'troubleRecord/countWorkOrderList');
+        queryCountWorkOrderList.save(Param,function (data) {
+            if (successFunc) {
+                successFunc(data);
+            }
+        }, function (err) {
+
+        });
+    };
+    /*首页展示各类工单数量 end*/
     /*设备对应的故障列表 start*/
     var _queryTroubleRecordLists = function(Param,successFunc){
         var queryTroubleRecordLists = $resource(UrlService.getUrl('troubleRecordServe') + 'troubleRecord/list');
@@ -432,6 +444,30 @@ factoryParameterSettingApp.factory('factoryParameterSettingService', function($r
         });
     };
     /*查询备件类型 end*/
+    /*设备对应的维修记录 start*/
+    var _repairRecordList= function(Param,successFunc){
+        var repairRecordList = $resource(UrlService.getUrl('troubleRecordServe') + 'troubleRecord/repairRecordlist');
+        repairRecordList.save(Param,function (data) {
+            if (successFunc) {
+                successFunc(data);
+            }
+        }, function (err) {
+
+        });
+    };
+    /*设备对应的维修记录 end*/
+    /*设备对应的保养记录 start*/
+    var _maintainRecordList = function(Param,successFunc){
+        var maintainRecordList = $resource(UrlService.getUrl('troubleRecordServe') + 'maintainPlan/maintainRecordlist');
+        maintainRecordList.save(Param,function (data) {
+            if (successFunc) {
+                successFunc(data);
+            }
+        }, function (err) {
+
+        });
+    };
+    /*设备对应的保养记录 end*/
     return {
         saveContactCompany:_saveContactCompany,
         deleteContactCompany:_deleteContactCompany,
@@ -465,6 +501,8 @@ factoryParameterSettingApp.factory('factoryParameterSettingService', function($r
         findRealSparts:_findRealSparts,
         saveSpareRel:_saveSpareRel,
         saveDeviceRel:_saveDeviceRel,
+        repairRecordList:_repairRecordList,
+        maintainRecordList:_maintainRecordList,
         queryAllDeviceSparesType:_queryAllDeviceSparesType,
         batchDeleteDeviceSpareRel:_batchDeleteDeviceSpareRel,
         queryOrder: function(queryParam, successFunc) {

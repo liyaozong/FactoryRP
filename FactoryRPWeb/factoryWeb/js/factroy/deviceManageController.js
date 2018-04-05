@@ -38,6 +38,14 @@ factoryParameterSettingApp.controller('deviceManageController',function ($scope,
         currentPage: 1,
         itemsPerPage: 5
     };
+    $scope.paginationConf5 = {
+        currentPage: 1,
+        itemsPerPage: 5
+    };
+    $scope.paginationConf6 = {
+        currentPage: 1,
+        itemsPerPage: 5
+    };
     /*查询所有备件信息 queryAllSpareParts start*/
     $scope.queryAllSparePart=function(){
         $scope.queryAllSparePartsss = factoryParameterSettingService.queryAllSpareParts({
@@ -95,6 +103,48 @@ factoryParameterSettingApp.controller('deviceManageController',function ($scope,
     };
     $scope.queryTroubleRecordList($scope.dataAudit);
     /*查询设备故障信息列表 公用方法 end*/
+    /*查询设备维修记录 公用方法 start*/
+    $scope.repairRecordLists=function(){
+        $scope.repairRecordListss = factoryParameterSettingService.repairRecordList({
+            deviceId:$scope.dataAudit,//设备ID
+            currentPage: $scope.paginationConf5.currentPage,
+            itemsPerPage: $scope.paginationConf5.itemsPerPage
+        }, function (response) {
+            if(response.errorCode=='000000'&&response.data.totalCount>=1){
+                $scope.paginationConf5.totalItems = response.data.totalCount;
+                $scope.repairRecordListsAll=response.data.list;
+                console.log($scope.repairRecordListsAll)
+            }else{
+                $scope.paginationConf5.totalItems = 0;
+                $scope.repairRecordListsAll=[];
+            }
+        }, function (err) {
+            console.log(err);
+        });
+    };
+    $scope.repairRecordLists($scope.dataAudit);
+    /*查询设备维修记录 公用方法 end*/
+    /*查询设备保养记录 公用方法 start*/
+    $scope.maintainRecordLists=function(){
+        $scope.maintainRecordListss = factoryParameterSettingService.maintainRecordList({
+            deviceId:$scope.dataAudit,//设备ID
+            currentPage: $scope.paginationConf6.currentPage,
+            itemsPerPage: $scope.paginationConf6.itemsPerPage
+        }, function (response) {
+            if(response.errorCode=='000000'&&response.data.totalCount>=1){
+                $scope.paginationConf6.totalItems = response.data.totalCount;
+                $scope.maintainRecordListsAll=response.data.list;
+                console.log($scope.maintainRecordListsAll)
+            }else{
+                $scope.paginationConf6.totalItems = 0;
+                $scope.maintainRecordListsAll=[];
+            }
+        }, function (err) {
+            console.log(err);
+        });
+    };
+    $scope.maintainRecordLists($scope.dataAudit);
+    /*查询设备保养记录 公用方法 end*/
     /*查询保养计划列表 公用方法 start*/
     $scope.queryMaintenanceRecordList=function(){
         $scope.queryMaintenanceRecordListss = factoryParameterSettingService.queryMaintenanceRecordLists({
@@ -723,10 +773,11 @@ factoryParameterSettingApp.controller('deviceManageController',function ($scope,
         console.log(dataId);
         localStorage.setItem('dataAudit',dataId);
         $scope.dataAudit = localStorage.getItem('dataAudit');
-        $scope.queryTroubleRecordList($scope.dataAudit);
-        $scope.queryMaintenanceRecordList($scope.dataAudit);
-        $scope.queryRealSparts($scope.dataAudit);
-
+        $scope.queryTroubleRecordList($scope.dataAudit);//设备故障信息列表
+        $scope.queryMaintenanceRecordList($scope.dataAudit);//查询保养计划列表
+        $scope.repairRecordLists($scope.dataAudit);//设备维修记录
+        $scope.maintainRecordLists($scope.dataAudit);//设备保养记录
+        $scope.queryRealSparts($scope.dataAudit);//设备关联备件列表
     };
     /*查询设备对应的故障列表 end*/
     /*选择设备 start*/
@@ -1658,6 +1709,8 @@ factoryParameterSettingApp.controller('deviceManageController',function ($scope,
         $scope.queryTroubleRecordList($scope.dataAudit);
         $scope.queryMaintenanceRecordList($scope.dataAudit);
         $scope.queryRealSparts($scope.dataAudit);
+        $scope.repairRecordLists($scope.dataAudit);
+        $scope.maintainRecordLists($scope.dataAudit);
         $scope.queryAllSpareParts();
     };
     $scope.$watch('paginationConf.currentPage + paginationConf.itemsPerPage', $scope.onQuery);
@@ -1665,4 +1718,6 @@ factoryParameterSettingApp.controller('deviceManageController',function ($scope,
     $scope.$watch('paginationConf2.currentPage + paginationConf2.itemsPerPage', $scope.queryMaintenanceRecordList);
     $scope.$watch('paginationConf3.currentPage + paginationConf3.itemsPerPage', $scope.queryRealSparts);
     $scope.$watch('paginationConf4.currentPage + paginationConf4.itemsPerPage', $scope.queryAllSpareParts);
+    $scope.$watch('paginationConf5.currentPage + paginationConf5.itemsPerPage', $scope.repairRecordLists);
+    $scope.$watch('paginationConf6.currentPage + paginationConf6.itemsPerPage', $scope.maintainRecordLists);
 });

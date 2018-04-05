@@ -333,7 +333,7 @@ textarea{
 
 }
 .home-title{
-    background-color: #7a7a7a;
+    background-color: #71b9fe;
     position: relative;
     max-width: 360px;
 }
@@ -359,7 +359,7 @@ textarea{
     top: 25px;
 }
 .home-table{
-    height: 200px;
+    height: 170px;
     width: 360px;
     border: 1px solid #7a7a7a;
     border-top: none;
