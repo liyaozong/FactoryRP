@@ -333,12 +333,13 @@ textarea{
 
 }
 .home-title{
-    background-color: #71b9fe;
+    background-color: #edf6fa;
     position: relative;
     max-width: 360px;
+    border: 1px solid #edf6fa;
 }
 .home-title p{
-    color:#fff;
+    color:#252323;
 }
 .home-title-name{
     max-width: 360px;
@@ -346,7 +347,7 @@ textarea{
     line-height: 50px;
     font-size: 20px;
     font-weight: bold;
-    color: white;
+    color: #252323;
     padding-left: 10px;
     box-sizing: border-box;
     text-align: left;
@@ -364,20 +365,20 @@ textarea{
 .home-table{
     height: 170px;
     width: 360px;
-    border: 1px solid #7a7a7a;
+    border: 1px solid #cae6f3;
     border-top: none;
     overflow: hidden;
     box-sizing: border-box;
     text-align: center;
 }
 .home-table span{
-    border: 1px solid #7a7a7a;
+    border: 1px solid #cae6f3;
     height: 34px;
     border-left: none;
     border-right: none;
 }
 .home-table span:first-child{
-    border-right: 1px solid #7a7a7a;
+    border-right: 1px solid #cae6f3;
 }
 .home-table span{
     display: inline-block;

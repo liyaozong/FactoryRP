@@ -468,6 +468,18 @@ factoryParameterSettingApp.factory('factoryParameterSettingService', function($r
         });
     };
     /*设备对应的保养记录 end*/
+    /*首页故障设备统计 start*/
+    var _indexTroubleCount= function(Param,successFunc){
+        var indexTroubleCount = $resource(UrlService.getUrl('troubleRecordServe') + 'troubleRecord/IndexTroubleCount');
+        indexTroubleCount.save(Param,function (data) {
+            if (successFunc) {
+                successFunc(data);
+            }
+        }, function (err) {
+
+        });
+    };
+    /*首页故障设备统计 end*/
     return {
         saveContactCompany:_saveContactCompany,
         deleteContactCompany:_deleteContactCompany,
@@ -505,6 +517,7 @@ factoryParameterSettingApp.factory('factoryParameterSettingService', function($r
         maintainRecordList:_maintainRecordList,
         queryAllDeviceSparesType:_queryAllDeviceSparesType,
         batchDeleteDeviceSpareRel:_batchDeleteDeviceSpareRel,
+        indexTroubleCount:_indexTroubleCount,
         queryOrder: function(queryParam, successFunc) {
             queryOrder(queryParam, successFunc);
 

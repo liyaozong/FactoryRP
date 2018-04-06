@@ -1,7 +1,7 @@
 /**
  * Created by SHYL on 2016/6/13.
  */
-myApp.controller("HomeController", function($rootScope,UrlService,$cookies,$state, $scope, $resource, $timeout, $http,$location,$log,AuthorizationService,departmentManageService,userManagementService,$window,$timeout) {
+myApp.controller("HomeController", function($rootScope,UrlService,$cookies,$state, $scope, $resource, $timeout, $http,$location,$log,AuthorizationService,departmentManageService,factoryParameterSettingService,userManagementService,$window,$timeout) {
     //首页显示用户名
     $rootScope.username=$cookies.get('username');
     $("body").removeAttr('id');
@@ -71,15 +71,30 @@ myApp.controller("HomeController", function($rootScope,UrlService,$cookies,$stat
             $scope.alertMsg ='';
         }, 1000);
     });
-
     $scope.list1=[];
     $scope.list2=[];
     $scope.list3=[];
-    for(var i=1;i<100;i++){
-        $scope.list1.push({
-            name:'故障名称'+i,
-            type:'故障状态'+i
+    /*首页故障设备统计 start*/
+    $scope.indexTroubleCount1=function () {
+        factoryParameterSettingService.indexTroubleCount({}, function(response){
+            if(response.data!=''&&response.data!=null&&response.data!=undefined&&response.errorCode=='000000'){
+                $scope.list1=response.data.troubleRecords;//滚动列表
+                console.log($scope.list1);
+                $scope.countDevice=response.data.countDevice;//设备总数
+                $scope.countRepairing=response.data.countRepairing;//正在维修的台数
+                $scope.countTrouble=response.data.countTrouble;//故障台数
+            }else{
+                console.log(response.errorMessage);
+            }
         });
+    };
+    $scope.indexTroubleCount1();
+    /*首页故障设备统计 end*/
+    for(var i=1;i<100;i++){
+        // $scope.list1.push({
+        //     name:'故障名称'+i,
+        //     type:'故障状态'+i
+        // });
         $scope.list2.push({
             name:'点巡检名称'+i,
             type:'巡检状态'+i
@@ -93,16 +108,14 @@ myApp.controller("HomeController", function($rootScope,UrlService,$cookies,$stat
     // $('.table-animation').animate({marginTop:"-34px"})
     function test1() {
         var timer1=$timeout(function () {
-            // console.log(k);
-            // k++;
+            $('.home-table div p').css('margin-top','0');
             $('.table-animation').animate({marginTop:"-34px"},function () {
                 var arr1=$scope.list1.shift();
-                // console.log(arr);
+                console.log(arr1);
                 $scope.list1.push(arr1);
-                // console.log($scope.list1)
+                console.log($scope.list1);
                 $timeout(function () {
                     test1();
-
                 },1000)
             });
         },1000)

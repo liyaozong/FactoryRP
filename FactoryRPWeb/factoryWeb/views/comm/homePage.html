@@ -86,14 +86,18 @@
         <div class="home-left" style="float: left;margin-bottom: 10px">
             <div class="home-title">
                 <div class="home-title-name">故障维修</div>
-                <p class="home-title-total">总共123台</p>
-                <p class="home-title-num">故障8台，正在维修7台</p>
+                <p class="home-title-total">
+                    总共{{countDevice||'0'}}台
+                </p>
+                <p class="home-title-num">
+                    故障{{countTrouble||'0'}}台，正在维修{{countRepairing||'0'}}台
+                </p>
             </div>
             <div class="home-table">
                 <div style="width: 100%">
                     <p style="font-size: 0;" ng-class="{'table-animation':$index==0}" ng-repeat="item in list1">
-                        <span ng-bind="item.name"></span>
-                        <span ng-bind="item.type"></span>
+                        <span ng-bind="item.deviceName"></span>
+                        <span ng-bind="item.status"></span>
                     </p>
                 </div>
             </div>
@@ -128,7 +132,7 @@
     <div style="width: 100%;padding-left: 370px;box-sizing: border-box;margin-top: -8px;">
         <h1 style="padding-left: 9px;box-sizing: border-box;font-size: 26px;height: 39px;line-height: 43px;">统计报表</h1>
         <div class="rightinfo mainContain" id="mainContain1">
-            <div style="padding: 20px 0;width: 100%;background: #e6e6e6;border-radius: 10px" class="queryDiv" >
+            <div style="padding: 20px 0;width: 100%;background: #edf6fa;border-radius: 10px" class="queryDiv" >
                 <ul>
                     <li>
                         <label for="name" >
@@ -155,22 +159,22 @@
                     </li>
                 </ul>
             </div>
-            <div style="padding: 20px 0;width: 100%;height:485px;background: #e6e6e6;border-radius: 10px;margin-top: 20px">
+            <div style="padding: 20px 0;width: 100%;min-height:485px;background: #edf6fa;border-radius: 10px;margin-top: 20px">
                 <h1 style="padding-left: 0;box-sizing: border-box;font-size: 32px;text-align: center;margin-bottom: 25px;">
                     电焊机&nbsp;&nbsp;&nbsp;&nbsp;设备编号：HS-DH-120
                 </h1>
 
                 <div style="text-align: center">
-                    <div style="width: 32%;display: inline-block;" id="container" class="maintj"></div>
-                    <div style="width: 32%;padding: 5px;box-sizing:border-box;display: inline-block;position: relative;height: 175px;background: white" id="container1" class="maintj">
+                    <div style="width: 32%;display: inline-block;min-width: 362px;margin-bottom: 20px;" id="container" class="maintj"></div>
+                    <div style="width: 32%;min-width: 362px;padding: 5px;margin-bottom: 20px;box-sizing:border-box;display: inline-block;position: relative;height: 175px;background: white" id="container1" class="maintj">
                         <!--<img src="../../images/img07.png" alt="">-->
                         <p style="position: absolute;left: 0;top: 155px;text-align: center;width: 100%;font-size: 14px">故障部位</p>
                     </div>
-                    <div style="width: 32%;display: inline-block;" id="container2" class="maintj"></div>
+                    <div style="width: 32%;display: inline-block;margin-bottom: 20px;min-width: 362px;" id="container2" class="maintj"></div>
                 </div>
-                <ul style="padding: 30px 40px;box-sizing: border-box;font-size: 0">
+                <ul style="padding: 10px 40px;box-sizing: border-box;font-size: 0">
                     <li style="display: inline-block;width: 50%;height: 30px;line-height: 30px;font-size: 16px">点检计划执行率：99%</li>
-                    <li style="display: inline-block;width: 50%;height: 30px;line-height: 30px;font-size: 16px">MTBF：6小时</li>
+                    <li style="display: inline-block;width: 50%;height: 30px;line-height: 30px;font-size: 16px">MTBF： 6小时</li>
                     <li style="display: inline-block;width: 50%;height: 30px;line-height: 30px;font-size: 16px">润滑计划执行率：90%</li>
                     <li style="display: inline-block;width: 50%;height: 30px;line-height: 30px;font-size: 16px">MTTR：24小时</li>
                     <li style="display: inline-block;width: 50%;height: 30px;line-height: 30px;font-size: 16px">检修计划执行率：92%</li>
