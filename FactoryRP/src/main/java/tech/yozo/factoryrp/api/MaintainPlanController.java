@@ -71,7 +71,7 @@ public class MaintainPlanController extends BaseController{
 
     @RequestMapping("getCount")
     @ApiOperation(value = "首页展示保养计划数量--Mobile",notes = "首页展示保养计划数量--Mobile",httpMethod = "POST")
-    public ApiResponse countWorkOrderList(HttpServletRequest request){
+    public ApiResponse<MaintainPlanCountVo> countWorkOrderList(HttpServletRequest request){
         Long corporateIdentify =userAuthService.getCurrentUserCorporateIdentify(request);
         AuthUser user = userAuthService.getCurrentUser(request);
         return apiResponse(maintainPlanService.getCount(corporateIdentify,user));
@@ -121,5 +121,11 @@ public class MaintainPlanController extends BaseController{
     @ApiOperation(value = "设备对应的保养记录--WEB",notes = "设备对应的保养记录--WEB",httpMethod = "POST")
     public ApiResponse<Pagination<SimpleMaintainRecordVo>> repairRecoreList(@RequestBody TroubleListReq param){
         return apiResponse(maintainPlanService.findSimpleRecordListByPage(param));
+    }
+
+    @RequestMapping("indexGetCount")
+    @ApiOperation(value = "web首页展示保养计划数量和列表--WEB",notes = "web首页展示保养计划数量和列表--WEB",httpMethod = "POST")
+    public ApiResponse<IndexMaintainPlanCountVo> indexListMaintainPlan(){
+        return apiResponse(maintainPlanService.getIndexPlanCount());
     }
 }

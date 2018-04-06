@@ -82,4 +82,10 @@ public interface MaintainPlanService {
      * @return
      */
     public Pagination<SimpleMaintainRecordVo> findSimpleRecordListByPage(TroubleListReq param);
+
+    /**
+     * 首页保养计划统计
+     * @return
+     */
+    public IndexMaintainPlanCountVo getIndexPlanCount();
 }

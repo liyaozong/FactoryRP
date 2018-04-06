@@ -346,7 +346,7 @@ public class MaintainPlanServiceImpl implements MaintainPlanService{
                 BussinessException biz = new BussinessException("10001","不是本人处理计划，无权限操作");
                 throw biz;
             }
-            maintainPlan.setPlanStatus(PlanStatusEnum.OTHER.getCode());
+            maintainPlan.setPlanStatus(PlanStatusEnum.OVER.getCode());
             maintainPlan.setUpdateTime(new Date());
             maintainPlan.setLastMaintainTime(new Date());
             String unit = maintainPlan.getCycleTimeUnit();
@@ -489,6 +489,31 @@ public class MaintainPlanServiceImpl implements MaintainPlanService{
             });
         }
         return res;
+    }
+
+    @Override
+    public IndexMaintainPlanCountVo getIndexPlanCount() {
+
+        Object[] rs = maintainRecordRepository.getMaintainCount();
+        IndexMaintainPlanCountVo vo = new IndexMaintainPlanCountVo();
+        if (null !=rs && rs.length>0){
+            Object[] r1 = (Object[]) rs[0];
+            vo.setTodayPlanNum(Integer.parseInt(String.valueOf(r1[0])));
+            vo.setExecutedPlanNum(Integer.parseInt(String.valueOf(r1[1])));
+            vo.setNotExecutedPlanNum(Integer.parseInt(String.valueOf(r1[2])));
+        }
+        List<Object[]> list = maintainRecordRepository.getCountList();
+        List<IndexSimpleMaintainPlanVo> li = new ArrayList<>();
+        vo.setPlans(li);
+        if (null != list && list.size()>0){
+            list.stream().forEach(objects -> {
+                IndexSimpleMaintainPlanVo v = new IndexSimpleMaintainPlanVo();
+                v.setDeviceName(String.valueOf(objects[0]));
+                v.setStatus(PlanStatusEnum.getByCode(Integer.parseInt(String.valueOf(objects[1]))).getName());
+                li.add(v);
+            });
+        }
+        return vo;
     }
 
     public static void main(String args[]){
