@@ -60,7 +60,6 @@ myApp.controller("HomeController", function($rootScope,UrlService,$cookies,$stat
             }
         }
     };
-
     $scope.$on('home_change', function(event,data) {
         $scope.curFooter = data;
     });
@@ -80,10 +79,17 @@ myApp.controller("HomeController", function($rootScope,UrlService,$cookies,$stat
         factoryParameterSettingService.indexTroubleCount({}, function(response){
             if(response.data!=''&&response.data!=null&&response.data!=undefined&&response.errorCode=='000000'){
                 $scope.list1=response.data.troubleRecords;//滚动列表
-                // console.log($scope.list1);
+                console.log($scope.list1);
                 $scope.countDevice=response.data.countDevice;//设备总数
                 $scope.countRepairing=response.data.countRepairing;//正在维修的台数
                 $scope.countTrouble=response.data.countTrouble;//故障台数
+                //超过5条滚动
+                if($scope.list1.length>5){
+                    test1();
+                    $("#troubleTable").css('height','170px');
+                }else{
+                    $("#troubleTable").css('height','auto');
+                }
             }else{
                 console.log(response.errorMessage);
             }
@@ -91,22 +97,39 @@ myApp.controller("HomeController", function($rootScope,UrlService,$cookies,$stat
     };
     $scope.indexTroubleCount1();
     /*首页故障设备统计 end*/
-    for(var i=1;i<100;i++){
-        // $scope.list1.push({
-        //     name:'故障名称'+i,
-        //     type:'故障状态'+i
-        // });
-        $scope.list2.push({
-            name:'点巡检名称'+i,
-            type:'巡检状态'+i
+    /*首页巡查计划 start*/
+    //超过5条滚动
+        if($scope.list2.length>5){
+            test2();
+            $("#patrolTable").css('height','170px');
+        }else{
+            $("#patrolTable").css('height','auto');
+        }
+    /*首页巡查计划 end*/
+    /*首页润滑计划统计 start*/
+    $scope.indexTroubleCount3=function () {
+        factoryParameterSettingService.indexMaintainPlan({}, function(response){
+            if(response.data!=''&&response.data!=null&&response.data!=undefined&&response.errorCode=='000000'){
+                $scope.list3=response.data.plans;//滚动列表
+                console.log($scope.list3);
+                $scope.todayPlanNum=response.data.todayPlanNum;// 今日计划数量
+                $scope.executedPlanNum=response.data.executedPlanNum;//已执行计划数量
+                $scope.notExecutedPlanNum=response.data.notExecutedPlanNum;//未执行计划数量
+                //超过5条滚动
+                if($scope.list3.length>5){
+                    test3();
+                    $("#maintainTable").css('height','170px');
+                }else{
+                    $("#maintainTable").css('height','auto');
+                }
+            }else{
+                console.log(response.errorMessage);
+            }
         });
-        $scope.list3.push({
-            name:'润滑计划名称'+i,
-            type:'润滑计划状态'+i
-        });
-    }
-
-    // $('.table-animation').animate({marginTop:"-34px"})
+    };
+    $scope.indexTroubleCount3();
+    /*首页润滑计划统计 end*/
+    /*滚动公用方法 start*/
     function test1() {
         var timer1=$timeout(function () {
             $('.home-table div p').css('margin-top','0');
@@ -121,7 +144,6 @@ myApp.controller("HomeController", function($rootScope,UrlService,$cookies,$stat
             });
         },1000)
     }
-    test1();
     function test2() {
         var timer2=$timeout(function () {
             $('.table-animation2').animate({marginTop:"-34px"},function () {
@@ -135,7 +157,6 @@ myApp.controller("HomeController", function($rootScope,UrlService,$cookies,$stat
             });
         },1000)
     }
-    test2();
     function test3() {
         var timer3=$timeout(function () {
             $('.table-animation3').animate({marginTop:"-34px"},function () {
@@ -149,10 +170,7 @@ myApp.controller("HomeController", function($rootScope,UrlService,$cookies,$stat
             });
         },1000)
     }
-    test3();
-
-
-
+    /*滚动公用方法 end*/
     //查询部门
     departmentManageService.queryOrder({
         name:$scope.depName,
