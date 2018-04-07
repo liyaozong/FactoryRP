@@ -55,6 +55,7 @@ var myApp = angular.module('myApp', [
         contactCompanyListPath:'/api/contactCompany/list',   //查询往来单位
         findByCodePath:'/api/deviceParameterDictionary/findByCode'  , //查询设备参数
         addDeviceProcessPath:'/api/deviceProcess/addDeviceProcess'  , //新增审核流程
+        deleteDeviceProcessPath:'/api/deviceProcess/deleteDeviceProcess'  , //删除审核流程
         queryAllDecviceProcessTypePath:'/api/deviceProcess/queryAllDecviceProcessType'  , //查询所有流程类型集合
         queryProcessDetailPath:'/api/deviceProcess/queryProcessDetail'  , //查询审核流程详细数据
         deviceProcessFindByPagePath:'/api/deviceProcess/findByPage',   //分页查询审核流程
@@ -86,7 +87,7 @@ var myApp = angular.module('myApp', [
 
 
     })
-    .run(['$rootScope', '$window', '$location', '$log','$injector','locals','$cookies','$state', function ($rootScope, $window, $location, $log, $injector,locals,$cookies,$state) {
+    .run(['$rootScope', '$window', '$location', '$log','$injector','locals','$cookies','$state', function ($rootScope, $window, $location, $log, $injector,locals,$cookies,$state,AuthorizationService) {
 
         $rootScope.$on('$stateNotFound',
             function(event, unfoundState, fromState, fromParams){
@@ -140,25 +141,42 @@ var myApp = angular.module('myApp', [
                     //         $state.go('main.'+AuthUserMenu[0].url)
                     //     }
                     // }
-                    AuthUserMenu.forEach(function (n,i) {
-                        n.twoMenu.forEach(function (v,k) {
-                            if(v.url==stateUrl){
+                    if(stateUrl=='home'){
+                        $rootScope.publicTwoMenu=[];
+                        // $rootScope.liMenu=AuthUserMenu[1].name;
+                        $rootScope.topMenuLi='home';
+                        AuthUserMenu.forEach(function (n,i) {
+                            if(n.url==stateUrl){
                                 flog=false;
-                                // console.log(n,v,'---');
-                                $rootScope.publicTwoMenu=n.twoMenu;
-                                $rootScope.liMenu=n.name;
-                                $rootScope.topMenuLi=n.twoMenu[0].url;
-                                // console.log($rootScope.topMenuLi,'---');
-                                crumbNavArr=[{'name':n.name},{'name':v.name}];
+                                crumbNavArr.push({'name':n.name});
                             }
+
                         });
-                    });
-                    if(flog){
-                        $state.go('main.'+AuthUserMenu[0].twoMenu[0].url)
+                        if(flog){
+                            $state.go('main.'+AuthUserMenu[0].url)
+                        }
+                    }else {
+                        AuthUserMenu.forEach(function (n, i) {
+                            n.twoMenu.forEach(function (v, k) {
+                                if (v.url == stateUrl) {
+                                    flog = false;
+                                    // console.log(n,v,'---');
+                                    $rootScope.publicTwoMenu = n.twoMenu;
+                                    $rootScope.liMenu = n.name;
+                                    $rootScope.topMenuLi = n.twoMenu[0].url;
+                                    // console.log($rootScope.topMenuLi,'---');
+                                    crumbNavArr = [{'name': n.name}, {'name': v.name}];
+                                }
+                            });
+                        });
+                        if (flog) {
+
+                            $state.go('main.' + AuthUserMenu[0].twoMenu[0].url)
+                        }
                     }
                     $rootScope.urlLists=crumbNavArr;
                 }
-                // console.log($rootScope.publicTwoMenu)
+                // console.log($rootScope.publicTwoMenu,'===')
             });
 
         $rootScope.$on('$stateChangeSuccess',
@@ -196,6 +214,60 @@ var myApp = angular.module('myApp', [
 
             });
 
+        //登出
+        $rootScope.onLogoutNew=function () {
+            AuthorizationService.doLogout({},function(data){
+                if(data != null && (data.errorCode == '000000' && data.errorMessage=="成功")){
+                    $cookies.remove('username');
+                    $cookies.remove('token');
+                    $cookies.remove('corporateIdentify');
+                    $state.go('login');
+                }else{
+                    $cookies.remove('username');
+                    $cookies.remove('token');
+                    $cookies.remove('corporateIdentify');
+                    $state.go('login');
+                }
+            }, function(err){
+
+            });
+        };
+        //修改密码 updateUserPassword
+        $rootScope.updatePasswordClick=function () {
+            popupDiv('updatePassword');
+            $rootScope.updatePasswordSure=function () {
+                if($("#oldPassword").val()==''||$("#oldPassword").val()==null||$("#oldPassword").val()==undefined){
+                    $("#oldPassword").focus();
+                }else if($("#newPassword").val()==''||$("#newPassword").val()==null||$("#newPassword").val()==undefined){
+                    $("#newPassword").focus();
+                }else if($("#newPasswordSure").val()==''||$("#newPasswordSure").val()==null||$("#newPasswordSure").val()==undefined){
+                    $("#newPasswordSure").focus();
+                }else if($("#newPassword").val()!=$("#newPasswordSure").val()){
+                    $("#newPasswordSure").focus();
+                    alert('两次输入的密码不一致，请确认！')
+                }else {
+                    var pa={
+                        newPassword:$("#newPasswordSure").val(),
+                        oldPassword:$("#oldPassword").val()
+                    };
+                    var par={params:pa};
+                    AuthorizationService.updateUserPassword(pa,function(data){
+                        if(data != null && (data.errorCode == '000000' && data.errorMessage=="成功")){
+                            hideDiv('updatePassword');
+                            popupDiv('SaveSuccess');
+                            $('.SaveSuccess .Message').html(data.errorMessage);
+                        }else{
+                            hideDiv('updatePassword');
+                            popupDiv('SaveSuccess');
+                            $('.SaveSuccess .Message').html(data.errorMessage);
+                        }
+                    }, function(err){
+
+                    });
+                }
+            }
+        };
+
     }])
     .config(function ($stateProvider, $urlRouterProvider) {
         $urlRouterProvider.when("", "/main/login");
@@ -221,8 +293,7 @@ var myApp = angular.module('myApp', [
                 url: "/main",
                 views: {
                     '': {
-                        templateUrl: FF_API.baseTpl+"tpls/main.html",
-                        controller: 'HomeController'
+                        templateUrl: FF_API.baseTpl+"tpls/main.html"
                     },
                     'topMenu@main':{
                         templateUrl:FF_API.baseTpl+'tpls/topMenu.html'
