@@ -492,6 +492,18 @@ factoryParameterSettingApp.factory('factoryParameterSettingService', function($r
         });
     };
     /*首页展示保养计划数量和列表 end*/
+    /*首页展示巡检计划数量和列表 start*/
+    var _spotInspectionPlanIndex= function(Param,successFunc){
+        var spotInspectionPlanIndex = $resource(UrlService.getUrl('troubleRecordServe') + 'api/spotInspectionPlan/querySpotInspectionPlanIndexCountData');
+        spotInspectionPlanIndex.get(Param,function (data) {
+            if (successFunc) {
+                successFunc(data);
+            }
+        }, function (err) {
+
+        });
+    };
+    /*首页展示巡检计划数量和列表 end*/
     return {
         saveContactCompany:_saveContactCompany,
         deleteContactCompany:_deleteContactCompany,
@@ -531,6 +543,7 @@ factoryParameterSettingApp.factory('factoryParameterSettingService', function($r
         batchDeleteDeviceSpareRel:_batchDeleteDeviceSpareRel,
         indexTroubleCount:_indexTroubleCount,
         indexMaintainPlan:_indexMaintainPlan,
+        spotInspectionPlanIndex:_spotInspectionPlanIndex,
         queryOrder: function(queryParam, successFunc) {
             queryOrder(queryParam, successFunc);
 

@@ -362,6 +362,9 @@ textarea{
     right: 10px;
     top: 25px;
 }
+.home-table span i{
+    font-style: inherit;
+}
 .home-table{
     height: 170px;
     width: 360px;

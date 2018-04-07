@@ -98,13 +98,28 @@ myApp.controller("HomeController", function($rootScope,UrlService,$cookies,$stat
     $scope.indexTroubleCount1();
     /*首页故障设备统计 end*/
     /*首页巡查计划 start*/
-    //超过5条滚动
-        if($scope.list2.length>5){
-            test2();
-            $("#patrolTable").css('height','170px');
-        }else{
-            $("#patrolTable").css('height','auto');
-        }
+    $scope.indexTroubleCount2=function () {
+        factoryParameterSettingService.spotInspectionPlanIndex({}, function(response){
+            if(response.data!=''&&response.data!=null&&response.data!=undefined&&response.errorCode=='000000'){
+                $scope.list2=response.data.executeDetailList;//滚动列表
+                console.log($scope.list2);
+                $scope.totalCount=response.data.totalCount;// 今日计划数量
+                $scope.executedCount=response.data.executedCount;//已执行计划数量
+                $scope.unExecutedCount=response.data.unExecutedCount;//未执行计划数量
+                //超过5条滚动
+                if($scope.list2.length>5){
+                    test2();
+                    $("#patrolTable").css('height','170px');
+                }else{
+                    $("#patrolTable").css('height','auto');
+                }
+            }else{
+                console.log(response.errorMessage);
+            }
+        });
+    };
+    $scope.indexTroubleCount2();
+
     /*首页巡查计划 end*/
     /*首页润滑计划统计 start*/
     $scope.indexTroubleCount3=function () {
