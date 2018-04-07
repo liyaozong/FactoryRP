@@ -18,8 +18,7 @@ if(location.href.split('#')[1]=='/login'){
         'background-color':'#1c77ac',
         'background-image':'../../images/light.png',
         'background-repeat':'no-repeat',
-        'background-position':'center top',
-        'overflow':'hidden'
+        'background-position':'center top'
     })
 }else{
     $("body").removeAttr('id');

@@ -6,6 +6,7 @@ myApp.controller("HomeController", function($rootScope,UrlService,$cookies,$stat
     $rootScope.username=$cookies.get('username');
     $("body").removeAttr('id');
     $("body").css('background','#fff');
+    $("body").css('overflow','auto');
     //登出
     $rootScope.onLogoutNew=function () {
         AuthorizationService.doLogout({},function(data){
@@ -79,7 +80,7 @@ myApp.controller("HomeController", function($rootScope,UrlService,$cookies,$stat
         factoryParameterSettingService.indexTroubleCount({}, function(response){
             if(response.data!=''&&response.data!=null&&response.data!=undefined&&response.errorCode=='000000'){
                 $scope.list1=response.data.troubleRecords;//滚动列表
-                console.log($scope.list1);
+                // console.log($scope.list1);
                 $scope.countDevice=response.data.countDevice;//设备总数
                 $scope.countRepairing=response.data.countRepairing;//正在维修的台数
                 $scope.countTrouble=response.data.countTrouble;//故障台数
@@ -111,9 +112,9 @@ myApp.controller("HomeController", function($rootScope,UrlService,$cookies,$stat
             $('.home-table div p').css('margin-top','0');
             $('.table-animation').animate({marginTop:"-34px"},function () {
                 var arr1=$scope.list1.shift();
-                console.log(arr1);
+                // console.log(arr1);
                 $scope.list1.push(arr1);
-                console.log($scope.list1);
+                // console.log($scope.list1);
                 $timeout(function () {
                     test1();
                 },1000)
@@ -164,4 +165,234 @@ myApp.controller("HomeController", function($rootScope,UrlService,$cookies,$stat
         }
     });
 
+    //故障类型
+    $scope.troubleTypeData=[{
+        name: '其他',
+        y: 25
+    }, {
+        name: '电气故障',
+        y: 25
+//                sliced: true,
+//                selected: true
+    }, {
+        name: '机械故障',
+        y: 25
+    }, {
+        name: '其他故障',
+        y: 25
+    }];
+    troubleType($scope.troubleTypeData);
+
+    //故障部位
+    $scope.troublePartData=[{
+        name: '燃烧头',
+        y: 25
+    }, {
+        name: '点火电极',
+        y: 25
+//                sliced: true,
+//                selected: true
+    }, {
+        name: 'UV电眼',
+        y: 25
+    }, {
+        name: '燃气管路连接法兰',
+        y: 25
+    }];
+    troublePart($scope.troublePartData);
+
+    //故障等级
+    $scope.troubleLevelData=[{
+        name: '大故障',
+        y: 25
+    }, {
+        name: '中故障',
+        y: 35
+//                sliced: true,
+//                selected: true
+    }, {
+        name: '小故障',
+        y: 30
+    }, {
+        name: '其他',
+        y: 10
+    }];
+    troubleLevel($scope.troubleLevelData);
 });
+
+//故障类型
+function troubleType(DATA) {
+    new Highcharts.Chart({
+        credits: {
+            enabled:false,
+            text: 'Example.com',
+            position:{
+                align:'center'
+            },
+            href: 'http://www.example.com'
+        },
+        chart: {
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false,
+            type: "pie",
+            height:175,
+            // width:405,
+            renderTo:"container"
+        },
+        title: {
+            text: '故障类型',
+            floating:true,
+            y:160,
+            style:{
+                fontSize:'14px'
+            }
+        },
+        tooltip: {
+            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: true,
+                    format: '<b>{point.name}</b>: {point.percentage:.1f}%',
+                    style: {
+                        color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                    }
+                }
+            }
+        },
+        legend: {
+            align: 'left',
+            verticalAlign: 'top',
+            layout: 'vertical',
+            x: 0,
+            y: 0,
+            floating: true
+        },
+        series: [{
+            name: '占比',
+            colorByPoint: true,
+            data: DATA
+        }]
+    });
+}
+//故障部位
+function troublePart(DATA) {
+    new Highcharts.Chart({
+        credits: {
+            enabled:false,
+            text: 'Example.com',
+            position:{
+                align:'center2'
+            },
+            href: 'http://www.example.com'
+        },
+        chart: {
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false,
+            type: "pie",
+            height:175,
+            // width:405,
+            renderTo:"container1"
+        },
+        title: {
+            text: '故障部位',
+            floating:true,
+            y:160,
+            style:{
+                fontSize:'14px'
+            }
+        },
+        tooltip: {
+            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: true,
+                    format: '<b>{point.name}</b>: {point.percentage:.1f}%',
+                    style: {
+                        color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                    }
+                },
+                // x:100,
+                showInLegend: false
+            }
+        },
+        legend: {
+            align: 'left',
+            verticalAlign: 'top',
+            layout: 'vertical',
+            x: 0,
+            y: 0,
+            floating: true
+        },
+        series: [{
+            name: '占比',
+            colorByPoint: true,
+            data: DATA
+        }]
+    });
+}
+//故障等级
+function troubleLevel(DATA) {
+    new Highcharts.Chart({
+        credits: {
+            enabled:false,
+            text: 'Example.com',
+            position:{
+                align:'center2'
+            },
+            href: 'http://www.example.com'
+        },
+        chart: {
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false,
+            type: "pie",
+            height:175,
+            // width:405,
+            renderTo:"container2"
+        },
+        title: {
+            text: '故障等级',
+            floating:true,
+            y:160,
+            style:{
+                fontSize:'14px'
+            }
+        },
+        tooltip: {
+            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: false
+                },
+                showInLegend: true
+            }
+        },
+        legend: {
+            align: 'left',
+            verticalAlign: 'top',
+            layout: 'vertical',
+            x: 0,
+            y: 0,
+            floating: true
+        },
+        series: [{
+            name: '占比',
+            colorByPoint: true,
+            data: DATA
+        }]
+    });
+}

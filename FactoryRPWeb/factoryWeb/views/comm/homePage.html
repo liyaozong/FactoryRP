@@ -102,7 +102,7 @@
                 </div>
             </div>
             <div class="home-title" style="margin-top: 10px">
-                <div class="home-title-name">点巡检</div>
+                <div class="home-title-name">巡检计划</div>
                 <p class="home-title-total">今天23个</p>
                 <p class="home-title-num">已执行8个，未执行15个</p>
             </div>
@@ -161,14 +161,14 @@
             </div>
             <div style="padding: 20px 0;width: 100%;min-height:485px;background: #edf6fa;border-radius: 10px;margin-top: 20px">
                 <h1 style="padding-left: 0;box-sizing: border-box;font-size: 32px;text-align: center;margin-bottom: 25px;">
-                    电焊机&nbsp;&nbsp;&nbsp;&nbsp;设备编号：HS-DH-120
+                    热媒锅炉&nbsp;&nbsp;&nbsp;&nbsp;设备编号：HS-RMGL-002
                 </h1>
 
                 <div style="text-align: center">
                     <div style="width: 32%;display: inline-block;min-width: 362px;margin-bottom: 20px;" id="container" class="maintj"></div>
-                    <div style="width: 32%;min-width: 362px;padding: 5px;margin-bottom: 20px;box-sizing:border-box;display: inline-block;position: relative;height: 175px;background: white" id="container1" class="maintj">
+                    <div style="width: 32%;min-width: 362px;margin-bottom: 20px;display: inline-block;height: 175px;background: white" id="container1" class="maintj">
                         <!--<img src="../../images/img07.png" alt="">-->
-                        <p style="position: absolute;left: 0;top: 155px;text-align: center;width: 100%;font-size: 14px">故障部位</p>
+                        <!--<p style="position: absolute;left: 0;top: 155px;text-align: center;width: 100%;font-size: 14px">故障部位</p>-->
                     </div>
                     <div style="width: 32%;display: inline-block;margin-bottom: 20px;min-width: 362px;" id="container2" class="maintj"></div>
                 </div>
@@ -188,76 +188,7 @@
 
 
 <script>
-    new Highcharts.Chart({
-        credits: {
-            enabled:false,
-            text: 'Example.com',
-            position:{
-                align:'center'
-            },
-            href: 'http://www.example.com'
-        },
-        chart: {
-            plotBackgroundColor: null,
-            plotBorderWidth: null,
-            plotShadow: false,
-            type: "pie",
-            height:175,
-            // width:405,
-            renderTo:"container"
-        },
-        title: {
-            text: '故障类型',
-            floating:true,
-            y:160,
-            style:{
-                fontSize:'14px'
-            }
-        },
-        tooltip: {
-            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-        },
-        plotOptions: {
-            pie: {
-                allowPointSelect: true,
-                cursor: 'pointer',
-                dataLabels: {
-                    enabled: true,
-                    format: '<b>{point.name}</b>: {point.percentage:.1f} %',
-                    style: {
-                        color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
-                    }
-                }
-            }
-        },
-        legend: {
-            align: 'left',
-            verticalAlign: 'top',
-            layout: 'vertical',
-            x: 0,
-            y: 0,
-            floating: true
-        },
-        series: [{
-            name: '占比',
-            colorByPoint: true,
-            data: [{
-                name: '其他',
-                y: 10
-            }, {
-                name: '电气故障',
-                y: 25
-//                sliced: true,
-//                selected: true
-            }, {
-                name: '机械故障',
-                y: 25
-            }, {
-                name: '其他故障',
-                y: 25
-            }]
-        }]
-    });
+
 //     // 本月润滑计划
 //     new Highcharts.Chart({
 //         credits: {
@@ -333,71 +264,5 @@
 //         }]
 //     });
     //设备运行状态
-    new Highcharts.Chart({
-        credits: {
-            enabled:false,
-            text: 'Example.com',
-            position:{
-                align:'center2'
-            },
-            href: 'http://www.example.com'
-        },
-        chart: {
-            plotBackgroundColor: null,
-            plotBorderWidth: null,
-            plotShadow: false,
-            type: "pie",
-            height:175,
-            // width:405,
-            renderTo:"container2"
-        },
-        title: {
-            text: '故障等级',
-            floating:true,
-            y:160,
-            style:{
-                fontSize:'14px'
-            }
-        },
-        tooltip: {
-            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-        },
-        plotOptions: {
-            pie: {
-                allowPointSelect: true,
-                cursor: 'pointer',
-                dataLabels: {
-                    enabled: false
-                },
-                showInLegend: true
-            }
-        },
-        legend: {
-            align: 'left',
-            verticalAlign: 'top',
-            layout: 'vertical',
-            x: 0,
-            y: 0,
-            floating: true
-        },
-        series: [{
-            name: '占比',
-            colorByPoint: true,
-            data: [{
-                name: '大故障',
-                y: 25
-            }, {
-                name: '中故障',
-                y: 35
-//                sliced: true,
-//                selected: true
-            }, {
-                name: '小故障',
-                y: 30
-            }, {
-                name: '其他',
-                y: 10
-            }]
-        }]
-    });
+
 </script>
