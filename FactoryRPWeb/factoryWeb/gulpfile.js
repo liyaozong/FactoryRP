@@ -47,7 +47,29 @@ gulp.task('compress', function() {
         "js/factroy/deviceManageController.js",
         "js/factroy/modelToolsManageController.js",
         "js/factroy/otherOptionsSettingController.js",
-        "js/factroy/sparePartsManageController.js"
+        "js/factroy/sparePartsManageController.js",
+        //http服务封装
+        "js/services/AppHttpService.js",
+        //用户管理
+        "js/factroy/userManagementCtrl.js",
+        "js/factroy/menuManagementsCtrl.js",
+        "js/factroy/roleManagementsCtrl.js",
+        "js/factroy/parameterSettingCtrl.js",
+        "js/factroy/deviceSparesCtrl.js",
+        "js/factroy/deviceProcessCtrl.js",
+        "js/factroy/deviceTroubleTypeCtrl.js",
+        "js/factroy/deviceMaintenanceHomeController.js",
+        "js/factroy/crumbNav.js",
+        "js/derivatives/derivatives.js",
+        "js/services/parameterSettingService.js",
+        "js/services/sparePartsService.js",
+        "js/factroy/spotInspectionStandardCtrl.js",
+        "js/factroy/spotInspectionRecordCtrl.js",
+        "js/factroy/internalRepairController.js",
+        "js/factroy/outSideRepairController.js",
+        "js/services/inspectionService.js",
+        "js/services/userManagementService.js"
+
   ])
     .pipe(concat('app.min.js'))
     .pipe(ngAnnotate())

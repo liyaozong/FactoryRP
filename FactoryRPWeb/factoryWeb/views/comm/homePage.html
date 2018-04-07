@@ -93,37 +93,46 @@
                     故障{{countTrouble||'0'}}台，正在维修{{countRepairing||'0'}}台
                 </p>
             </div>
-            <div class="home-table">
+            <div id="troubleTable" class="home-table">
                 <div style="width: 100%">
                     <p style="font-size: 0;" ng-class="{'table-animation':$index==0}" ng-repeat="item in list1">
                         <span ng-bind="item.deviceName"></span>
                         <span ng-bind="item.status"></span>
                     </p>
+                    <p ng-show="list1==''||list1==null||list1==undefined">
+                        <span style="width: 100%">暂无故障维修数据</span>
+                    </p>
                 </div>
             </div>
             <div class="home-title" style="margin-top: 10px">
                 <div class="home-title-name">巡检计划</div>
-                <p class="home-title-total">今天23个</p>
-                <p class="home-title-num">已执行8个，未执行15个</p>
+                <p class="home-title-total">今天{{todayPlanNum||'0'}}个</p>
+                <p class="home-title-num">已执行{{executedPlanNum||'0'}}个，未执行{{notExecutedPlanNum||'0'}}个</p>
             </div>
-            <div class="home-table">
+            <div id="patrolTable" class="home-table">
                 <div style="width: 100%">
                     <p style="font-size: 0;" ng-class="{'table-animation2':$index==0}" ng-repeat="item in list2">
-                        <span ng-bind="item.name"></span>
-                        <span ng-bind="item.type"></span>
+                        <span ng-bind="item.deviceName"></span>
+                        <span ng-bind="item.status"></span>
+                    </p>
+                    <p ng-show="list2==''||list2==null||list2==undefined">
+                        <span style="width: 100%">暂无巡检计划数据</span>
                     </p>
                 </div>
             </div>
             <div class="home-title" style="margin-top: 10px">
                 <div class="home-title-name">润滑计划</div>
-                <p class="home-title-total">今天7个</p>
-                <p class="home-title-num">已执行7个，未执行0个</p>
+                <p class="home-title-total">今天{{todayPlanNum||'0'}}个</p>
+                <p class="home-title-num">已执行{{executedPlanNum||'0'}}个，未执行{{notExecutedPlanNum||'0'}}个</p>
             </div>
-            <div class="home-table">
+            <div id="maintainTable" class="home-table">
                 <div style="width: 100%">
                     <p style="font-size: 0;" ng-class="{'table-animation3':$index==0}" ng-repeat="item in list3">
-                        <span ng-bind="item.name"></span>
-                        <span ng-bind="item.type"></span>
+                        <span ng-bind="item.deviceName"></span>
+                        <span ng-bind="item.status"></span>
+                    </p>
+                    <p ng-show="list3==''||list3==null||list3==undefined">
+                        <span style="width: 100%">暂无润滑计划数据</span>
                     </p>
                 </div>
             </div>
