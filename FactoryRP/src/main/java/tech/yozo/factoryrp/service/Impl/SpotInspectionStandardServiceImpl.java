@@ -250,6 +250,7 @@ public class SpotInspectionStandardServiceImpl implements SpotInspectionStandard
 
     }
 
+
     /**
      * 根据设备ID查询点检标准
      * @param deviceId

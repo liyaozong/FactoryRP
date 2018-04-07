@@ -521,6 +521,12 @@ public class SpotInspectionPlanServiceImpl implements SpotInspectionPlanService 
         return null;
     }*/
 
+    /**
+     * 根据点检计划ID查询点检计划详情
+     * @param planId
+     * @param corporateIdentify
+     * @return
+     */
     public SpotInspectionPlanDetailWarpResp querySpotInspectionPlanDetailByPlanId(Long planId, Long corporateIdentify){
 
         List<SpotInspectionPlanDevice> planDeviceList = spotInspectionPlanDeviceRepository.findByCorporateIdentifyAndSpotInspectionPlan(corporateIdentify, planId);
@@ -949,6 +955,70 @@ public class SpotInspectionPlanServiceImpl implements SpotInspectionPlanService 
             spotInspectionRecordDetailRepository.save(detailList);
             spotInspectionImageInfoRepository.save(imageInfoList);
         }
+    }
+
+
+    /**
+     * 首页查询巡检计划相关统计数据
+     * @param corporateIdentify
+     * @return
+     */
+    public IndexSpotInspectionPlanWarpResp querySpotInspectionPlanIndexCountData(Long corporateIdentify){
+
+        IndexSpotInspectionPlanWarpResp warpResp = new IndexSpotInspectionPlanWarpResp();
+
+        //查询出该企业下所有巡检计划
+        List<SpotInspectionPlan> planList = spotInspectionPlanRepository.findByCorporateIdentify(corporateIdentify);
+
+
+        if(!CheckParam.isNull(planList) && !planList.isEmpty()){
+
+            Date currentDate = new Date();
+
+            //区分出是执行过的还是没有执行过的
+            //计算执行过的
+            //上次执行时间 + 周期 > 当前时间  说明在周期内执行过了
+            //List<SpotInspectionPlan> executedPlanList = planList.stream().filter(p1 -> p1.getLastExecuteTime().before(DateTimeUtil.subtractDateByParam(currentDate, p1.getRecyclePeriod(), p1.getRecyclePeriodType()))).collect(Collectors.toList());
+            List<SpotInspectionPlan> executedPlanList = planList.stream().filter(p1 -> p1.getLastExecuteTime().after(DateTimeUtil.subtractDateByParam(currentDate, p1.getRecyclePeriod(), p1.getRecyclePeriodType())) && p1.getLastExecuteTime().before(currentDate)).collect(Collectors.toList());
+            warpResp.setExecutedCount(executedPlanList.size());
+
+            //计算周期内未执行过的 或者从来没有执行过的
+            List<SpotInspectionPlan> unExecutedPlanList = planList.stream().filter(p1 -> CheckParam.isNull(p1.getLastExecuteTime()) || !p1.getLastExecuteTime().after(DateTimeUtil.subtractDateByParam(currentDate, p1.getRecyclePeriod(), p1.getRecyclePeriodType())) && p1.getLastExecuteTime().before(currentDate)).collect(Collectors.toList());
+            warpResp.setUnExecutedCount(unExecutedPlanList.size());
+
+            warpResp.setTotalCount(executedPlanList.size()+unExecutedPlanList.size());
+
+
+            List<IndexSpotInspectionPlanDetailResp> executeDetailList = new ArrayList<>();
+
+
+            executedPlanList.stream().forEach(p1 -> {
+                IndexSpotInspectionPlanDetailResp detail = new IndexSpotInspectionPlanDetailResp();
+
+                detail.setExecuteStatus(1);
+                detail.setPlanName(p1.getName());
+                detail.setPlanId(p1.getId());
+
+                executeDetailList.add(detail);
+            });
+
+            unExecutedPlanList.stream().forEach(p1 -> {
+                IndexSpotInspectionPlanDetailResp detail = new IndexSpotInspectionPlanDetailResp();
+
+                detail.setExecuteStatus(1);
+                detail.setPlanName(p1.getName());
+                detail.setPlanId(p1.getId());
+
+                executeDetailList.add(detail);
+            });
+
+            warpResp.setExecuteDetailList(executeDetailList);
+
+            return warpResp;
+        }
+
+
+        return null;
     }
 
 }

@@ -191,4 +191,16 @@ public class SpotInspectionPlanController extends BaseController{
         return apiResponse();
     }
 
+    /**
+     * 首页查询巡检计划相关统计数据
+     * @param request
+     * @return
+     */
+    @ApiOperation(value = "首页查询巡检计划相关统计数据-WEB",notes = "首页查询巡检计划相关统计数据-WEB",httpMethod = "GET")
+    @GetMapping("/querySpotInspectionPlanIndexCountData")
+    public ApiResponse<IndexSpotInspectionPlanWarpResp> querySpotInspectionPlanIndexCountData(HttpServletRequest request){
+        Long corporateIdentify = userAuthService.getCurrentUserCorporateIdentify(request);
+        return apiResponse(spotInspectionPlanService.querySpotInspectionPlanIndexCountData(corporateIdentify));
+    }
+
 }

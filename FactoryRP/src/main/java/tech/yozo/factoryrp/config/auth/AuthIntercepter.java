@@ -1,6 +1,8 @@
 package tech.yozo.factoryrp.config.auth;
 
+import tech.yozo.factoryrp.entity.Menu;
 import tech.yozo.factoryrp.entity.MenuRole;
+import tech.yozo.factoryrp.entity.Role;
 import tech.yozo.factoryrp.entity.User;
 import tech.yozo.factoryrp.service.AuthorizationService;
 import tech.yozo.factoryrp.utils.AuthWebUtil;
@@ -190,7 +192,7 @@ public class AuthIntercepter implements HandlerInterceptor {
             List<AuthUserMenu> authUserMenuList = new ArrayList<>();
             List<RoleResp> roleList  = new ArrayList<>();
 
-            user.getRoleList().forEach(u1 ->{
+            user.getRoleList().forEach((Role u1) ->{
                 u1.getMenuList().forEach(m1 ->{
                     AuthUserMenu authUserMenu = new AuthUserMenu();
                     authUserMenu.setId(m1.getId());
@@ -198,7 +200,7 @@ public class AuthIntercepter implements HandlerInterceptor {
                     authUserMenu.setName(m1.getName());
                     authUserMenu.setUrl(m1.getUrl());
                     authUserMenu.setRemark(m1.getRemark());
-
+                    authUserMenu.setOrderNumber(m1.getOrderNumber());
                     authUserMenuList.add(authUserMenu);
                 });
 
@@ -214,10 +216,13 @@ public class AuthIntercepter implements HandlerInterceptor {
             });
 
 
-            //去重操作
+            //去重操作 根据序号进行排序
             ArrayList<AuthUserMenu> authUserMenuArrayList = authUserMenuList.stream().collect(Collectors.collectingAndThen(Collectors.toCollection(() -> new TreeSet<>(Comparator.comparingLong(AuthUserMenu::getId))), ArrayList::new));
+            List<AuthUserMenu> sortedList = authUserMenuArrayList.stream().sorted(Comparator.comparing(AuthUserMenu::getOrderNumber)).collect(Collectors.toList());
 
-            authUser.setAuthUserMenuList(authUserMenuArrayList);
+            //Collections.sort(authUserMenuList, Comparator.comparing(AuthUserMenu::getOrderNumber));
+
+            authUser.setAuthUserMenuList(sortedList);
             authUser.setRoleList(roleList);
 
             stringRedisTemplate.opsForValue().set(authCachePrefix+token, JSON.toJSONString(authUser),authExpiredTime);

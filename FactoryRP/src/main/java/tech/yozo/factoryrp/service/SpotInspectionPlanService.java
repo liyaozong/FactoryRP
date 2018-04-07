@@ -3,10 +3,7 @@ package tech.yozo.factoryrp.service;
 import tech.yozo.factoryrp.vo.req.SpotInspectionPlanAddReq;
 import tech.yozo.factoryrp.vo.req.SpotInspectionPlanEditReq;
 import tech.yozo.factoryrp.vo.req.SpotInspectionPlanQueryReq;
-import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionPlanAddResp;
-import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionPlanDetailWarpResp;
-import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionPlanExecuteWarpReq;
-import tech.yozo.factoryrp.vo.resp.inspection.SpotInspectionPlanQueryWarpResp;
+import tech.yozo.factoryrp.vo.resp.inspection.*;
 import tech.yozo.factoryrp.vo.resp.inspection.mobile.SpotInspectionPlanDeviceQueryResp;
 import tech.yozo.factoryrp.vo.resp.inspection.mobile.SpotInspectionPlanResp;
 
@@ -94,4 +91,11 @@ public interface SpotInspectionPlanService {
      */
     void executeSpotInspectionPlan(SpotInspectionPlanExecuteWarpReq spotInspectionPlanExecuteWarpReq,Long corporateIdentify,Long userId);
 
+
+    /**
+     * 首页查询巡检计划相关统计数据
+     * @param corporateIdentify
+     * @return
+     */
+    IndexSpotInspectionPlanWarpResp querySpotInspectionPlanIndexCountData(Long corporateIdentify);
 }
