@@ -107,9 +107,14 @@
         </activity>
         <activity android:name=".ui.RepairDetailSimpleActivity">
         </activity>
-        <activity android:name=".ui.TroubleAuditActivity">
+        <activity android:name=".ui.TroubleAuditActivity"
+                  android:label="@string/title_trouble_audit">
         </activity>
-        <activity android:name=".ui.DeviceQRCodeActivity">
+        <activity android:name=".ui.DeviceQRCodeActivity"
+                  android:label="@string/title_qrcode_gen">
+        </activity>
+        <activity android:name=".ui.ChangePasswdActivity"
+                  android:label="@string/title_change_passwd">
         </activity>
     </application>
 

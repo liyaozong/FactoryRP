@@ -107,7 +107,7 @@ public class HttpClient {
     private static final String TROUBLE_WAIT_ASSIGN = "troubleRecord/waitAllocateRepairList"; //待派工的故障
     private static final String TROUBLE_EXEC_ASSIGN = "troubleRecord/allocateWorker"; //执行故障派工
     private static final String TROUBLE_EXEC_AUDIT = "troubleRecord/audit"; //执行故障审核
-
+    private static final String PASSWD_RESET = "api/authorization/updateCurrentUserPassword";  //修改密码
 
     public static final int REQUEST_LOGIN = 1;
     public static final int REQUEST_DATA_DICT = 2;
@@ -150,6 +150,7 @@ public class HttpClient {
     public static final int REQUEST_TROUBLE_WAIT_ASSIGN = 40;
     public static final int REQUEST_TROUBLE_EXEC_ASSIGN = 41;
     public static final int REQUEST_TROUBLE_EXEC_AUDIT = 42;
+    public static final int REQUEST_PASSWD_RESET = 43;
 
     private AsyncHttpClient client;
     private List<Header> headers = new ArrayList<>();
@@ -366,6 +367,11 @@ public class HttpClient {
     public void requestMemberByRole(Context context, OnHttpListener listener, RequestParams params) {
         client.setTimeout(COMMON_TIMEOUT);
         client.get(context, getAbsoluteUrl(MEMBER_LIST_BY_ROLE), headers.toArray(new Header[headers.size()]), params, new FactoryHttpResponseHandler(context, listener, REQUEST_MEMBER_LIST_BY_ROLE));
+    }
+
+    public void requestResetPasswd(Context context, OnHttpListener listener, RequestParams params) {
+        client.setTimeout(COMMON_TIMEOUT);
+        client.get(context, getAbsoluteUrl(PASSWD_RESET), headers.toArray(new Header[headers.size()]), params, new FactoryHttpResponseHandler(context, listener, REQUEST_PASSWD_RESET));
     }
 
     public void requestDeviceList(Context context, OnHttpListener listener, DeviceInfoReq req) {
@@ -639,6 +645,10 @@ public class HttpClient {
                         case REQUEST_LOGIN:
                             authUser = JSON.parseObject(response.getString("data"), AuthUser.class);
                             setAuthUser(authUser);
+                            mListener.onHttpSuccess(mRequestType, null, null);
+                            break;
+                        case REQUEST_PASSWD_RESET:
+                            Toast.makeText(mContext, R.string.hint_change_passwd_success, Toast.LENGTH_SHORT).show();
                             mListener.onHttpSuccess(mRequestType, null, null);
                             break;
                         case REQUEST_REPAIR_GRAB_URL:

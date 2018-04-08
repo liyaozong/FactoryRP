@@ -70,6 +70,7 @@
     <string name="hint_finish_validate_success">验收完成</string>
     <string name="hint_finish_assign_success">派工成功</string>
     <string name="hint_finish_audit_success">审批完成</string>
+    <string name="hint_change_passwd_success">密码修改成功</string>
 
     <string name="title_scan_device">扫描设备条码</string>
     <string name="title_device_info">设备信息</string>
@@ -87,6 +88,10 @@
     <string name="title_inspect_detail">设备点检项</string>
     <string name="title_maintain_task">润滑任务列表</string>
     <string name="title_maintain_detail">润滑任务</string>
+    <string name="title_change_passwd">修改密码</string>
+    <string name="title_qrcode_gen">生成二维码</string>
+    <string name="title_trouble_audit">故障审核</string>
+
 
     <string name="title_repair_info">故障信息</string>
     <string name="title_repair_advice">处理意见</string>

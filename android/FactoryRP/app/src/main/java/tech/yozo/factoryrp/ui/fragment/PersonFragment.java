@@ -17,6 +17,7 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 import tech.yozo.factoryrp.R;
 import tech.yozo.factoryrp.ui.AboutUsActivity;
+import tech.yozo.factoryrp.ui.ChangePasswdActivity;
 import tech.yozo.factoryrp.ui.LoginActivity;
 import tech.yozo.factoryrp.utils.HttpClient;
 
@@ -129,8 +130,11 @@ public class PersonFragment extends BaseFragment {
                 break;
             case R.id.ll_my_report:
                 break;
-            case R.id.ll_change_password:
+            case R.id.ll_change_password: {
+                Intent intent = new Intent(getContext(), ChangePasswdActivity.class);
+                startActivity(intent);
                 break;
+            }
             case R.id.ll_check_update:
                 break;
             case R.id.ll_about_us: {
