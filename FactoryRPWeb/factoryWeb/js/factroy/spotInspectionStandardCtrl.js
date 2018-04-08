@@ -405,6 +405,11 @@ myApp.controller('inspectionPlanCtrl',['$filter','$rootScope','$location','$scop
         $scope.xjlxLists=data.data;
     });
 
+    //查询执行人
+    queryCorporateAllUser.getData().success(function (data) {
+        $scope.allUserLists=data.data.userRespList;
+    });
+
     //计划状态
     $scope.planStatusLists=[{
         id:1,
