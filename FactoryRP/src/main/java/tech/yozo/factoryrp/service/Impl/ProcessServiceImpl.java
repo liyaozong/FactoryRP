@@ -419,13 +419,17 @@ public class ProcessServiceImpl implements ProcessService {
     public void editDeviceProcess(DeviceProcessEditReq deviceProcessEditReq, Long corporateIdentify){
 
 
-        DeviceProcessType deviceProcessType = deviceProcessTypeRepository.findOne(deviceProcessEditReq.getProcessType());
-        DeviceProcessPhase deviceProcessPhase = deviceProcessPhaseRepository.findOne(deviceProcessEditReq.getProcessStage());
+        DeviceProcessType deviceProcessType = deviceProcessTypeRepository.findByCodeAndCorporateIdentify(deviceProcessEditReq.getProcessType(), corporateIdentify);
 
-        if(CheckParam.isNull(deviceProcessType) || CheckParam.isNull(deviceProcessPhase)){
+        if(CheckParam.isNull(deviceProcessType) || CheckParam.isNull(deviceProcessType)){
             throw new BussinessException(ErrorCode.PROCESS_DIC_NOTEXIST_ERROR.getCode(),ErrorCode.PROCESS_DIC_NOTEXIST_ERROR.getMessage());
 
         }
+
+        DeviceProcessPhase deviceProcessPhase = deviceProcessType.getDeviceProcessPhaseList().stream().filter(d1 -> d1.getCode().equals(deviceProcessEditReq.getProcessStage())).findFirst().get();
+
+        //DeviceProcessPhase deviceProcessPhase = deviceProcessPhaseRepository.findByCodeAndCorporateIdentify(deviceProcessEditReq.getProcessStage(), corporateIdentify);
+
 
         DeviceProcess deviceProcess = deviceProcessRepository.findByProcessTypeAndProcessStageAndCorporateIdentifyAndProcessName(deviceProcessType.getCode(),
                 deviceProcessType.getCode(),corporateIdentify,deviceProcessEditReq.getProcessName());
@@ -493,19 +497,16 @@ public class ProcessServiceImpl implements ProcessService {
      * @param corporateIdentify
      * @return
      */
-    public DeviceProcessAddResp     addDeviceProcess(DeviceProcessAddReq deviceProcessAddReq,Long corporateIdentify){
+    public DeviceProcessAddResp addDeviceProcess(DeviceProcessAddReq deviceProcessAddReq,Long corporateIdentify){
 
-        DeviceProcessType deviceProcessType = deviceProcessTypeRepository.findOne(deviceProcessAddReq.getProcessType());
-        DeviceProcessPhase deviceProcessPhase = deviceProcessPhaseRepository.findOne(deviceProcessAddReq.getProcessStage());
+        DeviceProcessType deviceProcessType = deviceProcessTypeRepository.findByCodeAndCorporateIdentify(deviceProcessAddReq.getProcessType(), corporateIdentify);
 
-        if(CheckParam.isNull(deviceProcessType) || CheckParam.isNull(deviceProcessPhase)){
+        if(CheckParam.isNull(deviceProcessType) || CheckParam.isNull(deviceProcessType)){
             throw new BussinessException(ErrorCode.PROCESS_DIC_NOTEXIST_ERROR.getCode(),ErrorCode.PROCESS_DIC_NOTEXIST_ERROR.getMessage());
 
         }
 
-        /*DeviceProcess deviceProcess = deviceProcessRepository.findByProcessTypeAndProcessStageAndCorporateIdentifyAndProcessName(CheckParam.isNull(deviceProcessType) ? null : deviceProcessType.getCode(),
-                CheckParam.isNull(deviceProcessPhase) ? null : deviceProcessType.getCode(),
-                corporateIdentify,deviceProcessAddReq.getProcessName());*/
+        DeviceProcessPhase deviceProcessPhase = deviceProcessType.getDeviceProcessPhaseList().stream().filter(d1 -> d1.getCode().equals(deviceProcessAddReq.getProcessStage())).findFirst().get();
 
         DeviceProcess deviceProcess = deviceProcessRepository.findByProcessTypeAndProcessStageAndCorporateIdentifyAndProcessName(deviceProcessType.getCode(),
                 deviceProcessType.getCode(),corporateIdentify,deviceProcessAddReq.getProcessName());

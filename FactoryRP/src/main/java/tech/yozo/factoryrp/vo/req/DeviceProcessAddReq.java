@@ -36,14 +36,14 @@ public class DeviceProcessAddReq extends BaseRequest implements Serializable {
      * 流程类型
      */
     @ApiModelProperty(value = "流程类型,给列表值",notes = "流程类型,给列表值",example = "1")
-    private Long processType;
+    private String processType;
 
 
     /**
      * 流程阶段
      */
     @ApiModelProperty(value = "流程阶段,给列表值",notes = "流程阶段,给列表值",example = "1")
-    private Long processStage;
+    private String processStage;
 
     /**
      * 触发条件类型 对应设备类型 金额上限 部门等
