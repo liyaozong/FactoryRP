@@ -112,9 +112,17 @@ myApp.controller('deviceProcessCtrl',['$timeout','$filter','$rootScope','$locati
     //选择审核人员
     $scope.changePA_left=function (id,i) {
         // console.log(id,i);
-        var arr=$scope.userLists[i];
-        $scope.processAuditorLists.push(arr);
-        $scope.userLists.splice(i,1);
+        var index;
+        // var arr=$scope.userLists[i];
+        $scope.userLists.forEach(function (n,i) {
+            // console.log(n,i)
+            if(n.userId==id){
+                $scope.processAuditorLists.push(n);
+                index=i;
+            }
+        })
+
+        $scope.userLists.splice(index,1);
     };
     //删除选择审核人员
     $scope.changePA_right=function (id,i) {

@@ -757,9 +757,14 @@ myApp.controller('inspectionPlanCtrl',['$filter','$rootScope','$location','$scop
 
     //选择执行者
     $scope.changePA_left=function (id,i) {
-        // console.log(id,i);
-        var arr=$scope.userLists[i];
-        $scope.processAuditorLists.push(arr);
+        var index;
+        $scope.userLists.forEach(function (n,i) {
+            // console.log(n,i)
+            if(n.userId==id){
+                $scope.processAuditorLists.push(n);
+                index=i;
+            }
+        })
         $scope.userLists.splice(i,1);
     };
 
