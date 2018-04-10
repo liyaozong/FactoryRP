@@ -21,6 +21,7 @@ import tech.yozo.factoryrp.ui.RepairRecordListActivity;
 import tech.yozo.factoryrp.ui.TroubleReportActivity;
 import tech.yozo.factoryrp.utils.HttpClient;
 import tech.yozo.factoryrp.vo.resp.MaintainTaskCount;
+import tech.yozo.factoryrp.vo.resp.RoleResp;
 import tech.yozo.factoryrp.vo.resp.device.trouble.WorkOrderCountVo;
 import tech.yozo.factoryrp.vo.resp.inspect.InspectTaskResp;
 
@@ -116,6 +117,32 @@ public class WorkBenchFragment extends BaseFragment implements HttpClient.OnHttp
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_workbench, container, false);
         unbinder = ButterKnife.bind(this, view);
+
+        boolean paidan =false;
+        boolean shenhe =false;
+        boolean yanshou = false;
+        List<RoleResp> roleResps = HttpClient.getInstance().getRoles();
+        if(roleResps != null) {
+            for (RoleResp role :
+                    roleResps) {
+                if (role.getRoleName().contains("派工")) {
+                    paidan = true;
+                } else if (role.getRoleName().contains("主任")) {
+                    shenhe = true;
+                } else if (role.getRoleName().contains("操作工")) {
+                    yanshou = true;
+                }
+            }
+        }
+        if(!paidan) {
+            buttonExecAssign.setEnabled(false);
+        }
+        if(!shenhe) {
+            buttonExecAudit.setEnabled(false);
+        }
+        if(!yanshou) {
+            buttonExecValidate.setEnabled(false);
+        }
 
         refreshLayout.setColorSchemeResources(new int[]{R.color.colorHighlight, R.color.colorPrimary});
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {

@@ -108,6 +108,7 @@ public class HttpClient {
     private static final String TROUBLE_EXEC_ASSIGN = "troubleRecord/allocateWorker"; //执行故障派工
     private static final String TROUBLE_EXEC_AUDIT = "troubleRecord/audit"; //执行故障审核
     private static final String PASSWD_RESET = "api/authorization/updateCurrentUserPassword";  //修改密码
+    private static final String USER_ROLE = "api/authorization/queryRoleByUserId"; //获取用户角色
 
     public static final int REQUEST_LOGIN = 1;
     public static final int REQUEST_DATA_DICT = 2;
@@ -151,12 +152,16 @@ public class HttpClient {
     public static final int REQUEST_TROUBLE_EXEC_ASSIGN = 41;
     public static final int REQUEST_TROUBLE_EXEC_AUDIT = 42;
     public static final int REQUEST_PASSWD_RESET = 43;
+    public static final int REQUEST_USER_ROLE = 44;
 
     private AsyncHttpClient client;
     private List<Header> headers = new ArrayList<>();
 
     @Getter
     private AuthUser authUser;
+
+    @Getter
+    private List<RoleResp> roles;
 
 //    @Getter
 //    @Setter
@@ -414,6 +419,11 @@ public class HttpClient {
         client.setTimeout(COMMON_TIMEOUT);
         client.post(context, getAbsoluteUrl(HttpClient.TROUBLE_EXEC_ASSIGN), headers.toArray(new Header[headers.size()]), param, CONTENT_TYPE, new FactoryHttpResponseHandler(context, listener, REQUEST_TROUBLE_EXEC_ASSIGN));
 
+    }
+
+    public void requestUserRole(Context context, OnHttpListener listener, RequestParams params) {
+        client.setTimeout(COMMON_TIMEOUT);
+        client.get(context, getAbsoluteUrl(USER_ROLE), headers.toArray(new Header[headers.size()]), params, new FactoryHttpResponseHandler(context, listener, REQUEST_USER_ROLE));
     }
 
     public void requestRepairList(Context context, OnHttpListener listener, int requestType, TroubleListReq req) {
@@ -681,6 +691,10 @@ public class HttpClient {
                             break;
                         case REQUEST_VALIDATE_REPAIR_ACTION:
                             Toast.makeText(mContext, R.string.hint_finish_validate_success, Toast.LENGTH_SHORT).show();
+                            mListener.onHttpSuccess(mRequestType, null, null);
+                            break;
+                        case REQUEST_USER_ROLE:
+                            roles = JSONArray.parseArray(response.getString("data"), RoleResp.class);
                             mListener.onHttpSuccess(mRequestType, null, null);
                             break;
                         case REQUEST_DEVICE_LIST:

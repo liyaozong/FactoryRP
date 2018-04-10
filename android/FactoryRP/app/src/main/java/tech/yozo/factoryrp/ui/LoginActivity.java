@@ -130,9 +130,15 @@ public class LoginActivity extends AppCompatActivity implements HttpClient.OnHtt
 
     @Override
     public void onHttpSuccess(int requestType, Object obj, List<?> list) {
-        dialog.dismiss();
-        finish();
-        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+        if(requestType == HttpClient.REQUEST_USER_ROLE) {
+            finish();
+            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+        } else if(requestType == HttpClient.REQUEST_LOGIN) {
+            dialog.dismiss();
+            RequestParams params = new RequestParams();
+            params.put("userId", HttpClient.getInstance().getAuthUser().getUserId());
+            HttpClient.getInstance().requestUserRole(this, this, params);
+        }
     }
 
     @Override
