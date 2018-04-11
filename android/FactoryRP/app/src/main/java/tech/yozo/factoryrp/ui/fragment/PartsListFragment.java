@@ -227,7 +227,6 @@ public class PartsListFragment extends BaseFragment implements HttpClient.OnHttp
              */
             switch (mParam_mode) {
                 case Constant.FOR_BROWE_MODE:
-                case Constant.FOR_CHOICE_MODE:
                     if (!isUpdateData) {
                         isUpdateData = true;
                         mPartsListView.addFooterView(footer);

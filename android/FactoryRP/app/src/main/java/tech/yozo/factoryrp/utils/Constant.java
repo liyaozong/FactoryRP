@@ -22,4 +22,6 @@ public class Constant {
     /* 相机请求码 */
     public static final int REQUEST_SCAN_PERMISSION = 0x3000;
     public static final int REQUEST_CAMERA_PERMISSION = 0x3001;
+
+    public static final String SIMPLE_DEVICE_LIST = "simpleDeviceInfoList";
 }
