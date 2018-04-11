@@ -75,6 +75,8 @@ public class TroubleRecordServiceImpl implements TroubleRecordService {
     private DeviceTypeRepository deviceTypeRepository;
     @Autowired
     private DeviceInfoRepository deviceInfoRepository;
+    @Autowired
+    private TroubleRecordImageInfoRepository troubleRecordImageInfoRepository;
 
     private static Logger logger = LoggerFactory.getLogger(TroubleRecordServiceImpl.class);
 
@@ -139,6 +141,24 @@ public class TroubleRecordServiceImpl implements TroubleRecordService {
             throw biz;
         }
         troubleRecordUserRelRepository.save(troubleRecordUserRels);
+
+        //保存图片
+        List<String> imageKeys = param.getImageKeys();
+        if (null!=imageKeys && imageKeys.size()>0){
+            List<TroubleRecordImageInfo> imageInfos = new ArrayList<>();
+            imageKeys.stream().forEach(key ->{
+                TroubleRecordImageInfo imageInfo = new TroubleRecordImageInfo();
+                imageInfo.setTroubleRecordId(trId);
+                imageInfo.setImageKey(key);
+                imageInfo.setCorporateIdentify(corporateIdentify);
+                imageInfo.setCreateTime(new Date());
+                imageInfo.setUpdateTime(new Date());
+                imageInfos.add(imageInfo);
+            });
+            if (null!=imageInfos && imageInfos.size()>0){
+                troubleRecordImageInfoRepository.save(imageInfos);
+            }
+        }
 
     }
 
@@ -693,6 +713,17 @@ public class TroubleRecordServiceImpl implements TroubleRecordService {
             vo.setRepairUserName(old.getRepairUserName());
             vo.setRemark(old.getRemark());
             vo.setRepairGroupId(old.getRepairGroupId());
+
+            //图片信息
+            List<TroubleRecordImageInfo> imageInfos = troubleRecordImageInfoRepository.findByTroubleRecordId(id);
+            List<String> imageKeys = new ArrayList<>();
+            if (null!=imageInfos && imageInfos.size()>0){
+                imageInfos.stream().forEach(imageinfo ->{
+                    imageKeys.add(imageinfo.getImageKey());
+                });
+            }
+            vo.setImageKeys(imageKeys);
+
             //维修单信息
            RepairRecord repairRecord = repairRecordRepository.findByTroubleRecordId(id);
            if (null!=repairRecord){

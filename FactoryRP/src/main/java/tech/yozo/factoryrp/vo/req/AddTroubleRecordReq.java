@@ -7,6 +7,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author chenxiang
@@ -44,4 +45,7 @@ public class AddTroubleRecordReq extends BaseRequest implements Serializable{
 
     @ApiModelProperty(value = "故障发生时间",required = true,notes = "故障发生时间")
     private Date happenTime;
+
+    @ApiModelProperty(value = "故障图片key集合",required = true,notes = "故障图片key集合")
+    private List<String> imageKeys;
 }

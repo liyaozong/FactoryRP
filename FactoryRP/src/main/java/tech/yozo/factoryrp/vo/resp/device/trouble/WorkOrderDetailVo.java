@@ -102,4 +102,7 @@ public class WorkOrderDetailVo implements Serializable{
 
     @ApiModelProperty(value = "更换配件")
     private List<UsedSparePartsVo> replaceSpares;
+
+    @ApiModelProperty(value = "故障图片key集合",required = true,notes = "故障图片key集合")
+    private List<String> imageKeys;
 }
