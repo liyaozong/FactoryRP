@@ -13,6 +13,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
+import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.content.Intent;
@@ -21,6 +22,7 @@ import com.loopj.android.http.RequestParams;
 import tech.yozo.factoryrp.R;
 import tech.yozo.factoryrp.scan.Intents;
 import tech.yozo.factoryrp.scan.ScanActivity;
+import tech.yozo.factoryrp.ui.dialog.ShowImageConfig;
 import tech.yozo.factoryrp.ui.fragment.DeviceListFragment;
 import tech.yozo.factoryrp.ui.fragment.PartsListFragment;
 import tech.yozo.factoryrp.ui.fragment.PersonFragment;
@@ -112,6 +114,7 @@ public class MainActivity extends AppCompatActivity implements HttpClient.OnHttp
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        getDeviceDensity();
         mNavigation = (BottomNavigationView) findViewById(R.id.navigation_main);
         BottomNavigationViewHelper.disableShiftMode(mNavigation);
         mNavigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -226,5 +229,16 @@ public class MainActivity extends AppCompatActivity implements HttpClient.OnHttp
     @Override
     public void onFailure(int requestType) {
 
+    }
+
+
+    /**
+     * 获取当前设备的屏幕密度等基本参数
+     */
+    protected void getDeviceDensity() {
+        DisplayMetrics metrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        ShowImageConfig.EXACT_SCREEN_HEIGHT = metrics.heightPixels;
+        ShowImageConfig.EXACT_SCREEN_WIDTH = metrics.widthPixels;
     }
 }

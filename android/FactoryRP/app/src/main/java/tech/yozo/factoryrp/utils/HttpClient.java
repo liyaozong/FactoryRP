@@ -62,6 +62,7 @@ public class HttpClient {
 //    private static final String BASE_URL = "http://192.168.6.100:9550/";
 //    private static final String BASE_URL = "http://factoryrp.yozo.tech:9550/";  //研发环境
     private static final String BASE_URL = "http://39.104.71.127:9550/";  //银河灵动测试环境
+    public static final String IMAGE_URL = "http://factoryrp.oss-cn-hangzhou.aliyuncs.com/"; //文件存储
 
     private static final String CONTENT_TYPE = "application/json";
     private static final int COMMON_TIMEOUT = 8000;
@@ -647,7 +648,7 @@ public class HttpClient {
 
         @Override
         public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-//            Log.d("FactoryRP", response.toString());
+            Log.d("FactoryRP", response.toString());
             try {
                 String errorCode = response.getString("errorCode");
                 if (ErrorCode.SUCCESS.getCode().equals(errorCode)) {

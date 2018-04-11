@@ -9,14 +9,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import com.bumptech.glide.Glide;
 import com.loopj.android.http.RequestParams;
 import tech.yozo.factoryrp.R;
 import tech.yozo.factoryrp.ui.RepairValidateActivity;
+import tech.yozo.factoryrp.ui.dialog.ShowImagesDialog;
 import tech.yozo.factoryrp.utils.Constant;
 import tech.yozo.factoryrp.utils.HttpClient;
 import tech.yozo.factoryrp.vo.resp.device.trouble.WorkOrderDetailVo;
@@ -70,6 +74,8 @@ public class RepairInfoFragment extends BaseFragment implements HttpClient.OnHtt
     @BindView(R.id.tv_trouble_desc)
     TextView tvTroubleDesc;
     Unbinder unbinder;
+    @BindView(R.id.ll_images)
+    LinearLayout llImages;
 
     private int mParam_mode;
     private WorkOrderDetailVo mParam_obj;
@@ -125,13 +131,9 @@ public class RepairInfoFragment extends BaseFragment implements HttpClient.OnHtt
         tvTroubleSubmitter.setText(mParam_obj.getCreateUser());
         tvMaintainer.setText(mParam_obj.getRepairUserName());
         tvTroubleDesc.setText(mParam_obj.getRemark());
-        if(HttpClient.getInstance().getAuthUser().getUserName().equals(mParam_obj.getRepairUserName())) {
+        if (HttpClient.getInstance().getAuthUser().getUserName().equals(mParam_obj.getRepairUserName())) {
             bIRepair.setVisibility(View.GONE);
         }
-
-//        if(HttpClient.getInstance().getAuthUser().getUserName().contentEquals(mParam_obj.getRepairUserName())) {
-//            bIRepair.setVisibility(View.GONE);
-//        }
 
         switch (mParam_mode) {
             case HttpClient.REQUEST_TROUBLE_WAIT_REPAIR:
@@ -154,7 +156,22 @@ public class RepairInfoFragment extends BaseFragment implements HttpClient.OnHtt
 
     @Override
     protected void loadData() {
-
+        final List<String> imageUrls = mParam_obj.getImageKeys();
+        if(imageUrls != null) {
+            for (String url :
+                    imageUrls) {
+                View view = getActivity().getLayoutInflater().inflate(R.layout.item_image_browe_layout, null);
+                llImages.addView(view);
+                ImageView imageView = (ImageView) view.findViewById(R.id.image_button);
+                imageView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        new ShowImagesDialog(getActivity(), imageUrls).show();
+                    }
+                });
+                Glide.with(getActivity()).load(url).placeholder(R.drawable.dialog_loading).into(imageView);
+            }
+        }
     }
 
     @Override
@@ -198,7 +215,7 @@ public class RepairInfoFragment extends BaseFragment implements HttpClient.OnHtt
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode == VALIDATE_REPAIR && resultCode == Activity.RESULT_OK) {
+        if (requestCode == VALIDATE_REPAIR && resultCode == Activity.RESULT_OK) {
             bValidateRepair.setEnabled(false);
             Intent intent = new Intent();
             intent.putExtra("id", mParam_obj.getTroubleRecordId());

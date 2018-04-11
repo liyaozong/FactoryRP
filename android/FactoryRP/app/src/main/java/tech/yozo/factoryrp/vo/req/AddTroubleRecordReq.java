@@ -5,6 +5,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author chenxiang
@@ -42,4 +43,6 @@ public class AddTroubleRecordReq implements Serializable{
 
 //    @ApiModelProperty(value = "故障发生时间",required = true,notes = "故障发生时间")
     private Date happenTime;
+
+    private List<String> imageKeys;
 }

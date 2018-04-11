@@ -173,9 +173,8 @@ public class TroubleReportActivity extends AppCompatActivity implements HttpClie
             reportReq.setPhone(etPhoneNumber.getText().toString());
             reportReq.setDeviceAddress(etDevicePlace.getText().toString());
             reportReq.setRemark(etFaultDesc.getText().toString());
-            //TODO
             if(imageKey.size() > 0) {
-                //reportReq.setImageKey(imageKey);
+                reportReq.setImageKeys(imageKey);
             }
 
             LoadingDialog.Builder builder = new LoadingDialog.Builder(this)
