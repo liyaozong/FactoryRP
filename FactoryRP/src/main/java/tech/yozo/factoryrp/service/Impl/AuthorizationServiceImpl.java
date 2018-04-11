@@ -82,7 +82,8 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 
             role.getUserList().stream().forEach(r1 -> {
                 UserResp userResp = new UserResp();
-                userResp.setUserId(r1.getId());
+                userResp.setId(r1.getId());
+                userResp.setUserId(r1.getUserId());
                 userResp.setUserName(r1.getUserName());
 
                 userRespList.add(userResp);

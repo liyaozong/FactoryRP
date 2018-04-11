@@ -672,6 +672,7 @@ public class TroubleRecordServiceImpl implements TroubleRecordService {
             //设备信息
             DeviceInfo deviceInfo = old.getDeviceInfo();
             if (null!=deviceInfo){
+                vo.setDeviceId(deviceInfo.getId());
                 vo.setDeviceName(deviceInfo.getName());
                 vo.setSpecification(deviceInfo.getSpecification());
                 vo.setDeviceCode(deviceInfo.getCode());

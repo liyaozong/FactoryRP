@@ -115,7 +115,9 @@ public class RepairPartsFragment extends BaseFragment {
         mAddParts.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivityForResult(new Intent(getActivity(), PartsSelectActivity.class), REQUEST_ADD_PARTS);
+                Intent intent = new Intent(getActivity(), PartsSelectActivity.class);
+                intent.putExtra("id", mParam_obj.getDeviceId());
+                startActivityForResult(intent, REQUEST_ADD_PARTS);
             }
         });
 

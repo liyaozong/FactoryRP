@@ -129,7 +129,7 @@ public class WorkBenchFragment extends BaseFragment implements HttpClient.OnHttp
                     paidan = true;
                 } else if (role.getRoleName().contains("主任")) {
                     shenhe = true;
-                } else if (role.getRoleName().contains("操作工")) {
+                } else if (role.getRoleName().contains("操作工") || role.getRoleName().contains("设备员")) {
                     yanshou = true;
                 }
             }

@@ -20,6 +20,7 @@ public class PartsSelectActivity extends AppCompatActivity implements PartsListF
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         Bundle bundle = new Bundle();
         bundle.putInt("mode", Constant.FOR_CHOICE_MODE);
+        bundle.putLong("id", getIntent().getLongExtra("id", -1));
         Fragment fragment = Fragment.instantiate(this, PartsListFragment.class.getName(), bundle);
         transaction.add(R.id.ll_list_fragment, fragment);
         transaction.commit();

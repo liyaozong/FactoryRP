@@ -18,6 +18,9 @@ public class WorkOrderDetailVo implements Serializable{
     @ApiModelProperty(value = "故障信息主键")
     private Long troubleRecordId;
 
+    @ApiModelProperty(value = "设备ID")
+    private Long deviceId;
+
     @ApiModelProperty(value = "设备名称")
     private String deviceName;
 

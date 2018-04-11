@@ -68,7 +68,7 @@ public class RepairDetailSimpleActivity extends AppCompatActivity implements Htt
     private int mode;
     private long id;
     private WorkOrderDetailVo detailVo;
-    private String assignEngineer;
+    private MaintenanceEngineer assignEngineer;
 
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日 HH时MM分");
 
@@ -166,7 +166,7 @@ public class RepairDetailSimpleActivity extends AppCompatActivity implements Htt
                 }
                 break;
             case HttpClient.REQUEST_TROUBLE_EXEC_ASSIGN:
-                tvMaintainer.setText(assignEngineer);
+                tvMaintainer.setText(assignEngineer.getUserName());
                 break;
             case HttpClient.REQUEST_TROUBLE_EXEC_AUDIT:
                 break;
@@ -201,10 +201,10 @@ public class RepairDetailSimpleActivity extends AppCompatActivity implements Htt
                 case SELECT_ENGINEER:
                     List<MaintenanceEngineer> engineers = JSONArray.parseArray(data.getStringExtra(EngineerSelectActivity.ENGINEER), MaintenanceEngineer.class);
                     if(engineers.size() > 0) {
-                        assignEngineer = engineers.get(0).getUserName();
+                        assignEngineer = engineers.get(0);
                         AssignTroubleReq req = new AssignTroubleReq();
-                        req.setRepairUserId(engineers.get(0).getUserId());
-                        req.setRepairUserName(engineers.get(0).getUserName());
+                        req.setRepairUserId(assignEngineer.getUserId());
+                        req.setRepairUserName(assignEngineer.getUserName());
                         req.setTroubleRecordId(detailVo.getTroubleRecordId());
                         HttpClient.getInstance().requestExecAssign(this, this, req);
                     }
