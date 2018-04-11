@@ -77,6 +77,8 @@ public class TroubleRecordServiceImpl implements TroubleRecordService {
     private DeviceInfoRepository deviceInfoRepository;
     @Autowired
     private TroubleRecordImageInfoRepository troubleRecordImageInfoRepository;
+    @Autowired
+    private OSSService ossService;
 
     private static Logger logger = LoggerFactory.getLogger(TroubleRecordServiceImpl.class);
 
@@ -719,7 +721,7 @@ public class TroubleRecordServiceImpl implements TroubleRecordService {
             List<String> imageKeys = new ArrayList<>();
             if (null!=imageInfos && imageInfos.size()>0){
                 imageInfos.stream().forEach(imageinfo ->{
-                    imageKeys.add(imageinfo.getImageKey());
+                    imageKeys.add(ossService.getOSSUrl(imageinfo.getImageKey()));
                 });
             }
             vo.setImageKeys(imageKeys);
