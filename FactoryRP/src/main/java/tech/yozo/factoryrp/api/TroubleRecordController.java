@@ -16,6 +16,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import tech.yozo.factoryrp.vo.resp.IndexTroubleRecordCountVo;
+import tech.yozo.factoryrp.vo.resp.TroubleAnalysisRes;
 import tech.yozo.factoryrp.vo.resp.auth.AuthUser;
 import tech.yozo.factoryrp.vo.resp.device.trouble.*;
 import tech.yozo.factoryrp.vo.resp.role.RoleResp;
@@ -278,5 +279,22 @@ public class TroubleRecordController extends BaseController{
     @ApiOperation(value = "首页故障设备统计--WEB",notes = "首页故障设备统计--WEB",httpMethod = "POST")
     public ApiResponse<IndexTroubleRecordCountVo> indexTroubleCount(){
         return apiResponse(troubleRecordService.getIndexTroubleCount());
+    }
+
+    @GetMapping("getTroubleAnalysis")
+    @ApiOperation(value = "web端查询故障分析报告--Web",notes = "web端查询故障分析报告(--Web",httpMethod = "GET")
+    @ApiImplicitParams(@ApiImplicitParam(paramType = "query",dataType = "Long",name = "troubleRecordId",
+            value = "故障主键",required = true))
+    public ApiResponse<TroubleAnalysisRes> getTroubleAnalysis(HttpServletRequest request, Long troubleRecordId){
+        TroubleAnalysisRes vo=new TroubleAnalysisRes();
+        return apiResponse(vo);
+    }
+
+    @RequestMapping("addTroubleAnalysis")
+    @ApiOperation(value = "新增故障分析报告--WEB",notes = "新增故障分析报告--WEB",httpMethod = "POST")
+    public ApiResponse addTroubleAnalysis(@RequestBody TroubleAnalysisReq param, HttpServletRequest request){
+        Long corporateIdentify =userAuthService.getCurrentUserCorporateIdentify(request);
+        AuthUser user = userAuthService.getCurrentUser(request);
+        return apiResponse();
     }
 }
