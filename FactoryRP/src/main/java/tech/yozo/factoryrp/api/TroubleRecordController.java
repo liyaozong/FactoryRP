@@ -290,9 +290,9 @@ public class TroubleRecordController extends BaseController{
         return apiResponse(vo);
     }
 
-    @RequestMapping("addTroubleAnalysis")
+    @RequestMapping("saveTroubleAnalysis")
     @ApiOperation(value = "新增故障分析报告--WEB",notes = "新增故障分析报告--WEB",httpMethod = "POST")
-    public ApiResponse addTroubleAnalysis(@RequestBody TroubleAnalysisReq param, HttpServletRequest request){
+    public ApiResponse saveTroubleAnalysis(@RequestBody TroubleAnalysisReq param, HttpServletRequest request){
         Long corporateIdentify =userAuthService.getCurrentUserCorporateIdentify(request);
         AuthUser user = userAuthService.getCurrentUser(request);
         return apiResponse();
