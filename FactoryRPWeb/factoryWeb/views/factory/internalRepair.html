@@ -30,6 +30,41 @@
     .ImportantNote .titleDiv p textarea{
         width: 611px;
     }
+    .failureAnalysisContainer .titleDiv table tr:hover{
+        background: none;
+    }
+    .failureAnalysisContainer .titleDiv table tr input{
+        width: 99%;
+        /*border: none;*/
+        /*box-shadow: none;*/
+        /*outline: none;*/
+    }
+    .failureAnalysisContainer .titleDiv table tr input:hover{
+        /*border: none;*/
+        /*box-shadow: none;*/
+        /*outline: none;*/
+    }
+    .failureAnalysisContainer .titleDiv table tr input:focus{
+        /*border: none;*/
+        /*box-shadow: none;*/
+        /*outline: none;*/
+    }
+    .failureAnalysisContainer .titleDiv table tr th{
+        text-align: left;
+    }
+    .failureAnalysisContainer .titleDiv table tr td{
+        text-align: center;
+        padding: 0;
+    }
+    .failureAnalysisContainer .titleDiv table tr td textarea{
+        font-size: 12px;
+        padding: 5px 0 5px 0px;
+        text-indent: 10px;
+        height: 50px;
+    }
+    .failureAnalysisContainer .titleDiv table tr td a{
+        color:#71B9FE
+    }
 </style>
 <div class="rightinfo mainContain" id="mainContain1">
     <div style="padding: 0;width: 100%" class="queryDiv" >
@@ -106,6 +141,9 @@
                     </a>
                     <a href="javascript:void(0)" class="resBtn deleteBtn" ng-click="auditDevice(myWaitAuditDetail)">
                         审核
+                    </a>
+                    <a href="javascript:void(0)" class="resBtn deleteBtn" ng-click="dealFailureAnalysisRecord(myWaitAuditDetail)">
+                        分析
                     </a>
                 </td>
             </tr>
@@ -587,6 +625,294 @@
     </div>
 </div>
 <!--查看详情 end-->
+<!--故障分析弹出框 start-->
+<div class="ImportantNote failureAnalysisContainer">
+    <div class="headline">
+        <span>故障分析</span>
+        <img onClick="hideDiv('failureAnalysisContainer')" class="companyCloseImg" src="image/comm/diffClosed.png" width="22" height="22">
+    </div>
+    <div style="padding: 30px 0 20px 0;width: 895px;max-height: 380px;height: auto;overflow-y: hidden; overflow: auto;" class="businessAuth">
+        <div class="titleDiv">
+            <span class="tips">故障信息--涉及到的金额单位均为万元</span>
+            <p>
+                <label for="maintainRemark">
+                    <span style="width: 130px;text-align: right">主要检修内容:</span>
+                    <input id="maintainRemark" ng-model="maintainRemark" type="text" placeholder="主要检修内容"/>
+                </label>
+                <label for="maintainReason">
+                    <span style="width: 130px;text-align: right">检修原因:</span>
+                    <input id="maintainReason" ng-model="maintainReason" type="text" placeholder="检修原因"/>
+                </label>
+                <label for="replaceSpare">
+                    <span style="width: 130px;text-align: right">主要备件/材料更换:<i>*</i></span>
+                    <input id="replaceSpare" ng-model="replaceSpare" type="text" placeholder="主要备件/材料更换"/>
+                </label>
+            </p>
+            <p>
+                <label for="repairCost">
+                    <span style="width: 130px;text-align: right">故障造成的成本损失:</span>
+                    <input id="repairCost" ng-model="repairCost" type="text" placeholder="故障造成的成本损失"/>
+                </label>
+                <label for="spareCost">
+                    <span style="width: 130px;text-align: right">备件材料费用:</span>
+                    <input id="spareCost" ng-model="spareCost" type="text" placeholder="备件材料费用"/>
+                </label>
+                <label for="maintainCost">
+                    <span style="width: 130px;text-align: right">检修工时费用:</span>
+                    <input id="maintainCost" ng-model="maintainCost" type="text" placeholder="检修工时费用"/>
+                </label>
+            </p>
+            <p style="text-align: left">
+                <label for="outRepairCost">
+                    <span style="width: 130px;text-align: right">外委费用:</span>
+                    <input id="outRepairCost" ng-model="outRepairCost" type="text" placeholder="外委费用"/>
+                </label>
+                <label for="totalCost">
+                    <span style="width: 130px;text-align: right">设备维护总成本:</span>
+                    <input id="totalCost" ng-model="totalCost" type="text" placeholder="设备维护总成本"/>
+                </label>
+            </p>
+        </div>
+        <div class="titleDiv">
+            <span class="tips">分析报告--大故障分析</span>
+            <div style="width: 99%;margin: auto">
+                <table style="width: 100%">
+                    <tr>
+                        <th style="display: flex;align-items: center;justify-content: space-between;">
+                            <span style="display: inline-block;width: auto;">问题A3报告</span>
+                        </th>
+                    </tr>
+                    <tr>
+                        <td style="text-align: left">
+                            <label for="reportUser">
+                                <span style="width: 130px;text-align: right;display: inline-block">报告人:</span>
+                                <input style="width: 133px;" id="reportUser" ng-model="reportUser" type="text" placeholder="请输入报告人"/>
+                            </label>
+                            <label for="reportTime">
+                                <span style="width: 130px;text-align: right;display: inline-block">报告日期:</span>
+                                <input style="width: 133px;" type="date" name="reportTime" id="reportTime" placeholder="yyyy-MM-dd" min="20160601 | date:'yyyyMMdd" max="20201231 | date:'yyyyMMdd" ng-model="reportTime">
+                            </label>
+                        </td>
+                    </tr>
+                </table>
+                <table style="width: 100%">
+                    <thead>
+                    <tr>
+                        <th>1.问题描述（定量描述：什么时间，什么地点，什么故障）</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td><textarea ng-model="problemDesc" id="problemDesc" style="width: 100%" placeholder="问题描述"></textarea></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <table style="width: 100%">
+                    <thead>
+                    <tr>
+                        <th>2.目标设定（量化要达到的目标）</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td><textarea ng-model="target" id="target" style="width: 100%" placeholder="目标设定"></textarea></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <table style="width: 100%">
+                    <thead>
+                    <tr>
+                        <th>3.问题分解及问题分析（问题树，鱼骨图，5个问什么进行分析）</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td><textarea ng-model="problemAanlysis" id="problemAanlysis" style="width: 100%" placeholder="问题分解及问题分析"></textarea></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <table style="width: 100%">
+                    <thead>
+                    <tr>
+                        <th colspan="6">4.改善计划<button style="margin-left: 20px" ng-click="addPlanMaintain()" class="btn">增加计划</button></th>
+                    </tr>
+                    <tr>
+                        <th>问题点</th>
+                        <th>改善措施</th>
+                        <th>责任人</th>
+                        <th>需完成时间</th>
+                        <th>实际完成时间</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="PlanMaintainDetail in PlanMaintainLists" ng-init="outerIndex=$index+1" class="{{$index}} sectionNew">
+                        <td>
+                            <input name="questionPoint{{outerIndex}}" id="questionPoint{{outerIndex}}" ng-model="PlanMaintainDetail.questionPoint" type="text" placeholder="请输入问题点{{outerIndex}}"/>
+                        </td>
+                        <td>
+                            <input name="ImprovementMeasures{{outerIndex}}" id="ImprovementMeasures{{outerIndex}}" ng-model="PlanMaintainDetail.ImprovementMeasures" type="text" placeholder="请输入改善措施{{outerIndex}}"/>
+                        </td>
+                        <td>
+                            <input name="headMan{{outerIndex}}" id="headMan{{outerIndex}}" ng-model="PlanMaintainDetail.headMan" type="text" placeholder="请输入责任人{{outerIndex}}"/>
+                        </td>
+                        <td>
+                            <input name="needFinishTime{{outerIndex}}" id="needFinishTime{{outerIndex}}" ng-model="PlanMaintainDetail.needFinishTime" type="date" placeholder="yyyy-MM-dd" min="20160601 | date:'yyyyMMdd" max="20201231 | date:'yyyyMMdd"/>
+                        </td>
+                        <td>
+                            <input name="actualFinishTime{{outerIndex}}" id="actualFinishTime{{outerIndex}}" ng-model="PlanMaintainDetail.actualFinishTime" type="date" placeholder="yyyy-MM-dd" min="20160601 | date:'yyyyMMdd" max="20201231 | date:'yyyyMMdd"/>
+                        </td>
+                        <!---->
+                        <!--<td>-->
+                            <!--<input type="date" name="planMaintainTimeStartDealChoose{{outerIndex}}" id="planMaintainTimeStartDealChoose{{outerIndex}}" placeholder="yyyy-MM-dd" min="20160601 | date:'yyyyMMdd" max="20201231 | date:'yyyyMMdd" required="" ng-model="maintainPersonDetail.planMaintainTimeStartDealChoose">-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--<input name="maintainUseTimeChoose{{outerIndex}}" id="maintainUseTimeChoose{{outerIndex}}" ng-model="maintainPersonDetail.maintainUseTimeChoose" type="number" min='0' placeholder=""/>-->
+                        <!--</td>-->
+                        <td><a ng-click="deletePlanMaintain(PlanMaintainDetail,$index)" href="javascript:void(0)">移除</a></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <table style="width: 100%">
+                    <thead>
+                    <tr>
+                        <th>5.结果跟踪（改善指标的跟踪）</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td><textarea ng-model="result" id="result" style="width: 100%" placeholder="问题分解及问题分析"></textarea></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <table style="width: 100%">
+                    <thead>
+                    <tr>
+                        <th>6.标准化和控制方法（改善后的方法标准化）</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td><textarea ng-model="standard" id="standard" style="width: 100%" placeholder="问题分解及问题分析"></textarea></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="titleDiv">
+            <span class="tips">问题卡--中故障分析（依据故障统计汇总表统计记录及设备故障分级和分析管理要求，确定使用问题卡对故障进行分析。）</span>
+            <div style="width: 99%;margin: auto">
+                <p>
+                    <label for="problem">
+                        <span style="width: 130px;text-align: right">问题:</span>
+                        <input id="problem" ng-model="problem" type="text" placeholder="请输入问题"/>
+                    </label>
+                    <label for="no">
+                        <span style="width: 130px;text-align: right">编号:</span>
+                        <input id="no" ng-model="no" type="text" placeholder="请输入编号"/>
+                    </label>
+                    <label for="auditUser">
+                        <span style="width: 130px;text-align: right">审核人<i>*</i></span>
+                        <input id="auditUser" ng-model="auditUser" type="text" placeholder="请输入审核人"/>
+                    </label>
+                </p>
+                <p>
+                    <label for="auditTime">
+                        <span style="width: 130px;text-align: right">审核日期:</span>
+                        <input style="width: 133px;" type="date" name="auditTime" id="auditTime" placeholder="yyyy-MM-dd" min="20160601 | date:'yyyyMMdd" max="20201231 | date:'yyyyMMdd" ng-model="auditTime">
+                    </label>
+                    <label for="workShop">
+                        <span style="width: 130px;text-align: right">车间/工区:</span>
+                        <input id="workShop" ng-model="workShop" type="text" placeholder="请输入车间/工区"/>
+                    </label>
+                    <label for="dutyPeople">
+                        <span style="width: 130px;text-align: right">责任人:</span>
+                        <input id="dutyPeople" ng-model="dutyPeople" type="text" placeholder="检修工时费用"/>
+                    </label>
+                </p>
+                <table style="width: 100%">
+                    <thead>
+                    <tr>
+                        <th>1.现象描述</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td><textarea ng-model="problemDesc" id="problemDesc" style="width: 100%" placeholder="现象描述"></textarea></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <table style="width: 100%">
+                    <thead>
+                    <tr>
+                        <th>2.根本原因分析</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td><textarea ng-model="problemAanlysis" id="problemAanlysis" style="width: 100%" placeholder="现象描述"></textarea></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <table style="width: 100%">
+                    <thead>
+                    <tr>
+                        <th colspan="5">3.解决方案及行动计划<button style="margin-left: 20px" ng-click="addPlanAndWayMaintain()" class="btn">增加行动计划</button></th>
+                    </tr>
+                    <tr>
+                        <th>序号</th>
+                        <th>方案及计划</th>
+                        <th>时间</th>
+                        <th>责任人</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="PlanAndWayMaintainDetail in PlanAndWayMaintainLists" ng-init="outerIndex=$index+1" class="{{$index}} sectionNew">
+                        <td>
+                            <input name="playNo{{outerIndex}}" id="playNo{{outerIndex}}" ng-model="PlanAndWayMaintainDetail.playNo" type="text" placeholder="请输入序号{{outerIndex}}"/>
+                        </td>
+                        <td>
+                            <input name="planAndWay{{outerIndex}}" id="planAndWay{{outerIndex}}" ng-model="PlanAndWayMaintainDetail.planAndWay" type="text" placeholder="请输入方案及计划{{outerIndex}}"/>
+                        </td>
+                        <td>
+                            <input type="date" name="planDate{{outerIndex}}" id="planDate{{outerIndex}}" placeholder="yyyy-MM-dd" min="20160601 | date:'yyyyMMdd" max="20201231 | date:'yyyyMMdd" required="" ng-model="PlanAndWayMaintainDetail.planDate">
+                        </td>
+                        <td>
+                            <input name="responseMan{{outerIndex}}" id="responseMan{{outerIndex}}" ng-model="PlanAndWayMaintainDetail.responseMan" type="text" placeholder="请输入责任人{{outerIndex}}"/>
+                        </td>
+                        <!---->
+                        <!--<td>-->
+                        <!--<input type="date" name="planMaintainTimeStartDealChoose{{outerIndex}}" id="planMaintainTimeStartDealChoose{{outerIndex}}" placeholder="yyyy-MM-dd" min="20160601 | date:'yyyyMMdd" max="20201231 | date:'yyyyMMdd" required="" ng-model="maintainPersonDetail.planMaintainTimeStartDealChoose">-->
+                        <!--</td>-->
+                        <!--<td>-->
+                        <!--<input name="maintainUseTimeChoose{{outerIndex}}" id="maintainUseTimeChoose{{outerIndex}}" ng-model="maintainPersonDetail.maintainUseTimeChoose" type="number" min='0' placeholder=""/>-->
+                        <!--</td>-->
+                        <td><a ng-click="deletePlanAndWayMaintain(PlanAndWayMaintainDetail,$index)" href="javascript:void(0)">移除</a></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <table style="width: 100%">
+                    <thead>
+                    <tr>
+                        <th>4.问题解决的结果</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td><textarea ng-model="result" id="result" style="width: 100%" placeholder="问题解决的结果"></textarea></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="submitBtn1" style="text-align: center;padding-left: 40px;">
+            <button type="button" ng-click="failureAnalysisSure()" value="" class="btn">保存</button>
+            <button type="button" value="" class="btn" onClick="hideDiv('failureAnalysisContainer')">取消</button>
+        </div>
+    </div>
+</div>
+<!--执行润滑计划 end-->
 <script type="text/javascript">
     $(document).ready(function(){
         $(".click").click(function(){

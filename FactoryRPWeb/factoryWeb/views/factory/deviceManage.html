@@ -198,15 +198,15 @@
                     <thead>
                     <tr>
                         <th style="text-align: left" colspan="17">
-                            <!--<a ng-click="addTroubleRecord()" href="javascript:void(0)" class="smallButton">故障提出</a>-->
-                            <!--<a ng-click="dealTroubleRecord()" href="javascript:void(0)" class="smallButton">故障处理</a>-->
-                            <!--<a ng-click="deleteAllTroubleRecords()" href="javascript:void(0)" class="smallButton">故障删除</a>-->
+                            <a ng-click="addTroubleRecord()" href="javascript:void(0)" class="smallButton">故障提出</a>
+                            <a ng-click="dealTroubleRecord()" href="javascript:void(0)" class="smallButton">故障处理</a>
+                            <a ng-click="deleteAllTroubleRecords()" href="javascript:void(0)" class="smallButton">故障删除</a>
                             <a ng-click="importTroubleRecord()" href="javascript:void(0)" class="smallButton">导出EXCEL</a>
                         </th>
                     </tr>
                     <tr>
-                        <!--<th style="min-width:50px;">全选<input style="vertical-align: middle;margin-left: 5px" type="checkbox" value="1" onclick="selAll1(this)" id="allSelected"/></th>-->
-                        <th>序号</th>
+                        <th style="min-width:50px;">全选<input style="vertical-align: middle;margin-left: 5px" type="checkbox" value="1" onclick="selAll1(this)" id="allSelected"/></th>
+                        <!--<th>序号</th>-->
                         <th>故障状态</th>
                         <th>发现时间</th>
                         <th>记录时间</th>
@@ -242,13 +242,13 @@
                     </tbody>
                     <tfoot>
                     <tr>
-                        <!--<td>-->
-                            <!--<a href="javascript:void(0)" class="resBtn deleteBtn" ng-click="deleteAllTroubleRecords(orderDetail)">-->
-                                <!--<img src="image/comm/resBtnDelete.png" alt="删除"/>-->
-                                <!--<b class="title">删除</b>-->
-                            <!--</a>-->
-                        <!--</td>-->
-                        <td style="text-align: center" colspan="18"><tm-pagination conf="paginationConf1"></tm-pagination></td>
+                        <td>
+                            <a href="javascript:void(0)" class="resBtn deleteBtn" ng-click="deleteAllTroubleRecords(orderDetail)">
+                                <img src="image/comm/resBtnDelete.png" alt="删除"/>
+                                <b class="title">删除</b>
+                            </a>
+                        </td>
+                        <td style="text-align: center" colspan="17"><tm-pagination conf="paginationConf1"></tm-pagination></td>
                     </tr>
                     </tfoot>
                 </table>
@@ -264,7 +264,7 @@
                             <a ng-click="addMaintenanceRecord()" href="javascript:void(0)" class="smallButton">添加计划</a>
                             <!--<a ng-click="addTroubleRecord()" href="javascript:void(0)" class="smallButton">批量添加</a>-->
                             <a ng-click="deleteAllMaintenanceRecord()" href="javascript:void(0)" class="smallButton">删除计划</a>
-                            <!--<a ng-click="dealAllMaintenanceRecords()" href="javascript:void(0)" class="smallButton">执行计划</a>-->
+                            <a ng-click="dealAllMaintenanceRecords()" href="javascript:void(0)" class="smallButton">执行计划</a>
                             <a ng-click="importTroubleRecord()" href="javascript:void(0)" class="smallButton">导出EXCEL</a>
                         </th>
                     </tr>

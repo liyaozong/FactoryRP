@@ -504,6 +504,30 @@ factoryParameterSettingApp.factory('factoryParameterSettingService', function($r
         });
     };
     /*首页展示巡检计划数量和列表 end*/
+    /*新增故障分析报告--WEB start*/
+    var _saveTroubleAnalysis= function(Param,successFunc){
+        var saveTroubleAnalysis = $resource(UrlService.getUrl('troubleRecordServe') + 'troubleRecord/saveTroubleAnalysis');
+        saveTroubleAnalysis.save(Param,function (data) {
+            if (successFunc) {
+                successFunc(data);
+            }
+        }, function (err) {
+
+        });
+    };
+    /*新增故障分析报告--WEB end*/
+    /*web端查询故障分析报告 start*/
+    var _getTroubleAnalysis= function(Param,successFunc){
+        var getTroubleAnalysis = $resource(UrlService.getUrl('troubleRecordServe') + 'troubleRecord/getTroubleAnalysis');
+        getTroubleAnalysis.get(Param,function (data) {
+            if (successFunc) {
+                successFunc(data);
+            }
+        }, function (err) {
+
+        });
+    };
+    /*web端查询故障分析报告 end*/
     return {
         saveContactCompany:_saveContactCompany,
         deleteContactCompany:_deleteContactCompany,
@@ -544,6 +568,8 @@ factoryParameterSettingApp.factory('factoryParameterSettingService', function($r
         indexTroubleCount:_indexTroubleCount,
         indexMaintainPlan:_indexMaintainPlan,
         spotInspectionPlanIndex:_spotInspectionPlanIndex,
+        saveTroubleAnalysis:_saveTroubleAnalysis,
+        getTroubleAnalysis:_getTroubleAnalysis,
         queryOrder: function(queryParam, successFunc) {
             queryOrder(queryParam, successFunc);
 

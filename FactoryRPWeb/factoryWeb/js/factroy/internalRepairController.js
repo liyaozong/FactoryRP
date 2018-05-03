@@ -1199,6 +1199,144 @@ factoryParameterSettingApp.controller('InternalRepairController',function ($scop
         popupDiv('deviceRecordBalanceDetail');
     };
     /*查看详情 end*/
+    /*改善计划 start*/
+    $scope.getTroubleAnalysisCommon=function (troubleRecordId) {
+        factoryParameterSettingService.getTroubleAnalysis({
+            'troubleRecordId':troubleRecordId
+        }, function(response){
+            if(response.data!=''&&response.data!=null&&response.data!=undefined&&response.errorCode=='000000'){
+                $scope.failureAnalysisRecordDetail=response.data;
+                console.log($scope.failureAnalysisRecordDetail);
+            }else{
+                console.log(response.errorMessage);
+            }
+        });
+    };
+    $scope.dealFailureAnalysisRecord=function (res) {
+        $scope.troubleRecordId=res.id;
+        $scope.getTroubleAnalysisCommon($scope.troubleRecordId);
+        popupDiv('failureAnalysisContainer');
+        $scope.PlanMaintainLists=[];//改善计划列表
+        var maintainPersonList={
+            questionPoint:'',
+            ImprovementMeasures:'',
+            headMan:'',
+            needFinishTime:'',
+            actualFinishTime:''
+        };
+        $scope.PlanMaintainLists.push(maintainPersonList);
+        $scope.addPlanMaintain=function () {
+            var maintainPersonList={
+                questionPoint:'',
+                ImprovementMeasures:'',
+                headMan:'',
+                needFinishTime:'',
+                actualFinishTime:''
+            };
+            $scope.PlanMaintainLists.push(maintainPersonList);
+        };
+        $scope.deletePlanMaintain=function (res,$index) {
+            $scope.PlanMaintainLists.splice($index,1);
+        };
+
+        $scope.PlanAndWayMaintainLists=[];//解决方案及行动计划列表
+        var planAndWayMaintainLists={
+            playNo:'',
+            planAndWay:'',
+            planDate:'',
+            responseMan:''
+        };
+        $scope.PlanAndWayMaintainLists.push(planAndWayMaintainLists);
+        $scope.addPlanAndWayMaintain=function () {
+            var planAndWayMaintainLists={
+                playNo:'',
+                planAndWay:'',
+                planDate:'',
+                responseMan:''
+            };
+            $scope.PlanAndWayMaintainLists.push(planAndWayMaintainLists);
+        };
+        $scope.deletePlanAndWayMaintain=function (res,$index) {
+            $scope.PlanAndWayMaintainLists.splice($index,1);
+        };
+
+        $scope.failureAnalysisSure=function () {
+            /*改善计划列表 start*/
+            console.log($scope.PlanMaintainLists);//改善计划列表
+            $scope.improvePlans=[];//改善计划列表
+            for (var j = 0; j < $scope.PlanMaintainLists.length; j++) {
+                var obj = {
+                    problemPonit: $scope.PlanMaintainLists[j].questionPoint,//问题点
+                    improveWay: $scope.PlanMaintainLists[j].ImprovementMeasures,//改善措施
+                    dutyPeople: $scope.PlanMaintainLists[j].headMan,//责任人
+                    needEndTime: $filter('date')($scope.PlanMaintainLists[j].needFinishTime,'yyyy-MM-dd HH:mm:ss'), //需要完成时间 ,
+                    realEndTime: $filter('date')($scope.PlanMaintainLists[j].actualFinishTime,'yyyy-MM-dd HH:mm:ss')// 实际完成时间
+                };
+                $scope.improvePlans.push(obj);
+            }
+            console.log($scope.improvePlans);
+            /*改善计划列表 end*/
+            /*解决方案及行动计划列表 start*/
+            console.log($scope.PlanAndWayMaintainLists);//解决方案及行动计划列表
+            $scope.solutionPlans=[];//解决方案及行动计划列表
+            for (var j = 0; j < $scope.PlanAndWayMaintainLists.length; j++) {
+                var obj = {
+                    no: $scope.PlanAndWayMaintainLists[j].playNo,//序号
+                    plan: $scope.PlanAndWayMaintainLists[j].planAndWay,//方案及计划
+                    dealTime: $filter('date')($scope.PlanAndWayMaintainLists[j].planDate,'yyyy-MM-dd HH:mm:ss'), //	时间
+                    dutyPeople: $scope.PlanAndWayMaintainLists[j].responseMan//责任人
+                };
+                $scope.solutionPlans.push(obj);
+            }
+            console.log($scope.solutionPlans);
+            /*解决方案及行动计划列表 end*/
+            var pa = {
+                id:$scope.troubleRecordId,
+                maintainRemark:$scope.maintainRemark,//主要检修内容
+                maintainReason:$scope.maintainReason,//检修原因
+                replaceSpare:$scope.replaceSpare,//主要备件/材料更换
+                repairCost:$scope.repairCost,//故障造成的成本损失
+                spareCost:$scope.spareCost,//备件材料费用
+                maintainCost:$scope.maintainCost,//检修工时费用
+                outRepairCost:$scope.outRepairCost,//外委费用
+                totalCost:$scope.totalCost,//设备维护总成本
+                reportUser:$scope.reportUser,//报告人
+                reportTime:$filter('date')($scope.reportTime,'yyyy-MM-dd HH:mm:ss'),//报告日期
+                problemDesc:$scope.problemDesc,//问题描述
+                target:$scope.target,//目标设定
+                problemAanlysis:$scope.problemAanlysis,//问题分解及问题分析
+                improvePlans:$scope.improvePlans,//改善计划
+                result:$scope.result,//结果跟踪（改善指标的跟踪）
+                standard:$scope.standard,//标准化和控制方法
+                problem:$scope.problem,//问题
+                no:$scope.no,//编号
+                auditUser:$scope.auditUser,//审核人
+                auditTime:$filter('date')($scope.auditTime,'yyyy-MM-dd HH:mm:ss'),//审核日期
+                workShop:$scope.workShop,//车间/工区
+                dutyPeople:$scope.dutyPeople,//责任人
+                problemDesc:$scope.problemDesc,//现象描述
+                problemAanlysis:$scope.problemAanlysis,//根本原因分析
+                solutionPlans:$scope.solutionPlans,//解决方案及行动计划
+                result:$scope.result//问题解决的结果
+            };
+            factoryParameterSettingService.saveTroubleAnalysis(pa, function(response){
+                if(response.data!=''&&response.data!=null&&response.data!=undefined&&response.errorCode=='000000'){
+                    hideDiv('failureAnalysisContainer');
+                    popupDiv('SaveSuccess');
+                    $('.SaveSuccess .Message').html(response.errorMessage);
+                }else{
+                    hideDiv('failureAnalysisContainer');
+                    popupDiv('SaveSuccess');
+                    $('.SaveSuccess .Message').html(response.errorMessage);
+                }
+            });
+        };
+    };
+    /*改善计划 end*/
+    $scope.reload=function () {
+        $scope.onQuery();
+        $scope.getTroubleAnalysisCommon();
+    };
     $scope.$watch('paginationConf.currentPage + paginationConf.itemsPerPage', $scope.onQuery);
     $scope.$watch('paginationConf1.currentPage + paginationConf1.itemsPerPage', $scope.queryTroubleRecordList);
     $scope.$watch('paginationConf2.currentPage + paginationConf2.itemsPerPage', $scope.queryMaintenanceRecordList);
