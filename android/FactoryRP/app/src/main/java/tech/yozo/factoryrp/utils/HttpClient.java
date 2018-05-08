@@ -442,6 +442,7 @@ public class HttpClient {
             case REQUEST_TROUBLE_WAIT_VALIDATE:
                 url = TROUBLE_WAIT_VALIDATE;
                 break;
+            case Constant.FOR_DEVICE_ID:
             case REQUEST_TROUBLE_LIST_BY_DEVICEID:
                 url = TROUBLE_LIST_BY_DEVICEID;
                 break;
@@ -746,6 +747,7 @@ public class HttpClient {
                         case REQUEST_TROUBLE_WAIT_VALIDATE:
                         case REQUEST_TROUBLE_WAIT_ASSIGN:
                         case REQUEST_TROUBLE_LIST_BY_DEVICEID:
+                        case Constant.FOR_DEVICE_ID:
                             List<WaitAuditWorkOrderVo> list = JSONArray.parseArray(response.getJSONObject("data").getString("list"), WaitAuditWorkOrderVo.class);
                             mListener.onHttpSuccess(mRequestType, null, list);
                             break;

@@ -226,26 +226,26 @@ public class TroubleReportActivity extends AppCompatActivity implements HttpClie
                 break;
             }
             case R.id.et_fault_time: {
-                if (dateDialog == null) {
-                    dateDialog = new TimePickerDialog(this, new TimePickerDialog.TimePickerDialogInterface() {
-                        @Override
-                        public void positiveListener() {
-                            StringBuffer buffer = new StringBuffer();
-                            buffer.append(dateDialog.getYear()).append("年")
-                                    .append(dateDialog.getMonth()).append("月")
-                                    .append(dateDialog.getDay()).append("日 ")
-                                    .append(dateDialog.getHour()).append(":")
-                                    .append(dateDialog.getMinute());
-                            etFaultTime.setText(buffer.toString());
-                        }
-
-                        @Override
-                        public void negativeListener() {
-
-                        }
-                    });
-                }
-                dateDialog.showDateAndTimePickerDialog();
+//                if (dateDialog == null) {
+//                    dateDialog = new TimePickerDialog(this, new TimePickerDialog.TimePickerDialogInterface() {
+//                        @Override
+//                        public void positiveListener() {
+//                            StringBuffer buffer = new StringBuffer();
+//                            buffer.append(dateDialog.getYear()).append("年")
+//                                    .append(dateDialog.getMonth()).append("月")
+//                                    .append(dateDialog.getDay()).append("日 ")
+//                                    .append(dateDialog.getHour()).append(":")
+//                                    .append(dateDialog.getMinute());
+//                            etFaultTime.setText(buffer.toString());
+//                        }
+//
+//                        @Override
+//                        public void negativeListener() {
+//
+//                        }
+//                    });
+//                }
+//                dateDialog.showDateAndTimePickerDialog();
                 break;
             }
         }

@@ -3,14 +3,14 @@ package tech.yozo.factoryrp.ui;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
-import android.text.InputType;
 import android.text.TextWatcher;
-import android.view.Gravity;
+import android.util.Log;
 import android.view.View;
 import android.widget.*;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import com.alibaba.fastjson.JSON;
 import com.loopj.android.http.RequestParams;
 import tech.yozo.factoryrp.R;
 import tech.yozo.factoryrp.ui.dialog.LoadingDialog;
@@ -64,9 +64,12 @@ public class InspectDetailActivity extends AppCompatActivity implements HttpClie
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.button_inspect_detail_save: {
-                if(inspectionItemAddReqList.size() == 0) {
-                    Toast.makeText(this, R.string.failure_save_inspect, Toast.LENGTH_SHORT).show();
-                    return;
+                for (InspectionItemAddReq item :
+                        inspectionItemAddReqList) {
+                    if(item.getRecordResult() == null) {
+                        Toast.makeText(this, R.string.failure_save_inspect, Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                 }
 
                 LoadingDialog.Builder builder = new LoadingDialog.Builder(this)
@@ -74,6 +77,7 @@ public class InspectDetailActivity extends AppCompatActivity implements HttpClie
                 dialog = builder.create();
                 dialog.show();
 
+//                Log.e("InspectDetailActivity",JSON.toJSONString(inspectionItemAddReqList));
                 InspectRecordSubmitReq req = new InspectRecordSubmitReq();
                 req.setPlanId(taskID);
                 req.setDeviceCode(deviceCode);
@@ -98,6 +102,9 @@ public class InspectDetailActivity extends AppCompatActivity implements HttpClie
         if(item.getInspectionStatus() != 2) {
             mCount++;
         }
+        final InspectionItemAddReq req = new InspectionItemAddReq();
+        req.setItemId(item.getItemId());
+        inspectionItemAddReqList.add(req);
 
         if ("options".equalsIgnoreCase(item.getRecordTypeName()) || "status".equalsIgnoreCase(item.getRecordTypeName())) { //勾选
             View view = getLayoutInflater().inflate(R.layout.item_inspect_option_layout, null);
@@ -113,6 +120,13 @@ public class InspectDetailActivity extends AppCompatActivity implements HttpClie
                 }
                 radioGroup.addView(button);
             }
+            radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                    RadioButton button = (RadioButton) radioGroup.findViewById(i);
+                    req.setRecordResult(button.getText().toString());
+                }
+            });
             llInspectDeviceItem.addView(view);
         } else if ("table".equalsIgnoreCase(item.getRecordTypeName())) { //列表
             View view = getLayoutInflater().inflate(R.layout.item_inspect_spinner_layout, null);
@@ -122,7 +136,19 @@ public class InspectDetailActivity extends AppCompatActivity implements HttpClie
             if(item.getInspectionStatus() != 2) {
                 spinner.setEnabled(false);
             }
-            spinner.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, item.getInputLimitValue()));
+            final ArrayAdapter adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, item.getInputLimitValue());
+            spinner.setAdapter(adapter);
+            spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                    req.setRecordResult((String) adapter.getItem(i));
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
+
+                }
+            });
             llInspectDeviceItem.addView(view);
         } else if ("number".equalsIgnoreCase(item.getRecordTypeName())) { //数值
             View view = getLayoutInflater().inflate(R.layout.item_inspect_number_layout, null);
@@ -133,6 +159,22 @@ public class InspectDetailActivity extends AppCompatActivity implements HttpClie
             if(item.getInspectionStatus() != 2) {
                 editText.setEnabled(false);
             }
+            editText.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable editable) {
+                    req.setRecordResult(editable.toString());
+                }
+            });
             llInspectDeviceItem.addView(view);
         } else if ("verbal_description".equalsIgnoreCase(item.getRecordTypeName())) { //文字描述
             View view = getLayoutInflater().inflate(R.layout.item_inspect_text_layout, null);
@@ -143,6 +185,22 @@ public class InspectDetailActivity extends AppCompatActivity implements HttpClie
             if(item.getInspectionStatus() != 2) {
                 editText.setEnabled(false);
             }
+            editText.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable editable) {
+                    req.setRecordResult(editable.toString());
+                }
+            });
             llInspectDeviceItem.addView(view);
         }
 

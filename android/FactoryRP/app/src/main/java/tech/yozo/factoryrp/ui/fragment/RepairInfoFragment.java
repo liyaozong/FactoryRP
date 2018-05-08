@@ -117,6 +117,9 @@ public class RepairInfoFragment extends BaseFragment implements HttpClient.OnHtt
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_repair_info, container, false);
         unbinder = ButterKnife.bind(this, view);
+        bINotRepair.setVisibility(View.GONE);
+        bIRepair.setVisibility(View.GONE);
+
         tvDeviceName.setText(mParam_obj.getDeviceName());
         tvDeviceCode.setText(mParam_obj.getDeviceCode());
         tvDeviceType.setText(mParam_obj.getSpecification());
@@ -131,9 +134,9 @@ public class RepairInfoFragment extends BaseFragment implements HttpClient.OnHtt
         tvTroubleSubmitter.setText(mParam_obj.getCreateUser());
         tvMaintainer.setText(mParam_obj.getRepairUserName());
         tvTroubleDesc.setText(mParam_obj.getRemark());
-        if (HttpClient.getInstance().getAuthUser().getUserName().equals(mParam_obj.getRepairUserName())) {
-            bIRepair.setVisibility(View.GONE);
-        }
+//        if (HttpClient.getInstance().getAuthUser().getUserName().equals(mParam_obj.getRepairUserName())) {
+//            bIRepair.setVisibility(View.GONE);
+//        }
 
         switch (mParam_mode) {
             case HttpClient.REQUEST_TROUBLE_WAIT_REPAIR:
@@ -229,13 +232,13 @@ public class RepairInfoFragment extends BaseFragment implements HttpClient.OnHtt
         switch (requestType) {
             case HttpClient.REQUEST_REPAIR_GRAB_URL:
                 tvMaintainer.setText(HttpClient.getInstance().getAuthUser().getUserName());
-                bIRepair.setEnabled(false);
-                bINotRepair.setEnabled(true);
+//                bIRepair.setEnabled(false);
+//                bINotRepair.setEnabled(true);
                 break;
             case HttpClient.REQUEST_REPAIR_GIVEUP_URL:
                 tvMaintainer.setText("");
-                bIRepair.setEnabled(true);
-                bINotRepair.setEnabled(false);
+//                bIRepair.setEnabled(true);
+//                bINotRepair.setEnabled(false);
                 break;
             default:
                 break;

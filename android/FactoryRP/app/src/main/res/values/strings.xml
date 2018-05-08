@@ -25,7 +25,7 @@
     <string name="failure_request">请求错误，请查看手机网络或服务器状态</string>
     <string name="failure_camera_permission">没有授权，无法使用照相机</string>
     <string name="failure_click">请扫描对应设备条码进行点检</string>
-    <string name="failure_save_inspect">该设备已经完成了点检，请勿重复提交</string>
+    <string name="failure_save_inspect">请完成所有点检项之后再提交</string>
     <string name="failure_assign">只能派工给一个维修工程师</string>
 
     <string name="hint_parts_count">最多只能添加10个。</string>
