@@ -7,10 +7,10 @@ var myApp = angular.module('myApp.Common', [
 ]).factory('UrlService', function($resource, $log) {
     var allUrlInfo=[];
     /*开发环境 start*/
-    allUrlInfo.push({name: 'authorizationNew',  url:'http://47.96.28.88:9550/api/authorization/'});//系统权限相关接口
-    allUrlInfo.push({name: 'factoryServe',  url:'http://47.96.28.88:9550/api/'});//系统权限相关接口
-    allUrlInfo.push({name: 'mainServe',  url:'http://47.96.28.88:9550/main/'});//main控制器
-    allUrlInfo.push({name: 'troubleRecordServe',  url:'http://47.96.28.88:9550/'});//main控制器
+    allUrlInfo.push({name: 'authorizationNew',  url: httpUrl + '/api/authorization/'});//系统权限相关接口
+    allUrlInfo.push({name: 'factoryServe',  url: httpUrl + '/api/'});//系统权限相关接口
+    allUrlInfo.push({name: 'mainServe',  url: httpUrl + '/main/'});//main控制器
+    allUrlInfo.push({name: 'troubleRecordServe',  url: httpUrl + '/'});//main控制器
     /*开发环境 end*/
     return {
         getUrl: function(module) {

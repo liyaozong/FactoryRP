@@ -30,10 +30,10 @@ public class AuthWebUtil {
 	private static void preSetResponse(ServletResponse response) {
 		response.setCharacterEncoding("UTF-8");
 		response.setContentType("application/json; charset=utf-8");
-		if (response instanceof HttpServletResponse) {
-			((HttpServletResponse) response).addHeader("Access-Control-Allow-Origin", "*");
-			((HttpServletResponse) response).addHeader("Access-Control-Allow-Methods", "GET,POST,OPTIONS,PUT,DELETE");
-		}
+//		if (response instanceof HttpServletResponse) {
+//			((HttpServletResponse) response).addHeader("Access-Control-Allow-Origin", "*");
+//			((HttpServletResponse) response).addHeader("Access-Control-Allow-Methods", "GET,POST,OPTIONS,PUT,DELETE");
+//		}
 	}
 
 

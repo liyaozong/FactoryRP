@@ -1,0 +1,60 @@
+Manifest-Version: 1.0
+Class-Path: jackson-core-asl-1.8.3.jar hibernate-core-5.0.12.Final.jar
+  logback-core-1.1.11.jar jandex-2.0.0.Final.jar spring-context-suppor
+ t-4.3.9.RELEASE.jar commons-pool2-2.4.2.jar jettison-1.1.jar springfo
+ x-spring-web-2.7.0.jar jackson-mapper-asl-1.8.3.jar jackson-datatype-
+ jdk8-2.8.8.jar shiro-lang-1.4.0.jar jackson-core-2.8.8.jar shiro-ehca
+ che-1.4.0.jar commons-collections-3.2.2.jar netty-3.2.5.Final.jar jul
+ -to-slf4j-1.7.25.jar spring-aop-4.3.9.RELEASE.jar spring-data-keyvalu
+ e-1.1.11.RELEASE.jar aopalliance-1.0.jar spring-orm-4.3.9.RELEASE.jar
+  javassist-3.20.0-GA.jar spring-boot-devtools-1.4.7.RELEASE.jar shiro
+ -event-1.4.0.jar httpclient-4.5.3.jar tomcat-embed-websocket-8.5.15.j
+ ar swagger-models-1.5.13.jar spring-jdbc-4.3.9.RELEASE.jar hibernate-
+ commons-annotations-5.0.1.Final.jar shiro-config-core-1.4.0.jar jacks
+ on-databind-2.8.8.jar spring-plugin-core-1.2.0.RELEASE.jar commons-fi
+ leupload-1.3.3.jar hibernate-jpa-2.1-api-1.0.0.Final.jar httpcore-4.4
+ .6.jar spring-plugin-metadata-1.2.0.RELEASE.jar classmate-1.3.3.jar s
+ tax-api-1.0-2.jar spring-webmvc-4.3.9.RELEASE.jar spring-context-4.3.
+ 9.RELEASE.jar spring-boot-starter-data-jpa-1.4.7.RELEASE.jar spring-b
+ oot-autoconfigure-1.4.7.RELEASE.jar springfox-swagger2-2.7.0.jar spri
+ ng-expression-4.3.9.RELEASE.jar guice-3.0.jar tomcat-juli-8.5.15.jar 
+ ehcache-2.10.4.jar tools.jar javax.transaction-api-1.2.jar aliyun-jav
+ a-sdk-ecs-4.2.0.jar aliyun-sdk-oss-3.0.0.jar logback-classic-1.1.11.j
+ ar stax-api-1.0.1.jar hibernate-entitymanager-5.0.12.Final.jar json-2
+ 0140107.jar spring-hateoas-0.20.0.RELEASE.jar jcl-over-slf4j-1.7.25.j
+ ar xml-apis-1.4.01.jar shiro-core-1.4.0.jar springfox-spi-2.7.0.jar a
+ ntlr-2.7.7.jar spring-oxm-4.3.9.RELEASE.jar springfox-swagger-common-
+ 2.7.0.jar reflections-0.9.11.jar spring-core-4.3.9.RELEASE.jar spring
+ -boot-starter-data-redis-1.4.7.RELEASE.jar spring-boot-starter-hateoa
+ s-1.4.7.RELEASE.jar lombok-1.16.8.jar jackson-module-parameter-names-
+ 2.8.8.jar shiro-crypto-hash-1.4.0.jar jaxb-api-2.2.2.jar spring-boot-
+ starter-aop-1.4.7.RELEASE.jar guava-18.0.jar spring-boot-starter-web-
+ 1.4.7.RELEASE.jar hibernate-validator-5.2.5.Final.jar spring-data-jpa
+ -1.10.11.RELEASE.jar jdom-1.1.jar validation-api-1.1.0.Final.jar drui
+ d-1.1.3.jar mapstruct-1.1.0.Final.jar fastjson-1.2.38.jar ehcache-cor
+ e-2.6.11.jar jboss-logging-3.3.1.Final.jar spring-data-commons-1.12.1
+ 1.RELEASE.jar activation-1.1.jar commons-io-2.6.jar springfox-core-2.
+ 7.0.jar dom4j-1.6.1.jar byte-buddy-1.6.14.jar springfox-swagger-ui-2.
+ 7.0.jar spring-beans-4.3.9.RELEASE.jar spring-boot-configuration-proc
+ essor-1.4.7.RELEASE.jar spring-boot-starter-tomcat-1.4.7.RELEASE.jar 
+ jersey-core-1.9.jar commons-codec-1.9.jar spring-aspects-4.3.9.RELEAS
+ E.jar guice-multibindings-3.0.jar shiro-spring-1.4.0.jar spring-boot-
+ actuator-1.4.7.RELEASE.jar jersey-json-1.9.jar snakeyaml-1.17.jar shi
+ ro-cache-1.4.0.jar spring-data-redis-1.7.11.RELEASE.jar bcprov-jdk15o
+ n-1.59.jar jackson-datatype-jsr310-2.8.6.jar shiro-web-1.4.0.jar jaxb
+ -impl-2.2.3-1.jar mysql-connector-java-5.1.6.jar spring-boot-starter-
+ cache-1.4.7.RELEASE.jar jackson-xc-1.8.3.jar spring-boot-1.4.7.RELEAS
+ E.jar springfox-schema-2.7.0.jar shiro-crypto-cipher-1.4.0.jar jconso
+ le.jar shiro-crypto-core-1.4.0.jar hibernate-ehcache-5.0.12.Final.jar
+  slf4j-api-1.7.25.jar log4j-over-slf4j-1.7.25.jar spring-tx-4.3.9.REL
+ EASE.jar shiro-guice-1.4.0.jar spring-web-4.3.9.RELEASE.jar jackson-j
+ axrs-1.8.3.jar spring-boot-starter-1.4.7.RELEASE.jar commons-beanutil
+ s-1.9.3.jar dubbo-2.5.3.jar aspectjweaver-1.8.10.jar spring-boot-star
+ ter-logging-1.4.7.RELEASE.jar jedis-2.8.2.jar spring-boot-starter-jdb
+ c-1.4.7.RELEASE.jar aliyun-java-sdk-ram-3.0.0.jar aliyun-java-sdk-cor
+ e-3.4.0.jar swagger-annotations-1.5.13.jar tomcat-embed-el-8.5.15.jar
+  aliyun-java-sdk-sts-3.0.0.jar tomcat-jdbc-8.5.15.jar tomcat-embed-co
+ re-8.5.15.jar jackson-annotations-2.8.8.jar shiro-config-ogdl-1.4.0.j
+ ar javax.inject-1.jar
+Main-Class: tech.yozo.factoryrp.WebApplication
+

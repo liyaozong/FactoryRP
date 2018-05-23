@@ -31,7 +31,6 @@
 <script type="text/javascript" src="js/comm/ng-file-upload-shim.min.js"></script>
 <script type="text/javascript" src="bower_components/angular/angular-sanitize.min.js"></script>
 
-<script type="text/javascript" src="js/comm/UrlService.js"></script>
 <script type="text/javascript" src="js/comm/highcharts.js"></script>
 
 <!--<script src="js/app.min.js"></script>-->
@@ -41,6 +40,12 @@
 <script type="text/javascript" src="bower_components/angular/tm.pagination.js"></script>
 <!--引入 css js问件时加随机数   防止浏览器缓存start-->
 <script type="text/javascript">
+    var httpUrl="http://localhost:9550"; //local
+    // var httpUrl="http://47.96.28.88:9550";  //dev
+    // var httpUrl="http://39.104.71.127:9550";  //yinhe
+    // var httpUrl="http://47.104.217.10:9550";  //yuntu demo
+
+
     document.write("<s" + "cript type='text/javascript' src='js/app.min.js?" + Math.random() + "'></s" + "cript>");
     document.write("<s" + "cript type='text/javascript' src='js/comm/common.js?" + Math.random() + "'></s" + "cript>");
     document.write("<s" + "cript type='text/javascript' src='js/comm/cloud.js?" + Math.random() + "'></s" + "cript>");
@@ -49,8 +54,11 @@
     document.write("<s" + "cript type='text/javascript' src='bower_components/angular/tm.pagination.js?" + Math.random() + "'></s" + "cript>");
 </script>
 <!--引入 css js问件时加随机数   防止浏览器缓存end-->
-<script src="app.js"></script>
-<script src="js/home/HttpIntercepters.js"></script>
+
+<script type="text/javascript" src="app.js"></script>
+<script type="text/javascript" src="js/comm/UrlService.js"></script>
+
+<script type="text/javascript" src="js/home/HttpIntercepters.js"></script>
 <script type="text/javascript" src="js/home/AuthorizationService.js"></script>
 <script type="text/javascript" src="js/home/HomeController.js"></script>
 <script type="text/javascript" src="js/home/LoginController.js"></script>

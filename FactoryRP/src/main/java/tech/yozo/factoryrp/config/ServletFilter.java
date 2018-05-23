@@ -58,6 +58,7 @@ public class ServletFilter implements Filter {
 
         StringBuilder logBuffer = new StringBuilder();
         this.logRequestParameters(logBuffer, req);
+
         log.info(logBuffer.toString());
         try {
             chain.doFilter(req, res);

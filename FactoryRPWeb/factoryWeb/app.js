@@ -13,7 +13,7 @@ var myApp = angular.module('myApp', [
 /*服务端接口地址*/
     .constant('FF_API', {
         baseApi: '/',      //本地环境工程路径
-        base: 'http://47.96.28.88:9550',      //开发环境工程路径
+        base: httpUrl,      //开发环境工程路径
         // base: 'http://39.104.71.127:9550',      //测试环境工程路径
         baseTpl: 'views/'                 ,      //模板路径
         queryCorporateAllUserPath:'/api/authorization/queryCorporateAllUser' ,  //查询所有企业用户

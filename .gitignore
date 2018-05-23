@@ -19,7 +19,7 @@ target/
 
 /logs/
 **/logs/
-
+FactoryRP/out/
 ##cache
 cache/
 **/log/*
