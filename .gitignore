@@ -23,3 +23,4 @@ FactoryRP/out/
 ##cache
 cache/
 **/log/*
+android/FactoryRP/gen/

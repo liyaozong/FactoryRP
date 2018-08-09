@@ -89,7 +89,7 @@ factoryParameterSettingApp.controller('InternalRepairController',function ($scop
                 $scope.myWaitAuditList=response.data.list
             }else{
                 $scope.paginationConf.totalItems = 0;
-                $scope.myWaitAuditList = 0;
+                $scope.myWaitAuditList = [];
             }
         });
     };

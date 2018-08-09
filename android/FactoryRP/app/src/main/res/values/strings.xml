@@ -1,7 +1,7 @@
 <resources>
-    <string name="app_name">设备管理系统</string>
-    <string name="operator">北京银河灵动科技有限公司</string>
-    <string name="manufacturer">山西华圣铝业有限公司</string>
+    <string name="app_name">云图设备云</string>
+    <string name="operator">北京云图远略科技有限公司</string>
+    <string name="manufacturer">北京云图远略科技有限公司</string>
 
     <!-- Strings related to login -->
     <string name="prompt_address">工厂</string>

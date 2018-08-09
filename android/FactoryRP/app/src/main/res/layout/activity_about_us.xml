@@ -41,6 +41,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" android:id="@+id/textView51"/>
             <TextView
+                    android:text="www.yuntuiot.com"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" android:id="@+id/textView38" android:paddingStart="20dp"/>
         </TableRow>
@@ -51,6 +52,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" android:id="@+id/textView54"/>
             <TextView
+                    android:text="15120058280"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" android:id="@+id/textView53" android:paddingStart="20dp"/>
         </TableRow>
@@ -61,7 +63,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" android:id="@+id/textView56"/>
             <TextView
-                    android:text="liyaozong217@163.com"
+                    android:text="xugong9600@dingtalk.com"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" android:id="@+id/textView55" android:paddingStart="20dp"/>
         </TableRow>
@@ -72,7 +74,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" android:id="@+id/textView58"/>
             <TextView
-                    android:text="Yaozong_Li"
+                    android:text="xiaohe947546779"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" android:id="@+id/textView57" android:paddingStart="20dp"/>
         </TableRow>
